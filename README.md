@@ -18,3 +18,6 @@ State Management: I’m using React Hooks (useState and useEffect) to handle for
 Eventbrite Integration: I will use the Eventbrite API so users can see and pay for events directly on the home page.
 LinkedIn Integration: I’m using the LinkedIn Share API so that once someone is approved, they can post about it to their network with one click.
 Custom Styling: Custom CSS for the Navy/Gold brand.
+
+🖥️ Backend Repository
+https://github.com/NovAldesign/CapstoneBackEnd.git

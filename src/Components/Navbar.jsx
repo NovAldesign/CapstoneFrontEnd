@@ -16,14 +16,19 @@ const Navbar = () => {
 
       <ul className="nav-links">
         <li>
-          <NavLink to="/" className="btn">
-            Home
-          </NavLink>
+          <NavLink to="/" className="btn">Home</NavLink>
         </li>
         <li>
-          <NavLink to="/events" className="btn">
-            Events
-          </NavLink>
+          <NavLink to="/events" className="btn">Events</NavLink>
+        </li>
+        <li>
+          <NavLink to="/applicant" className="btn">Membership</NavLink>
+        </li>
+        <li>
+          <NavLink to="/partnership" className="btn">Partnerships</NavLink>
+        </li>
+        <li>
+          <NavLink to="/admin" className="btn">Admin Login</NavLink>
         </li>
       </ul>
     </nav>
