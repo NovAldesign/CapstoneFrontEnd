@@ -1,0 +1,127 @@
+
+.home-wrapper {
+  padding-top: 80px; /* Space for your fixed Navbar */
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: #333;
+}
+
+/* Hero Section */
+.hero-content {
+  background: linear-gradient(rgba(1, 0, 121, 0.85), rgba(1, 0, 121, 0.85)), 
+              url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1500&q=80'); /* Warm social gathering image */
+  background-size: cover;
+  background-position: center;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  padding: 0 20px;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  max-width: 800px;
+}
+
+.gold-text {
+  color: #d4af37; 
+}
+
+.hero-content p {
+  font-size: 1.25rem;
+  max-width: 700px;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+
+.btn-gold {
+  background-color: #d4af37;
+  color: #010079;
+  padding: 16px 32px;
+  border-radius: 50px; 
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.btn-gold:hover {
+  background-color: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Features Section */
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 80px 5%;
+  flex-wrap: wrap;
+  background-color: #fff;
+}
+
+.feature-card {
+  background: #fdfdfd;
+  padding: 40px;
+  width: 320px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid #eee;
+  border-top: 5px solid #d4af37; 
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+}
+
+.feature-card .icon {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.feature-card h3 {
+  color: #010079;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.feature-card p {
+  line-height: 1.5;
+  color: #666;
+}
+
+.host-note {
+  background-color: #010079;
+  color: white;
+  padding: 100px 10%;
+  text-align: center;
+}
+
+.host-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.host-text p {
+  font-size: 1.5rem;
+  font-style: italic;
+  line-height: 1.8;
+  margin: 20px 0;
+}
+
+.signature {
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #d4af37;
+}

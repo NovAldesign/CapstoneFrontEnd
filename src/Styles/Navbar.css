@@ -1,0 +1,117 @@
+nav {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.5rem 5%;
+  background-color: #010079; 
+  border-bottom: 4px solid #d5ad36; 
+  color: #ffffff;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+/* Logo Styling */
+.nav-logo {
+  height: 60px;
+  width: auto;
+  cursor: pointer;
+  margin-right: auto;
+}
+
+/* Link Container - Centered */
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 25px; 
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+
+
+.nav-links li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+.btn {
+ 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px; 
+  height: 48px; 
+  /* 2. Colors & Borders */
+  background-color: transparent; 
+  color: #d4af37 !important; 
+  border: 1px solid #d4af37;
+  border-radius: 4px;
+  
+  /* 3. Typography */
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  
+  
+  transition: all 0.3s ease-in-out;
+  white-space: nowrap;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Enlarge Effect on Hover/Active */
+.btn:hover, 
+.btn:active {
+  transform: scale(1.1); 
+  background-color: #003366; 
+  color: #ffffff !important;
+  border-color: #ffffff;
+}
+
+
+.nav-links a,
+.nav-links a:visited, 
+.nav-links a:focus {
+  text-decoration: none;
+  color: #d4af37 !important;
+  outline: none !important;
+  box-shadow: none;
+}
+
+/* Style for the 'Active' page button if you want it to pop */
+.active-link {
+  background-color: rgba(212, 175, 55, 0.15);
+  border: 2px solid #d4af37 !important;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  nav {
+    padding: 0.5rem 3%;
+  }
+  .nav-links {
+    position: static; 
+    transform: none;
+    margin-left: auto;
+    gap: 10px;
+  }
+  .btn {
+    width: 110px;
+    height: 40px;
+    font-size: 0.8rem;
+  }
+  .nav-logo {
+    height: 45px;
+  }
+}
