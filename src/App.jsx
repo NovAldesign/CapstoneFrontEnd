@@ -1,7 +1,7 @@
 import { Router, Routes, Route } from 'react-router-dom';
-import Navbar from './Components/Navbar/Navbar'; // Double check this path!
-import Home from './Pages/Home';
-import Events from './Pages/Events';
+import Navbar from './Components/Navbar.jsx'; 
+import Home from '../src/Pages/Home.jsx';
+import Events from '..//src/Pages/Events.jsx';
 
 
 function App() {
@@ -11,6 +11,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/events" element={<Events />} />
+       <Route path="/partnership" element={<Partnership />} />
+        <Route path="/applicant" element={<Applicant />} />
+         <Route path="/admin" element={<Admin/>} />
 </Routes>
     </>
   );
