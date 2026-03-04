@@ -1,92 +1,128 @@
-/* 1. Push content down so the sticky navbar doesn't cover it */
+/* 1. Page Layout & Spacing */
 .page-content {
   padding-top: 120px; 
   min-height: 100vh;
-  background-color: #ffffff;
+  /* Switched to a warm off-white/cream like the GFC site */
+  background-color: #F9F7F2; 
   text-align: center;
 }
 
 .events-header {
-  margin-bottom: 40px;
+  margin-bottom: 50px;
+  padding: 0 20px;
 }
 
 .events-header h1 {
-  color: #002147; /* Navy */
+  color: #002147; /* Deep Navy */
   font-family: "Montserrat", sans-serif;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
+  letter-spacing: -1px;
 }
 
-/* 2. The Grid Layout for your cards */
+.events-header p {
+  color: #333333;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 10px auto;
+}
+
+/* 2. Grid Layout */
 .events-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  max-width: 1200px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 20px;
 }
 
-/* 3. The Event Card Styling */
+/* 3. Event Card Styling */
 .event-card {
-  background: #fff;
-  border: 1px solid #d4af37;
-  border-top: 6px solid #d4af37; /* Thick gold bar for premium feel */
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
+  background: #ffffff;
+  border: none;
+  /* Warm Gold Bar */
+  border-top: 5px solid #C5A059; 
+  border-radius: 4px; /* Slightly sharper corners for a professional look */
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: all 0.4s ease;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 15px;
 }
 
 .event-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-12px);
+  box-shadow: 0 15px 45px rgba(197, 160, 89, 0.15);
+}
+
+/* 4. Image Handling */
+.event-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.event-info {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
 }
 
 .event-card h3 {
   color: #002147;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   margin: 0;
+  line-height: 1.2;
 }
 
 .event-card .date {
-  color: #666;
-  font-weight: bold;
+  color: #C5A059; /* Gold dates */
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
 }
 
-/* Past Events Styling */
+/* 5. The "Save My Spot" Button */
+.btn {
+  background-color: #002147;
+  color: #ffffff;
+  padding: 12px 24px;
+  text-decoration: none;
+  border-radius: 2px;
+  font-weight: bold;
+  transition: background 0.3s;
+  width: 100%;
+}
+
+.btn:hover {
+  background-color: #C5A059; /* Swaps to gold on hover */
+}
+
+/* 6. Past Events Styling */
 .past-events-section {
-  margin-top: 60px;
-  opacity: 0.7; /* Makes it look slightly faded */
+  margin-top: 80px;
+  padding-bottom: 60px;
 }
 
 .past-title {
-  text-align: center;
-  color: #010079;
-  margin-bottom: 30px;
-  font-size: 1.8rem;
+  color: #002147;
+  font-size: 2rem;
+  margin-bottom: 40px;
 }
 
 .past-card {
-  filter: grayscale(0.5); /* Desaturates the card */
-  border-top: 4px solid #ccc !important; /* Grey instead of Gold */
-}
-
-.btn-disabled {
-  background-color: #eee;
-  color: #888;
-  border: none;
-  padding: 10px 20px;
-  cursor: not-allowed;
-  border-radius: 4px;
-  width: 100%;
+  opacity: 0.7;
+  border-top: 5px solid #bdc3c7 !important;
 }
 
 .divider {
   border: 0;
   height: 1px;
-  background: linear-gradient(to right, transparent, #d4af37, transparent);
-  margin-bottom: 40px;
+  background: #C5A059;
+  width: 100px;
+  margin: 40px auto;
+  opacity: 0.3;
 }

@@ -1,117 +1,95 @@
+/* 1. Main Navigation Container  */
 nav {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between; 
   align-items: center;
-  padding: 0.5rem 5%;
-  background-color: #010079; 
-  border-bottom: 4px solid #d5ad36; 
-  color: #ffffff;
+  padding: 0.8rem 4%;
+  background-color: #002147; 
+  border-bottom: 3px solid #C5A059; 
+  color: #F9F7F2;
   position: sticky;
   top: 0;
   width: 100%;
   z-index: 1000;
   box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-/* Logo Styling */
+/* 2. Logo Styling */
 .nav-logo {
-  height: 60px;
+  height: 55px; 
   width: auto;
   cursor: pointer;
-  margin-right: auto;
+  flex-shrink: 0; 
 }
 
-/* Link Container - Centered */
+/* 3. Link Container  */
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 25px; 
+  gap: 15px; 
   margin: 0;
   padding: 0;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   align-items: center;
-}
-
-
-.nav-links li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-
-.btn {
  
+}
+
+/* 4. Navigation Buttons */
+.btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 150px; 
-  height: 48px; 
-  /* 2. Colors & Borders */
+  width: 125px; 
+  height: 38px; 
   background-color: transparent; 
-  color: #d4af37 !important; 
-  border: 1px solid #d4af37;
-  border-radius: 4px;
+  color: #C5A059 !important; 
+  border: 1px solid #C5A059;
+  border-radius: 2px;
   
-  /* 3. Typography */
   font-family: "Montserrat", sans-serif;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-size: 0.9rem;
+  font-size: 0.75rem; 
   text-decoration: none;
   
-  
-  transition: all 0.3s ease-in-out;
+  transition: all 0.4s ease;
   white-space: nowrap;
-  outline: none;
-  cursor: pointer;
 }
 
-/* Enlarge Effect on Hover/Active */
-.btn:hover, 
-.btn:active {
-  transform: scale(1.1); 
-  background-color: #003366; 
-  color: #ffffff !important;
-  border-color: #ffffff;
+.btn:hover {
+  transform: translateY(-2px);
+  background-color: #C5A059; 
+  color: #002147 !important; 
 }
 
-
-.nav-links a,
-.nav-links a:visited, 
-.nav-links a:focus {
-  text-decoration: none;
-  color: #d4af37 !important;
-  outline: none !important;
-  box-shadow: none;
-}
-
-/* Style for the 'Active' page button if you want it to pop */
+/* 5. Active Page Indicator */
 .active-link {
-  background-color: rgba(212, 175, 55, 0.15);
-  border: 2px solid #d4af37 !important;
+  border: 1px solid #F9F7F2 !important; 
+  color: #F9F7F2 !important;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  nav {
-    padding: 0.5rem 3%;
-  }
+/* 6. Mobile Responsiveness */
+@media (max-width: 850px) {
   .nav-links {
-    position: static; 
-    transform: none;
-    margin-left: auto;
-    gap: 10px;
+    gap: 8px;
   }
   .btn {
     width: 110px;
-    height: 40px;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
-  .nav-logo {
-    height: 45px;
+}
+
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column; 
+    gap: 10px;
+    padding: 1rem;
+  }
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 }

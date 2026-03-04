@@ -1,18 +1,20 @@
-
+/* 1. Global Wrapper - Matching the warm GFC Palette */
 .home-wrapper {
-  padding-top: 80px; /* Space for your fixed Navbar */
+  padding-top: 80px; 
   min-height: 100vh;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #F9F7F2; /* Warm Cream background */
   color: #333;
 }
 
-/* Hero Section */
+/* 2. Hero Section - Deep Navy Overlay */
 .hero-content {
-  background: linear-gradient(rgba(1, 0, 121, 0.85), rgba(1, 0, 121, 0.85)), 
-              url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1500&q=80'); /* Warm social gathering image */
+  /* Linear gradient uses the deep GFC Navy with 85% opacity */
+  background: linear-gradient(rgba(0, 33, 71, 0.85), rgba(0, 33, 71, 0.85)), 
+              url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1500&q=80'); 
   background-size: cover;
   background-position: center;
-  height: 60vh;
+  height: 70vh; 
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,105 +25,117 @@
 }
 
 .hero-content h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  max-width: 800px;
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  max-width: 900px;
+  letter-spacing: -1px;
 }
 
 .gold-text {
-  color: #d4af37; 
+  color: #C5A059; 
 }
 
 .hero-content p {
-  font-size: 1.25rem;
-  max-width: 700px;
-  line-height: 1.6;
-  margin-bottom: 2rem;
+  font-size: 1.3rem;
+  max-width: 750px;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
 }
 
-
+/* 3. The "Save My Spot" Style Button */
 .btn-gold {
-  background-color: #d4af37;
-  color: #010079;
-  padding: 16px 32px;
-  border-radius: 50px; 
+  background-color: #C5A059;
+  color: #ffffff;
+  padding: 18px 40px;
+  border-radius: 2px; /* Sharp edges for a premium, editorial feel */
   text-decoration: none;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  letter-spacing: 2px;
+  transition: all 0.4s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .btn-gold:hover {
-  background-color: #ffffff;
+  background-color: #002147;
+  color: #ffffff;
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 25px rgba(197, 160, 89, 0.3);
 }
 
-/* Features Section */
+/* 4. Features Section */
 .features {
   display: flex;
   justify-content: center;
-  gap: 30px;
-  padding: 80px 5%;
+  gap: 40px;
+  padding: 100px 5%;
   flex-wrap: wrap;
-  background-color: #fff;
+  background-color: #F9F7F2;
 }
 
 .feature-card {
-  background: #fdfdfd;
-  padding: 40px;
-  width: 320px;
-  border-radius: 12px;
+  background: #ffffff;
+  padding: 50px 40px;
+  width: 350px;
+  border-radius: 4px;
   text-align: center;
-  border: 1px solid #eee;
-  border-top: 5px solid #d4af37; 
-  transition: transform 0.3s ease;
+  border: none;
+  border-top: 6px solid #C5A059; /* Signature Gold Top Bar */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: all 0.4s ease;
 }
 
 .feature-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-12px);
+  box-shadow: 0 15px 45px rgba(0,0,0,0.1);
 }
 
 .feature-card .icon {
-  font-size: 3.5rem;
+  font-size: 3rem;
   margin-bottom: 1.5rem;
+  display: block;
 }
 
 .feature-card h3 {
-  color: #010079;
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
+  color: #002147;
+  margin-bottom: 1.2rem;
+  font-size: 1.6rem;
+  letter-spacing: -0.5px;
 }
 
 .feature-card p {
-  line-height: 1.5;
-  color: #666;
+  line-height: 1.7;
+  color: #555;
+  font-size: 1.05rem;
 }
 
+
 .host-note {
-  background-color: #010079;
-  color: white;
-  padding: 100px 10%;
+  background-color: #002147; 
+  color: #F9F7F2;
+  padding: 120px 10%;
   text-align: center;
 }
 
 .host-container {
-  max-width: 900px;
+  max-width: 850px;
   margin: 0 auto;
 }
 
 .host-text p {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  font-family: 'Playfair Display', serif; 
   font-style: italic;
-  line-height: 1.8;
-  margin: 20px 0;
+  line-height: 1.6;
+  margin: 30px 0;
+  opacity: 0.9;
 }
 
 .signature {
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  color: #d4af37;
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  color: #C5A059;
 }

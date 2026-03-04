@@ -1,0 +1,97 @@
+/* 1. Higher Dashboard & Header Fix */
+.admin-container {
+  padding: 100px 5% 40px 5%; 
+  max-width: 1300px;
+  margin: auto;
+  background-color: #F9F7F2;
+}
+
+.admin-header-section {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+/* 2. High-Contrast Table Headers */
+.admin-table th {
+  background-color: #002147; 
+  color: #F9F7F2 !important; 
+  padding: 15px;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  border-bottom: 3px solid #C5A059; 
+}
+
+/* 3. The "Name" Click Effect */
+.clickable-name {
+    color: #002147;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: #C5A059;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.clickable-name:hover {
+    color: #C5A059;
+}
+
+/* 4. Refined "Accepted" Status */
+.status-accepted { 
+  color: #27ae60;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.65rem; 
+  border: 1px solid #27ae60; 
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+/* 5. Details Panel (Side view) */
+.admin-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.details-panel {
+    width: 350px;
+    background: white;
+    padding: 25px;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-top: 5px solid #C5A059;
+    position: sticky;
+    top: 120px;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.detail-item {
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.detail-item label {
+    font-weight: bold;
+    color: #002147;
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+}
+
+.close-btn {
+    float: right;
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+}

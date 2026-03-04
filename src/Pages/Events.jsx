@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchGfcEvents } from "../Services/eventService.js"; 
+import { fetchGfcEvents } from "../Services/eventService"; 
 import "../Styles/Events.css";
 
 const Events = () => {
@@ -7,98 +7,81 @@ const Events = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadEvents = async () => {
-      try {
-        const data = await fetchGfcEvents();
-        setEvents(data);
-      } catch (err) {
-        // Handle error state if needed
-      } finally {
-        setLoading(false);
-      }
+    const getEvents = async () => {
+      const data = await fetchGfcEvents();
+      setEvents(data);
+      setLoading(false);
     };
-
-    loadEvents();
+    getEvents();
   }, []);
 
- // Filtering Logic
   const now = new Date();
+  
+  // Separate into Upcoming and Past
   const upcomingEvents = events
-    .filter((event) => new Date(event.start.local) >= now)
+    .filter((event) => event.start?.local && new Date(event.start.local) >= now)
     .sort((a, b) => new Date(a.start.local) - new Date(b.start.local));
 
   const pastEvents = events
-    .filter((event) => new Date(event.start.local) < now)
+    .filter((event) => event.start?.local && new Date(event.start.local) < now)
     .sort((a, b) => new Date(b.start.local) - new Date(a.start.local));
 
-  useEffect(() => {
-    if (!AUTH_TOKEN) return;
-
-    fetch(`https://www.eventbriteapi.com/v3/users/me/organizations/?token=${AUTH_TOKEN}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.organizations && data.organizations.length > 0) {
-          const orgId = data.organizations[0].id;
-          return fetch(`https://www.eventbriteapi.com/v3/organizations/${orgId}/events/?token=${AUTH_TOKEN}`);
-        }
-        throw new Error("No organizations found.");
-      })
-      .then((res) => res.json())
-      .then((eventData) => {
-        if (eventData.events) setEvents(eventData.events);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("GFC API Error:", err);
-        setLoading(false);
-      });
-  }, [AUTH_TOKEN]);
+  if (loading) return <div className="loader">Loading GFC Events...</div>;
 
   return (
     <div className="container page-content">
       <header className="events-header">
         <h1>Grown Folks Collective Events</h1>
-        <p>Join our next gathering for 35+ professionals seeking genuine connection.</p>
       </header>
 
-      {loading ? (
-        <div className="loader">Syncing the latest connections...</div>
-      ) : (
-        <>
-          {/* UPCOMING SECTION */}
-          <div className="events-grid">
-            {upcomingEvents.length > 0 ? (
-              upcomingEvents.map((item) => (
-                <div key={item.id} className="event-card upcoming">
-                  <h3>{item.name.text}</h3>
-                  <p className="date">{new Date(item.start.local).toLocaleDateString()}</p>
-                  <a href={item.url} className="btn" target="_blank" rel="noopener noreferrer">
-                    Save My Spot
-                  </a>
+      {/* --- UPCOMING SECTION --- */}
+      <section>
+        <h2>Upcoming Gatherings</h2>
+        <div className="events-grid">
+          {upcomingEvents.length > 0 ? (
+            upcomingEvents.map((item) => (
+              <div key={item.id} className="event-card">
+                {/* EVENT IMAGE */}
+                <img 
+                  src={item.logo?.original?.url || "https://via.placeholder.com/400x200?text=GFC+Event"} 
+                  alt={item.name.text} 
+                  className="event-img"
+                />
+                <div className="event-info">
+                  <h3>{item.name?.text}</h3>
+                  <p>{new Date(item.start?.local).toLocaleDateString()}</p>
+                  <a href={item.url} target="_blank" rel="noreferrer" className="btn">Register</a>
                 </div>
-              ))
-            ) : (
-              <p className="no-events">No upcoming events. Check back soon for new connections!</p>
-            )}
-          </div>
-
-          {/* PAST EVENTS SECTION */}
-          {pastEvents.length > 0 && (
-            <section className="past-events-section">
-              <hr className="divider" />
-              <h2 className="past-title">Previous Gatherings</h2>
-              <div className="events-grid past-grid">
-                {pastEvents.map((item) => (
-                  <div key={item.id} className="event-card past-card">
-                    <h3>{item.name.text}</h3>
-                    <p className="date">{new Date(item.start.local).toLocaleDateString()}</p>
-                    <button className="btn-disabled" disabled>Connection Concluded</button>
-                  </div>
-                ))}
               </div>
-            </section>
+            ))
+          ) : (
+            <p>No upcoming events. Stay tuned!</p>
           )}
-        </>
+        </div>
+      </section>
+
+      {/* --- PAST SECTION --- */}
+      {pastEvents.length > 0 && (
+        <section className="past-events-section">
+          <hr className="divider" />
+          <h2 className="past-title">Previous Gatherings</h2>
+          <div className="events-grid past-grid">
+            {pastEvents.map((item) => (
+              <div key={item.id} className="event-card past-card">
+                <img 
+                  src={item.logo?.original?.url || "https://via.placeholder.com/400x200?text=GFC+Past+Event"} 
+                  alt={item.name.text} 
+                  className="event-img grayscale" 
+                />
+                <div className="event-info">
+                  <h3>{item.name?.text}</h3>
+                  <p>{new Date(item.start?.local).toLocaleDateString()}</p>
+                  <button className="btn-disabled" disabled>Connection Concluded</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       )}
     </div>
   );
