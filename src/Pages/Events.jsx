@@ -1,15 +1,28 @@
 import React, { useState, useEffect } from "react";
+import { fetchGfcEvents } from "../Services/eventService.js"; 
 import "../Styles/Events.css";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const AUTH_TOKEN = import.meta.env.VITE_EVENTBRITE_TOKEN;
 
-  // --- FILTERING EVENTS ---
+  useEffect(() => {
+    const loadEvents = async () => {
+      try {
+        const data = await fetchGfcEvents();
+        setEvents(data);
+      } catch (err) {
+        // Handle error state if needed
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    loadEvents();
+  }, []);
+
+ // Filtering Logic
   const now = new Date();
-  
   const upcomingEvents = events
     .filter((event) => new Date(event.start.local) >= now)
     .sort((a, b) => new Date(a.start.local) - new Date(b.start.local));
