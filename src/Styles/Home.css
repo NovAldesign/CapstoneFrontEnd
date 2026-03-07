@@ -1,141 +1,316 @@
-/* 1. Global Wrapper - Matching the warm GFC Palette */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@300;400;600;700&display=swap');
+
+:root {
+  --navy: #002147;
+  --gold: #C5A059;
+  --cream: #FDFBFA;
+  --white: #FFFFFF;
+}
+
+/* --- Global Base --- */
 .home-wrapper {
-  padding-top: 80px; 
-  min-height: 100vh;
+  background-color: var(--cream);
+  color: var(--navy);
   font-family: 'Montserrat', sans-serif;
-  background-color: #F9F7F2; /* Warm Cream background */
-  color: #333;
+  overflow-x: hidden;
 }
 
-/* 2. Hero Section - Deep Navy Overlay */
-.hero-content {
-  /* Linear gradient uses the deep GFC Navy with 85% opacity */
-  background: linear-gradient(rgba(0, 33, 71, 0.85), rgba(0, 33, 71, 0.85)), 
-              url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1500&q=80'); 
+.playfair {
+  font-family: 'Playfair Display', serif;
+}
+
+/* --- 1.  HERO  --- */
+.home-hero-visual {
+  height: 90vh;
+
+  background-image: linear-gradient(rgba(0,33,71,0.5), rgba(0,33,71,0.7)), 
+                    url('https://tripleseat.com/wp-content/uploads/2023/09/How-to-Create-a-Special-Group-Dining-Experience-for-Your-Guests-2.jpg'); 
   background-size: cover;
-  background-position: center;
-  height: 70vh; 
+  background-position: center 20%;
+  position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  text-align: center;
-  color: white;
-  padding: 0 20px;
 }
 
-.hero-content h1 {
-  font-size: 3.5rem;
-  margin-bottom: 1.5rem;
-  max-width: 900px;
-  letter-spacing: -1px;
+.hero-dark-overlay {
+  width: 100%;
+  padding-left: 10%;
 }
 
-.gold-text {
-  color: #C5A059; 
-}
-
-.hero-content p {
-  font-size: 1.3rem;
+.hero-content-luxe {
   max-width: 750px;
-  line-height: 1.8;
-  margin-bottom: 2.5rem;
-  font-weight: 300;
+  color: var(--white);
+  text-align: left;
 }
 
-/* 3. The "Save My Spot" Style Button */
-.btn-gold {
-  background-color: #C5A059;
-  color: #ffffff;
-  padding: 18px 40px;
-  border-radius: 2px; /* Sharp edges for a premium, editorial feel */
+.location-tag-gold {
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.luxe-title-white {
+  font-size: clamp(3.5rem, 10vw, 7.5rem);
+  line-height: 0.85;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 0 0 25px 0;
+  color: var(--white);
+  text-shadow: 2px 2px 15px rgba(0,0,0,0.4); 
+}
+
+.gold-spacer-v2 {
+  width: 100px;
+  height: 2px;
+  background: var(--gold);
+  margin-bottom: 30px;
+}
+
+.narrative-lead-white {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  line-height: 1.4;
+  margin-bottom: 40px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.gold-fill-btn {
+  background: var(--gold);
+  color: var(--white);
+  padding: 18px 45px;
   text-decoration: none;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  transition: all 0.4s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  letter-spacing: 3px;
+  display: inline-block;
+  transition: all 0.3s ease;
+  border: 1px solid var(--gold);
 }
 
-.btn-gold:hover {
-  background-color: #002147;
-  color: #ffffff;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(197, 160, 89, 0.3);
+.gold-fill-btn:hover {
+  background: transparent;
+  color: var(--white);
+  border-color: var(--white);
 }
 
-/* 4. Features Section */
-.features {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  padding: 100px 5%;
-  flex-wrap: wrap;
-  background-color: #F9F7F2;
-}
-
-.feature-card {
-  background: #ffffff;
-  padding: 50px 40px;
-  width: 350px;
-  border-radius: 4px;
-  text-align: center;
-  border: none;
-  border-top: 6px solid #C5A059; /* Signature Gold Top Bar */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  transition: all 0.4s ease;
-}
-
-.feature-card:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 15px 45px rgba(0,0,0,0.1);
-}
-
-.feature-card .icon {
-  font-size: 3rem;
-  margin-bottom: 1.5rem;
-  display: block;
-}
-
-.feature-card h3 {
-  color: #002147;
-  margin-bottom: 1.2rem;
-  font-size: 1.6rem;
-  letter-spacing: -0.5px;
-}
-
-.feature-card p {
-  line-height: 1.7;
-  color: #555;
-  font-size: 1.05rem;
-}
-
-
-.host-note {
-  background-color: #002147; 
-  color: #F9F7F2;
-  padding: 120px 10%;
+/* --- 2. THE GOLD STATS  --- */
+.isolation-stats-gold {
+  background-color: var(--gold);
+  padding: 120px 20px;
+  color: var(--navy);
   text-align: center;
 }
 
-.host-container {
-  max-width: 850px;
+.stats-container {
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-.host-text p {
-  font-size: 1.8rem;
-  font-family: 'Playfair Display', serif; 
-  font-style: italic;
-  line-height: 1.6;
-  margin: 30px 0;
+.navy-label {
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--navy);
+  display: block;
+}
+
+.navy-text {
+  color: var(--navy);
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 20px 0;
+  font-weight: 900;
+}
+
+.navy-spacer-small {
+  width: 60px;
+  height: 2px;
+  background: var(--navy);
+  margin: 0 auto;
+}
+
+.stats-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 80px;
+}
+
+.stat-card-navy {
+  flex: 1;
+  background: rgba(0, 33, 71, 0.04);
+  padding: 60px 30px;
+  border: 1px solid rgba(0, 33, 71, 0.1);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.stat-card-navy:hover {
+  transform: translateY(-12px);
+  background: var(--navy);
+  color: var(--white);
+}
+
+.stat-number-navy {
+  font-family: 'Playfair Display', serif;
+  font-size: 4.5rem;
+  color: var(--navy);
+  line-height: 1;
+  margin-bottom: 15px;
+  transition: color 0.3s ease;
+}
+
+.stat-label-navy {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 25px;
+  transition: color 0.3s ease;
+}
+
+.navy-line-small {
+  width: 40px;
+  height: 1px;
+  background: var(--navy);
+  margin: 0 auto 25px;
+  transition: background 0.3s ease;
+}
+
+.stat-card-navy p {
+  font-size: 1rem;
+  line-height: 1.7;
+  font-weight: 400;
   opacity: 0.9;
 }
 
-.signature {
-  font-weight: bold;
+/* Hover States for Gold Cards */
+.stat-card-navy:hover .stat-number-navy { color: var(--gold); }
+.stat-card-navy:hover .stat-label-navy { color: var(--gold); }
+.stat-card-navy:hover .navy-line-small { background: var(--gold); }
+
+/* --- 3. STORY SECTION  --- */
+.story-section {
+  padding: 150px 10%;
+  background-color: var(--cream);
+}
+
+.story-block {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  margin-bottom: 180px;
+}
+
+.story-block.reverse {
+  flex-direction: row-reverse;
+}
+
+.story-image {
+  flex: 1.2;
+}
+
+.story-image img {
+  width: 100%;
+  height: 550px;
+  object-fit: cover;
+  box-shadow: 30px 30px 0px var(--gold); 
+}
+
+.story-text {
+  flex: 1;
+}
+
+.gold-label {
+  color: var(--gold);
   text-transform: uppercase;
-  font-size: 1.1rem;
   letter-spacing: 3px;
-  color: #C5A059;
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.story-text h2 {
+  font-size: 3rem;
+  margin-bottom: 25px;
+  color: var(--navy);
+  line-height: 1.1;
+  font-weight: 900;
+}
+
+.story-text p {
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: #444;
+  font-weight: 300;
+}
+
+/* --- HOST NOTE --- */
+.host-note-visual {
+  height: 75vh;
+  /* Direct link to the 'Real Friends' image from Boundless */
+  background: linear-gradient(rgba(0, 33, 71, 0.85), rgba(0, 33, 71, 0.85)), 
+              url('https://www.boundless.org/wp-content/uploads/2024/01/who-are-your-real-friends-65aeb3b94db51-1024x683.webp');
+  background-attachment: fixed; /* This creates the parallax effect */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  text-align: center;
+  padding: 0 20px;
+}
+
+.host-overlay-container {
+  max-width: 800px;
+}
+
+.host-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+.signature {
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 40px;
+}
+
+.btn-gold-outline-white {
+  display: inline-block;
+  padding: 18px 45px;
+  border: 1px solid var(--white);
+  color: var(--white);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.btn-gold-outline-white:hover {
+  background: var(--white);
+  color: var(--navy);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1024px) {
+  .story-block, .story-block.reverse { flex-direction: column; gap: 50px; text-align: center; }
+  .story-image img { height: 400px; box-shadow: 15px 15px 0px var(--gold); }
+  .stats-grid { flex-direction: column; align-items: center; }
+  .stat-card-navy { width: 100%; max-width: 450px; }
+  .hero-dark-overlay { padding-left: 0; justify-content: center; text-align: center; }
+  .hero-content-luxe { padding: 0 20px; text-align: center; }
+  .gold-spacer-v2 { margin: 0 auto 30px; }
 }

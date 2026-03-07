@@ -1,61 +1,115 @@
 import React from "react";
 import '../Styles/Home.css';
-
 import { Link } from "react-router-dom"; 
 
 const Home = () => {
   return (
     <main className="home-wrapper"> 
-      {/* Hero Section */}
-      <div className="hero-content">
-        <h1>
-          More Than an Event. <span className="gold-text">A Connection.</span>
-        </h1>
-        <p>
-          I'm hosting curated spaces for the 35+ community to break the cycle of
-          social isolation. Come for the conversation, stay for the genuine
-          friendships.
-        </p>
+      {/* 1. ELEGANT HERO SECTION */}
+      <header className="home-hero-visual">
+        <div className="hero-dark-overlay">
+          <div className="hero-content-luxe">
+            <span className="location-tag-gold">Atlanta & Beyond</span>
+            <h1 className="playfair luxe-title-white">The <br/> Antidote.</h1>
+            <div className="gold-spacer-v2"></div>
+            <p className="narrative-lead-white">
+              Success shouldn’t be a solo journey. Join a collective where 
+              excellence meets genuine connection.
+            </p>
+            <Link to="/events" className="gold-fill-btn">Explore the Collective →</Link>
+          </div>
+        </div>
+      </header>
 
-        <div className="hero-btns">
-          <Link to="/events" className="btn-gold">
-            Find Your Next Connection
-          </Link>
-        </div>
-      </div>
+      {/* 2. THE STATS SECTION - Gold Background Offset */}
+      <section className="isolation-stats-gold">
+        <div className="stats-container">
+          <div className="stats-header">
+            <span className="navy-label">The Silent Epidemic</span>
+            <h2 className="playfair navy-text">Why Connection is Non-Negotiable</h2>
+            <div className="navy-spacer-small"></div>
+          </div>
+<br>
+</br>
+          <div className="stats-grid">
+            <div className="stat-card-navy">
+              <div className="stat-number-navy">15</div>
+              <div className="stat-label-navy">Cigarettes a Day</div>
+              <div className="navy-line-small"></div>
+              <p>The physiological impact of isolation is as damaging as smoking 15 cigarettes daily.</p>
+            </div>
 
-      {/* Features Section */}
-      <section className="features">
-        <div className="feature-card">
-          <div className="icon"></div>
-          <h3>Thought-Provoking</h3>
-          <p>We skip the small talk. Our events are centered around deep, meaningful conversations that matter.</p>
-        </div>
-        <div className="feature-card">
-          <div className="icon"></div>
-          <h3>Genuine Friendship</h3>
-          <p>In a world of digital noise, we provide a physical space to build real-life, lasting bonds.</p>
-        </div>
-        <div className="feature-card">
-          <div className="icon"></div>
-          <h3>Community-Led</h3>
-          <p>I’m there at every event, ensuring every voice is heard and every guest feels welcome.</p>
+            <div className="stat-card-navy">
+              <div className="stat-number-navy">50%</div>
+              <div className="stat-label-navy">Dementia Risk</div>
+              <div className="navy-line-small"></div>
+              <p>Prolonged isolation is linked to a 50% increase in the risk of cognitive decline.</p>
+            </div>
+
+            <div className="stat-card-navy">
+              <div className="stat-number-navy">$406B</div>
+              <div className="stat-label-navy">Economic Cost</div>
+              <div className="navy-line-small"></div>
+              <p>Loneliness costs the U.S. economy billions annually in lost productivity.</p>
+            </div>
+          </div>
         </div>
       </section>
-      <section className="host-note">
-  <div className="host-container">
-    <div className="host-text">
-      <h2 className="gold-text">A Note from Your Host</h2>
-      <p>
-        "I started the Grown Folks Collective because I saw too many 35+ entrepreneurs 
-        crushing their business goals but feeling isolated in their personal lives. 
-        I'm at every event because I believe the best business strategies start 
-        with a genuine human connection. Let’s stop the scroll and start the conversation."
-      </p>
-      <p className="signature">— Founder, GFC</p>
-    </div>
-  </div>
-</section>
+
+    {/* 3. ASYMMETRICAL STORY SECTION - FLIPPED */}
+      <section className="story-section">
+        
+        {/* Connection Section Now First */}
+        <div className="story-block">
+          <div className="story-image">
+            <img 
+              src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80&w=800" 
+              alt="Deep Connection" 
+            />
+          </div>
+          <div className="story-text">
+            <span className="gold-label">The Connection</span>
+            <h2 className="playfair">No Small Talk</h2>
+            <p>
+              Our alcohol-free environments facilitate the conversations that matter. 
+              We value every interaction and are here to serve you as you transition 
+              from isolated to integrated.
+            </p>
+          </div>
+        </div>
+
+        {/* Travel Section Now Second (with Reverse class) */}
+        <div className="story-block reverse">
+          <div className="story-image">
+            <img 
+              src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&q=80&w=800" 
+              alt="Sophisticated Travel" 
+            />
+          </div>
+          <div className="story-text">
+            <span className="gold-label">The Experience</span>
+            <h2 className="playfair">Travel for the Soul</h2>
+            <p>
+              Travel is for fun and seeing the world. We curate journeys where 
+              the destination is just the backdrop for building lifelong bonds 
+              and rediscovering wonder.
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+ {/* 4. THE HOST NOTE - Parallax Visual with New Image */}
+      <section className="host-note-visual">
+        <div className="host-overlay-container">
+           <p className="host-quote">
+            "I believe the best life strategies start with a genuine human connection. 
+            Let’s stop the scroll and start the conversation."
+           </p>
+           <p className="signature">— Vaughn, GFC Founder</p>
+           <Link to="/membership" className="btn-gold-outline-white">Join the Collective</Link>
+        </div>
+      </section>
     </main>
   );
 };
