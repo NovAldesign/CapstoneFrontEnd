@@ -32,46 +32,47 @@ const Applicant = () => {
   return (
     <div className="membership-page">
       {/* THE BOLD HEADER & NARRATIVE */}
-      <header className="membership-hero">
-        <span className="location-tag">Atlanta & Beyond</span>
-        <h1 className="playfair luxe-title">The <br/> Collective</h1>
-        
-        <div className="gold-spacer-bar"></div>
-        
-        <div className="mission-narrative">
-          <p className="narrative-lead">
-            Connection is the ultimate destination.
-          </p>
-          <p className="narrative-body">
-            Social isolation isn't just about being alone; it's about losing your sense of wonder. 
-            The **Grown Folks Collective** exists to help you find it again. We believe that 
-            nothing breaks down barriers quite like seeing the world. Travel is our canvas—it's for 
-            <strong> fun, for discovery, and for building bonds</strong> that a boardroom simply cannot facilitate.
-          </p>
-          <p className="narrative-impact">
-            From the streets of distant cities to the quiet moments of shared sunsets, we are 
-            here to serve you as you rediscover the world. Joining us is a commitment to 
-            living life fully, authentically, and together.
-          </p>
-        </div>
-      </header>
+     <header className="membership-hero">
+  <div className="hero-content-right">
+    <span className="location-tag">A Life of Joy</span>
+    <h1 className="luxe-title">The <br/> Collective</h1>
+    
+    <div className="gold-spacer-bar"></div>
+    
+    <div className="mission-narrative">
+      <p className="narrative-lead">
+        Adventure is better when shared.
+      </p>
+      <p className="narrative-body">
+        We believe that adulthood shouldn't mean the end of play. The <strong>Grown Folks Collective</strong> is 
+        centered around the pure joy of discovery. From spontaneous games that spark laughter to 
+        grand adventures in far-off lands, we create the space for you to truly <strong>connect</strong>.
+      </p>
+      <p className="narrative-impact">
+        Experience a life of happiness through shared sunsets, local explorations, and the 
+        thrill of new experiences. We aren't just traveling; we are reclaiming our sense of wonder, 
+        together.
+      </p>
+    </div>
+  </div>
+</header>
 
       {/* THE BENEFITS (Focus on Connection & Fun) */}
       <section className="benefits-showcase">
         <h2 className="playfair section-title">Your Member Journey</h2>
         <div className="benefit-grid">
           <div className="benefit-item">
-            <span className="gold-num">01</span>
+            <span className="gold-num"></span>
             <h3>Global Exploration</h3>
             <p>Travel is for the soul. We curate journeys that focus on fun, adventure, and seeing the beauty of the world together.</p>
           </div>
           <div className="benefit-item">
-            <span className="gold-num">02</span>
+            <span className="gold-num"></span>
             <h3>Authentic Ties</h3>
             <p>Skip the business cards. We build real friendships through shared experiences and intentional, alcohol-free connection.</p>
           </div>
           <div className="benefit-item">
-            <span className="gold-num">03</span>
+            <span className="gold-num"></span>
             <h3>Dedicated Service</h3>
             <p>Every interaction is an opportunity for us to serve you. You aren't just a member; you are part of the family.</p>
           </div>
