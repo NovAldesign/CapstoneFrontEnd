@@ -249,10 +249,97 @@
   color: #444;
   font-weight: 300;
 }
+.partnership-editorial-section {
+  padding: 100px 5%;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+}
+
+.editorial-frame {
+  max-width: 1000px;
+  width: 100%;
+  padding: 60px 40px;
+  border: 1px solid #d4af37; /* Thin Gold Border */
+  position: relative;
+  text-align: center;
+}
+
+/* Optional: Add a little "seal" or corner detail for extra luxe feel */
+.editorial-frame::before {
+  content: "GFC";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 0 15px;
+  color: #d4af37;
+  font-family: 'Playfair Display', serif;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.editorial-label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: 0.8rem;
+  color: #001f3f;
+  margin-bottom: 20px;
+}
+
+.editorial-title {
+  font-size: 2.5rem;
+  color: #001f3f;
+  margin-bottom: 20px;
+}
+
+.editorial-divider {
+  width: 50px;
+  height: 2px;
+  background-color: #d4af37;
+  margin: 0 auto 30px;
+}
+
+.editorial-body {
+  max-width: 650px;
+  margin: 0 auto 40px;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: #444;
+}
+
+.gold-editorial-btn {
+  display: inline-block;
+  padding: 18px 40px;
+  background-color: #001f3f; /* Navy Button */
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.gold-editorial-btn:hover {
+  background-color: #d4af37;
+  transform: translateY(-2px);
+}
+
+.portal-hint {
+  margin-top: 25px;
+  font-size: 0.75rem;
+  color: #999;
+  letter-spacing: 1px;
+  text-wrap: balance; 
+  text-align: center;
+}
 
 /* --- HOST NOTE --- */
 .host-note-visual {
   height: 75vh;
+
   /* Direct link to the 'Real Friends' image from Boundless */
   background: linear-gradient(rgba(0, 33, 71, 0.85), rgba(0, 33, 71, 0.85)), 
               url('https://www.boundless.org/wp-content/uploads/2024/01/who-are-your-real-friends-65aeb3b94db51-1024x683.webp');

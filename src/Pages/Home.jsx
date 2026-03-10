@@ -21,7 +21,7 @@ const Home = () => {
         </div>
       </header>
 
-      {/* 2. THE STATS SECTION - Gold Background Offset */}
+      {/* 2. THE STATS SECTION */}
       <section className="isolation-stats-gold">
         <div className="stats-container">
           <div className="stats-header">
@@ -29,8 +29,7 @@ const Home = () => {
             <h2 className="playfair navy-text">Why Connection is Non-Negotiable</h2>
             <div className="navy-spacer-small"></div>
           </div>
-<br>
-</br>
+          <br />
           <div className="stats-grid">
             <div className="stat-card-navy">
               <div className="stat-number-navy">15</div>
@@ -38,14 +37,12 @@ const Home = () => {
               <div className="navy-line-small"></div>
               <p>The physiological impact of isolation is as damaging as smoking 15 cigarettes daily.</p>
             </div>
-
             <div className="stat-card-navy">
               <div className="stat-number-navy">50%</div>
               <div className="stat-label-navy">Dementia Risk</div>
               <div className="navy-line-small"></div>
               <p>Prolonged isolation is linked to a 50% increase in the risk of cognitive decline.</p>
             </div>
-
             <div className="stat-card-navy">
               <div className="stat-number-navy">$406B</div>
               <div className="stat-label-navy">Economic Cost</div>
@@ -56,10 +53,8 @@ const Home = () => {
         </div>
       </section>
 
-    {/* 3. ASYMMETRICAL STORY SECTION - FLIPPED */}
+      {/* 3. ASYMMETRICAL STORY SECTION */}
       <section className="story-section">
-        
-        {/* Connection Section Now First */}
         <div className="story-block">
           <div className="story-image">
             <img 
@@ -78,7 +73,6 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Travel Section Now Second (with Reverse class) */}
         <div className="story-block reverse">
           <div className="story-image">
             <img 
@@ -91,15 +85,32 @@ const Home = () => {
             <h2 className="playfair">Travel for the Soul</h2>
             <p>
               Travel is for fun and seeing the world. We curate journeys where 
-              the destination is just the backdrop for building lifelong bonds 
-              and rediscovering wonder.
+              the destination is just the backdrop for building lifelong bonds.
             </p>
           </div>
         </div>
-
       </section>
 
- {/* 4. THE HOST NOTE - Parallax Visual with New Image */}
+      {/* 4. PARTNERSHIP / SPONSORSHIP SECTION */}
+   <section className="partnership-editorial-section">
+        <div className="editorial-frame">
+          <div className="editorial-content">
+            <span className="editorial-label">Strategic Growth</span>
+            <h2 className="playfair editorial-title">Align with the Collective</h2>
+            <div className="editorial-divider"></div>
+            <p className="editorial-body">
+              We invite Atlanta’s distinguished brands and luxury service providers to invest 
+              in the infrastructure of social wellness. Your partnership powers the sanctuaries 
+              where connection thrives.
+            </p>
+            <Link to="/partnerships" className="gold-editorial-btn">
+              Explore Strategic Opportunities
+            </Link>
+            <p className="portal-hint">Partner with the Collective to transform the landscape of social wellness & help us engineer the end of Atlanta’s quiet epidemic of isolation.</p>
+          </div>
+        </div>
+      </section>
+      {/* 5. THE HOST NOTE */}
       <section className="host-note-visual">
         <div className="host-overlay-container">
            <p className="host-quote">

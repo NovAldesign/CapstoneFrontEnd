@@ -6,14 +6,19 @@ const Partnership = () => {
   const [formData, setFormData] = useState({
     companyName: '',
     industry: '',
-    tierRequested: 'Founding Partner',
+    contactPerson: '',
+    email: '',
+    phone: '',
+    password: '',
+    tierRequested: 'Title Sponsor',
     contributionType: 'Financial',
-    details: '',
-    missionAligned: true,
     contractStart: '',
     contractEnd: '',
+    details: '',
     status: 'pending'
   });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,11 +27,35 @@ const Partnership = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Date validation
+    if (new Date(formData.contractEnd) <= new Date(formData.contractStart)) {
+      alert("Contract End Date must be after the Start Date.");
+      return;
+    }
+
     try {
       await partnershipService.createInquiry(formData);
       alert("Strategic Proposal Submitted. Thank you for joining the mission.");
+      
+      // Reset state
+      setFormData({
+        companyName: '',
+        industry: '',
+        contactPerson: '',
+        email: '',
+        phone: '',
+        password: '',
+        tierRequested: 'Title Sponsor',
+        contributionType: 'Financial',
+        contractStart: '',
+        contractEnd: '',
+        details: '',
+        status: 'pending'
+      });
     } catch (err) {
-      alert("Submission failed. Please check your connection and dates.");
+      const errorMsg = err.response?.data?.error || "Submission failed. Please check your password strength (8+ chars, Uppercase, Number, Symbol).";
+      alert(errorMsg);
     }
   };
 
@@ -44,84 +73,88 @@ const Partnership = () => {
             For the 35+ professional, success often comes at a silent cost: <strong>Social Isolation.</strong> 
           </p>
           <p className="narrative-body">
-            Despite being more "connected" than ever, Atlanta’s seasoned entrepreneurs and professionals are 
-            experiencing a profound lack of true community. This "Quiet Epidemic" of loneliness directly 
-            impacts mental health, professional longevity, and personal joy. 
+            Atlanta’s seasoned entrepreneurs and professionals are experiencing a profound lack of true community. 
+            Partnership with the Collective is an active investment in <strong>Social Wellness.</strong> 
           </p>
           <p className="narrative-impact">
-            Partnership with the Collective is an active investment in <strong>Social Wellness. </strong> 
-            By providing the venues and resources required to host our alcohol-free sanctuaries, our 
-            partners help us turn "networking" back into <strong>belonging.</strong>
+            By providing resources to host our alcohol-free sanctuaries, our partners help us turn "networking" back into <strong>belonging.</strong>
           </p>
         </div>
       </header>
 
-      {/* SECTION 2: THE ROI IMPACT STATS */}
+      {/* ROI IMPACT STATS */}
       <section className="impact-stats-section">
         <div className="stats-grid">
-          <div className="stat-card">
-            <h4>35+</h4>
-            <p>Targeted age demographic of high-earning professionals.</p>
-          </div>
-          <div className="stat-card">
-            <h4>$150k+</h4>
-            <p>Average household income of our core membership base.</p>
-          </div>
-          <div className="stat-card">
-            <h4>85%</h4>
-            <p>Member retention rate, ensuring long-term brand familiarity.</p>
-          </div>
-          <div className="stat-card">
-            <h4>0%</h4>
-            <p>Alcohol-focused events, ensuring high-clarity professional engagement.</p>
-          </div>
+          <div className="stat-card"><h4>35+</h4><p>High-earning demographic.</p></div>
+          <div className="stat-card"><h4>$150k+</h4><p>Average household income.</p></div>
+          <div className="stat-card"><h4>85%</h4><p>Member retention rate.</p></div>
+          <div className="stat-card"><h4>0%</h4><p>Alcohol-focused events.</p></div>
         </div>
       </section>
 
-      {/* SECTION 3: THE THREE TIERS */}
-      <section className="tier-showcase">
-        <h2 className="playfair section-title">Partnership Tiers</h2>
-        <div className="tier-grid">
-          <div className="tier-item">
-            <span className="tier-label">Tier I</span>
-            <h3>Founding Partner</h3>
-            <p>The highest level of alignment. Shaping the future of the Collective as a cornerstone of our community.</p>
-          </div>
-          <div className="tier-item">
-            <span className="tier-label">Tier II</span>
-            <h3>Title Sponsor</h3>
-            <p>Directly power our monthly experiences and gain high-impact visibility among our vetted 35+ professionals.</p>
-          </div>
-          <div className="tier-item">
-            <span className="tier-label">Tier III</span>
-            <h3>In-Kind Donor</h3>
-            <p>Provide the sanctuary or the service. We welcome venue partners and luxury service providers.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 4: THE STRATEGIC PROPOSAL FORM */}
+      {/* STRATEGIC PROPOSAL FORM */}
       <section className="form-section">
         <div className="proposal-container">
           <h2 className="playfair">Initiate Proposal</h2>
-          <p className="form-intro">Define the parameters of your alignment with the Collective.</p>
+          <p className="form-intro">Define the parameters of your alignment and create your partner portal account.</p>
           
           <form onSubmit={handleSubmit} className="luxe-form">
+            <div className="form-divider">Company Information</div>
             <div className="form-row">
               <div className="input-group">
                 <label>Company Name</label>
-                <input type="text" name="companyName" onChange={handleChange} required />
+                <input type="text" name="companyName" value={formData.companyName} onChange={handleChange} required />
               </div>
               <div className="input-group">
                 <label>Industry</label>
-                <input type="text" name="industry" onChange={handleChange} required />
+                <input type="text" name="industry" value={formData.industry} onChange={handleChange} required />
+              </div>
+            </div>
+
+            <div className="form-divider">Primary Contact & Portal Security</div>
+            <div className="form-row">
+              <div className="input-group">
+                <label>Contact Person Name</label>
+                <input type="text" name="contactPerson" value={formData.contactPerson} onChange={handleChange} required />
+              </div>
+              <div className="input-group">
+                <label>Contact Phone</label>
+                <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required />
               </div>
             </div>
 
             <div className="form-row">
               <div className="input-group">
-                <label>Tier Requested</label>
-                <select name="tierRequested" onChange={handleChange}>
+                <label>Portal Email (Username)</label>
+                <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+              </div>
+              <div className="input-group">
+                <label>Portal Password</label>
+                <div style={{ position: 'relative' }}>
+                  <input 
+                    type={showPassword ? "text" : "password"} 
+                    name="password" 
+                    value={formData.password}
+                    placeholder="Min. 8 chars, 1 Uppercase, 1 Symbol"
+                    onChange={handleChange} 
+                    required 
+                  />
+                  <button 
+                    type="button" 
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{ position: 'absolute', right: '10px', top: '25%', background: 'none', border: 'none', cursor: 'pointer' }}
+                  >
+                    {showPassword ? "🙈" : "👁️"}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="form-divider">Partnership Logistics</div>
+            <div className="form-row">
+              <div className="input-group">
+                <label>Partnership Tier</label>
+                <select name="tierRequested" value={formData.tierRequested} onChange={handleChange}>
                   <option value="Founding Partner">Founding Partner</option>
                   <option value="Title Sponsor">Title Sponsor</option>
                   <option value="In-Kind Donor">In-Kind Donor</option>
@@ -129,7 +162,7 @@ const Partnership = () => {
               </div>
               <div className="input-group">
                 <label>Contribution Type</label>
-                <select name="contributionType" onChange={handleChange}>
+                <select name="contributionType" value={formData.contributionType} onChange={handleChange}>
                   <option value="Financial">Financial</option>
                   <option value="Venue">Venue</option>
                   <option value="Service">Service</option>
@@ -140,12 +173,12 @@ const Partnership = () => {
 
             <div className="form-row">
               <div className="input-group">
-                <label>Contract Start</label>
-                <input type="date" name="contractStart" onChange={handleChange} required />
+                <label>Contract Start Date</label>
+                <input type="date" name="contractStart" value={formData.contractStart} onChange={handleChange} required />
               </div>
               <div className="input-group">
-                <label>Contract End</label>
-                <input type="date" name="contractEnd" onChange={handleChange} required />
+                <label>Contract End Date</label>
+                <input type="date" name="contractEnd" value={formData.contractEnd} onChange={handleChange} required />
               </div>
             </div>
 
@@ -153,7 +186,8 @@ const Partnership = () => {
               <label>Alignment Details</label>
               <textarea 
                 name="details" 
-                placeholder="How does your mission meet ours?" 
+                value={formData.details}
+                placeholder="Briefly describe your goals for this alignment..." 
                 onChange={handleChange} 
                 required 
               />
@@ -167,4 +201,4 @@ const Partnership = () => {
   );
 };
 
-export default Partnership
+export default Partnership;

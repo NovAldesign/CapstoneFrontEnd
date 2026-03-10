@@ -4,103 +4,155 @@ import applicantService from '../Services/applicantService';
 
 const Applicant = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
+    password: '',
+    phone: '',
+    dob: '',
     industry: '',
     tier: 'Silver',
-    isFirstTimeFounder: false
+    connectionGoals: {
+      socialSatisfaction: 5,
+      primaryInterest: 'Meet New People',
+      isolationBarrier: ''
+    },
+    preferences: {
+      dietaryRestrictions: '',
+      apparelSize: 'M',
+      favoriteMocktail: '',
+      golfSkillLevel: 'Never Played'
+    },
+    hasPassport: false
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Optimized handler for flat and nested schema objects
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({ 
-      ...formData, 
-      [name]: type === 'checkbox' ? checked : value 
-    });
+    
+    if (name.includes('.')) {
+      const [outer, inner] = name.split('.');
+      setFormData(prev => ({
+        ...prev,
+        [outer]: { ...prev[outer], [inner]: value }
+      }));
+    } else {
+      setFormData(prev => ({ 
+        ...prev, 
+        [name]: type === 'checkbox' ? checked : value 
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await applicantService.createApplicant(formData);
+      // Mapping the dietaryRestrictions string to an array if needed by backend
+      const submissionData = {
+        ...formData,
+        preferences: {
+          ...formData.preferences,
+          dietaryRestrictions: formData.preferences.dietaryRestrictions ? [formData.preferences.dietaryRestrictions] : []
+        }
+      };
+      
+      await applicantService.createApplicant(submissionData);
       alert("Application Received. We look forward to exploring the world with you.");
+      
+      // Optional: Reset form or redirect
     } catch (err) {
-      alert("Submission error. Please try again.");
+      const errorMsg = err.response?.data?.error || "Submission error. Please check your password strength and try again.";
+      alert(errorMsg);
     }
   };
 
   return (
     <div className="membership-page">
-      {/* THE BOLD HEADER & NARRATIVE */}
-     <header className="membership-hero">
-  <div className="hero-content-right">
-    <span className="location-tag">A Life of Joy</span>
-    <h1 className="luxe-title">The <br/> Collective</h1>
-    
-    <div className="gold-spacer-bar"></div>
-    
-    <div className="mission-narrative">
-      <p className="narrative-lead">
-        Adventure is better when shared.
-      </p>
-      <p className="narrative-body">
-        We believe that adulthood shouldn't mean the end of play. The <strong>Grown Folks Collective</strong> is 
-        centered around the pure joy of discovery. From spontaneous games that spark laughter to 
-        grand adventures in far-off lands, we create the space for you to truly <strong>connect</strong>.
-      </p>
-      <p className="narrative-impact">
-        Experience a life of happiness through shared sunsets, local explorations, and the 
-        thrill of new experiences. We aren't just traveling; we are reclaiming our sense of wonder, 
-        together.
-      </p>
-    </div>
-  </div>
-</header>
+      <header className="membership-hero">
+        <div className="hero-content-right">
+          <span className="location-tag">A Life of Joy</span>
+          <h1 className="luxe-title">The <br/> Collective</h1>
+          <div className="gold-spacer-bar"></div>
+          <div className="mission-narrative">
+            <p className="narrative-lead">Adventure is better when shared.</p>
+            <p className="narrative-body">
+              Adulthood shouldn't mean the end of play. The <strong>Grown Folks Collective</strong> is 
+              centered around the pure joy of discovery and intentional <strong>connection</strong>.
+            </p>
+          </div>
+        </div>
+      </header>
 
-      {/* THE BENEFITS (Focus on Connection & Fun) */}
       <section className="benefits-showcase">
         <h2 className="playfair section-title">Your Member Journey</h2>
         <div className="benefit-grid">
-          <div className="benefit-item">
-            <span className="gold-num"></span>
-            <h3>Global Exploration</h3>
-            <p>Travel is for the soul. We curate journeys that focus on fun, adventure, and seeing the beauty of the world together.</p>
-          </div>
-          <div className="benefit-item">
-            <span className="gold-num"></span>
-            <h3>Authentic Ties</h3>
-            <p>Skip the business cards. We build real friendships through shared experiences and intentional, alcohol-free connection.</p>
-          </div>
-          <div className="benefit-item">
-            <span className="gold-num"></span>
-            <h3>Dedicated Service</h3>
-            <p>Every interaction is an opportunity for us to serve you. You aren't just a member; you are part of the family.</p>
-          </div>
+          <div className="benefit-item"><h3>Global Exploration</h3><p>Curated journeys focusing on fun and shared beauty.</p></div>
+          <div className="benefit-item"><h3>Authentic Ties</h3><p>Real friendships through alcohol-free connection.</p></div>
+          <div className="benefit-item"><h3>Dedicated Service</h3><p>Every interaction is an opportunity to serve you.</p></div>
         </div>
       </section>
 
-      {/* THE INTAKE FORM */}
       <section className="form-section">
         <div className="applicant-container">
           <h2 className="playfair">Request Membership</h2>
           <p className="form-intro">Let's start the conversation. We value your presence.</p>
           
           <form onSubmit={handleSubmit} className="luxe-form">
+            {/* --- BASIC DEMOGRAPHICS --- */}
             <div className="form-row">
               <div className="input-group">
-                <label>Full Name</label>
-                <input type="text" name="name" onChange={handleChange} required />
+                <label>First Name</label>
+                <input type="text" name="firstName" onChange={handleChange} required />
               </div>
               <div className="input-group">
-                <label>Email Address</label>
-                <input type="email" name="email" onChange={handleChange} required />
+                <label>Last Name</label>
+                <input type="text" name="lastName" onChange={handleChange} required />
               </div>
             </div>
 
             <div className="form-row">
               <div className="input-group">
+                <label>Email Address</label>
+                <input type="email" name="email" onChange={handleChange} required />
+              </div>
+              <div className="input-group">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" onChange={handleChange} required />
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="input-group">
+                <label>Date of Birth</label>
+                <input type="date" name="dob" onChange={handleChange} required />
+              </div>
+              <div className="input-group">
                 <label>Industry</label>
                 <input type="text" name="industry" onChange={handleChange} required />
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="input-group">
+                <label>Secure Password</label>
+                <div style={{position: 'relative'}}>
+                  <input 
+                    type={showPassword ? "text" : "password"} 
+                    name="password" 
+                    placeholder="Min. 8 chars, 1 Uppercase, 1 Symbol"
+                    onChange={handleChange} 
+                    required 
+                  />
+                  <button 
+                    type="button" 
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{position: 'absolute', right: '10px', top: '25%', background: 'none', border: 'none', cursor: 'pointer'}}
+                  >
+                    {showPassword ? "🙈" : "👁️"}
+                  </button>
+                </div>
               </div>
               <div className="input-group">
                 <label>Membership Tier</label>
@@ -112,14 +164,59 @@ const Applicant = () => {
               </div>
             </div>
 
-            <div className="checkbox-group">
-              <input 
-                type="checkbox" 
-                id="founder"
-                name="isFirstTimeFounder" 
-                onChange={handleChange} 
+            {/* --- EXPERIENCE PROFILE (THE "QUESTIONS") --- */}
+            <div className="form-divider" style={{margin: '30px 0 20px', borderBottom: '1px solid #d4af37', paddingBottom: '10px', color: '#d4af37', textTransform: 'uppercase', fontSize: '0.8rem', letterSpacing: '2px'}}>
+              Experience Profile
+            </div>
+
+            <div className="form-row">
+              <div className="input-group">
+                <label>Primary Interest</label>
+                <select name="connectionGoals.primaryInterest" onChange={handleChange}>
+                  <option value="Meet New People">Meet New People</option>
+                  <option value="Play/Games">Play/Games</option>
+                  <option value="Travel">Travel</option>
+                  <option value="Local Events">Local Events</option>
+                </select>
+              </div>
+              <div className="input-group">
+                <label>Golf Skill Level</label>
+                <select name="preferences.golfSkillLevel" onChange={handleChange}>
+                  <option value="Never Played">Never Played</option>
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="input-group">
+                <label>Apparel Size</label>
+                <select name="preferences.apparelSize" onChange={handleChange}>
+                  <option value="S">S</option><option value="M">M</option><option value="L">L</option>
+                  <option value="XL">XL</option><option value="2XL">2XL</option><option value="3XL">3XL</option>
+                </select>
+              </div>
+              <div className="input-group">
+                <label>Favorite Mocktail / Flavor Profile</label>
+                <input type="text" name="preferences.favoriteMocktail" placeholder="e.g. Ginger, Citrus, Botanical" onChange={handleChange} />
+              </div>
+            </div>
+
+            <div className="input-group" style={{width: '100%', marginBottom: '20px'}}>
+              <label>What is your biggest barrier to social connection lately?</label>
+              <textarea 
+                name="connectionGoals.isolationBarrier" 
+                style={{width: '100%', padding: '10px', marginTop: '5px', borderRadius: '4px', border: '1px solid #ccc', minHeight: '80px'}}
+                placeholder="e.g. Work-life balance, new to the city..." 
+                onChange={handleChange}
               />
-              <label htmlFor="founder">I am a first-time founder</label>
+            </div>
+
+            <div className="checkbox-group" style={{display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px'}}>
+              <input type="checkbox" name="hasPassport" id="passport" onChange={handleChange} />
+              <label htmlFor="passport" style={{fontSize: '0.9rem'}}>I have a valid passport for international adventures</label>
             </div>
 
             <button type="submit" className="gold-submit-btn">Apply to the Collective</button>
