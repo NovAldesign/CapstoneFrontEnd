@@ -1,17 +1,20 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/applicants";
+// Base URL for membership (Applicants & Members)
+const API_URL = "http://localhost:3000/api/membership";
 
-export const getAllApplicants = async () => {
+export const getAllMembership = async () => {
     const response = await axios.get(API_URL);
     return response.data;
 };
 
-export const updateApplicantStatus = async(id, status) => {
-    const response = await axios.patch(`${API_URL}/${id}`, { status });
+// Changed to PUT to match your router's .route("/membership/:id").put()
+export const updateMembershipStatus = async (id, status) => {
+    const response = await axios.put(`${API_URL}/${id}`, { status });
+    return response.data;
 };
 
-export const deleteApplicant = async (id) => {
+export const deleteMembership = async (id) => {
     const response = await axios.delete(`${API_URL}/${id}`);
-  return response.data;
+    return response.data;
 };

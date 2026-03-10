@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import '../Styles/Applicant.css';
-import applicantService from '../Services/applicantService';
+import MembershipService from '../Services/membershipService';
+import membershipService from '../Services/membershipService';
 
-const Applicant = () => {
+const Membership = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -58,7 +59,7 @@ const Applicant = () => {
         }
       };
       
-      await applicantService.createApplicant(submissionData);
+      await membershipService.createMembership(submissionData);
       alert("Application Received. We look forward to exploring the world with you.");
       
       // Optional: Reset form or redirect
@@ -227,4 +228,4 @@ const Applicant = () => {
   );
 };
 
-export default Applicant;
+export default Membership;

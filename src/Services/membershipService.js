@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api/applicants'; 
+const API_URL = 'http://localhost:3000/api/membership'; 
 
-const applicantService = {
-  createApplicant: async (formData) => {
+const membershipService = {
+  createMembership: async (formData) => {
     try {
       const response = await axios.post(API_URL, formData);
       return response.data;
@@ -14,4 +14,4 @@ const applicantService = {
   }
 };
 
-export default applicantService;
+export default membershipService;
