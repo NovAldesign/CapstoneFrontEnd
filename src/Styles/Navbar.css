@@ -63,6 +63,19 @@ nav {
   color: #002147 !important; 
 }
 
+.logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit; /* Keeps your Navy/Gold theme */
+  font: inherit;
+  padding: 0;
+}
+
+.logout-btn:hover {
+  color: #d4af37; /* Gold hover effect */
+}
+
 /* 5. Active Page Indicator */
 .active-link {
   border: 1px solid #F9F7F2 !important; 
