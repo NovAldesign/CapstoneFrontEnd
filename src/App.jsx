@@ -4,43 +4,34 @@ import { Routes, Route } from 'react-router-dom';
 // --- Components & Pages ---
 import Navbar from './components/Navbar.jsx'; 
 import Home from './pages/Home.jsx';
-import Membership from './Pages/Membership.jsx';
+import Membership from './Pages/Membership.jsx'; // Note: Ensure casing matches your file system
 import AdminDashboard from './Pages/AdminDashboard.jsx'; 
 import Login from './Pages/Login.jsx';
-
-
 import Events from './Pages/Events'; 
 import Partnerships from './Pages/Partnership.jsx'; 
 
 // --- Styles ---
 import './App.css';
+import './index.css'; 
 
 function App() {
   return (
-    <div className="App">
+    
+    <div className="App-wrapper">
       <Navbar />
       
-      <main className="content-container">
+      
+      <main className="main-content">
         <Routes>
-          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          
-          {/* Match Navbar: to="/events" */}
           <Route path="/events" element={<Events />} />
-          
-          {/* Match Navbar: to="/membership" */}
           <Route path="/membership" element={<Membership />} />
-          
-          {/* Match Navbar: to="/partnerships" */}
           <Route path="/partnerships" element={<Partnerships />} />
-
-          {/* Match Navbar: to="/admin/dashboard" */}
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
-          {/* 404 Fallback */}
           <Route path="*" element={
-            <div style={{ textAlign: 'center', padding: '100px' }}>
+            <div className="page-not-found">
               <h2 className="playfair">Page Not Found</h2>
               <p>The journey continues elsewhere.</p>
             </div>

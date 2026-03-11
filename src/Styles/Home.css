@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@300;400;600;700&display=swap');
 
 :root {
@@ -23,7 +22,6 @@
 /* --- 1.  HERO  --- */
 .home-hero-visual {
   height: 90vh;
-
   background-image: linear-gradient(rgba(0,33,71,0.5), rgba(0,33,71,0.7)), 
                     url('https://tripleseat.com/wp-content/uploads/2023/09/How-to-Create-a-Special-Group-Dining-Experience-for-Your-Guests-2.jpg'); 
   background-size: cover;
@@ -79,9 +77,10 @@
   color: rgba(255, 255, 255, 0.95);
 }
 
+/* --- FIXED HERO BUTTON COLOR --- */
 .gold-fill-btn {
-  background: var(--gold);
-  color: var(--white);
+  background: var(--gold) !important; /* Fixed: Gold instead of black */
+  color: var(--navy) !important;   /* Fixed: Navy text for better contrast */
   padding: 18px 45px;
   text-decoration: none;
   font-weight: 700;
@@ -93,8 +92,8 @@
 }
 
 .gold-fill-btn:hover {
-  background: transparent;
-  color: var(--white);
+  background: transparent !important;
+  color: var(--white) !important;
   border-color: var(--white);
 }
 
@@ -249,6 +248,7 @@
   color: #444;
   font-weight: 300;
 }
+
 .partnership-editorial-section {
   padding: 100px 5%;
   background-color: #ffffff;
@@ -260,12 +260,11 @@
   max-width: 1000px;
   width: 100%;
   padding: 60px 40px;
-  border: 1px solid #d4af37; /* Thin Gold Border */
+  border: 1px solid #d4af37; 
   position: relative;
   text-align: center;
 }
 
-/* Optional: Add a little "seal" or corner detail for extra luxe feel */
 .editorial-frame::before {
   content: "GFC";
   position: absolute;
@@ -310,11 +309,12 @@
   color: #444;
 }
 
+/* --- FIXED EDITORIAL BUTTON COLOR --- */
 .gold-editorial-btn {
   display: inline-block;
   padding: 18px 40px;
-  background-color: #001f3f; /* Navy Button */
-  color: white;
+  background-color: var(--gold) !important; /* Fixed: Gold instead of Navy/Black */
+  color: var(--navy) !important;           /* Fixed: Navy text */
   text-decoration: none;
   font-weight: 600;
   text-transform: uppercase;
@@ -323,7 +323,8 @@
 }
 
 .gold-editorial-btn:hover {
-  background-color: #d4af37;
+  background-color: var(--navy) !important;
+  color: var(--white) !important;
   transform: translateY(-2px);
 }
 
@@ -339,11 +340,9 @@
 /* --- HOST NOTE --- */
 .host-note-visual {
   height: 75vh;
-
-  /* Direct link to the 'Real Friends' image from Boundless */
   background: linear-gradient(rgba(0, 33, 71, 0.85), rgba(0, 33, 71, 0.85)), 
               url('https://www.boundless.org/wp-content/uploads/2024/01/who-are-your-real-friends-65aeb3b94db51-1024x683.webp');
-  background-attachment: fixed; /* This creates the parallax effect */
+  background-attachment: fixed;
   background-size: cover;
   background-position: center;
   display: flex;
