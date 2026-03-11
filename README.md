@@ -1,23 +1,44 @@
-# CapstoneFrontEnd
-Frontend README: The Grown Folks Collective Portal
+Frontend README (CapstoneFrontEnd)
+The Grown Folks Collective | Frontend Portal
+A premium React-based membership platform dedicated to bridging the gap in professional social connection.
 
-Project Overview
-I am builing the frontend for The Grown Folks Collective using React. My goal is to create a high-end, professional feel using a custom Navy and Gold theme. The site is a membership portal that solves the problem of professional isolation by organizing intentional networking events.
+🌟 Project Vision
+The Grown Folks Collective is a response to the growing challenge of professional social isolation. This portal serves as the digital hub for a community that prioritizes intentional, alcohol-free social experiences and authentic interpersonal networking for the 35+ demographic.
 
+🔌 Eventbrite Integration
+The Events Page utilizes a high-performance integration with the Eventbrite API to provide real-time community updates:
 
-Project Structure & Pages: 
-I will React Router to set up four main views:
+Dynamic Fetching: Uses a Private Token (VITE_EVENTBRITE_TOKEN) for secure authentication.
 
-Home: Where I explain the "pain points" professionals face and show upcoming events.
-Intentional Dinners: A specific page where members can sign up for curated networking dinners.
-Member Portal: This is where the signup (Page 2) and login (Page 3) happen.
-About Us: A simple page explaining the mission and "the why" behind the collective.
+Two-Step Flow: Automatically retrieves the Organization ID before querying the /v3/organizations/ endpoint for event data.
 
-Key Technical Features
-State Management: I’m using React Hooks (useState and useEffect) to handle form data and pull information from my API.
-Eventbrite Integration: I will use the Eventbrite API so users can see and pay for events directly on the home page.
-LinkedIn Integration: I’m using the LinkedIn Share API so that once someone is approved, they can post about it to their network with one click.
-Custom Styling: Custom CSS for the Navy/Gold brand.
+Categorization: Custom logic filters the data to display both Upcoming Events and Past Experiences (Game Nights, Dinners, Golf) to showcase community history.
 
-🖥️ Backend Repository
-https://github.com/NovAldesign/CapstoneBackEnd.git
+📂 Portal Architecture
+Home: Vision statement focusing on social wellness.
+
+Events: Real-time data sync with Eventbrite for seamless RSVP management.
+
+Membership & Partnership Intake: Secure application gateways for individuals and organizations.
+
+Admin Dashboard: 🔒 Protected Suite for managing collective growth and approval workflows.
+
+Login: Unified secure entry point using JWT and RBAC.
+
+🛠️ Tech Stack
+Framework: React.js (Vite)
+
+API Integration: Eventbrite API (REST)
+
+Authentication: JWT (JSON Web Tokens) with LocalStorage persistence.
+
+Styling: Custom CSS3 (Navy & Gold Executive Theme).
+
+🔗 Project Links
+Backend Repository: https://github.com/NovAldesign/CapstoneBackEnd
+
+ClickUp Project Management https://sharing.clickup.com/9014876050/l/h/6-901413868218-1/f0876eea91c3c06
+I used this app to help keep the flow of all the tasks needed to complete my Capstone.
+
+Future Updates: 
+I will add the membership and partnership portal, I will remove the Eventbrite API and replace it with Stripe API and customize the events. I will also link membership portal to events, so people can purchase their event tickets in the portal. 
