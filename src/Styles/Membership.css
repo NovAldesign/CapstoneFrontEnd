@@ -1,56 +1,51 @@
-/* --- APPLICANT PAGE - COMPLETE OVERRIDE --- 
-   Theme: The Life of Joy & Adventure
-*/
 
-/* 1. ROOT CONTAINER */
+
 .membership-page {
-  background-color: #FDFBFA !important; /* Cream background for the whole page */
+  background-color: #FDFBFA !important;
   min-height: 100vh;
   font-family: 'Montserrat', sans-serif;
-  color: #002147; /* Navy */
+  color: #002147;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
 }
 
-/* 2. HERO SECTION - COMPACT RIGHT SIDE ALIGNED */
+/* HERO SECTION */
 .membership-page .membership-hero {
-  /* Reduced height for a tighter, more professional feel */
   min-height: 70vh; 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end; 
-  padding: 60px 10% 60px 0; 
+  padding: 80px 10% 80px 0; 
   position: relative;
-  
   background: linear-gradient(rgba(0, 33, 71, 0.8), rgba(0, 33, 71, 0.65)), 
               url('https://t3.ftcdn.net/jpg/17/25/00/18/240_F_1725001879_We6M6RviCCAINLwglRgS3Eob45ulaVsk.jpg') 
               no-repeat center/cover !important;
   background-attachment: fixed;
 }
 
-/* 3. HERO TYPOGRAPHY - FORCED WHITE */
 .membership-page .luxe-title {
   font-family: 'Playfair Display', serif !important;
   font-size: clamp(3.5rem, 10vw, 7.5rem) !important;
   line-height: 0.85 !important;
   font-weight: 900 !important;
   text-transform: uppercase !important;
-  color: #FFFFFF !important; /* Pure White */
-  margin: 0 !important;
+  color: #FFFFFF !important; 
   text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.9) !important;
+  text-align: right;
+  margin: 0 !important;
 }
 
 .membership-page .location-tag {
-  color: #C5A059 !important; /* Gold */
+  color: #C5A059 !important;
   text-transform: uppercase;
   letter-spacing: 6px;
   font-size: 0.9rem;
   font-weight: 700;
   margin-bottom: 20px;
   display: block;
-  text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+  text-align: right;
 }
 
 .membership-page .gold-spacer-bar {
@@ -58,82 +53,34 @@
   height: 3px;
   background: #C5A059 !important;
   margin: 30px 0;
-  align-self: flex-end; /* Bar sits on the right */
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+  align-self: flex-end; 
 }
 
-/* NARRATIVE TEXT - FORCED WHITE */
+.membership-page .hero-content-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
 .membership-page .narrative-lead {
   font-family: 'Playfair Display', serif !important;
   font-size: 2.2rem !important;
-  color: #C5A059 !important; /* Gold subheading */
+  color: #C5A059 !important; 
   margin-bottom: 25px !important;
   line-height: 1.3 !important;
-  text-shadow: 1px 2px 8px rgba(0, 0, 0, 0.9) !important;
 }
 
 .membership-page .narrative-body, 
 .membership-page .narrative-impact {
   font-size: 1.2rem !important;
   line-height: 1.9 !important;
-  color: #FFFFFF !important; /* Pure White */
-  font-weight: 400 !important;
-  opacity: 1 !important;
-  text-shadow: 1px 1px 8px rgba(0, 0, 0, 1) !important;
+  color: #FFFFFF !important;
   max-width: 600px;
   margin-bottom: 20px;
 }
 
-/* 4. BENEFITS SHOWCASE (JOY & ADVENTURE) */
-.membership-page .benefits-showcase {
-  padding: 140px 10%;
-  background-color: #FFFFFF;
-  text-align: center;
-}
-
-.membership-page .section-title {
-  font-family: 'Playfair Display', serif !important;
-  font-size: 3.2rem !important;
-  color: #002147 !important;
-  margin-bottom: 80px;
-}
-
-.membership-page .benefit-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 50px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.membership-page .benefit-item {
-  background: #FDFBFA;
-  padding: 60px 30px;
-  border-bottom: 5px solid #C5A059;
-  transition: transform 0.4s ease;
-}
-
-.membership-page .benefit-item:hover {
-  transform: translateY(-10px);
-}
-
-.membership-page .gold-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.8rem;
-  color: #C5A059;
-  font-weight: 900;
-  display: block;
-  margin-bottom: 20px;
-}
-
-.membership-page .benefit-item h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.8rem;
-  color: #002147;
-  margin-bottom: 20px;
-}
-
-/* 5. THE FORM SECTION */
+/* FORM CONTAINER */
 .membership-page .form-section {
   padding: 120px 5%;
   background-color: #FDFBFA;
@@ -142,31 +89,57 @@
 .membership-page .applicant-container {
   background: #FFFFFF !important;
   max-width: 950px;
-  margin: -100px auto 100px; /* Overlaps hero for high-end look */
+  margin: -100px auto 100px; 
   padding: 80px 10%;
   box-shadow: 0 60px 120px rgba(0, 33, 71, 0.08);
   position: relative;
   z-index: 10;
 }
 
-.membership-page .applicant-container h2 {
+/* TYPOGRAPHY OVERRIDES - "THE ANTIDOTE" STYLE */
+.section-header-font {
   font-family: 'Playfair Display', serif !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
   font-size: 3rem !important;
   color: #002147 !important;
   text-align: center;
   margin-bottom: 10px;
+  letter-spacing: -1px;
 }
 
-.membership-page .form-intro {
-  text-align: center;
+.form-intro-font {
+  font-family: 'Montserrat', sans-serif;
   color: #C5A059 !important;
+  text-align: center;
   text-transform: uppercase;
   letter-spacing: 3px;
   font-weight: 700;
+  font-size: 0.85rem;
   margin-bottom: 60px;
 }
 
-/* FORM FIELDS */
+.label-font {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #002147;
+  margin-bottom: 10px;
+}
+
+.form-divider-font {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #002147;
+  border-bottom: 2px solid #C5A059;
+  padding-bottom: 10px;
+  margin: 40px 0 25px;
+}
+
+/* INPUTS & FIELDS */
 .membership-page .luxe-form {
   display: flex;
   flex-direction: column;
@@ -179,28 +152,58 @@
   gap: 40px;
 }
 
-.membership-page .input-group label {
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: #002147;
-  margin-bottom: 10px;
+.membership-page .input-group {
+  display: flex;
+  flex-direction: column;
 }
 
 .membership-page .input-group input, 
-.membership-page .input-group select {
-  padding: 20px;
+.membership-page .input-group select,
+.membership-page .luxe-textarea {
+  padding: 18px;
   border: 1px solid #E0E0E0;
   background: #FAFAFA;
   font-size: 1rem;
   outline: none;
   transition: all 0.3s ease;
+  border-radius: 0;
 }
 
-.membership-page .input-group input:focus {
-  border-color: #C5A059;
-  background: #FFFFFF;
+/* PASSWORD TOGGLE */
+.membership-page .password-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.membership-page .password-toggle-text {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #C5A059;
+  font-weight: 800;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.membership-page .checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+/* SUBMIT BUTTON */
+.gold-submit-btn-font {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
 }
 
 .membership-page .gold-submit-btn {
@@ -208,9 +211,6 @@
   color: #FFFFFF !important;
   padding: 22px;
   border: none;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 4px;
   cursor: pointer;
   transition: all 0.4s ease;
   margin-top: 20px;
@@ -222,27 +222,23 @@
   box-shadow: 0 20px 40px rgba(197, 160, 89, 0.3);
 }
 
-/* 6. RESPONSIVE FIXES */
+/* RESPONSIVE */
 @media (max-width: 1024px) {
   .membership-page .membership-hero {
-    align-items: center; /* Center on tablets/phones */
-    padding: 0 5%;
+    align-items: center; 
+    padding: 60px 5%;
     text-align: center;
   }
-  .hero-content-right {
+  .membership-page .hero-content-right {
     text-align: center;
     align-items: center;
-    padding-right: 0;
+  }
+  .membership-page .luxe-title,
+  .membership-page .location-tag {
+    text-align: center;
   }
   .membership-page .gold-spacer-bar {
     align-self: center;
-  }
-  .membership-page .narrative-body, 
-  .membership-page .narrative-impact {
-    margin: 0 auto 20px;
-  }
-  .membership-page .benefit-grid {
-    grid-template-columns: 1fr;
   }
   .membership-page .form-row {
     grid-template-columns: 1fr;

@@ -1,0 +1,68 @@
+.profile-wrapper {
+  padding: 80px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  color: #001f3f; /* Navy */
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.passport-id {
+  font-family: monospace;
+  color: #d4af37; /* Gold */
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.profile-card, .interests-card, .stats-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  position: relative;
+}
+
+.tier-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #001f3f;
+  color: #d4af37;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.tag {
+  display: inline-block;
+  background: #f4f4f4;
+  padding: 6px 12px;
+  margin: 5px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  border-left: 3px solid #d4af37;
+}
+
+.progress-bar {
+  background: #eee;
+  height: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.fill {
+  background: #d4af37;
+  height: 100%;
+  border-radius: 5px;
+}

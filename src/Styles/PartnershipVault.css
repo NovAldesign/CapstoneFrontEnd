@@ -1,0 +1,89 @@
+.vault-wrapper {
+  padding: 100px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.vault-header {
+  text-align: left;
+  margin-bottom: 50px;
+  border-left: 5px solid #d4af37; /* Gold accent bar */
+  padding-left: 20px;
+}
+
+.security-badge {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #001f3f;
+  background: rgba(212, 175, 55, 0.2);
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.vault-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 300px;
+  grid-template-rows: auto 1fr;
+  gap: 25px;
+}
+
+.metric-card {
+  background: #001f3f; /* Navy */
+  color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.metric-value {
+  font-size: 2rem;
+  color: #d4af37; /* Gold */
+  font-family: 'Playfair Display', serif;
+  margin: 10px 0;
+}
+
+.vault-main-content {
+  grid-column: span 2;
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.resource-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.2s;
+}
+
+.resource-item:hover { background: #fafafa; }
+
+.download-btn {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid #d4af37;
+  color: #d4af37;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.vault-sidebar > div {
+  background: #f9f9f9;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border-top: 3px solid #001f3f;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .vault-grid { grid-template-columns: 1fr; }
+  .vault-main-content { grid-column: span 1; }
+}

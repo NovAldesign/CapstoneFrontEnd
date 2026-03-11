@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// The base URL for your backend API
-const API_URL = 'http://localhost:3001/api/auth';
+const API_URL = 'http://localhost:3000/api/auth';
 
 const loginService = {
   /**
@@ -11,16 +10,18 @@ const loginService = {
   login: async (email, password) => {
     try {
       const response = await axios.post(`${API_URL}/login`, { email, password });
-      
-      // If the backend returns user data, we store it in LocalStorage
+
       if (response.data) {
-        // We store the role, name, id, and tier (for members)
+        // Save full user info
         localStorage.setItem('gfc_user', JSON.stringify(response.data));
+        // Save token separately for easy access in API calls
+        if (response.data.token) {
+          localStorage.setItem('gfc_token', response.data.token);
+        }
       }
-      
+
       return response.data;
     } catch (error) {
-      // Catching the Rate Limiter "Too many attempts" message here
       const message = error.response?.data?.error || "Connection error. Please try again later.";
       throw new Error(message);
     }
@@ -44,10 +45,10 @@ const loginService = {
    */
   resetPassword: async (email, answer, newPassword) => {
     try {
-      const response = await axios.post(`${API_URL}/forgot-password/reset`, { 
-        email, 
-        answer, 
-        newPassword 
+      const response = await axios.post(`${API_URL}/forgot-password/reset`, {
+        email,
+        answer,
+        newPassword
       });
       return response.data;
     } catch (error) {
@@ -60,6 +61,7 @@ const loginService = {
    */
   logout: () => {
     localStorage.removeItem('gfc_user');
+    localStorage.removeItem('gfc_token');
     window.location.href = '/login';
   },
 
@@ -67,9 +69,24 @@ const loginService = {
     return JSON.parse(localStorage.getItem('gfc_user'));
   },
 
+  getToken: () => {
+    return localStorage.getItem('gfc_token');
+  },
+
   isAuthenticated: () => {
-    return localStorage.getItem('gfc_user') !== null;
-  }
+    return localStorage.getItem('gfc_token') !== null;
+  },
+
+  /**
+   * Returns axios headers with the JWT token attached.
+   * Use this in any service that calls a protected backend route.
+   * Example: axios.get(url, loginService.authHeaders())
+   */
+  authHeaders: () => ({
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('gfc_token')}`
+    }
+  })
 };
 
 export default loginService;

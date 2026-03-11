@@ -30,7 +30,7 @@ const Events = () => {
 
  return (
     <div className="events-page-wrapper">
-      {/* 1. LUXE HERO HEADER */}
+      {/* 1.  HERO HEADER */}
       <header className="page-hero-visual">
         <div className="hero-dark-overlay">
           <div className="hero-content-luxe">
