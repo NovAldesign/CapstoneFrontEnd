@@ -1,75 +1,53 @@
-/* --- Global Layout Reset --- */
-#root {
+/* --- Navbar & Logo Fix --- */
+.gfc-navbar {
   width: 100%;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  min-height: 100vh;
+  background-color: #002147;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5%;
+  height: 90px; /* Locked height to prevent logo takeover */
+  border-bottom: 2px solid #C5A059;
 }
 
-/* --- The Navbar Container --- */
+.nav-logo {
+  height: 60px; /* Constrains the logo size */
+  width: auto;
+  display: block;
+}
 
-.navbar-container {
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 15px;
+  align-items: center;
+}
+
+/* --- Display Card Button & Hover Fix --- */
+/* Target the button by its specific class to ensure it stays visible */
+.approve-member-btn {
+  display: block !important;
+  background-color: #C5A059 !important; /* Brand Gold */
+  color: #002147 !important;           /* Brand Navy */
+  padding: 15px;
   width: 100%;
-  background-color: #002147; 
-  margin: 0;
-  padding: 0;
-}
-
-/* --- Page Content Container --- */
-
-.content-container {
-  flex: 1;
-  width: 100%;
-  max-width: 1400px; 
-  margin: 0 auto;
-  padding: 40px 10%; 
-}
-
-/* --- Hero & Action Buttons --- */
-
-.hero-btn, .cta-button, button {
-  background-color: #D4AF37 !important; 
-  color: #002147 !important;           
-  border: none;
-  padding: 14px 28px;
-  font-weight: 700;
+  font-weight: 900;
+  border: none !important;
   text-transform: uppercase;
-  letter-spacing: 1px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
-.hero-btn:hover {
-  background-color: #C5A059 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+/* This fixes the "disappearing" issue on hover */
+.approve-member-btn:hover {
+  background-color: #002147 !important; /* Swaps to Navy */
+  color: #C5A059 !important;           /* Swaps to Gold text */
+  opacity: 1 !important;               /* Prevents it from fading out */
+  visibility: visible !important;
 }
 
-/* --- Branding Assets --- */
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #D4AF37aa); 
-}
-
-/* --- Cards & Sections --- */
-.card {
-  padding: 2em;
-  background: #fff;
-  border-radius: 8px;
-  margin-top: 20px;
-}
-
-.read-the-docs {
-  color: #888;
-  font-style: italic;
+/* Ensure the display card itself isn't cutting off the button */
+.member-display-card {
+  overflow: visible !important;
+  padding: 20px;
 }

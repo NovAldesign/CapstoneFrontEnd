@@ -227,7 +227,29 @@
   transition: all 0.2s;
 }
 
-.gold-fill-btn:hover:not(:disabled) { background: #bfa37e; }
+/* Ensures text remains visible when the background turns gold */
+.gold-fill-btn:hover:not(:disabled) { 
+  background: #bfa37e; 
+  color: #1a1a1a; 
+}
+
+/* Specific styling for the Waitlist button */
+.waitlist-action-btn {
+  background: #eceff1;
+  color: #455a64;
+  border: 1px solid #cfd8dc;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.waitlist-action-btn:hover:not(:disabled) {
+  background: #cfd8dc;
+  color: #1a1a1a;
+}
 
 .btn-delete {
   background: transparent;

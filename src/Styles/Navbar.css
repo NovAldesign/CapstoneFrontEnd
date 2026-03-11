@@ -1,108 +1,84 @@
-/* 1. Main Navigation Container  */
-nav {
-  display: flex;
-  justify-content: space-between; 
-  align-items: center;
-  padding: 0.8rem 4%;
-  background-color: #002147; 
-  border-bottom: 3px solid #C5A059; 
-  color: #F9F7F2;
-  position: sticky;
-  top: 0;
+/* --- Navbar Fixes --- */
+.gfc-navbar {
   width: 100%;
-  z-index: 1000;
-  box-sizing: border-box;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  background-color: #002147;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5%;
+  height: 80px;
+  border-bottom: 2px solid #C5A059;
 }
 
-/* 2. Logo Styling */
-.nav-logo {
-  height: 55px; 
-  width: auto;
-  cursor: pointer;
-  flex-shrink: 0; 
-}
-
-/* 3. Link Container  */
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 15px; 
-  margin: 0;
-  padding: 0;
+  gap: 10px; /* Tight gap so they all fit */
   align-items: center;
- 
 }
 
-/* 4. Navigation Buttons */
-.btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 125px; 
-  height: 38px; 
-  background-color: transparent; 
-  color: #C5A059 !important; 
-  border: 1px solid #C5A059;
-  border-radius: 2px;
-  
-  font-family: "Montserrat", sans-serif;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.75rem; 
+/* Fix for "Partnerships" being too small */
+.nav-links .btn {
+  padding: 8px 15px; /* Added horizontal padding */
+  white-space: nowrap; /* Prevents text from squishing */
+  border: 1px solid transparent;
   text-decoration: none;
-  
-  transition: all 0.4s ease;
-  white-space: nowrap;
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
 }
 
-.btn:hover {
-  transform: translateY(-2px);
-  background-color: #C5A059; 
-  color: #002147 !important; 
+.nav-links .btn.active {
+  border: 1px solid #C5A059;
 }
 
-.logout-btn {
-  background: none;
+/* Logout Button: Gold Background, Navy Font */
+.logout-btn-styled {
+  background-color: #C5A059 !important;
+  color: #002147 !important;
   border: none;
+  padding: 10px 20px;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-radius: 4px;
   cursor: pointer;
-  color: inherit; /* Keeps your Navy/Gold theme */
-  font: inherit;
-  padding: 0;
 }
 
-.logout-btn:hover {
-  color: #d4af37; /* Gold hover effect */
+/* --- Dashboard & Card Buttons --- */
+
+/* REMOVE Button: Clean Blue, No Red Border */
+.remove-btn {
+  background-color: #002147 !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 8px 16px;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: 4px;
 }
 
-/* 5. Active Page Indicator */
-.active-link {
-  border: 1px solid #F9F7F2 !important; 
-  color: #F9F7F2 !important;
-  background-color: rgba(255, 255, 255, 0.05);
+/* WAITLIST Button: Blue Background, Gold Font (Requested Fix) */
+.waitlist-btn {
+  background-color: #002147 !important; /* Blue */
+  color: #C5A059 !important;           /* Gold Font */
+  border: 2px solid #C5A059 !important;
+  padding: 12px 24px;
+  font-weight: 800;
+  text-transform: uppercase;
+  width: 100%;
 }
 
-/* 6. Mobile Responsiveness */
-@media (max-width: 850px) {
-  .nav-links {
-    gap: 8px;
-  }
-  .btn {
-    width: 110px;
-    font-size: 0.7rem;
-  }
-}
-
-@media (max-width: 600px) {
-  nav {
-    flex-direction: column; 
-    gap: 10px;
-    padding: 1rem;
-  }
-  .nav-links {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+/* APPROVE Button (Inside the Card): Gold with Navy Text */
+/* Using high specificity to ensure it doesn't disappear */
+body .approve-member-btn {
+  display: block !important;
+  visibility: visible !important;
+  background-color: #C5A059 !important; /* Gold */
+  color: #002147 !important;           /* Navy */
+  padding: 15px;
+  width: 100%;
+  font-weight: 900;
+  border: none !important;
+  margin-bottom: 10px;
 }

@@ -23,7 +23,6 @@ const AdminDashboard = () => {
     }
   };
 
-  // Function to calculate age from DOB
   const calculateAge = (dob) => {
     if (!dob) return 'N/A';
     const birthDate = new Date(dob);
@@ -98,7 +97,6 @@ const AdminDashboard = () => {
             <p className="subtitle">{selectedMember.industry} Professional</p>
             <div className="gold-spacer-v2"></div>
             
-            {/* 1. Demographics & Essential Contact */}
             <section className="detail-group contact-card">
               <h4 className="detail-heading">Member Identity</h4>
               <div className="demo-grid">
@@ -109,7 +107,6 @@ const AdminDashboard = () => {
               <div className="detail-item"><label>Phone</label> {selectedMember.phone}</div>
             </section>
 
-            {/* 2. Connection Metrics */}
             <section className="detail-group">
               <h4 className="detail-heading">Community Profile</h4>
               <div className="detail-item">
@@ -122,7 +119,6 @@ const AdminDashboard = () => {
               </div>
             </section>
 
-            {/* 3. Logistics */}
             <section className="detail-group">
               <h4 className="detail-heading">Event Logistics</h4>
               <div className="demo-grid">
@@ -148,11 +144,11 @@ const AdminDashboard = () => {
                 {isUpdating ? "Processing..." : "Approve Member"}
               </button>
               <button 
-                className="outline-btn"
+                className="waitlist-action-btn"
                 disabled={selectedMember.status === 'waitlisted' || isUpdating}
                 onClick={() => handleStatusUpdate(selectedMember._id, 'waitlisted')}
               >
-                Waitlist
+                {isUpdating ? "Processing..." : "Waitlist"}
               </button>
             </div>
           </div>

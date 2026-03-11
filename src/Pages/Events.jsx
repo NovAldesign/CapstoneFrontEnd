@@ -34,6 +34,7 @@ const Events = () => {
       <header className="page-hero-visual">
         <div className="hero-dark-overlay">
           <div className="hero-content-luxe">
+            <br></br>
             <span className="location-tag-gold">The Experience</span>
             <h1 className="playfair luxe-title-white">Curated <br/> Gatherings.</h1>
             <div className="gold-spacer-v2"></div>
