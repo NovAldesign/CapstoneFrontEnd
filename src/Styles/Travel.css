@@ -1,0 +1,848 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Montserrat:wght@300;400;600;700&display=swap');
+
+/* =============================================
+   TRAVEL PAGE - COMPLETE CSS
+   ============================================= */
+
+.travel-page {
+  background-color: #FDFBFA;
+  font-family: 'Montserrat', sans-serif;
+  color: #002147;
+  overflow-x: hidden;
+}
+
+/* =============================================
+   SHARED
+   ============================================= */
+.travel-section-eyebrow {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #C5A059;
+  margin-bottom: 16px;
+}
+
+.travel-section-eyebrow.light {
+  color: rgba(197, 160, 89, 0.85);
+}
+
+.travel-section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 900;
+  color: #002147;
+  line-height: 1.1;
+  margin-bottom: 0;
+}
+
+.travel-section-title.light {
+  color: #FFFFFF;
+}
+
+.travel-inline-link {
+  color: #C5A059;
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.travel-inline-link:hover {
+  color: #FFFFFF;
+}
+
+/* =============================================
+   HERO - FULL WIDTH CENTERED DARK
+   ============================================= */
+.travel-hero {
+  min-height: 92vh;
+  background: linear-gradient(rgba(0, 33, 71, 0.75), rgba(0, 33, 71, 0.88)),
+              url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=1600')
+              no-repeat center/cover;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+
+.travel-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #C5A059, transparent);
+}
+
+.travel-hero-inner {
+  max-width: 840px;
+  padding: 100px 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.travel-eyebrow {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #C5A059;
+  margin-bottom: 28px;
+}
+
+.travel-hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: #FFFFFF;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+  margin-bottom: 0;
+}
+
+.travel-gold-rule {
+  width: 60px;
+  height: 1px;
+  background: #C5A059;
+  margin: 36px auto;
+}
+
+.travel-hero-lead {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 640px;
+  margin-bottom: 44px;
+}
+
+.travel-hero-cta {
+  display: inline-block;
+  padding: 16px 44px;
+  background: #C5A059;
+  color: #002147;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  transition: all 0.3s ease;
+}
+
+.travel-hero-cta:hover {
+  background: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+/* =============================================
+   WHY TRAVEL WITH GFC - CREAM
+   ============================================= */
+.travel-why-section {
+  background: #FDFBFA;
+  padding: 110px 10%;
+}
+
+.travel-why-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.travel-why-inner .travel-section-title {
+  margin-bottom: 70px;
+}
+
+.travel-why-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+
+.travel-why-card {
+  background: #FFFFFF;
+  padding: 48px 40px;
+  border: 1px solid #EEEEEE;
+  border-top: 2px solid #C5A059;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.travel-why-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 33, 71, 0.07);
+}
+
+.travel-why-diamond {
+  width: 8px;
+  height: 8px;
+  background: #C5A059;
+  transform: rotate(45deg);
+  margin-bottom: 20px;
+}
+
+.travel-why-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #002147;
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+
+.travel-why-body {
+  font-size: 0.95rem;
+  line-height: 1.85;
+  font-weight: 300;
+  color: #555;
+}
+
+/* =============================================
+   FEATURED TRIP - NAVY
+   ============================================= */
+.travel-featured-section {
+  background: #002147;
+  padding: 110px 10%;
+}
+
+.travel-featured-inner {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.travel-featured-status {
+  display: inline-block;
+  background: #C5A059;
+  color: #002147;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 5px 14px;
+  margin-bottom: 18px;
+}
+
+.travel-featured-content .travel-section-title {
+  margin-bottom: 24px;
+}
+
+.travel-featured-lead {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.travel-featured-body {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.62);
+  line-height: 1.85;
+  margin-bottom: 36px;
+}
+
+.travel-includes-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+  color: #C5A059;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.travel-includes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 36px 0;
+}
+
+.travel-includes-list li {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  gap: 12px;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+.travel-includes-list li:last-child {
+  border-bottom: none;
+}
+
+.travel-includes-list li::before {
+  content: '\25C6';
+  color: #C5A059;
+  font-size: 0.45rem;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.travel-featured-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid rgba(197, 160, 89, 0.2);
+  margin-bottom: 36px;
+}
+
+.travel-detail-item {
+  padding: 18px 20px;
+  border-right: 1px solid rgba(197, 160, 89, 0.15);
+  border-bottom: 1px solid rgba(197, 160, 89, 0.15);
+}
+
+.travel-detail-item:nth-child(even) {
+  border-right: none;
+}
+
+.travel-detail-item:nth-last-child(-n+2) {
+  border-bottom: none;
+}
+
+.travel-detail-label {
+  display: block;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.travel-detail-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.travel-featured-cta {
+  display: inline-block;
+  padding: 16px 36px;
+  background: #C5A059;
+  color: #002147;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  transition: all 0.25s ease;
+}
+
+.travel-featured-cta:hover {
+  background: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+.travel-featured-image {
+  position: relative;
+}
+
+.travel-featured-image img {
+  width: 100%;
+  height: 520px;
+  object-fit: cover;
+  display: block;
+}
+
+.travel-featured-image-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 33, 71, 0.85);
+  padding: 14px 20px;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(197, 160, 89, 0.8);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* =============================================
+   FUTURE TRIPS - CREAM
+   ============================================= */
+.travel-future-section {
+  background: #FDFBFA;
+  padding: 110px 10%;
+}
+
+.travel-future-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.travel-future-subhead {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: #888;
+  margin-bottom: 60px;
+  line-height: 1.6;
+}
+
+.travel-future-inner .travel-section-title {
+  margin-bottom: 16px;
+}
+
+.travel-future-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.travel-future-card {
+  background: #FFFFFF;
+  border: 1px solid #EEEEEE;
+  border-top: 2px solid rgba(197, 160, 89, 0.4);
+  padding: 36px 28px;
+  position: relative;
+}
+
+.travel-future-status {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 4px 10px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.travel-status-active {
+  background: #C5A059;
+  color: #002147;
+}
+
+.travel-status-soon {
+  background: rgba(0, 33, 71, 0.08);
+  color: #002147;
+}
+
+.travel-status-planning {
+  background: rgba(197, 160, 89, 0.12);
+  color: #856d3a;
+}
+
+.travel-status-interest {
+  background: #F5F3F0;
+  color: #888;
+}
+
+.travel-future-destination {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #002147;
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+
+.travel-future-desc {
+  font-size: 0.85rem;
+  line-height: 1.75;
+  font-weight: 300;
+  color: #666;
+}
+
+.travel-future-note {
+  padding: 28px 36px;
+  border-left: 3px solid #C5A059;
+  background: #FFFFFF;
+  max-width: 720px;
+}
+
+.travel-future-note p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #555;
+  font-weight: 300;
+}
+
+.travel-future-note strong {
+  color: #002147;
+  font-weight: 700;
+}
+
+/* =============================================
+   INTEREST LIST FORM - NAVY
+   ============================================= */
+.travel-interest-section {
+  background: #002147;
+  padding: 110px 10%;
+}
+
+.travel-interest-inner {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.travel-interest-header {
+  margin-bottom: 60px;
+}
+
+.travel-interest-subhead {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 20px;
+  line-height: 1.7;
+}
+
+/* =============================================
+   FORM ELEMENTS
+   ============================================= */
+.travel-interest-form {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.travel-form-divider {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #FFFFFF;
+  border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+  padding-bottom: 10px;
+  margin-top: 8px;
+}
+
+.travel-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.travel-input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.travel-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.travel-label-optional {
+  font-weight: 300;
+  text-transform: none;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.65rem;
+}
+
+.travel-input-group input,
+.travel-input-group select,
+.travel-textarea {
+  padding: 15px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 0.95rem;
+  font-family: 'Montserrat', sans-serif;
+  outline: none;
+  transition: border-color 0.25s ease, background 0.25s ease;
+  border-radius: 0;
+  color: #FFFFFF;
+  appearance: none;
+}
+
+.travel-input-group input::placeholder,
+.travel-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.travel-input-group input:focus,
+.travel-input-group select:focus,
+.travel-textarea:focus {
+  border-color: #C5A059;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.travel-input-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C5A059' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 42px;
+  cursor: pointer;
+}
+
+.travel-input-group select option {
+  background: #002147;
+  color: #FFFFFF;
+}
+
+.travel-textarea {
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.7;
+  width: 100%;
+}
+
+/* Checkbox grid */
+.travel-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 24px;
+  padding: 16px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.travel-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  transition: color 0.2s;
+}
+
+.travel-checkbox-label:hover {
+  color: #C5A059;
+}
+
+.travel-checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(197, 160, 89, 0.6);
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 0;
+  outline: none;
+}
+
+.travel-checkbox:checked {
+  background: #C5A059;
+  border-color: #C5A059;
+}
+
+.travel-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 0;
+  width: 5px;
+  height: 9px;
+  border: 2px solid #002147;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+/* Member checkbox row */
+.travel-member-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.travel-checkbox-single {
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(197, 160, 89, 0.5);
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 0;
+  outline: none;
+}
+
+.travel-checkbox-single:checked {
+  background: #C5A059;
+  border-color: #C5A059;
+}
+
+.travel-checkbox-single:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 6px;
+  height: 10px;
+  border: 2px solid #002147;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+.travel-member-label {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+}
+
+/* Feedback */
+.travel-feedback {
+  padding: 16px 22px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+.travel-feedback.success {
+  background: rgba(197, 160, 89, 0.1);
+  border-left: 3px solid #C5A059;
+  color: #C5A059;
+}
+
+.travel-feedback.error {
+  background: rgba(220, 38, 38, 0.08);
+  border-left: 3px solid #DC2626;
+  color: #FCA5A5;
+}
+
+/* Submit */
+.travel-submit-btn {
+  background: #C5A059;
+  color: #002147;
+  padding: 20px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-top: 8px;
+}
+
+.travel-submit-btn:hover:not(:disabled) {
+  background: #FFFFFF;
+  color: #002147;
+  transform: translateY(-2px);
+}
+
+.travel-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =============================================
+   RESPONSIVE - 1024px
+   ============================================= */
+@media (max-width: 1024px) {
+  .travel-featured-inner {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+
+  .travel-featured-image img {
+    height: 380px;
+  }
+
+  .travel-future-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .travel-form-row {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* =============================================
+   RESPONSIVE - 768px
+   ============================================= */
+@media (max-width: 768px) {
+  .travel-hero {
+    background-attachment: scroll;
+    min-height: 100svh;
+  }
+
+  .travel-hero-title {
+    font-size: clamp(2.5rem, 12vw, 4.5rem);
+  }
+
+  .travel-why-section,
+  .travel-featured-section,
+  .travel-future-section,
+  .travel-interest-section {
+    padding: 70px 6%;
+  }
+
+  .travel-why-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .travel-future-grid {
+    grid-template-columns: 1fr;
+    max-width: 460px;
+  }
+
+  .travel-featured-details {
+    grid-template-columns: 1fr;
+  }
+
+  .travel-detail-item {
+    border-right: none;
+  }
+
+  .travel-detail-item:nth-last-child(-n+2) {
+    border-bottom: 1px solid rgba(197, 160, 89, 0.15);
+  }
+
+  .travel-detail-item:last-child {
+    border-bottom: none;
+  }
+
+  .travel-checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =============================================
+   RESPONSIVE - 480px
+   ============================================= */
+@media (max-width: 480px) {
+  .travel-why-card {
+    padding: 32px 24px;
+  }
+
+  .travel-future-note {
+    padding: 22px 20px;
+  }
+
+  .travel-submit-btn {
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    padding: 18px;
+  }
+}

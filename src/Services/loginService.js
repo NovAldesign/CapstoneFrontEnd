@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api/auth';
+// FIXED: uses env variable so it works in both dev and production on Railway
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/auth`;
 
 const loginService = {
   /**
@@ -12,9 +13,7 @@ const loginService = {
       const response = await axios.post(`${API_URL}/login`, { email, password });
 
       if (response.data) {
-        // Save full user info
         localStorage.setItem('gfc_user', JSON.stringify(response.data));
-        // Save token separately for easy access in API calls
         if (response.data.token) {
           localStorage.setItem('gfc_token', response.data.token);
         }
