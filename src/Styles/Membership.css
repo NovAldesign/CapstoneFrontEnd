@@ -1,7 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@300;400;600;700&display=swap');
 
+/* =============================================
+   MEMBERSHIP PAGE — COMPLETE CSS v7
+   ============================================= */
 
 .membership-page {
-  background-color: #FDFBFA !important;
+  background-color: #FDFBFA;
   min-height: 100vh;
   font-family: 'Montserrat', sans-serif;
   color: #002147;
@@ -10,99 +14,320 @@
   overflow-x: hidden;
 }
 
-/* HERO SECTION */
+/* =============================================
+   HERO
+   ============================================= */
 .membership-page .membership-hero {
-  min-height: 70vh; 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end; 
-  padding: 80px 10% 80px 0; 
-  position: relative;
-  background: linear-gradient(rgba(0, 33, 71, 0.8), rgba(0, 33, 71, 0.65)), 
-              url('https://t3.ftcdn.net/jpg/17/25/00/18/240_F_1725001879_We6M6RviCCAINLwglRgS3Eob45ulaVsk.jpg') 
-              no-repeat center/cover !important;
+  min-height: 90vh;
+  background: linear-gradient(rgba(0, 33, 71, 0.5), rgba(0, 33, 71, 0.594)),
+              url('https://t3.ftcdn.net/jpg/17/25/00/18/240_F_1725001879_We6M6RviCCAINLwglRgS3Eob45ulaVsk.jpg')
+              no-repeat center/cover;
   background-attachment: fixed;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.membership-page .luxe-title {
-  font-family: 'Playfair Display', serif !important;
-  font-size: clamp(3.5rem, 10vw, 7.5rem) !important;
-  line-height: 0.85 !important;
-  font-weight: 900 !important;
-  text-transform: uppercase !important;
-  color: #FFFFFF !important; 
-  text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.9) !important;
+.membership-page .hero-dark-overlay-right {
+  width: 100%;
+  padding-right: 10%;
+  padding-left: 5%;
+}
+
+/* FIXED: increased max-width so title has room to sit on two lines
+   "THE" on line 1, "COLLECTIVE" on line 2 — no mid-word breaks */
+.membership-page .hero-content-right {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: 0;
+  color: #FFFFFF;
   text-align: right;
-  margin: 0 !important;
 }
 
 .membership-page .location-tag {
-  color: #C5A059 !important;
+  color: #C5A059;
   text-transform: uppercase;
-  letter-spacing: 6px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  margin-bottom: 20px;
+  letter-spacing: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
   display: block;
+  margin-bottom: 20px;
   text-align: right;
+}
+
+/* FIXED: clamp max reduced from 7.5rem to 6rem so "COLLECTIVE"
+   fits on one line within the container.
+   overflow-wrap: normal + word-break: normal prevents
+   mid-word breaks — the title will only break at the space. */
+.membership-page .luxe-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.9;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 0 0 25px 0;
+  color: #FFFFFF;
+  text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.4);
+  text-align: right;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
 }
 
 .membership-page .gold-spacer-bar {
-  width: 120px;
-  height: 3px;
-  background: #C5A059 !important;
-  margin: 30px 0;
-  align-self: flex-end; 
-}
-
-.membership-page .hero-content-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  text-align: right;
+  width: 100px;
+  height: 2px;
+  background: #C5A059;
+  margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: 0;
 }
 
 .membership-page .narrative-lead {
-  font-family: 'Playfair Display', serif !important;
-  font-size: 2.2rem !important;
-  color: #C5A059 !important; 
-  margin-bottom: 25px !important;
-  line-height: 1.3 !important;
-}
-
-.membership-page .narrative-body, 
-.membership-page .narrative-impact {
-  font-size: 1.2rem !important;
-  line-height: 1.9 !important;
-  color: #FFFFFF !important;
-  max-width: 600px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  line-height: 1.6;
   margin-bottom: 20px;
+  color: rgba(255, 255, 255, 0.88);
+  text-align: right;
 }
 
-/* FORM CONTAINER */
+.membership-page .narrative-body,
+.membership-page .narrative-impact {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.15rem;
+  line-height: 1.9;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.88);
+  margin-bottom: 16px;
+  text-align: right;
+}
+
+.membership-page .narrative-body strong,
+.membership-page .narrative-impact strong {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* =============================================
+   TIER SELECTOR SECTION
+   ============================================= */
+.membership-page .tier-selector-section {
+  background-color: #002147;
+  padding: 90px 5%;
+  text-align: center;
+}
+
+.membership-page .tier-eyebrow {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #C5A059;
+  margin-bottom: 14px;
+}
+
+.membership-page .tier-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  color: #FFFFFF;
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+
+.membership-page .tier-subhead {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-style: italic;
+  margin-bottom: 60px;
+}
+
+.membership-page .tier-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.membership-page .tier-card,
+.membership-page .tier-card:hover,
+.membership-page .tier-card:focus,
+.membership-page .tier-card:active {
+  outline: none !important;
+  outline-offset: 0 !important;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.membership-page .tier-card {
+  border: 1px solid rgba(197, 160, 89, 0.25);
+  padding: 48px 28px;
+  position: relative;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.membership-page .tier-card:focus-visible {
+  box-shadow: 0 0 0 2px #C5A059 !important;
+  outline: none !important;
+}
+
+.membership-page .tier-card:hover {
+  border-color: #C5A059;
+  background: rgba(197, 160, 89, 0.05);
+  transform: translateY(-6px);
+}
+
+.membership-page .tier-card.active {
+  border: 2px solid #C5A059;
+  background: rgba(197, 160, 89, 0.08);
+  transform: translateY(-4px);
+}
+
+.membership-page .tier-card.featured {
+  border-color: rgba(197, 160, 89, 0.5);
+}
+
+.membership-page .tier-badge {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #C5A059;
+  color: #002147;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  white-space: nowrap;
+}
+
+.membership-page .tier-card.active::after {
+  content: '\2713';
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  color: #C5A059;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.membership-page .tier-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #C5A059;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.membership-page .tier-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #FFFFFF;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.membership-page .tier-price-note {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 26px;
+}
+
+.membership-page .tier-divider {
+  width: 36px;
+  height: 1px;
+  background: rgba(197, 160, 89, 0.35);
+  margin: 0 auto 22px;
+}
+
+.membership-page .tier-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.membership-page .tier-features li {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.65);
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  gap: 10px;
+  line-height: 1.5;
+}
+
+.membership-page .tier-features li:last-child {
+  border-bottom: none;
+}
+
+.membership-page .tier-features li::before {
+  content: '\25C6';
+  color: #C5A059;
+  font-size: 0.5rem;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.membership-page .founding-note {
+  margin: 50px auto 0;
+  padding: 22px 32px;
+  border: 1px solid rgba(197, 160, 89, 0.25);
+  max-width: 680px;
+  text-align: center;
+}
+
+.membership-page .founding-note p {
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.membership-page .founding-note strong {
+  color: #C5A059;
+}
+
+/* =============================================
+   FORM SECTION
+   ============================================= */
 .membership-page .form-section {
-  padding: 120px 5%;
+  padding: 100px 5%;
   background-color: #FDFBFA;
 }
 
 .membership-page .applicant-container {
-  background: #FFFFFF !important;
+  background: #FFFFFF;
   max-width: 950px;
-  margin: -100px auto 100px; 
+  margin: -80px auto 0;
   padding: 80px 10%;
-  box-shadow: 0 60px 120px rgba(0, 33, 71, 0.08);
+  box-shadow: 0 24px 64px rgba(0, 33, 71, 0.08);
   position: relative;
   z-index: 10;
 }
 
-/* TYPOGRAPHY OVERRIDES - "THE ANTIDOTE" STYLE */
+/* =============================================
+   FORM TYPOGRAPHY
+   ============================================= */
 .section-header-font {
-  font-family: 'Playfair Display', serif !important;
-  font-weight: 900 !important;
-  text-transform: uppercase !important;
-  font-size: 3rem !important;
-  color: #002147 !important;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 3rem;
+  color: #002147;
   text-align: center;
   margin-bottom: 10px;
   letter-spacing: -1px;
@@ -110,7 +335,7 @@
 
 .form-intro-font {
   font-family: 'Montserrat', sans-serif;
-  color: #C5A059 !important;
+  color: #C5A059;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 3px;
@@ -121,35 +346,100 @@
 
 .label-font {
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.75rem !important;
-  font-weight: 700 !important;
+  font-size: 0.72rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: #002147;
   margin-bottom: 10px;
+  display: block;
 }
 
 .form-divider-font {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #002147;
   border-bottom: 2px solid #C5A059;
   padding-bottom: 10px;
-  margin: 40px 0 25px;
+  margin: 48px 0 28px;
 }
 
-/* INPUTS & FIELDS */
+/* =============================================
+   SELECTED TIER DISPLAY IN FORM
+   ============================================= */
+.membership-page .selected-tier-display {
+  background: #002147;
+  padding: 20px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: all 0.3s ease;
+}
+
+.membership-page .selected-tier-display .tier-display-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 3px;
+}
+
+.membership-page .selected-tier-display .tier-display-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #C5A059;
+  line-height: 1;
+}
+
+.membership-page .selected-tier-display .tier-display-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.65);
+  white-space: nowrap;
+}
+
+.membership-page .tier-change-link {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #C5A059;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  text-decoration: underline;
+  padding: 0;
+  white-space: nowrap;
+  outline: none;
+  transition: color 0.2s;
+}
+
+.membership-page .tier-change-link:hover {
+  color: #FFFFFF;
+}
+
+.membership-page .tier-hidden-select {
+  display: none;
+}
+
+/* =============================================
+   INPUTS
+   ============================================= */
 .membership-page .luxe-form {
   display: flex;
   flex-direction: column;
-  gap: 35px;
+  gap: 30px;
 }
 
 .membership-page .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  gap: 36px;
 }
 
 .membership-page .input-group {
@@ -157,48 +447,184 @@
   flex-direction: column;
 }
 
-.membership-page .input-group input, 
+.membership-page .input-group input,
 .membership-page .input-group select,
 .membership-page .luxe-textarea {
-  padding: 18px;
+  padding: 16px 18px;
   border: 1px solid #E0E0E0;
   background: #FAFAFA;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  font-family: 'Montserrat', sans-serif;
   outline: none;
-  transition: all 0.3s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
   border-radius: 0;
+  color: #002147;
+  appearance: none;
 }
 
-/* PASSWORD TOGGLE */
+.membership-page .input-group input:focus,
+.membership-page .input-group select:focus,
+.membership-page .luxe-textarea:focus {
+  border-color: #C5A059;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.12);
+}
+
+.membership-page .luxe-textarea {
+  min-height: 130px;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.membership-page .input-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C5A059' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 42px;
+  cursor: pointer;
+}
+
+/* =============================================
+   PASSWORD TOGGLE
+   ============================================= */
 .membership-page .password-input-container {
   position: relative;
   width: 100%;
 }
 
+.membership-page .password-input-container input {
+  width: 100%;
+  padding-right: 72px;
+}
+
 .membership-page .password-toggle-text {
   position: absolute;
-  right: 15px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   color: #C5A059;
-  font-weight: 800;
-  font-size: 0.7rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 2px;
   cursor: pointer;
   z-index: 5;
+  padding: 0;
+  line-height: 1;
+  outline: none;
+  transition: color 0.2s;
 }
 
+.membership-page .password-toggle-text:hover {
+  color: #002147;
+}
+
+/* =============================================
+   SLIDER
+   ============================================= */
+.membership-page .slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.membership-page .slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #888;
+  font-weight: 600;
+}
+
+.membership-page .slider-value {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #C5A059;
+  line-height: 1;
+}
+
+.membership-page input[type='range'] {
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: #E0E0E0;
+  outline: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.membership-page input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #002147;
+  border: 2px solid #C5A059;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.membership-page input[type='range']::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #002147;
+  border: 2px solid #C5A059;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* =============================================
+   CHECKBOX
+   ============================================= */
 .membership-page .checkbox-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 20px 0;
+  gap: 14px;
+  margin: 8px 0;
 }
 
-/* SUBMIT BUTTON */
+.membership-page .checkbox-row input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #C5A059;
+  appearance: none;
+  background: #FAFAFA;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  padding: 0;
+  border-radius: 0;
+  outline: none;
+}
+
+.membership-page .checkbox-row input[type='checkbox']:checked {
+  background: #002147;
+  border-color: #002147;
+}
+
+.membership-page .checkbox-row input[type='checkbox']:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 6px;
+  height: 10px;
+  border: 2px solid #C5A059;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+/* =============================================
+   SUBMIT BUTTON
+   ============================================= */
 .gold-submit-btn-font {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
@@ -207,40 +633,151 @@
 }
 
 .membership-page .gold-submit-btn {
-  background: #002147;
-  color: #FFFFFF !important;
+  background: #C5A059;
+  color: #002147;
   padding: 22px;
   border: none;
   cursor: pointer;
-  transition: all 0.4s ease;
-  margin-top: 20px;
+  transition: all 0.35s ease;
+  margin-top: 24px;
+  width: 100%;
+  font-size: 0.85rem;
 }
 
-.membership-page .gold-submit-btn:hover {
-  background: #C5A059;
+.membership-page .gold-submit-btn:hover:not(:disabled) {
+  background: #002147;
+  color: #C5A059;
   transform: translateY(-3px);
-  box-shadow: 0 20px 40px rgba(197, 160, 89, 0.3);
+  box-shadow: 0 16px 40px rgba(0, 33, 71, 0.2);
 }
 
-/* RESPONSIVE */
+.membership-page .gold-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =============================================
+   INLINE FEEDBACK
+   ============================================= */
+.membership-page .form-feedback {
+  padding: 18px 24px;
+  margin-top: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  line-height: 1.5;
+}
+
+.membership-page .form-feedback.success {
+  background: rgba(0, 33, 71, 0.04);
+  border-left: 3px solid #C5A059;
+  color: #002147;
+}
+
+.membership-page .form-feedback.error {
+  background: rgba(220, 38, 38, 0.04);
+  border-left: 3px solid #DC2626;
+  color: #7F1D1D;
+}
+
+.membership-page .form-feedback::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.membership-page .form-feedback.success::before {
+  background: #C5A059;
+}
+
+.membership-page .form-feedback.error::before {
+  background: #DC2626;
+}
+
+/* =============================================
+   RESPONSIVE — 1024px
+   ============================================= */
 @media (max-width: 1024px) {
-  .membership-page .membership-hero {
-    align-items: center; 
-    padding: 60px 5%;
-    text-align: center;
+  .membership-page .hero-dark-overlay-right {
+    padding-right: 5%;
+    padding-left: 5%;
   }
+
   .membership-page .hero-content-right {
-    text-align: center;
-    align-items: center;
+    max-width: 100%;
+    text-align: right;
   }
-  .membership-page .luxe-title,
-  .membership-page .location-tag {
-    text-align: center;
-  }
-  .membership-page .gold-spacer-bar {
-    align-self: center;
-  }
+
   .membership-page .form-row {
     grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .membership-page .tier-cards {
+    grid-template-columns: 1fr;
+    max-width: 440px;
+  }
+}
+
+/* =============================================
+   RESPONSIVE — 768px
+   ============================================= */
+@media (max-width: 768px) {
+  .membership-page .membership-hero {
+    background-attachment: scroll;
+    min-height: 100svh;
+  }
+
+  .membership-page .hero-dark-overlay-right {
+    padding-right: 6%;
+    padding-left: 6%;
+  }
+
+  .membership-page .luxe-title {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .membership-page .narrative-body,
+  .membership-page .narrative-impact {
+    font-size: 1rem;
+  }
+
+  .membership-page .applicant-container {
+    margin: -40px auto 0;
+    padding: 50px 6%;
+  }
+
+  .section-header-font {
+    font-size: 2.2rem;
+  }
+
+  .membership-page .tier-selector-section {
+    padding: 60px 5%;
+  }
+}
+
+/* =============================================
+   RESPONSIVE — 480px
+   ============================================= */
+@media (max-width: 480px) {
+  .membership-page .applicant-container {
+    padding: 40px 5%;
+  }
+
+  .section-header-font {
+    font-size: 1.8rem;
+  }
+
+  .membership-page .gold-submit-btn {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    padding: 18px;
   }
 }

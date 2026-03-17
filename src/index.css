@@ -2,7 +2,15 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box; 
+  box-sizing: border-box;
+}
+
+/* FIXED: explicit font-size: 16px on html ensures all rem units
+   calculate from a reliable base. Without this, some browsers
+   use a different default which makes component rem values
+   render smaller than expected. */
+html {
+  font-size: 16px;
 }
 
 html, body {
@@ -27,12 +35,15 @@ html, body {
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 5%; 
+  padding: 0 5%;
 }
 
+/* FIXED: removed text-align: center — this was cascading into
+   every page that uses .page-content and overriding component-level
+   text-align values like text-align: right on the membership hero.
+   Center-align individual elements where needed instead. */
 .page-content {
-  padding-top: 80px; 
-  text-align: center;
+  padding-top: 80px;
   flex-grow: 1;
 }
 
@@ -40,12 +51,12 @@ html, body {
 .nav-right-section {
   display: flex;
   align-items: center;
-  gap: 20px; /* Prevents Logout from overlapping Admin */
+  gap: 20px;
 }
 
 .logout-btn, .logout-link {
-  color: #002147 !important; /* Blue font as requested */
-  background-color: #D4AF37 !important; /* Gold background */
+  color: #002147 !important;
+  background-color: #D4AF37 !important;
   font-weight: 700;
   text-transform: uppercase;
   font-size: 0.85rem;
@@ -58,11 +69,10 @@ html, body {
 
 /* 5. Admin Dashboard Button Logic */
 
-/* REMOVE Button: Navy background, NO red border */
 .remove-btn {
-  background-color: #002147 !important; 
+  background-color: #002147 !important;
   color: #ffffff !important;
-  border: none !important; /* Explicitly removes red/outline */
+  border: none !important;
   padding: 8px 18px;
   font-weight: 600;
   text-transform: uppercase;
@@ -72,14 +82,13 @@ html, body {
 }
 
 .remove-btn:hover {
-  background-color: #D4AF37 !important; /* Turns Gold on interaction */
+  background-color: #D4AF37 !important;
   color: #002147 !important;
 }
 
-/* WAITLIST Button: Blue background with Gold Font */
 .waitlist-btn {
-  background-color: #002147 !important; 
-  color: #D4AF37 !important; 
+  background-color: #002147 !important;
+  color: #D4AF37 !important;
   border: 1px solid #D4AF37 !important;
   padding: 12px 24px;
   font-weight: 800;
@@ -88,10 +97,9 @@ html, body {
   cursor: pointer;
 }
 
-/* APPROVE Button (In Display Card): Gold background with Navy Font */
 .approve-member-btn {
-  background-color: #D4AF37 !important; 
-  color: #002147 !important; 
+  background-color: #D4AF37 !important;
+  color: #002147 !important;
   border: none !important;
   padding: 15px;
   width: 100%;
@@ -107,13 +115,13 @@ html, body {
 
 /* 6. Typography & Hero Elements */
 .events-header h1 {
-  color: #002147; 
+  color: #002147;
   margin-bottom: 20px;
 }
 
 .hero-button {
-  background-color: #D4AF37 !important; 
-  color: #002147 !important;           
+  background-color: #D4AF37 !important;
+  color: #002147 !important;
   border: none;
   padding: 15px 30px;
   font-weight: bold;

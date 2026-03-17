@@ -1,3 +1,9 @@
+/* =============================================
+   NAVBAR - GFC
+   Original styles preserved exactly.
+   Mobile hamburger menu added below.
+   ============================================= */
+
 /* --- Navbar Fixes --- */
 .gfc-navbar {
   width: 100%;
@@ -8,29 +14,49 @@
   padding: 0 5%;
   height: 80px;
   border-bottom: 2px solid #C5A059;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  box-sizing: border-box;
+}
+
+.nav-logo {
+  height: 48px;
+  width: auto;
+  display: block;
 }
 
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 10px; /* Tight gap so they all fit */
+  gap: 4px;
   align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 /* Fix for "Partnerships" being too small */
 .nav-links .btn {
-  padding: 8px 15px; /* Added horizontal padding */
-  white-space: nowrap; /* Prevents text from squishing */
+  padding: 8px 10px;
+  white-space: nowrap;
   border: 1px solid transparent;
   text-decoration: none;
   color: #fff;
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.nav-links .btn:hover {
+  color: #C5A059;
 }
 
 .nav-links .btn.active {
   border: 1px solid #C5A059;
+  color: #C5A059;
 }
 
 /* Logout Button: Gold Background, Navy Font */
@@ -43,6 +69,14 @@
   text-transform: uppercase;
   border-radius: 4px;
   cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+}
+
+.logout-btn-styled:hover {
+  background-color: #FFFFFF !important;
 }
 
 /* --- Dashboard & Card Buttons --- */
@@ -58,10 +92,10 @@
   border-radius: 4px;
 }
 
-/* WAITLIST Button: Blue Background, Gold Font (Requested Fix) */
+/* WAITLIST Button: Blue Background, Gold Font */
 .waitlist-btn {
-  background-color: #002147 !important; /* Blue */
-  color: #C5A059 !important;           /* Gold Font */
+  background-color: #002147 !important;
+  color: #C5A059 !important;
   border: 2px solid #C5A059 !important;
   padding: 12px 24px;
   font-weight: 800;
@@ -69,16 +103,163 @@
   width: 100%;
 }
 
-/* APPROVE Button (Inside the Card): Gold with Navy Text */
-/* Using high specificity to ensure it doesn't disappear */
+/* APPROVE Button: Gold with Navy Text */
 body .approve-member-btn {
   display: block !important;
   visibility: visible !important;
-  background-color: #C5A059 !important; /* Gold */
-  color: #002147 !important;           /* Navy */
+  background-color: #C5A059 !important;
+  color: #002147 !important;
   padding: 15px;
   width: 100%;
   font-weight: 900;
   border: none !important;
   margin-bottom: 10px;
+}
+
+/* =============================================
+   HAMBURGER BUTTON
+   Hidden on desktop, shown on mobile
+   ============================================= */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #C5A059;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* X shape when open */
+.nav-hamburger-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-hamburger-open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.nav-hamburger-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile auth item - hidden on desktop */
+.nav-mobile-auth {
+  display: none;
+}
+
+/* =============================================
+   RESPONSIVE - 1100px
+   With 8+ links the navbar gets crowded.
+   Switch to hamburger at 1100px.
+   ============================================= */
+@media (max-width: 1100px) {
+
+  .nav-hamburger {
+    display: flex;
+  }
+
+  /* Hide desktop auth on mobile */
+  .nav-right-section {
+    display: none;
+  }
+
+  /* Full-screen drawer */
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #002147;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 24px 6%;
+    gap: 0;
+    overflow-y: auto;
+    border-top: 1px solid rgba(197, 160, 89, 0.3);
+    z-index: 499;
+  }
+
+  .nav-links-open {
+    display: flex;
+  }
+
+  .nav-links li {
+    width: 100%;
+    border-bottom: 1px solid rgba(197, 160, 89, 0.1);
+  }
+
+  .nav-links li:last-child {
+    border-bottom: none;
+  }
+
+  .nav-links .btn {
+    display: block;
+    width: 100%;
+    padding: 16px 0;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .nav-links .btn:hover {
+    color: #C5A059;
+  }
+
+  .nav-links .btn.active {
+    color: #C5A059;
+    border: none;
+    border-left: 2px solid #C5A059;
+    padding-left: 12px;
+  }
+
+  /* Show auth inside mobile drawer */
+  .nav-mobile-auth {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(197, 160, 89, 0.2) !important;
+    border-bottom: none !important;
+  }
+
+  .nav-mobile-auth .logout-btn-styled {
+    width: 100%;
+    text-align: center;
+    border-radius: 0;
+    padding: 14px;
+  }
+
+  .nav-mobile-auth .btn {
+    color: #C5A059 !important;
+    padding: 14px 0;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .gfc-navbar {
+    padding: 0 5%;
+  }
+
+  .nav-logo {
+    height: 40px;
+  }
 }

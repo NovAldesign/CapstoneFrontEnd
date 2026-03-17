@@ -19,11 +19,13 @@
   font-family: 'Playfair Display', serif;
 }
 
-/* --- 1.  HERO  --- */
+/* =============================================
+   1. HERO
+   ============================================= */
 .home-hero-visual {
   height: 90vh;
-  background-image: linear-gradient(rgba(0,33,71,0.5), rgba(0,33,71,0.7)), 
-                    url('https://tripleseat.com/wp-content/uploads/2023/09/How-to-Create-a-Special-Group-Dining-Experience-for-Your-Guests-2.jpg'); 
+  background-image: linear-gradient(rgba(0,33,71,0.5), rgba(0,33,71,0.7)),
+                    url('https://tripleseat.com/wp-content/uploads/2023/09/How-to-Create-a-Special-Group-Dining-Experience-for-Your-Guests-2.jpg');
   background-size: cover;
   background-position: center 20%;
   position: relative;
@@ -52,6 +54,7 @@
   margin-bottom: 20px;
 }
 
+/* FIXED: removed <br> dependency, added word-break */
 .luxe-title-white {
   font-size: clamp(3.5rem, 10vw, 7.5rem);
   line-height: 0.85;
@@ -59,7 +62,9 @@
   text-transform: uppercase;
   margin: 0 0 25px 0;
   color: var(--white);
-  text-shadow: 2px 2px 15px rgba(0,0,0,0.4); 
+  text-shadow: 2px 2px 15px rgba(0,0,0,0.4);
+  word-break: break-word;
+  hyphens: none;
 }
 
 .gold-spacer-v2 {
@@ -69,18 +74,19 @@
   margin-bottom: 30px;
 }
 
+/* FIXED: reduced from 1.8rem — no longer competes with headline */
 .narrative-lead-white {
   font-family: 'Playfair Display', serif;
-  font-size: 1.8rem;
-  line-height: 1.4;
+  font-size: 1.3rem;
+  line-height: 1.6;
   margin-bottom: 40px;
-  color: rgba(255, 255, 255, 0.95);
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 540px;
 }
 
-/* --- FIXED HERO BUTTON COLOR --- */
 .gold-fill-btn {
-  background: var(--gold) !important; /* Fixed: Gold instead of black */
-  color: var(--navy) !important;   /* Fixed: Navy text for better contrast */
+  background: var(--gold) !important;
+  color: var(--navy) !important;
   padding: 18px 45px;
   text-decoration: none;
   font-weight: 700;
@@ -97,7 +103,9 @@
   border-color: var(--white);
 }
 
-/* --- 2. THE GOLD STATS  --- */
+/* =============================================
+   2. ISOLATION STATS (GOLD BACKGROUND)
+   ============================================= */
 .isolation-stats-gold {
   background-color: var(--gold);
   padding: 120px 20px;
@@ -133,11 +141,12 @@
   margin: 0 auto;
 }
 
+/* FIXED: margin-top replaces the removed <br> */
 .stats-grid {
   display: flex;
   justify-content: center;
   gap: 30px;
-  margin-top: 80px;
+  margin-top: 60px;
 }
 
 .stat-card-navy {
@@ -187,12 +196,13 @@
   opacity: 0.9;
 }
 
-/* Hover States for Gold Cards */
 .stat-card-navy:hover .stat-number-navy { color: var(--gold); }
-.stat-card-navy:hover .stat-label-navy { color: var(--gold); }
-.stat-card-navy:hover .navy-line-small { background: var(--gold); }
+.stat-card-navy:hover .stat-label-navy  { color: var(--gold); }
+.stat-card-navy:hover .navy-line-small  { background: var(--gold); }
 
-/* --- 3. STORY SECTION  --- */
+/* =============================================
+   3. STORY SECTION
+   ============================================= */
 .story-section {
   padding: 150px 10%;
   background-color: var(--cream);
@@ -213,11 +223,17 @@
   flex: 1.2;
 }
 
+/* ENHANCED: added hover lift to complement the gold shadow */
 .story-image img {
   width: 100%;
   height: 550px;
   object-fit: cover;
-  box-shadow: 30px 30px 0px var(--gold); 
+  box-shadow: 30px 30px 0px var(--gold);
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.story-image img:hover {
+  transform: translate(-4px, -4px);
 }
 
 .story-text {
@@ -249,9 +265,138 @@
   font-weight: 300;
 }
 
+/* =============================================
+   4. PROOF OF TRACTION (NEW SECTION)
+   ============================================= */
+.traction-section {
+  background-color: var(--navy);
+  padding: 100px 10%;
+  text-align: center;
+}
+
+.traction-eyebrow {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.traction-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 900;
+  color: var(--white);
+  margin-bottom: 12px;
+  line-height: 1.15;
+}
+
+.traction-subhead {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.55);
+  font-style: italic;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 70px;
+}
+
+.traction-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid rgba(197,160,89,0.2);
+  max-width: 900px;
+  margin: 0 auto 2px;
+}
+
+.traction-stat {
+  padding: 50px 30px;
+  border-right: 1px solid rgba(197,160,89,0.15);
+  position: relative;
+}
+
+.traction-stat:last-child {
+  border-right: none;
+}
+
+.traction-stat::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 2px;
+  background: var(--gold);
+}
+
+.traction-number {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.traction-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.traction-desc {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.6;
+  font-style: italic;
+  font-family: 'Playfair Display', serif;
+}
+
+.traction-bottom-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid rgba(197,160,89,0.2);
+  border-top: none;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.traction-platform-strip {
+  padding: 30px 20px;
+  border-right: 1px solid rgba(197,160,89,0.15);
+}
+
+.traction-platform-strip:last-child {
+  border-right: none;
+}
+
+.traction-platform-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.traction-platform-name {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+
+/* =============================================
+   5. PARTNERSHIP / SPONSORSHIP
+   FIXED: standardized #d4af37 → var(--gold)
+   ============================================= */
 .partnership-editorial-section {
   padding: 100px 5%;
-  background-color: #ffffff;
+  background-color: var(--white);
   display: flex;
   justify-content: center;
 }
@@ -260,7 +405,7 @@
   max-width: 1000px;
   width: 100%;
   padding: 60px 40px;
-  border: 1px solid #d4af37; 
+  border: 1px solid var(--gold);
   position: relative;
   text-align: center;
 }
@@ -271,9 +416,9 @@
   top: -12px;
   left: 50%;
   transform: translateX(-50%);
-  background: white;
+  background: var(--white);
   padding: 0 15px;
-  color: #d4af37;
+  color: var(--gold);
   font-family: 'Playfair Display', serif;
   font-weight: bold;
   letter-spacing: 2px;
@@ -284,20 +429,20 @@
   text-transform: uppercase;
   letter-spacing: 4px;
   font-size: 0.8rem;
-  color: #001f3f;
+  color: var(--navy);
   margin-bottom: 20px;
 }
 
 .editorial-title {
   font-size: 2.5rem;
-  color: #001f3f;
+  color: var(--navy);
   margin-bottom: 20px;
 }
 
 .editorial-divider {
   width: 50px;
   height: 2px;
-  background-color: #d4af37;
+  background-color: var(--gold);
   margin: 0 auto 30px;
 }
 
@@ -309,12 +454,11 @@
   color: #444;
 }
 
-/* --- FIXED EDITORIAL BUTTON COLOR --- */
 .gold-editorial-btn {
   display: inline-block;
   padding: 18px 40px;
-  background-color: var(--gold) !important; /* Fixed: Gold instead of Navy/Black */
-  color: var(--navy) !important;           /* Fixed: Navy text */
+  background-color: var(--gold) !important;
+  color: var(--navy) !important;
   text-decoration: none;
   font-weight: 600;
   text-transform: uppercase;
@@ -333,14 +477,18 @@
   font-size: 0.75rem;
   color: #999;
   letter-spacing: 1px;
-  text-wrap: balance; 
+  text-wrap: balance;
   text-align: center;
 }
 
-/* --- HOST NOTE --- */
+/* =============================================
+   6. HOST NOTE / FOUNDER QUOTE
+   FIXED: background-attachment: scroll on mobile
+   (iOS Safari doesn't support fixed parallax)
+   ============================================= */
 .host-note-visual {
   height: 75vh;
-  background: linear-gradient(rgba(0, 33, 71, 0.85), rgba(0, 33, 71, 0.85)), 
+  background: linear-gradient(rgba(0, 33, 71, 0.85), rgba(0, 33, 71, 0.85)),
               url('https://www.boundless.org/wp-content/uploads/2024/01/who-are-your-real-friends-65aeb3b94db51-1024x683.webp');
   background-attachment: fixed;
   background-size: cover;
@@ -390,13 +538,156 @@
   color: var(--navy);
 }
 
-/* --- Responsive Adjustments --- */
+/* =============================================
+   RESPONSIVE
+   ============================================= */
 @media (max-width: 1024px) {
-  .story-block, .story-block.reverse { flex-direction: column; gap: 50px; text-align: center; }
-  .story-image img { height: 400px; box-shadow: 15px 15px 0px var(--gold); }
-  .stats-grid { flex-direction: column; align-items: center; }
-  .stat-card-navy { width: 100%; max-width: 450px; }
-  .hero-dark-overlay { padding-left: 0; justify-content: center; text-align: center; }
-  .hero-content-luxe { padding: 0 20px; text-align: center; }
-  .gold-spacer-v2 { margin: 0 auto 30px; }
+  .story-block,
+  .story-block.reverse {
+    flex-direction: column;
+    gap: 50px;
+    text-align: center;
+  }
+
+  .story-image img {
+    height: 400px;
+    box-shadow: 15px 15px 0px var(--gold);
+  }
+
+  .stats-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stat-card-navy {
+    width: 100%;
+    max-width: 450px;
+  }
+
+  .hero-dark-overlay {
+    padding-left: 0;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hero-content-luxe {
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  .gold-spacer-v2 {
+    margin: 0 auto 30px;
+  }
+
+  .narrative-lead-white {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  /* iOS Safari parallax fix */
+  .host-note-visual {
+    background-attachment: scroll;
+    height: auto;
+    padding: 80px 20px;
+  }
+
+  .host-quote {
+    font-size: 1.6rem;
+  }
+
+  /* Traction section responsive */
+  .traction-section {
+    padding: 70px 6%;
+  }
+
+  .traction-subhead {
+    margin-bottom: 40px;
+  }
+
+  .traction-grid {
+    grid-template-columns: 1fr;
+    border: none;
+  }
+
+  .traction-stat {
+    border-right: none;
+    border-bottom: 1px solid rgba(197,160,89,0.15);
+    padding: 35px 20px;
+  }
+
+  .traction-stat:last-child {
+    border-bottom: none;
+  }
+
+  .traction-bottom-row {
+    grid-template-columns: 1fr;
+    border: none;
+    margin-top: 1px;
+  }
+
+  .traction-platform-strip {
+    border-right: none;
+    border-bottom: 1px solid rgba(197,160,89,0.15);
+    padding: 24px 20px;
+  }
+
+  .traction-platform-strip:last-child {
+    border-bottom: none;
+  }
+
+  /* Story section mobile */
+  .story-section {
+    padding: 80px 6%;
+  }
+
+  .story-block {
+    margin-bottom: 80px;
+  }
+
+  .story-text h2 {
+    font-size: 2.2rem;
+  }
+
+  /* Partnership mobile */
+  .editorial-frame {
+    padding: 40px 24px;
+  }
+
+  .editorial-title {
+    font-size: 1.8rem;
+  }
+
+  .editorial-body {
+    font-size: 1rem;
+  }
+
+  /* Hero mobile */
+  .home-hero-visual {
+    height: 100svh;
+    background-position: center center;
+  }
+
+  .luxe-title-white {
+    font-size: clamp(3rem, 15vw, 5rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .isolation-stats-gold {
+    padding: 70px 20px;
+  }
+
+  .traction-grid,
+  .traction-bottom-row {
+    max-width: 100%;
+  }
+
+  .gold-fill-btn,
+  .btn-gold-outline-white,
+  .gold-editorial-btn {
+    width: 100%;
+    text-align: center;
+    padding: 16px 24px;
+  }
 }
