@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Styles/Membership.css';
-import membershipService from '../Services/membershipService';
+import membershipService from '../Services/membershipService.js';
 
 const TIERS = [
   {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Checkout from './Checkout';
-import { fetchGfcEvents } from '../Services/eventService';
+import Checkout from '../Components/Checkout.jsx';
+import { fetchGfcEvents } from '../Services/eventService.js';
 import '../Styles/IntentionalDinners.css';
 
 const COURSES = [

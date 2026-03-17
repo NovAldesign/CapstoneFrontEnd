@@ -1,5 +1,5 @@
 import React from "react";
-import loginService from "../Services/loginService";
+import loginService from "../Services/loginService.js";
 import "../Styles/MemberProfile.css";
 
 const MemberProfile = () => {

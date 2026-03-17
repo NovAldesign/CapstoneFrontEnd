@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGfcEvents, formatEventDate, formatEventTime } from '../Services/eventService';
-import Checkout from './Checkout';
+import Checkout from '../Components/Checkout.jsx';
 import '../Styles/Events.css';
 
 const Events = () => {
