@@ -16,10 +16,11 @@
    ============================================= */
 .partner-hero {
   min-height: 80vh;
-  background: linear-gradient(rgba(0, 33, 71, 0.6), rgba(0, 33, 71, 0.75)),
-              url('https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80&w=1600')
-              no-repeat center/cover;
-  background-attachment: fixed;
+  background-image: linear-gradient(rgba(0, 33, 71, 0.6), rgba(0, 33, 71, 0.75)),
+                    url('https://static.vecteezy.com/system/resources/thumbnails/052/030/148/small/teamwork-and-partnership-multiracial-business-people-holding-hands-together-sitting-at-one-desk-in-modern-office-high-angle-free-space-photo.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   align-items: center;
   position: relative;

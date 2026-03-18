@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Styles/Membership.css';
-import membershipService from '../Services/membershipService.js';
+import membershipService from '../Services/membershipService';
 
 const TIERS = [
   {
@@ -13,11 +13,15 @@ const TIERS = [
     featured: true,
     features: [
       'Priority access to all events before public sale',
-      'Member pricing on every event',
-      '$10 off Intentional Conversations dinners',
-      'Access to private member community',
-      'Founding Member recognition',
-      'First access to group travel announcements',
+      'Member pricing on every event ($5-$15 off)',
+      'Early access to Intentional Conversations Over Dinners before public sale',
+      '1 guest pass per quarter - bring a friend free',
+      'Free ticket to one standard event per quarter (excludes Intentional Conversations Over Dinners & Spades Tournament)',
+      'Discounted group travel pricing',
+      'Member discount on all premium & Intentional Conversations Over Dinners events',
+      'Access to private member directory',
+      'Birthday recognition at the nearest GFC event',
+      'Founding Member recognition (first 50 only)',
     ],
   },
   {
@@ -29,11 +33,11 @@ const TIERS = [
     featured: false,
     features: [
       'All Silver tier benefits',
-      '$15 off Intentional Conversations dinners',
-      'Early access to tournaments',
-      'GFC apparel credit ($25/quarter)',
-      'VIP seating at signature events',
-      'Priority group travel selection',
+      '$15 off every Intentional Conversations Over Dinner',
+      '1 free ticket per month to standard events (excludes Intentional Conversations Over Dinners & premium events)',
+      'Invitation to private members-only dinner quarterly',
+      'Priority group travel booking before interest list',
+      'VIP reserved seating at premuim events when available',
     ],
   },
   {
@@ -45,11 +49,12 @@ const TIERS = [
     featured: false,
     features: [
       'All Gold tier benefits',
-      'One complimentary event per month',
-      'Dedicated travel concierge',
-      'Private Platinum member dinners',
-      'GFC apparel credit ($60/quarter)',
+      '1 complimentary standard event ticket per month (excludes Intentional Conversations Over Dinners & premium events)',
+      'Dedicated travel concierge for group trip bookings',
+      'Feature in GFC community spotlight (social + email)',
+      'Exclusive Platinum-only social mixer quarterly',
       'Co-host opportunities at select events',
+      'First right of refusal on new event formats',
     ],
   },
 ];
@@ -165,24 +170,23 @@ const Membership = () => {
     <div className="membership-page">
 
       {/* ── HERO ── */}
-
-  <header className="membership-hero">
-    <div className="hero-dark-overlay-right">
-      <div className="hero-content-right">
-        <span className="location-tag">A Life of Joy & Adventure</span>
-        <h1 className="luxe-title">The Collective</h1>
-        <div className="gold-spacer-bar"></div>
-        <p className="narrative-lead">Success shouldn't be a solo journey.</p>
-        <p className="narrative-body">
-          The <strong>Grown Folks Collective</strong> is centered around
-          authentic connection and ending social isolation.
-        </p>
-        <p className="narrative-impact">
-          Join a collective where excellence meets genuine connection.
-        </p>
-      </div>
-    </div>
-  </header>
+      <header className="membership-hero">
+        <div className="hero-content-right">
+          <span className="location-tag">A Life of Joy & Adventure</span>
+          <h1 className="luxe-title">The Collective</h1>
+          <div className="gold-spacer-bar"></div>
+          <div className="mission-narrative">
+            <p className="narrative-lead">Success shouldn't be a solo journey.</p>
+            <p className="narrative-body">
+              The <strong>Grown Folks Collective</strong> is centered around
+              authentic connection and ending social isolation.
+            </p>
+            <p className="narrative-impact">
+              Join a collective where excellence meets genuine connection.
+            </p>
+          </div>
+        </div>
+      </header>
 
       {/* ── TIER SELECTOR ── */}
       <section className="tier-selector-section">
@@ -495,7 +499,6 @@ const Membership = () => {
                   value={formData.preferences.apparelSize}
                   onChange={handleChange}
                 >
-                  <option value="XS">X-Small</option>
                   <option value="S">Small</option>
                   <option value="M">Medium</option>
                   <option value="L">Large</option>

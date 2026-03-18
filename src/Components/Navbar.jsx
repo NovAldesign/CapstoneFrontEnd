@@ -29,14 +29,14 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* NAV LINKS */}
+      {/* NAV LINKS — reordered */}
       <ul className={`nav-links ${menuOpen ? "nav-links-open" : ""}`}>
         <li><NavLink to="/" end className={navClass} onClick={closeMenu}>Home</NavLink></li>
         <li><NavLink to="/events" className={navClass} onClick={closeMenu}>Events</NavLink></li>
-        <li><NavLink to="/membership" className={navClass} onClick={closeMenu}>Membership</NavLink></li>
-        <li><NavLink to="/partnerships" className={navClass} onClick={closeMenu}>Partnerships</NavLink></li>
         <li><NavLink to="/travel" className={navClass} onClick={closeMenu}>Travel</NavLink></li>
         <li><NavLink to="/ic-dinners" className={navClass} onClick={closeMenu}>IC Dinners</NavLink></li>
+        <li><NavLink to="/membership" className={navClass} onClick={closeMenu}>Membership</NavLink></li>
+        <li><NavLink to="/partnerships" className={navClass} onClick={closeMenu}>Partnerships</NavLink></li>
         <li><NavLink to="/about" className={navClass} onClick={closeMenu}>About Us</NavLink></li>
         <li><NavLink to="/contact" className={navClass} onClick={closeMenu}>Contact Us</NavLink></li>
 
@@ -48,7 +48,7 @@ const Navbar = () => {
           </li>
         )}
 
-        {/* Mobile-only auth — shown inside the drawer */}
+        {/* Mobile-only auth */}
         <li className="nav-mobile-auth">
           {user ? (
             <button
@@ -76,7 +76,7 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* Hamburger — mobile only */}
+      {/* Hamburger */}
       <button
         className={`nav-hamburger ${menuOpen ? "nav-hamburger-open" : ""}`}
         onClick={() => setMenuOpen((o) => !o)}

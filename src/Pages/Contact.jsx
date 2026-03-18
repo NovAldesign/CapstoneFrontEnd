@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../Styles/Contact.css';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const REASONS = [
   'General Inquiry',
@@ -30,6 +30,57 @@ const BUDGET_RANGES = [
   '$5,000 – $10,000',
   '$10,000+',
   'Not sure yet',
+];
+
+const SOCIALS = [
+  {
+    label: 'Instagram',
+    url: 'https://instagram.com/grownfolkscollective',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    label: 'TikTok',
+    url: 'https://tiktok.com/@grownfolkscollective',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z" />
+      </svg>
+    ),
+  },
+  {
+    label: 'Facebook',
+    url: 'https://www.facebook.com/profile.php?id=61585743038133',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+      </svg>
+    ),
+  },
+  {
+    label: 'Threads',
+    url: 'https://threads.net/@grownfolkscollective',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.473 12.01v-.017c.027-3.579.877-6.43 2.528-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.594 12c.022 3.086.713 5.496 2.051 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.583-1.3-.881-2.347-.887H12c-.912 0-1.708.283-2.27.801-.386.354-.623.818-.696 1.38l-2.02-.283c.148-1.048.6-1.97 1.328-2.683C9.394 7.57 10.62 7.002 12 7.002h.026c1.527.007 2.793.454 3.765 1.33 1.046.941 1.62 2.31 1.708 4.073.017.344.02.693.007 1.042.462.37.875.794 1.22 1.266 1.02 1.384 1.263 3.318.668 5.01C18.687 21.979 16.35 24 12.186 24zm.28-9.217c-.148 0-.295.005-.44.013-1.017.057-1.818.332-2.315.797-.43.4-.647.919-.618 1.464.056 1.023.97 1.682 2.332 1.607 1.133-.062 1.975-.468 2.502-1.206.41-.571.633-1.38.665-2.397a11.68 11.68 0 0 0-2.126-.278z" />
+      </svg>
+    ),
+  },
+  {
+    label: 'LinkedIn',
+    url: 'https://linkedin.com/company/grownfolkscollective',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" />
+        <circle cx="4" cy="4" r="2" />
+      </svg>
+    ),
+  },
 ];
 
 const Contact = () => {
@@ -109,9 +160,7 @@ const Contact = () => {
   return (
     <div className="contact-page">
 
-      {/* =============================================
-          DARK HERO SECTION
-         ============================================= */}
+      {/* HERO */}
       <header className="contact-hero">
         <div className="contact-hero-inner">
 
@@ -140,31 +189,7 @@ const Contact = () => {
             <div className="contact-info-block">
               <div className="contact-info-label">Phone</div>
               <a href="tel:+14045550000" className="contact-info-value">
-                (404) 555-0000
-              </a>
-            </div>
-
-            <div className="contact-info-block">
-              <div className="contact-info-label">Instagram</div>
-              <a
-                href="https://instagram.com/grownfolkscollective"
-                target="_blank"
-                rel="noreferrer"
-                className="contact-info-value"
-              >
-                @grownfolkscollective
-              </a>
-            </div>
-
-            <div className="contact-info-block">
-              <div className="contact-info-label">TikTok</div>
-              <a
-                href="https://tiktok.com/@grownfolkscollective"
-                target="_blank"
-                rel="noreferrer"
-                className="contact-info-value"
-              >
-                @grownfolkscollective
+                (270) 380-8896
               </a>
             </div>
 
@@ -172,6 +197,26 @@ const Contact = () => {
               <div className="contact-info-label">Based In</div>
               <div className="contact-info-value contact-info-static">
                 Decatur, GA &nbsp;·&nbsp; Serving Metro Atlanta
+              </div>
+            </div>
+
+            {/* SOCIAL ICONS */}
+            <div className="contact-info-block contact-socials-block">
+              <div className="contact-info-label">Follow Us</div>
+              <div className="contact-socials">
+                {SOCIALS.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="contact-social-icon"
+                    aria-label={s.label}
+                    title={s.label}
+                  >
+                    {s.icon}
+                  </a>
+                ))}
               </div>
             </div>
 
@@ -188,9 +233,7 @@ const Contact = () => {
         </div>
       </header>
 
-      {/* =============================================
-          FORM SECTION
-         ============================================= */}
+      {/* FORM SECTION */}
       <section className="contact-form-section">
         <div className="contact-form-container">
 
@@ -207,179 +250,78 @@ const Contact = () => {
             </p>
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="contact-luxe-form"
-            noValidate
-          >
+          <form onSubmit={handleSubmit} className="contact-luxe-form" noValidate>
 
-            {/* Name */}
             <div className="contact-form-divider">Your Information</div>
             <div className="contact-form-row">
               <div className="contact-input-group">
-                <label className="contact-label" htmlFor="firstName">
-                  First Name
-                </label>
-                <input
-                  id="firstName"
-                  type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  required
-                  autoComplete="given-name"
-                />
+                <label className="contact-label" htmlFor="firstName">First Name</label>
+                <input id="firstName" type="text" name="firstName" value={formData.firstName} onChange={handleChange} required autoComplete="given-name" />
               </div>
               <div className="contact-input-group">
-                <label className="contact-label" htmlFor="lastName">
-                  Last Name
-                </label>
-                <input
-                  id="lastName"
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  required
-                  autoComplete="family-name"
-                />
+                <label className="contact-label" htmlFor="lastName">Last Name</label>
+                <input id="lastName" type="text" name="lastName" value={formData.lastName} onChange={handleChange} required autoComplete="family-name" />
               </div>
             </div>
 
             <div className="contact-form-row">
               <div className="contact-input-group">
-                <label className="contact-label" htmlFor="email">
-                  Email Address
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  autoComplete="email"
-                />
+                <label className="contact-label" htmlFor="email">Email Address</label>
+                <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} required autoComplete="email" />
               </div>
               <div className="contact-input-group">
                 <label className="contact-label" htmlFor="phone">
-                  Phone{' '}
-                  <span className="contact-label-optional">(optional)</span>
+                  Phone <span className="contact-label-optional">(optional)</span>
                 </label>
-                <input
-                  id="phone"
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  autoComplete="tel"
-                />
+                <input id="phone" type="tel" name="phone" value={formData.phone} onChange={handleChange} autoComplete="tel" />
               </div>
             </div>
 
-            {/* Reason */}
             <div className="contact-form-divider">How Can We Help?</div>
             <div className="contact-input-group">
-              <label className="contact-label" htmlFor="reason">
-                I'm reaching out about...
-              </label>
-              <select
-                id="reason"
-                name="reason"
-                value={formData.reason}
-                onChange={handleChange}
-                required
-              >
+              <label className="contact-label" htmlFor="reason">I'm reaching out about...</label>
+              <select id="reason" name="reason" value={formData.reason} onChange={handleChange} required>
                 <option value="">Select a reason...</option>
                 {REASONS.map((r) => (
-                  <option key={r} value={r}>
-                    {r}
-                  </option>
+                  <option key={r} value={r}>{r}</option>
                 ))}
               </select>
             </div>
 
-            {/* Event Planning — conditional fields */}
             {isEventPlanning && (
               <div className="contact-event-planning-section">
-                <div className="contact-event-planning-label">
-                  Tell us about your event
-                </div>
-
+                <div className="contact-event-planning-label">Tell us about your event</div>
                 <div className="contact-form-row">
                   <div className="contact-input-group">
-                    <label className="contact-label" htmlFor="event_eventType">
-                      Type of Event
-                    </label>
-                    <select
-                      id="event_eventType"
-                      name="event_eventType"
-                      value={formData.eventDetails.eventType}
-                      onChange={handleChange}
-                    >
+                    <label className="contact-label" htmlFor="event_eventType">Type of Event</label>
+                    <select id="event_eventType" name="event_eventType" value={formData.eventDetails.eventType} onChange={handleChange}>
                       <option value="">Select type...</option>
-                      {EVENT_TYPES.map((t) => (
-                        <option key={t} value={t}>
-                          {t}
-                        </option>
-                      ))}
+                      {EVENT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
                     </select>
                   </div>
                   <div className="contact-input-group">
-                    <label className="contact-label" htmlFor="event_guestCount">
-                      Estimated Guest Count
-                    </label>
-                    <input
-                      id="event_guestCount"
-                      type="text"
-                      name="event_guestCount"
-                      value={formData.eventDetails.guestCount}
-                      onChange={handleChange}
-                      placeholder="e.g. 25–36"
-                    />
+                    <label className="contact-label" htmlFor="event_guestCount">Estimated Guest Count</label>
+                    <input id="event_guestCount" type="text" name="event_guestCount" value={formData.eventDetails.guestCount} onChange={handleChange} placeholder="e.g. 25–36" />
                   </div>
                 </div>
-
                 <div className="contact-form-row">
                   <div className="contact-input-group">
-                    <label className="contact-label" htmlFor="event_preferredDate">
-                      Preferred Date
-                    </label>
-                    <input
-                      id="event_preferredDate"
-                      type="date"
-                      name="event_preferredDate"
-                      value={formData.eventDetails.preferredDate}
-                      onChange={handleChange}
-                    />
+                    <label className="contact-label" htmlFor="event_preferredDate">Preferred Date</label>
+                    <input id="event_preferredDate" type="date" name="event_preferredDate" value={formData.eventDetails.preferredDate} onChange={handleChange} />
                   </div>
                   <div className="contact-input-group">
-                    <label className="contact-label" htmlFor="event_budget">
-                      Approximate Budget
-                    </label>
-                    <select
-                      id="event_budget"
-                      name="event_budget"
-                      value={formData.eventDetails.budget}
-                      onChange={handleChange}
-                    >
+                    <label className="contact-label" htmlFor="event_budget">Approximate Budget</label>
+                    <select id="event_budget" name="event_budget" value={formData.eventDetails.budget} onChange={handleChange}>
                       <option value="">Select range...</option>
-                      {BUDGET_RANGES.map((b) => (
-                        <option key={b} value={b}>
-                          {b}
-                        </option>
-                      ))}
+                      {BUDGET_RANGES.map((b) => <option key={b} value={b}>{b}</option>)}
                     </select>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Message */}
             <div className="contact-input-group">
-              <label className="contact-label" htmlFor="message">
-                Message
-              </label>
+              <label className="contact-label" htmlFor="message">Message</label>
               <textarea
                 id="message"
                 name="message"
@@ -387,11 +329,7 @@ const Contact = () => {
                 value={formData.message}
                 onChange={handleChange}
                 required
-                placeholder={
-                  isEventPlanning
-                    ? 'Share any other details about your vision...'
-                    : 'How can we help you?'
-                }
+                placeholder={isEventPlanning ? 'Share any other details about your vision...' : 'How can we help you?'}
               />
             </div>
 
@@ -401,11 +339,7 @@ const Contact = () => {
               </div>
             )}
 
-            <button
-              type="submit"
-              className="contact-submit-btn"
-              disabled={isSubmitting}
-            >
+            <button type="submit" className="contact-submit-btn" disabled={isSubmitting}>
               {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
 

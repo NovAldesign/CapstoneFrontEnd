@@ -74,7 +74,7 @@
   margin-bottom: 30px;
 }
 
-/* FIXED: reduced from 1.8rem — no longer competes with headline */
+/* FIXED: reduced from 1.8rem - no longer competes with headline */
 .narrative-lead-white {
   font-family: 'Playfair Display', serif;
   font-size: 1.3rem;
@@ -392,7 +392,7 @@
 
 /* =============================================
    5. PARTNERSHIP / SPONSORSHIP
-   FIXED: standardized #d4af37 → var(--gold)
+   FIXED: standardized #d4af37 -> var(--gold)
    ============================================= */
 .partnership-editorial-section {
   padding: 100px 5%;
@@ -690,4 +690,50 @@
     text-align: center;
     padding: 16px 24px;
   }
+}
+
+/* Story section CTA buttons */
+.story-cta-btn {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 14px 32px;
+  background: #002147;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transition: all 0.3s ease;
+  border: 1px solid #002147;
+}
+
+.story-cta-btn:hover {
+  background: #C5A059;
+  color: #002147;
+  border-color: #C5A059;
+}
+
+/* Story block CTA buttons */
+.story-btn {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 14px 32px;
+  background: var(--navy);
+  color: var(--white);
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transition: all 0.3s ease;
+  border: 1px solid var(--navy);
+}
+
+.story-btn:hover {
+  background: var(--gold);
+  color: var(--navy);
+  border-color: var(--gold);
 }

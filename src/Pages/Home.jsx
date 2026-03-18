@@ -1,29 +1,27 @@
 import React from "react";
 import '../Styles/Home.css';
 import { Link } from "react-router-dom";
- 
+
 const Home = () => {
   return (
     <main className="home-wrapper">
- 
+
       {/* 1. HERO */}
       <header className="home-hero-visual">
         <div className="hero-dark-overlay">
           <div className="hero-content-luxe">
             <span className="location-tag-gold">Atlanta & Beyond</span>
-            {/* FIXED: removed <br/> — CSS handles visual break */}
             <h1 className="playfair luxe-title-white">The Antidote.</h1>
             <div className="gold-spacer-v2"></div>
-            {/* FIXED: narrative lead copy updated, font size reduced in CSS */}
             <p className="narrative-lead-white">
-              Success shouldn't be a solo journey. Join a collective where 
+              Success shouldn't be a solo journey. Join a collective where
               excellence meets genuine connection.
             </p>
             <Link to="/events" className="gold-fill-btn">Explore the Collective →</Link>
           </div>
         </div>
       </header>
- 
+
       {/* 2. ISOLATION STATS */}
       <section className="isolation-stats-gold">
         <div className="stats-container">
@@ -32,7 +30,6 @@ const Home = () => {
             <h2 className="playfair navy-text">Why Connection is Non-Negotiable</h2>
             <div className="navy-spacer-small"></div>
           </div>
-          {/* FIXED: removed <br /> — margin-top on stats-grid handles spacing */}
           <div className="stats-grid">
             <div className="stat-card-navy">
               <div className="stat-number-navy">15</div>
@@ -55,9 +52,11 @@ const Home = () => {
           </div>
         </div>
       </section>
- 
+
       {/* 3. STORY SECTION */}
       <section className="story-section">
+
+        {/* Connection block */}
         <div className="story-block">
           <div className="story-image">
             <img
@@ -73,9 +72,13 @@ const Home = () => {
               We value every interaction and are here to serve you as you transition
               from isolated to integrated.
             </p>
+            <Link to="/membership" className="story-cta-btn">
+              Join the Collective
+            </Link>
           </div>
         </div>
- 
+
+        {/* Travel block */}
         <div className="story-block reverse">
           <div className="story-image">
             <img
@@ -90,17 +93,20 @@ const Home = () => {
               Travel is for fun and seeing the world. We curate journeys where
               the destination is just the backdrop for building lifelong bonds.
             </p>
+            <Link to="/travel" className="story-cta-btn">
+              Explore Group Travel
+            </Link>
           </div>
         </div>
+
       </section>
- 
-      {/* 4. PROOF OF TRACTION — NEW SECTION */}
+
+      {/* 4. PROOF OF TRACTION */}
       <section className="traction-section">
         <div>
           <span className="traction-eyebrow">By The Numbers</span>
           <h2 className="playfair traction-heading">Built in Under 90 Days.</h2>
           <p className="traction-subhead">No ad spend. No paid promotions. Just showing up.</p>
- 
           <div className="traction-grid">
             <div className="traction-stat">
               <div className="traction-number">4</div>
@@ -118,7 +124,6 @@ const Home = () => {
               <div className="traction-desc">Documented every event night</div>
             </div>
           </div>
- 
           <div className="traction-bottom-row">
             <div className="traction-platform-strip">
               <div className="traction-platform-num">700+</div>
@@ -135,7 +140,7 @@ const Home = () => {
           </div>
         </div>
       </section>
- 
+
       {/* 5. PARTNERSHIP */}
       <section className="partnership-editorial-section">
         <div className="editorial-frame">
@@ -158,7 +163,7 @@ const Home = () => {
           </div>
         </div>
       </section>
- 
+
       {/* 6. HOST NOTE */}
       <section className="host-note-visual">
         <div className="host-overlay-container">
@@ -170,9 +175,9 @@ const Home = () => {
           <Link to="/membership" className="btn-gold-outline-white">Join the Collective</Link>
         </div>
       </section>
- 
+
     </main>
   );
 };
- 
+
 export default Home;

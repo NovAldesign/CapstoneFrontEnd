@@ -11,7 +11,7 @@
 .about-hero {
   min-height: 80vh;
   background: linear-gradient(rgba(0, 33, 71, 0.65), rgba(0, 33, 71, 0.80)),
-              url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=1600')
+              url('https://distresscentre.com/wp-content/uploads/2024/03/community-service-volunteering.jpg')
               no-repeat center/cover;
   background-attachment: fixed;
   display: flex;
@@ -453,9 +453,11 @@
 /* FOUNDER */
 .about-founder-section {
   min-height: 60vh;
-  background: linear-gradient(rgba(0, 33, 71, 0.88), rgba(0, 33, 71, 0.88)),
-              url('https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=1600')
-              no-repeat center/cover;
+background-image: linear-gradient(rgba(0, 33, 71, 0.88), rgba(0, 33, 71, 0.88)),
+                  url('https://i0.wp.com/www.reemployability.com/wp-content/uploads/2023/04/Untitled-design-2023-04-13T15...');
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
   background-attachment: fixed;
   display: flex;
   align-items: center;

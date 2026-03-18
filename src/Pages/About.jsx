@@ -9,7 +9,7 @@ const About = () => {
       {/* HERO */}
       <header className="about-hero">
         <div className="about-hero-inner">
-          <span className="about-eyebrow">Est. January 2025 · Atlanta, GA</span>
+          <span className="about-eyebrow">Est. January 2026 · Atlanta, GA</span>
           <h1 className="playfair about-hero-title">
             Built for the Room<br />That Didn't Exist Yet.
           </h1>
@@ -27,7 +27,7 @@ const About = () => {
           <div className="about-story-image-col">
             <div className="about-story-img-wrapper">
               <img
-                src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=800"
+                src="https://i0.wp.com/www.reemployability.com/wp-content/uploads/2023/04/Untitled-design-2023-04-13T151843.899.png?resize=1080%2C675&ssl=1auto=format&fit=crop&q=80&w=800"
                 alt="Grown Folks Collective community"
                 className="about-story-img"
               />
@@ -47,7 +47,7 @@ const About = () => {
               The options that used to work — the bars, the lounges, the loud rooms full of strangers — stopped feeling right.
             </p>
             <p className="about-body">
-              Grown Folks Collective was founded in Atlanta in January 2025 to fill that gap.
+              Grown Folks Collective was founded in Atlanta in January 2026 to fill that gap.
             </p>
             <p className="about-body">
               We didn't start with a business plan. We started with a game night in a small Decatur restaurant and 36 people who showed up because they were tired of sitting at home. It sold out. Then we did it again. Sold out again.

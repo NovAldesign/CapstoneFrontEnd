@@ -1,35 +1,48 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom'; 
+import { Routes, Route } from 'react-router-dom';
 
-// --- Components & Pages ---
-import Navbar from './components/Navbar.jsx'; 
+// --- Components ---
+import Navbar from './Components/Navbar.jsx';
+import Footer from './Components/Footer.jsx';
+
+// --- Pages ---
 import Home from './pages/Home.jsx';
-import Membership from './Pages/Membership.jsx'; // Note: Ensure casing matches your file system
-import AdminDashboard from './Pages/AdminDashboard.jsx'; 
+import Events from './Pages/Events.jsx';
+import Travel from './Pages/Travel.jsx';
+import IntentionalDinners from './Pages/IntentionalDinners.jsx';
+import Membership from './Pages/Membership.jsx';
+import Partnerships from './Pages/Partnership.jsx';
+import About from './Pages/About.jsx';
+import Contact from './Pages/Contact.jsx';
 import Login from './Pages/Login.jsx';
-import Events from './Pages/Events'; 
-import Partnerships from './Pages/Partnership.jsx'; 
+import AdminDashboard from './Pages/AdminDashboard.jsx';
 
 // --- Styles ---
 import './App.css';
-import './index.css'; 
+import './index.css';
 
 function App() {
   return (
-    
     <div className="App-wrapper">
       <Navbar />
-      
-      
+
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/membership" element={<Membership />} />
-          <Route path="/partnerships" element={<Partnerships />} />
+          {/* Public */}
+          <Route path="/"              element={<Home />} />
+          <Route path="/events"        element={<Events />} />
+          <Route path="/travel"        element={<Travel />} />
+          <Route path="/ic-dinners"    element={<IntentionalDinners />} />
+          <Route path="/membership"    element={<Membership />} />
+          <Route path="/partnerships"  element={<Partnerships />} />
+          <Route path="/about"         element={<About />} />
+          <Route path="/contact"       element={<Contact />} />
+          <Route path="/login"         element={<Login />} />
+
+          {/* Protected */}
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
+          {/* 404 */}
           <Route path="*" element={
             <div className="page-not-found">
               <h2 className="playfair">Page Not Found</h2>
@@ -38,6 +51,7 @@ function App() {
           } />
         </Routes>
       </main>
+      <Footer />  
     </div>
   );
 }
