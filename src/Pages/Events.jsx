@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { fetchGfcEvents, formatEventDate, formatEventTime } from '../Services/eventService';
-import Checkout from '../Components/Checkout.jsx';
-import '../Styles/Events.css';
+import React, { useState, useEffect } from "react";
+import {
+  fetchGfcEvents,
+  formatEventDate,
+  formatEventTime,
+} from "../Services/eventService";
+import Checkout from "../Components/CheckoutForm.jsx";
+import "../Styles/Events.css";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -20,7 +24,7 @@ const Events = () => {
   const now = new Date();
 
   const upcomingEvents = events
-    .filter((e) => new Date(e.date) >= now && e.status === 'published')
+    .filter((e) => new Date(e.date) >= now && e.status === "published")
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   const pastEvents = events
@@ -29,12 +33,12 @@ const Events = () => {
 
   const openCheckout = (event) => {
     setCheckoutEvent(event);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   };
 
   const closeCheckout = () => {
     setCheckoutEvent(null);
-    document.body.style.overflow = '';
+    document.body.style.overflow = "";
   };
 
   if (loading) {
@@ -47,17 +51,20 @@ const Events = () => {
 
   return (
     <div className="events-page-wrapper">
-
       {/* HERO */}
       <header className="page-hero-visual">
         <div className="hero-dark-overlay">
           <div className="hero-content-luxe">
             <span className="location-tag-gold">The Experience</span>
-            <h1 className="playfair luxe-title-white">Curated<br />Gatherings.</h1>
+            <h1 className="playfair luxe-title-white">
+              Curated
+              <br />
+              Gatherings.
+            </h1>
             <div className="gold-spacer-v2"></div>
             <p className="narrative-lead-white">
-              From intimate dinners in Atlanta to global retreats.
-              Find your sanctuary.
+              From intimate dinners in Atlanta to global retreats. Find your
+              sanctuary.
             </p>
           </div>
         </div>
@@ -78,22 +85,27 @@ const Events = () => {
             <div className="family-content">
               <span className="gold-label">Beyond the Title</span>
               <h2 className="playfair navy-text">
-                A Sanctuary for<br />High-Level Connection.
+                A Sanctuary for
+                <br />
+                High-Level Connection.
               </h2>
               <p className="lead-text">
-                Whether you are leading a firm, scaling a startup, or mastering a craft — the view at the top can be isolating.
+                Whether you are leading a firm, scaling a startup, or mastering
+                a craft — the view at the top can be isolating.
               </p>
               <p>
-                The <strong>Grown Folks Collective</strong> brings together professionals
-                and entrepreneurs from all fields who are ready to trade "networking" for{' '}
-                <strong>true belonging.</strong> We gather to find joy in shared passions and
-                conversations that only happen when you're among peers who understand the
-                weight of responsibility.
+                The <strong>Grown Folks Collective</strong> brings together
+                professionals and entrepreneurs from all fields who are ready to
+                trade "networking" for <strong>true belonging.</strong> We
+                gather to find joy in shared passions and conversations that
+                only happen when you're among peers who understand the weight of
+                responsibility.
               </p>
               <p>
-                This is your space to <strong>unplug from professional stress</strong> and
-                reconnect with the things you love. We aren't just building a network;
-                we are building a family.
+                This is your space to{" "}
+                <strong>unplug from professional stress</strong> and reconnect
+                with the things you love. We aren't just building a network; we
+                are building a family.
               </p>
               <div className="family-values">
                 <div className="value-item">
@@ -115,7 +127,6 @@ const Events = () => {
       </section>
 
       <div className="container main-content-padding">
-
         {/* UPCOMING EVENTS */}
         <section className="section-spacing">
           <div className="section-header-center">
@@ -128,7 +139,7 @@ const Events = () => {
             {upcomingEvents.length > 0 ? (
               upcomingEvents.map((event) => {
                 const isSoldOut = event.ticketTypes?.every(
-                  (t) => t.sold >= t.quantity
+                  (t) => t.sold >= t.quantity,
                 );
                 const lowestPrice = event.ticketTypes?.length
                   ? Math.min(...event.ticketTypes.map((t) => t.price))
@@ -140,7 +151,7 @@ const Events = () => {
                       <img
                         src={
                           event.coverImage ||
-                          'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800'
+                          "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800"
                         }
                         alt={event.name}
                         className="event-img"
@@ -151,7 +162,8 @@ const Events = () => {
                     </div>
                     <div className="event-info">
                       <span className="event-date-tag">
-                        {formatEventDate(event.date)} &nbsp;·&nbsp; {formatEventTime(event.date)}
+                        {formatEventDate(event.date)} &nbsp;·&nbsp;{" "}
+                        {formatEventTime(event.date)}
                       </span>
                       <h3 className="playfair">{event.name}</h3>
                       <div className="event-location">
@@ -167,10 +179,8 @@ const Events = () => {
                             <span className="event-price-free">Free</span>
                           ) : (
                             <span className="event-price-from">
-                              From{' '}
-                              <strong>
-                                ${(lowestPrice / 100).toFixed(0)}
-                              </strong>
+                              From{" "}
+                              <strong>${(lowestPrice / 100).toFixed(0)}</strong>
                             </span>
                           )}
                           <span className="event-capacity">
@@ -194,8 +204,8 @@ const Events = () => {
               })
             ) : (
               <p className="no-events-msg">
-                Our next intentional gathering is currently being curated.
-                Join the family to be the first to know.
+                Our next intentional gathering is currently being curated. Join
+                the family to be the first to know.
               </p>
             )}
           </div>
@@ -206,7 +216,9 @@ const Events = () => {
           <section className="past-events-archive">
             <div className="section-header-left">
               <span className="gold-label">Memories</span>
-              <h2 className="playfair archive-title">The Legacy of Connection</h2>
+              <h2 className="playfair archive-title">
+                The Legacy of Connection
+              </h2>
               <div className="gold-spacer-v2"></div>
             </div>
             <div className="past-events-compact-grid">
@@ -216,7 +228,7 @@ const Events = () => {
                     <img
                       src={
                         event.coverImage ||
-                        'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=400'
+                        "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=400"
                       }
                       alt={event.name}
                       className="past-img-grayscale"
@@ -225,21 +237,21 @@ const Events = () => {
                   <div className="past-info-compact">
                     <h4 className="playfair">{event.name}</h4>
                     <p className="past-meta">{formatEventDate(event.date)}</p>
-                    <span className="concluded-tag">Family Gathering Completed</span>
+                    <span className="concluded-tag">
+                      Family Gathering Completed
+                    </span>
                   </div>
                 </div>
               ))}
             </div>
           </section>
         )}
-
       </div>
 
       {/* CHECKOUT MODAL */}
       {checkoutEvent && (
         <Checkout event={checkoutEvent} onClose={closeCheckout} />
       )}
-
     </div>
   );
 };

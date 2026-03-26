@@ -17,6 +17,10 @@ import Contact from './Pages/Contact.jsx';
 import Login from './Pages/Login.jsx';
 import AdminDashboard from './Pages/AdminDashboard.jsx';
 
+// --- New Stripe Checkout Pages ---
+import CheckoutPage from './Pages/CheckoutPage.jsx';
+import SuccessPage from './Pages/SuccessPage.jsx';
+
 // --- Styles ---
 import './App.css';
 import './index.css';
@@ -28,7 +32,6 @@ function App() {
 
       <main className="main-content">
         <Routes>
-          {/* Public */}
           <Route path="/"              element={<Home />} />
           <Route path="/events"        element={<Events />} />
           <Route path="/travel"        element={<Travel />} />
@@ -39,10 +42,12 @@ function App() {
           <Route path="/contact"       element={<Contact />} />
           <Route path="/login"         element={<Login />} />
 
-          {/* Protected */}
+          {/* Dynamic Checkout Route */}
+          <Route path="/checkout/:eventId" element={<CheckoutPage />} />
+          <Route path="/success"           element={<SuccessPage />} />
+
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
-          {/* 404 */}
           <Route path="*" element={
             <div className="page-not-found">
               <h2 className="playfair">Page Not Found</h2>

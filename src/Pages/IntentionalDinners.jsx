@@ -1,37 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Checkout from '../Components/Checkout.jsx';
-import { fetchGfcEvents } from '../Services/eventService.js';
-import '../Styles/IntentionalDinners.css';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Checkout from "../Components/CheckoutForm.jsx";
+import { fetchGfcEvents } from "../Services/eventService.js";
+import "../Styles/IntentionalDinners.css";
 
 const COURSES = [
   {
-    number: '01',
-    title: 'Arrival & Welcome',
+    number: "01",
+    title: "Arrival & Welcome",
     description:
-      'A signature mocktail is waiting at your seat. A single question on your table card. No pressure — just permission to be curious about the person beside you.',
-    prompt: 'What brought you to a room like this tonight?',
+      "A signature mocktail is waiting at your seat. A single question on your table card. No pressure — just permission to be curious about the person beside you.",
+    prompt: "What brought you to a room like this tonight?",
   },
   {
-    number: '02',
-    title: 'First Course',
+    number: "02",
+    title: "First Course",
     description:
-      'The host introduces the evening\'s theme. A conversation prompt is placed at every table. The room gets quieter. The conversations get better.',
-    prompt: 'What is something you used to believe that you no longer do?',
+      "The host introduces the evening's theme. A conversation prompt is placed at every table. The room gets quieter. The conversations get better.",
+    prompt: "What is something you used to believe that you no longer do?",
   },
   {
-    number: '03',
-    title: 'Main Course',
+    number: "03",
+    title: "Main Course",
     description:
-      'The deeper prompt. This is where the evening turns. Phones are face-down. Eye contact is made. You remember what it feels like to be fully present.',
-    prompt: 'What does genuine connection look like in your life right now?',
+      "The deeper prompt. This is where the evening turns. Phones are face-down. Eye contact is made. You remember what it feels like to be fully present.",
+    prompt: "What does genuine connection look like in your life right now?",
   },
   {
-    number: '04',
-    title: 'Dessert',
+    number: "04",
+    title: "Dessert",
     description:
-      'Open table. The conversation finds its own direction. By now you know the people next to you. Something has shifted in the room.',
-    prompt: 'Open floor — the conversation belongs to you now.',
+      "Open table. The conversation finds its own direction. By now you know the people next to you. Something has shifted in the room.",
+    prompt: "Open floor — the conversation belongs to you now.",
   },
 ];
 
@@ -45,8 +45,8 @@ const IntentionalDinners = () => {
       const all = await fetchGfcEvents();
       const dinners = all.filter(
         (e) =>
-          e.eventType === 'Intentional Conversations Over Dinner' &&
-          new Date(e.date) >= new Date()
+          e.eventType === "Intentional Conversations Over Dinner" &&
+          new Date(e.date) >= new Date(),
       );
       setDinnerEvents(dinners);
       setLoading(false);
@@ -56,12 +56,12 @@ const IntentionalDinners = () => {
 
   const openCheckout = (event) => {
     setCheckoutEvent(event);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   };
 
   const closeCheckout = () => {
     setCheckoutEvent(null);
-    document.body.style.overflow = '';
+    document.body.style.overflow = "";
   };
 
   const lowestPrice = (event) => {
@@ -71,7 +71,6 @@ const IntentionalDinners = () => {
 
   return (
     <div className="ic-page">
-
       {/* =============================================
           HERO - FULL WIDTH CENTERED DARK
          ============================================= */}
@@ -79,12 +78,14 @@ const IntentionalDinners = () => {
         <div className="ic-hero-inner">
           <span className="ic-eyebrow">An Evening With the Collective</span>
           <h1 className="playfair ic-hero-title">
-            Intentional Conversations<br />Over Dinner.
+            Intentional Conversations
+            <br />
+            Over Dinner.
           </h1>
           <div className="ic-gold-rule"></div>
           <p className="ic-hero-lead">
-            A curated dinner experience built around one thing most adults
-            have forgotten how to do — talk to each other. Really talk.
+            A curated dinner experience built around one thing most adults have
+            forgotten how to do — talk to each other. Really talk.
           </p>
           <a href="#ic-tickets" className="ic-hero-cta">
             Reserve Your Seat
@@ -97,14 +98,14 @@ const IntentionalDinners = () => {
          ============================================= */}
       <section className="ic-what-section">
         <div className="ic-what-inner">
-
           <div className="ic-what-text">
             <span className="ic-section-eyebrow">The Experience</span>
             <h2 className="playfair ic-section-title">More Than a Meal.</h2>
             <p>
-              Intentional Conversations Over Dinner is GFC's most intimate event.
-              Each month, 24–36 members gather at a private dining room or chef's
-              table for a multi-course dinner built around guided conversation.
+              Intentional Conversations Over Dinner is GFC's most intimate
+              event. Each month, 24–36 members gather at a private dining room
+              or chef's table for a multi-course dinner built around guided
+              conversation.
             </p>
             <p>
               Every course comes with a prompt. Every prompt is designed to go
@@ -137,7 +138,6 @@ const IntentionalDinners = () => {
               <div className="ic-detail-label">Alcohol — always</div>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -151,8 +151,8 @@ const IntentionalDinners = () => {
             How the Evening Unfolds.
           </h2>
           <p className="ic-format-subhead">
-            Each course has a purpose. Each prompt has a direction.
-            The conversation does the rest.
+            Each course has a purpose. Each prompt has a direction. The
+            conversation does the rest.
           </p>
 
           <div className="ic-courses">
@@ -203,23 +203,25 @@ const IntentionalDinners = () => {
               <div className="ic-who-icon">&#9671;</div>
               <p>
                 You're 35 or older, a professional or entrepreneur, and your
-                Saturday nights deserve better than what you've been settling for.
+                Saturday nights deserve better than what you've been settling
+                for.
               </p>
             </div>
             <div className="ic-who-card">
               <div className="ic-who-icon">&#9671;</div>
               <p>
                 You're ready to be known — not just recognized. This dinner is
-                for the version of you that's done performing and ready to connect.
+                for the version of you that's done performing and ready to
+                connect.
               </p>
             </div>
           </div>
 
           <div className="ic-who-note">
             <p>
-              This is not a networking event. There are no business cards.
-              No elevator pitches. No "what do you do?" as an opener.
-              Just people — and what happens when you give them the right questions.
+              This is not a networking event. There are no business cards. No
+              elevator pitches. No "what do you do?" as an opener. Just people —
+              and what happens when you give them the right questions.
             </p>
           </div>
         </div>
@@ -236,7 +238,6 @@ const IntentionalDinners = () => {
           </h2>
 
           <div className="ic-pricing-grid">
-
             <div className="ic-price-card">
               <div className="ic-price-label">General Admission</div>
               <div className="ic-price-amount">$100–$125</div>
@@ -273,7 +274,6 @@ const IntentionalDinners = () => {
                 Become a Member
               </Link>
             </div>
-
           </div>
         </div>
       </section>
@@ -286,8 +286,8 @@ const IntentionalDinners = () => {
           <span className="ic-section-eyebrow">Upcoming Dinners</span>
           <h2 className="playfair ic-section-title">Reserve Your Seat.</h2>
           <p className="ic-tickets-subhead">
-            Dinners sell out quickly. Members receive access before tickets
-            open to the public.
+            Dinners sell out quickly. Members receive access before tickets open
+            to the public.
           </p>
 
           {loading ? (
@@ -296,7 +296,7 @@ const IntentionalDinners = () => {
             <div className="ic-dinner-list">
               {dinnerEvents.map((event) => {
                 const isSoldOut = event.ticketTypes?.every(
-                  (t) => t.sold >= t.quantity
+                  (t) => t.sold >= t.quantity,
                 );
                 const price = lowestPrice(event);
 
@@ -304,16 +304,16 @@ const IntentionalDinners = () => {
                   <div key={event._id} className="ic-dinner-row">
                     <div className="ic-dinner-info">
                       <div className="ic-dinner-date">
-                        {new Date(event.date).toLocaleDateString('en-US', {
-                          weekday: 'long',
-                          month: 'long',
-                          day: 'numeric',
-                          year: 'numeric',
+                        {new Date(event.date).toLocaleDateString("en-US", {
+                          weekday: "long",
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
                         })}
-                        {' · '}
-                        {new Date(event.date).toLocaleTimeString('en-US', {
-                          hour: 'numeric',
-                          minute: '2-digit',
+                        {" · "}
+                        {new Date(event.date).toLocaleTimeString("en-US", {
+                          hour: "numeric",
+                          minute: "2-digit",
                           hour12: true,
                         })}
                       </div>
@@ -346,13 +346,11 @@ const IntentionalDinners = () => {
             </div>
           ) : (
             <div className="ic-no-events">
-              <p>
-                Our next Intentional Conversations dinner is being curated.
-              </p>
+              <p>Our next Intentional Conversations dinner is being curated.</p>
               <p>
                 <Link to="/membership" className="ic-inline-link">
                   Become a member
-                </Link>{' '}
+                </Link>{" "}
                 to be the first to know when the next date is announced.
               </p>
             </div>
@@ -364,7 +362,6 @@ const IntentionalDinners = () => {
       {checkoutEvent && (
         <Checkout event={checkoutEvent} onClose={closeCheckout} />
       )}
-
     </div>
   );
 };
