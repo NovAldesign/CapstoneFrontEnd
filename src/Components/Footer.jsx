@@ -89,7 +89,7 @@ const Footer = () => {
           <div className="footer-wordmark">GFC</div>
           <p className="footer-tagline">
             Ending the social isolation epidemic —<br />
-            one Saturday night at a time.
+            one event at a time.
           </p>
           <p className="footer-location">
             Decatur, GA &nbsp;·&nbsp; Serving Metro Atlanta
