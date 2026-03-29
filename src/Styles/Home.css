@@ -5,29 +5,22 @@
   --gold: #C5A059;
   --cream: #FDFBFA;
   --white: #FFFFFF;
-  --focus-ring: #2563eb; /* Accessible blue for focus */
 }
 
-/* --- ADA Accessibility: Skip Link --- */
+/* --- ADA ACCESSIBILITY ADDITIONS --- */
 .skip-link {
   position: absolute;
   top: -100px;
   left: 0;
   background: var(--navy);
   color: var(--white);
-  padding: 15px 25px;
+  padding: 15px;
   z-index: 9999;
-  text-decoration: none;
-  font-weight: 700;
-  transition: top 0.3s ease;
+  transition: top 0.3s;
 }
+.skip-link:focus { top: 0; }
 
-.skip-link:focus {
-  top: 0;
-}
-
-/* --- ADA Accessibility: Global Focus States --- */
-/* This ensures keyboard users can see which button they are on */
+/* Ensures keyboard users can see where they are without breaking your hover styles */
 :focus-visible {
   outline: 3px solid var(--gold);
   outline-offset: 4px;
@@ -39,7 +32,6 @@
   color: var(--navy);
   font-family: 'Montserrat', sans-serif;
   overflow-x: hidden;
-  scroll-behavior: smooth;
 }
 
 .playfair {
@@ -51,8 +43,7 @@
    ============================================= */
 .home-hero-visual {
   height: 90vh;
-  /* Darkened gradients slightly to ensure white text meets 4.5:1 contrast ratio */
-  background-image: linear-gradient(rgba(0,33,71,0.6), rgba(0,33,71,0.8)),
+  background-image: linear-gradient(rgba(0,33,71,0.5), rgba(0,33,71,0.7)),
                     url('https://tripleseat.com/wp-content/uploads/2023/09/How-to-Create-a-Special-Group-Dining-Experience-for-Your-Guests-2.jpg');
   background-size: cover;
   background-position: center 20%;
@@ -77,7 +68,7 @@
   text-transform: uppercase;
   letter-spacing: 5px;
   font-size: 0.8rem;
-  font-weight: 700; /* Increased to 700 for better legibility */
+  font-weight: 600;
   display: block;
   margin-bottom: 20px;
 }
@@ -89,8 +80,9 @@
   text-transform: uppercase;
   margin: 0 0 25px 0;
   color: var(--white);
-  text-shadow: 2px 2px 20px rgba(0,0,0,0.6);
+  text-shadow: 2px 2px 15px rgba(0,0,0,0.4);
   word-break: break-word;
+  hyphens: none;
 }
 
 .gold-spacer-v2 {
@@ -105,7 +97,7 @@
   font-size: 1.3rem;
   line-height: 1.6;
   margin-bottom: 40px;
-  color: rgba(255, 255, 255, 0.95); /* Increased opacity for ADA contrast */
+  color: rgba(255, 255, 255, 0.88);
   max-width: 540px;
 }
 
@@ -122,14 +114,14 @@
   border: 1px solid var(--gold);
 }
 
-.gold-fill-btn:hover, .gold-fill-btn:focus {
+.gold-fill-btn:hover {
   background: transparent !important;
   color: var(--white) !important;
   border-color: var(--white);
 }
 
 /* =============================================
-   2. ISOLATION STATS
+   2. ISOLATION STATS (GOLD BACKGROUND)
    ============================================= */
 .isolation-stats-gold {
   background-color: var(--gold);
@@ -159,6 +151,13 @@
   font-weight: 900;
 }
 
+.navy-spacer-small {
+  width: 60px;
+  height: 2px;
+  background: var(--navy);
+  margin: 0 auto;
+}
+
 .stats-grid {
   display: flex;
   justify-content: center;
@@ -168,13 +167,13 @@
 
 .stat-card-navy {
   flex: 1;
-  background: rgba(0, 33, 71, 0.06); /* Slightly darker for contrast */
+  background: rgba(0, 33, 71, 0.04);
   padding: 60px 30px;
-  border: 1px solid rgba(0, 33, 71, 0.15);
+  border: 1px solid rgba(0, 33, 71, 0.1);
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-/* Added focus for keyboard users */
+/* Added focus-within so keyboard tabbing triggers your hover effect */
 .stat-card-navy:hover, .stat-card-navy:focus-within {
   transform: translateY(-12px);
   background: var(--navy);
@@ -187,10 +186,36 @@
   color: var(--navy);
   line-height: 1;
   margin-bottom: 15px;
+  transition: color 0.3s ease;
 }
 
-.stat-card-navy:hover .stat-number-navy, 
-.stat-card-navy:focus-within .stat-number-navy { color: var(--gold); }
+.stat-label-navy {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 25px;
+  transition: color 0.3s ease;
+}
+
+.navy-line-small {
+  width: 40px;
+  height: 1px;
+  background: var(--navy);
+  margin: 0 auto 25px;
+  transition: background 0.3s ease;
+}
+
+.stat-card-navy p {
+  font-size: 1rem;
+  line-height: 1.7;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.stat-card-navy:hover .stat-number-navy, .stat-card-navy:focus-within .stat-number-navy { color: var(--gold); }
+.stat-card-navy:hover .stat-label-navy, .stat-card-navy:focus-within .stat-label-navy  { color: var(--gold); }
+.stat-card-navy:hover .navy-line-small, .stat-card-navy:focus-within .navy-line-small  { background: var(--gold); }
 
 /* =============================================
    3. STORY SECTION
@@ -207,18 +232,53 @@
   margin-bottom: 180px;
 }
 
+.story-block.reverse {
+  flex-direction: row-reverse;
+}
+
+.story-image {
+  flex: 1.2;
+}
+
 .story-image img {
   width: 100%;
   height: 550px;
   object-fit: cover;
   box-shadow: 30px 30px 0px var(--gold);
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.story-image img:hover {
+  transform: translate(-4px, -4px);
+}
+
+.story-text {
+  flex: 1;
+}
+
+.gold-label {
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.story-text h2 {
+  font-size: 3rem;
+  margin-bottom: 25px;
+  color: var(--navy);
+  line-height: 1.1;
+  font-weight: 900;
 }
 
 .story-text p {
   font-size: 1.15rem;
   line-height: 1.9;
-  color: #222; /* Darkened from #444 for WCAG AA readability */
-  font-weight: 400; /* Increased weight slightly for clarity */
+  color: #222; /* Modified for ADA: Darkened from #444 for contrast against cream */
+  font-weight: 400;
 }
 
 /* =============================================
@@ -230,43 +290,271 @@
   text-align: center;
 }
 
+.traction-eyebrow {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.traction-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 900;
+  color: var(--white);
+  margin-bottom: 12px;
+  line-height: 1.15;
+}
+
 .traction-subhead {
-  color: rgba(255,255,255,0.75); /* Increased contrast */
+  font-size: 1rem;
+  color: rgba(255,255,255,0.75); /* Modified for ADA: Increased opacity from 0.55 */
+  font-style: italic;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 70px;
+}
+
+.traction-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid rgba(197,160,89,0.2);
+  max-width: 900px;
+  margin: 0 auto 2px;
+}
+
+.traction-stat {
+  padding: 50px 30px;
+  border-right: 1px solid rgba(197,160,89,0.15);
+  position: relative;
+}
+
+.traction-stat:last-child {
+  border-right: none;
+}
+
+.traction-stat::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 2px;
+  background: var(--gold);
+}
+
+.traction-number {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.traction-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.traction-desc {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.6;
+  font-style: italic;
+  font-family: 'Playfair Display', serif;
+}
+
+.traction-bottom-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid rgba(197,160,89,0.2);
+  border-top: none;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.traction-platform-strip {
+  padding: 30px 20px;
+  border-right: 1px solid rgba(197,160,89,0.15);
+}
+
+.traction-platform-strip:last-child {
+  border-right: none;
+}
+
+.traction-platform-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.traction-platform-name {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
 }
 
 /* =============================================
-   5. PARTNERSHIP
+   5. PARTNERSHIP / SPONSORSHIP
    ============================================= */
-.editorial-frame {
-  border: 2px solid var(--gold); /* Thickened border for visibility */
-}
-
-.editorial-body {
-  color: #222; /* Increased contrast for readability */
-}
-
-/* =============================================
-   6. HOST NOTE
-   ============================================= */
-.host-note-visual {
-  height: 75vh;
-  /* Darkened overlay to ensure white text is legible over the photo */
-  background: linear-gradient(rgba(0, 33, 71, 0.88), rgba(0, 33, 71, 0.88)),
-              url('https://www.boundless.org/wp-content/uploads/2024/01/who-are-your-real-friends-65aeb3b94db51-1024x683.webp');
-  background-attachment: fixed;
-  background-size: cover;
+.partnership-editorial-section {
+  padding: 100px 5%;
+  background-color: var(--white);
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
+.editorial-frame {
+  max-width: 1000px;
+  width: 100%;
+  padding: 60px 40px;
+  border: 1px solid var(--gold);
+  position: relative;
+  text-align: center;
+}
+
+.editorial-frame::before {
+  content: "GFC";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--white);
+  padding: 0 15px;
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.editorial-label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: 0.8rem;
+  color: var(--navy);
+  margin-bottom: 20px;
+}
+
+.editorial-title {
+  font-size: 2.5rem;
+  color: var(--navy);
+  margin-bottom: 20px;
+}
+
+.editorial-divider {
+  width: 50px;
+  height: 2px;
+  background-color: var(--gold);
+  margin: 0 auto 30px;
+}
+
+.editorial-body {
+  max-width: 650px;
+  margin: 0 auto 40px;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: #222; /* Modified for ADA: Darkened from #444 for contrast */
+}
+
+.gold-editorial-btn {
+  display: inline-block;
+  padding: 18px 40px;
+  background-color: var(--gold) !important;
+  color: var(--navy) !important;
+  text-decoration: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.gold-editorial-btn:hover {
+  background-color: var(--navy) !important;
+  color: var(--white) !important;
+  transform: translateY(-2px);
+}
+
+.portal-hint {
+  margin-top: 25px;
+  font-size: 0.75rem;
+  color: #777; /* Modified for ADA: Slightly darker than #999 */
+  letter-spacing: 1px;
+  text-wrap: balance;
+  text-align: center;
+}
+
 /* =============================================
-   ADA: REDUCED MOTION SUPPORT
+   6. HOST NOTE / FOUNDER QUOTE
    ============================================= */
+.host-note-visual {
+  height: 75vh;
+  background: linear-gradient(rgba(0, 33, 71, 0.85), rgba(0, 33, 71, 0.85)),
+              url('https://www.boundless.org/wp-content/uploads/2024/01/who-are-your-real-friends-65aeb3b94db51-1024x683.webp');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  text-align: center;
+  padding: 0 20px;
+}
+
+.host-overlay-container {
+  max-width: 800px;
+}
+
+.host-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+.signature {
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 40px;
+}
+
+.btn-gold-outline-white {
+  display: inline-block;
+  padding: 18px 45px;
+  border: 1px solid var(--white);
+  color: var(--white);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.btn-gold-outline-white:hover {
+  background: var(--white);
+  color: var(--navy);
+}
+
+/* --- ADA ACCESSIBILITY: REDUCED MOTION --- */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
@@ -276,34 +564,195 @@
 }
 
 /* =============================================
-   RESPONSIVE (UNCHANGED BUT CLEANED)
+   RESPONSIVE (Original Logic Preserved)
    ============================================= */
 @media (max-width: 1024px) {
-  .story-block, .story-block.reverse { flex-direction: column; text-align: center; }
-  .hero-dark-overlay { padding-left: 0; text-align: center; }
-  .gold-spacer-v2 { margin: 0 auto 30px; }
+  .story-block,
+  .story-block.reverse {
+    flex-direction: column;
+    gap: 50px;
+    text-align: center;
+  }
+
+  .story-image img {
+    height: 400px;
+    box-shadow: 15px 15px 0px var(--gold);
+  }
+
+  .stats-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stat-card-navy {
+    width: 100%;
+    max-width: 450px;
+  }
+
+  .hero-dark-overlay {
+    padding-left: 0;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hero-content-luxe {
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  .gold-spacer-v2 {
+    margin: 0 auto 30px;
+  }
+
+  .narrative-lead-white {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
-  .host-note-visual { background-attachment: scroll; height: auto; padding: 80px 20px; }
-  .luxe-title-white { font-size: clamp(3rem, 15vw, 5rem); }
+  .host-note-visual {
+    background-attachment: scroll;
+    height: auto;
+    padding: 80px 20px;
+  }
+
+  .host-quote {
+    font-size: 1.6rem;
+  }
+
+  .traction-section {
+    padding: 70px 6%;
+  }
+
+  .traction-subhead {
+    margin-bottom: 40px;
+  }
+
+  .traction-grid {
+    grid-template-columns: 1fr;
+    border: none;
+  }
+
+  .traction-stat {
+    border-right: none;
+    border-bottom: 1px solid rgba(197,160,89,0.15);
+    padding: 35px 20px;
+  }
+
+  .traction-stat:last-child {
+    border-bottom: none;
+  }
+
+  .traction-bottom-row {
+    grid-template-columns: 1fr;
+    border: none;
+    margin-top: 1px;
+  }
+
+  .traction-platform-strip {
+    border-right: none;
+    border-bottom: 1px solid rgba(197,160,89,0.15);
+    padding: 24px 20px;
+  }
+
+  .traction-platform-strip:last-child {
+    border-bottom: none;
+  }
+
+  .story-section {
+    padding: 80px 6%;
+  }
+
+  .story-block {
+    margin-bottom: 80px;
+  }
+
+  .story-text h2 {
+    font-size: 2.2rem;
+  }
+
+  .editorial-frame {
+    padding: 40px 24px;
+  }
+
+  .editorial-title {
+    font-size: 1.8rem;
+  }
+
+  .editorial-body {
+    font-size: 1rem;
+  }
+
+  .home-hero-visual {
+    height: 100svh;
+    background-position: center center;
+  }
+
+  .luxe-title-white {
+    font-size: clamp(3rem, 15vw, 5rem);
+  }
 }
 
-/* CTA BUTTONS */
-.story-cta-btn, .story-btn {
+@media (max-width: 480px) {
+  .isolation-stats-gold {
+    padding: 70px 20px;
+  }
+
+  .traction-grid,
+  .traction-bottom-row {
+    max-width: 100%;
+  }
+
+  .gold-fill-btn,
+  .btn-gold-outline-white,
+  .gold-editorial-btn {
+    width: 100%;
+    text-align: center;
+    padding: 16px 24px;
+  }
+}
+
+/* Story section CTA buttons */
+.story-cta-btn {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 14px 32px;
+  background: #002147;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transition: all 0.3s ease;
+  border: 1px solid #002147;
+}
+
+.story-cta-btn:hover {
+  background: #C5A059;
+  color: #002147;
+  border-color: #C5A059;
+}
+
+/* Story block CTA buttons */
+.story-btn {
   display: inline-block;
   margin-top: 28px;
   padding: 14px 32px;
   background: var(--navy);
   color: var(--white);
   text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.15em;
+  transition: all 0.3s ease;
   border: 1px solid var(--navy);
 }
 
-.story-cta-btn:hover, .story-cta-btn:focus {
+.story-btn:hover {
   background: var(--gold);
   color: var(--navy);
   border-color: var(--gold);
