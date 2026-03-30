@@ -126,15 +126,15 @@ const Home = () => {
  
           <div className="traction-bottom-row">
             <div className="traction-platform-strip">
-              <div className="traction-platform-num">700+</div>
+              <div className="traction-platform-num">830+</div>
               <div className="traction-platform-name">TikTok Followers</div>
             </div>
             <div className="traction-platform-strip">
-              <div className="traction-platform-num">~100</div>
+              <div className="traction-platform-num">100+</div>
               <div className="traction-platform-name">Meetup Members</div>
             </div>
             <div className="traction-platform-strip">
-              <div className="traction-platform-num">65</div>
+              <div className="traction-platform-num">85</div>
               <div className="traction-platform-name">Email Subscribers</div>
             </div>
           </div>
