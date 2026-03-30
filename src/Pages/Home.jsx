@@ -104,21 +104,51 @@ const Home = () => {
       </section>
 
       {/* 4. PROOF OF TRACTION */}
-      <section className="traction-section" aria-labelledby="traction-heading">
-        <div>
-          <span className="traction-eyebrow">By The Numbers</span>
-          <h2 id="traction-heading" className="playfair traction-heading">Built in Under 90 Days.</h2>
-          <p className="traction-subhead">No ad spend. No paid promotions. Just showing up.</p>
-          <div className="traction-grid">
-            <div className="traction-stat">
-              <div className="traction-number">4</div>
-              <div className="traction-label">Events Hosted</div>
-              <div className="traction-desc">Since January 2025</div>
-            </div>
-            {/* ... other stats remain the same ... */}
-          </div>
-        </div>
-      </section>
+    {/* --- PROOF OF TRACTION --- */}
+<section className="traction-section">
+  <div className="stats-container">
+    <span className="traction-eyebrow">The Momentum</span>
+    <h2 className="traction-heading">Built in Under 90 Days.</h2>
+    <p className="traction-subhead">No ad spend. No paid promotions. Just showing up.</p>
+
+    {/* Main Grid: 3 Columns */}
+    <div className="traction-grid">
+      <div className="traction-stat">
+        <div className="traction-number">4</div>
+        <div className="traction-label">Events Hosted</div>
+        <div className="traction-desc">High-impact gatherings since January 2025.</div>
+      </div>
+
+      <div className="traction-stat">
+        <div className="traction-number">150+</div>
+        <div className="traction-label">Active Members</div>
+        <div className="traction-desc">Entrepreneurs & creatives over the age of 35.</div>
+      </div>
+
+      <div className="traction-stat">
+        <div className="traction-number">10k+</div>
+        <div className="traction-label">Social Reach</div>
+        <div className="traction-desc">Monthly organic impressions across platforms.</div>
+      </div>
+    </div>
+
+    {/* Bottom Row: Platform Specifics */}
+    <div className="traction-bottom-row">
+      <div className="traction-platform-strip">
+        <div className="traction-platform-num">4.8/5</div>
+        <div className="traction-platform-name">Member Rating</div>
+      </div>
+      <div className="traction-platform-strip">
+        <div className="traction-platform-num">100%</div>
+        <div className="traction-platform-name">Organic Growth</div>
+      </div>
+      <div className="traction-platform-strip">
+        <div className="traction-platform-num">Silver</div>
+        <div className="traction-platform-name">Tier Excellence</div>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* 5. PARTNERSHIP */}
       <section className="partnership-editorial-section" aria-labelledby="partnership-heading">
