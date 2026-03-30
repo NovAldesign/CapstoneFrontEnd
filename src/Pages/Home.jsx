@@ -105,7 +105,7 @@ const Home = () => {
 
       {/* 4. PROOF OF TRACTION */}
 
- <section className="traction-section">
+    <section className="traction-section">
         <div>
           <span className="traction-eyebrow">By The Numbers</span>
           <h2 className="playfair traction-heading">Built in Under 90 Days.</h2>
@@ -114,7 +114,12 @@ const Home = () => {
           <div className="traction-grid">
             <div className="traction-stat">
               <div className="traction-number">4</div>
-@@ -113,29 +119,28 @@
+              <div className="traction-label">Events Hosted</div>
+              <div className="traction-desc">Since January 2025</div>
+            </div>
+            <div className="traction-stat">
+              <div className="traction-number">2</div>
+              <div className="traction-label">Sold Out</div>
               <div className="traction-desc">Of our first four events</div>
             </div>
             <div className="traction-stat">
