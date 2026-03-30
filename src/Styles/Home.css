@@ -312,16 +312,22 @@
   grid-template-columns: repeat(3, 1fr);
   border: 1px solid rgba(197,160,89,0.2);
   max-width: 1000px; /* Slightly wider to prevent cramped text */
-  margin: 0 auto 2px;
+  margin: 0 auto;
 }
 
 .traction-stat {
-  padding: 50px 30px;
+  padding: 60px 30px;
   border-right: 1px solid rgba(197,160,89,0.15);
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centers content vertically */
+  min-height: 280px; /* Forces all 3 top boxes to be the same height */
 }
 
-.traction-stat:last-child { border-right: none; }
+.traction-stat:last-child {
+  border-right: none;
+}
 
 .traction-stat::before {
   content: '';
@@ -370,11 +376,17 @@
 }
 
 .traction-platform-strip {
-  padding: 30px 20px;
+  padding: 40px 20px; /* Increased for better visual balance */
   border-right: 1px solid rgba(197,160,89,0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 140px; /* Forces all 3 bottom boxes to be the same height */
 }
 
-.traction-platform-strip:last-child { border-right: none; }
+.traction-platform-strip:last-child {
+  border-right: none;
+}
 
 .traction-platform-num {
   font-family: 'Playfair Display', serif;
@@ -390,6 +402,18 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.5);
+}
+
+/* Ensure mobile stacks properly */
+@media (max-width: 640px) {
+  .traction-grid, .traction-bottom-row {
+    grid-template-columns: 1fr;
+  }
+  .traction-stat, .traction-platform-strip {
+    min-height: auto; /* Allow heights to vary naturally on mobile for better scrolling */
+    border-right: none;
+    border-bottom: 1px solid rgba(197,160,89,0.15);
+  }
 }
 
 /* =============================================
