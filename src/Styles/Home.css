@@ -272,148 +272,110 @@
 }
 
 /* =============================================
-   4. PROOF OF TRACTION (FIXED GRID LOGIC)
+   4. PROOF OF TRACTION 
    ============================================= */
+
 .traction-section {
   background-color: var(--navy);
-  padding: 100px 10%;
+  padding: 120px 5%;
   text-align: center;
 }
 
-.traction-eyebrow {
-  display: block;
-  text-transform: uppercase;
-  letter-spacing: 5px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--gold);
-  margin-bottom: 16px;
-}
-
+/* Heading Typography */
 .traction-heading {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-size: 5rem; /* Large impact like the image */
   font-weight: 900;
   color: var(--white);
-  margin-bottom: 12px;
-  line-height: 1.15;
-}
-
-.traction-subhead {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.75);
-  font-style: italic;
-  font-family: 'Playfair Display', serif;
-  margin-bottom: 70px;
-}
-
-.traction-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border: 1px solid rgba(197,160,89,0.2);
-  max-width: 1000px; /* Slightly wider to prevent cramped text */
-  margin: 0 auto;
-}
-
-.traction-stat {
-  padding: 60px 30px;
-  border-right: 1px solid rgba(197,160,89,0.15);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Centers content vertically */
-  min-height: 280px; /* Forces all 3 top boxes to be the same height */
-}
-
-.traction-stat:last-child {
-  border-right: none;
-}
-
-.traction-stat::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 2px;
-  background: var(--gold);
-}
-
-.traction-number {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.2rem, 5vw, 4rem);
-  font-weight: 900;
-  color: var(--gold);
-  line-height: 1;
-  margin-bottom: 12px;
-}
-
-.traction-label {
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.9);
-  font-weight: 700;
   margin-bottom: 10px;
 }
 
-.traction-desc {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.45);
-  line-height: 1.6;
+.traction-subhead {
+  font-size: 1.4rem;
+  color: rgba(255,255,255,0.7);
+  font-style: italic;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 80px;
+}
+
+/* The Wrapper Grid */
+.traction-container-luxe {
+  max-width: 1200px;
+  margin: 0 auto;
+  border: 1px solid rgba(197,160,89,0.3);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Individual Stat Box */
+.traction-stat-box {
+  padding: 80px 40px;
+  border-right: 1px solid rgba(197,160,89,0.2);
+  border-bottom: 1px solid rgba(197,160,89,0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px; /* Forces equal height */
+}
+
+/* Remove right border on the 3rd column */
+.traction-stat-box:nth-child(3n) {
+  border-right: none;
+}
+
+/* Remove bottom border on the last row */
+.traction-stat-box:nth-child(n+4) {
+  border-bottom: none;
+}
+
+/* The Gold Dash above the numbers */
+.stat-dash {
+  width: 45px;
+  height: 3px;
+  background: var(--gold);
+  margin-bottom: 40px;
+}
+
+/* Big Number Typography */
+.traction-num-luxe {
+  font-family: 'Playfair Display', serif;
+  font-size: 5.5rem; /* Matched to image */
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 15px;
+}
+
+/* Subscript styling for the % sign to match image */
+.traction-num-luxe span {
+  font-size: 3rem;
+  vertical-align: super;
+  margin-left: -5px;
+}
+
+.traction-label-luxe {
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--white);
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.traction-desc-luxe {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.5);
   font-style: italic;
   font-family: 'Playfair Display', serif;
 }
 
-.traction-bottom-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border: 1px solid rgba(197,160,89,0.2);
-  border-top: none;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.traction-platform-strip {
-  padding: 40px 20px; /* Increased for better visual balance */
-  border-right: 1px solid rgba(197,160,89,0.15);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 140px; /* Forces all 3 bottom boxes to be the same height */
-}
-
-.traction-platform-strip:last-child {
-  border-right: none;
-}
-
-.traction-platform-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--gold);
-  line-height: 1;
-  margin-bottom: 6px;
-}
-
-.traction-platform-name {
-  font-size: 0.7rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-}
-
-/* Ensure mobile stacks properly */
-@media (max-width: 640px) {
-  .traction-grid, .traction-bottom-row {
-    grid-template-columns: 1fr;
-  }
-  .traction-stat, .traction-platform-strip {
-    min-height: auto; /* Allow heights to vary naturally on mobile for better scrolling */
-    border-right: none;
-    border-bottom: 1px solid rgba(197,160,89,0.15);
-  }
+/* Mobile Responsiveness */
+@media (max-width: 900px) {
+  .traction-container-luxe { grid-template-columns: 1fr; }
+  .traction-stat-box { border-right: none; min-height: auto; padding: 60px 20px; }
+  .traction-stat-box:nth-child(n) { border-bottom: 1px solid rgba(197,160,89,0.2); }
+  .traction-heading { font-size: 3rem; }
 }
 
 /* =============================================
