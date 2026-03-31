@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async"; 
 import {
   fetchGfcEvents,
   formatEventDate,
@@ -51,6 +52,15 @@ const Events = () => {
 
   return (
     <div className="events-page-wrapper">
+      {/* Meta Data for SEO */}
+      <Helmet>
+        <title>Events | Grown Folks Collective</title>
+        <meta 
+          name="description" 
+          content="Join our next curated gathering in Atlanta. Trade networking for true belonging in a sanctuary designed for high-level connection, joy, and alcohol-free community." 
+        />
+      </Helmet>
+
       {/* HERO */}
       <header className="page-hero-visual">
         <div className="hero-dark-overlay">
