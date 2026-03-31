@@ -271,111 +271,155 @@
   font-weight: 400;
 }
 
-/* =============================================
-   4. PROOF OF TRACTION 
-   ============================================= */
-
-.traction-section {
-  background-color: var(--navy);
-  padding: 120px 5%;
-  text-align: center;
+/* === 4. TESTIMONIALS SECTION === */
+.testimonials-section {
+  background: #0a1628;
+  padding: 5rem 2rem;
 }
 
-/* Heading Typography */
-.traction-heading {
-  font-family: 'Playfair Display', serif;
-  font-size: 5rem; /* Large impact like the image */
-  font-weight: 900;
-  color: var(--white);
-  margin-bottom: 10px;
-}
-
-.traction-subhead {
-  font-size: 1.4rem;
-  color: rgba(255,255,255,0.7);
-  font-style: italic;
-  font-family: 'Playfair Display', serif;
-  margin-bottom: 80px;
-}
-
-/* The Wrapper Grid */
-.traction-container-luxe {
-  max-width: 1200px;
+.testimonials-container {
+  max-width: 960px;
   margin: 0 auto;
-  border: 1px solid rgba(197,160,89,0.3);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
 }
 
-/* Individual Stat Box */
-.traction-stat-box {
-  padding: 80px 40px;
-  border-right: 1px solid rgba(197,160,89,0.2);
-  border-bottom: 1px solid rgba(197,160,89,0.2);
+.testimonials-title {
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0.25rem 0 0;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.testimonial-card {
+  background: #111e35;
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  border-radius: 4px;
+  padding: 2rem;
+}
+
+.testimonial-card-featured {
+  border-color: rgba(201, 168, 76, 0.55);
+}
+
+.testimonial-quote-mark {
+  font-family: Georgia, serif;
+  font-size: 4rem;
+  color: #c9a84c;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  opacity: 0.7;
+}
+
+.testimonial-text {
+  font-family: Georgia, serif;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #ccd6f0;
+  font-style: italic;
+  margin: 0 0 1.5rem;
+  border: none;
+  padding: 0;
+}
+
+.testimonial-stars {
+  color: #c9a84c;
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 0.4rem;
+}
+
+.testimonial-stars.large {
+  font-size: 18px;
+}
+
+.testimonial-reviewer {
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c9a84c;
+  font-style: normal;
+}
+
+.testimonial-rating-card {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  min-height: 400px; /* Forces equal height */
+  justify-content: center;
+  text-align: center;
+  gap: 0.75rem;
 }
 
-/* Remove right border on the 3rd column */
-.traction-stat-box:nth-child(3n) {
-  border-right: none;
-}
-
-/* Remove bottom border on the last row */
-.traction-stat-box:nth-child(n+4) {
-  border-bottom: none;
-}
-
-/* The Gold Dash above the numbers */
-.stat-dash {
-  width: 45px;
-  height: 3px;
-  background: var(--gold);
-  margin-bottom: 40px;
-}
-
-/* Big Number Typography */
-.traction-num-luxe {
-  font-family: 'Playfair Display', serif;
-  font-size: 5.5rem; /* Matched to image */
-  font-weight: 900;
-  color: var(--gold);
+.rating-number {
+  font-family: Georgia, serif;
+  font-size: 3.5rem;
+  font-weight: 400;
+  color: #ffffff;
   line-height: 1;
-  margin-bottom: 15px;
 }
 
-/* Subscript styling for the % sign to match image */
-.traction-num-luxe span {
-  font-size: 3rem;
-  vertical-align: super;
-  margin-left: -5px;
-}
-
-.traction-label-luxe {
-  font-size: 0.9rem;
-  letter-spacing: 3px;
+.rating-label {
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--white);
-  font-weight: 700;
-  margin-bottom: 15px;
+  color: rgba(204, 214, 240, 0.6);
+  margin: 0;
 }
 
-.traction-desc-luxe {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.5);
-  font-style: italic;
-  font-family: 'Playfair Display', serif;
+.rating-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(201, 168, 76, 0.3);
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 900px) {
-  .traction-container-luxe { grid-template-columns: 1fr; }
-  .traction-stat-box { border-right: none; min-height: auto; padding: 60px 20px; }
-  .traction-stat-box:nth-child(n) { border-bottom: 1px solid rgba(197,160,89,0.2); }
-  .traction-heading { font-size: 3rem; }
+.rating-verified {
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: rgba(201, 168, 76, 0.7);
+  margin: 0;
+}
+
+.testimonials-cta-text {
+  text-align: center;
+  margin-top: 2.5rem;
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(204, 214, 240, 0.5);
+}
+.platform-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 0;
+}
+
+.platform-block + .platform-block {
+  border-top: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.rating-platform-name {
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: rgba(201, 168, 76, 0.7);
+  margin: 0 0 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* =============================================

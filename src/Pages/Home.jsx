@@ -135,68 +135,60 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 4. PROOF OF TRACTION */}
+     {/* 4. SOCIAL PROOF */}
+<section className="testimonials-section" aria-labelledby="testimonials-heading">
+  <div className="testimonials-container">
+    <span className="gold-label">Real Voices</span>
+    <h2 id="testimonials-heading" className="playfair testimonials-title">
+      Don't Take Our Word for It
+    </h2>
+    <div className="gold-spacer-v2" aria-hidden="true"></div>
 
-      <section className="traction-section">
-        <h2 className="traction-heading">Built in Under 90 Days.</h2>
-        <p className="traction-subhead">
-          No ad spend. No paid promotions. Just showing up.
-        </p>
+    <div className="testimonials-grid">
+      {/* Featured member review */}
+      <article className="testimonial-card testimonial-card-featured">
+        <div className="testimonial-quote-mark" aria-hidden="true">"</div>
+        <blockquote className="testimonial-text">
+          Game night with Vaughn and the Grown Folks Collective was exactly what
+          grown folks game night should be. The theme set the tone right out the
+          gate. The vibe was cool but competitive — friendly on the surface,
+          serious once the games started. The karaoke heads were in their bag.
+          The spades table was a whole different arena: heavy trash talk, laughs,
+          side-eyes, and strategy.
+          <br /><br />
+          What stood out most was the people. Everybody was down to earth,
+          welcoming, and real. No weird energy. No posturing. Just good folks
+          showing up as themselves.
+          <br /><br />
+          It didn't just feel like a game night — it felt like home. I'd run it
+          back without hesitation.
+        </blockquote>
+        <div className="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <cite className="testimonial-reviewer">— Lee · Game Night Attendee</cite>
+      </article>
 
-        <div className="traction-container-luxe">
-          {/* Box 1 */}
-          <div className="traction-stat-box">
-            <div className="stat-dash"></div>
-            <div className="traction-num-luxe">4</div>
-            <div className="traction-label-luxe">Events Hosted</div>
-            <div className="traction-desc-luxe">Since January 2025</div>
-          </div>
-
-          {/* Box 2 */}
-          <div className="traction-stat-box">
-            <div className="stat-dash"></div>
-            <div className="traction-num-luxe">2</div>
-            <div className="traction-label-luxe">Sold Out</div>
-            <div className="traction-desc-luxe">Of our first four events</div>
-          </div>
-
-          {/* Box 3 */}
-          <div className="traction-stat-box">
-            <div className="stat-dash"></div>
-            <div className="traction-num-luxe">
-              200<span>%</span>+
-            </div>
-            <div className="traction-label-luxe">Venue Sales Lift</div>
-            <div className="traction-desc-luxe">
-              Documented every event night
-            </div>
-          </div>
-
-          {/* Box 4 */}
-          <div className="traction-stat-box">
-            <div className="traction-num-luxe" style={{ fontSize: "3rem" }}>
-              830+
-            </div>
-            <div className="traction-label-luxe">TikTok Followers</div>
-          </div>
-
-          {/* Box 5 */}
-          <div className="traction-stat-box">
-            <div className="traction-num-luxe" style={{ fontSize: "3rem" }}>
-              100+
-            </div>
-            <div className="traction-label-luxe">Meetup Members</div>
-          </div>
-
-          {/* Box 6 */}
-          <div className="traction-stat-box">
-            <div className="traction-num-luxe" style={{ fontSize: "3rem" }}>
-              85
-            </div>
-            <div className="traction-label-luxe">Email Subscribers</div>
-          </div>
+      {/* Platform ratings */}
+      <div className="testimonial-card testimonial-rating-card" aria-label="Platform ratings">
+        <div className="platform-block">
+          <p className="rating-platform-name">Eventbrite Verified</p>
+          <div className="rating-number">4.7</div>
+          <div className="testimonial-stars large" aria-label="4.7 out of 5">★★★★★</div>
+          <p className="rating-label">Average event rating</p>
         </div>
-      </section>
+        <div className="platform-block">
+          <p className="rating-platform-name">Meetup Verified</p>
+          <div className="rating-number">4.0</div>
+          <div className="testimonial-stars large" aria-label="4 out of 5">★★★★☆</div>
+          <p className="rating-label">Average event rating</p>
+        </div>
+      </div>  {/* ← closes testimonial-rating-card */}
+    </div>  {/* ← closes testimonials-grid */}
+
+    <p className="testimonials-cta-text">
+      Attend an event and write the next chapter
+    </p>
+  </div>  
+</section>
 
       {/* 5. PARTNERSHIP */}
       <section
