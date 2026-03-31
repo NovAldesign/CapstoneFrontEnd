@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async'; 
 import axios from 'axios';
 import '../Styles/Contact.css';
 
@@ -159,6 +160,14 @@ const Contact = () => {
 
   return (
     <div className="contact-page">
+      {/* Meta Data for SEO */}
+      <Helmet>
+        <title>Contact Us | Grown Folks Collective</title>
+        <meta 
+          name="description" 
+          content="Get in touch with the Grown Folks Collective team. Whether you have questions about membership, event planning, or partnerships in the Atlanta area, we're here to start the conversation." 
+        />
+      </Helmet>
 
       {/* HERO */}
       <header className="contact-hero">
@@ -188,7 +197,7 @@ const Contact = () => {
 
             <div className="contact-info-block">
               <div className="contact-info-label">Phone</div>
-              <a href="tel:+14045550000" className="contact-info-value">
+              <a href="tel:+12703808896" className="contact-info-value">
                 (270) 380-8896
               </a>
             </div>
