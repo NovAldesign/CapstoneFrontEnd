@@ -87,12 +87,12 @@ const About = () => {
               <div className="about-stat-desc">Of our first four events</div>
             </div>
             <div className="about-stat">
-              <div className="about-stat-number">200%+</div>
+              <div className="about-stat-number">250%+</div>
               <div className="about-stat-label">Venue Sales Lift</div>
               <div className="about-stat-desc">Documented every event night</div>
             </div>
             <div className="about-stat">
-              <div className="about-stat-number">865+</div>
+              <div className="about-stat-number">1000+</div>
               <div className="about-stat-label">Community Members</div>
               <div className="about-stat-desc">Across all platforms</div>
             </div>
@@ -100,17 +100,17 @@ const About = () => {
 
           <div className="about-platform-row">
             <div className="about-platform">
-              <div className="about-platform-num">700+</div>
+              <div className="about-platform-num">820+</div>
               <div className="about-platform-name">TikTok Followers</div>
             </div>
             <div className="about-platform-divider"></div>
             <div className="about-platform">
-              <div className="about-platform-num">~100</div>
+              <div className="about-platform-num">100+</div>
               <div className="about-platform-name">Meetup Members</div>
             </div>
             <div className="about-platform-divider"></div>
             <div className="about-platform">
-              <div className="about-platform-num">65</div>
+              <div className="about-platform-num">85</div>
               <div className="about-platform-name">Email Subscribers</div>
             </div>
             <div className="about-platform-divider"></div>
