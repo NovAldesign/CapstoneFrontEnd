@@ -1,10 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async'; 
 import '../Styles/About.css';
 
 const About = () => {
   return (
     <div className="about-page">
+      {/* Meta Data for SEO */}
+      <Helmet>
+        <title>About Us | Grown Folks Collective</title>
+        <meta 
+          name="description" 
+          content="Discover the story of Grown Folks Collective. Built in Atlanta for accomplished individuals, we provide a third space to end social isolation and find joy through genuine, alcohol-free connection." 
+        />
+      </Helmet>
 
       {/* HERO */}
       <header className="about-hero">
