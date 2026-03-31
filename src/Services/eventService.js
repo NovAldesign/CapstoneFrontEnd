@@ -6,7 +6,7 @@ const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 // Auth helper — reads your stored token for admin calls
 // -------------------------------------------------------
 const authHeader = () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('gfc_token');  // ← was 'token'
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 

@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 // --- Components ---
 import Navbar from "./Components/Navbar.jsx";
 import Footer from "./Components/Footer.jsx";
+import ProtectedRoute from "./Components/ProtectedRoute.jsx";
 
 // --- Pages ---
 import Home from "./Pages/Home.jsx";
@@ -16,8 +17,6 @@ import About from "./Pages/About.jsx";
 import Contact from "./Pages/Contact.jsx";
 import Login from "./Pages/Login.jsx";
 import AdminDashboard from "./Pages/AdminDashboard.jsx";
-
-// --- New Stripe Checkout Pages ---
 import CheckoutPage from "./Pages/CheckoutPage.jsx";
 import SuccessPage from "./Pages/SuccessPage.jsx";
 
@@ -41,12 +40,17 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
-
-          {/* Dynamic Checkout Route */}
           <Route path="/checkout/:eventId" element={<CheckoutPage />} />
           <Route path="/success" element={<SuccessPage />} />
 
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute allowedRole="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="*"
