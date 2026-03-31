@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async'; // Added for SEO
 import '../Styles/Membership.css';
 import membershipService from '../Services/membershipService';
 
@@ -114,11 +115,8 @@ const Membership = () => {
     if (feedback) setFeedback(null);
   };
 
-  // FIXED: clicking a tier card now directly updates formData.tier
-  // AND scrolls down to the form so the user sees the change reflected
   const handleTierSelect = (tierId) => {
     setFormData(prev => ({ ...prev, tier: tierId }));
-    // Small delay lets the active class paint before scroll
     setTimeout(() => {
       const formEl = document.querySelector('.applicant-container');
       if (formEl) {
@@ -168,6 +166,14 @@ const Membership = () => {
 
   return (
     <div className="membership-page">
+      {/* Meta Data for SEO */}
+      <Helmet>
+        <title>Join the Collective | Grown Folks Collective Membership</title>
+        <meta 
+          name="description" 
+          content="Become a member of the Grown Folks Collective. Choose from Silver, Gold, or Platinum tiers to access exclusive events, intentional dinners, and a community dedicated to ending social isolation." 
+        />
+      </Helmet>
 
       {/* ── HERO ── */}
       <header className="membership-hero">
@@ -335,7 +341,6 @@ const Membership = () => {
                 </div>
               </div>
 
-              {/* FIXED: selected tier display updates live when card is clicked */}
               <div className="input-group">
                 <label className="label-font">Selected Membership</label>
                 <div className="selected-tier-display">
@@ -356,7 +361,6 @@ const Membership = () => {
                     Change ↑
                   </button>
                 </div>
-                {/* Hidden select keeps the value in formData for the backend */}
                 <select
                   name="tier"
                   value={formData.tier}
