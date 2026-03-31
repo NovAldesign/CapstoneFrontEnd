@@ -151,7 +151,7 @@ const Partnership = () => {
             <div className="partner-stat-label">Avg. Household Income</div>
           </div>
           <div className="partner-stat-card">
-            <div className="partner-stat-number">200%+</div>
+            <div className="partner-stat-number">250%+</div>
             <div className="partner-stat-label">Documented Venue Sales Lift</div>
           </div>
           <div className="partner-stat-card">
