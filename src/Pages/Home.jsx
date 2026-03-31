@@ -1,10 +1,20 @@
 import React from "react";
 import "../Styles/Home.css";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async"; 
 
 const Home = () => {
   return (
     <main className="home-wrapper" id="main-content">
+      {/* Meta Data for SEO */}
+      <Helmet>
+        <title>Grown Folks Collective | Your Third Space</title>
+        <meta 
+          name="description" 
+          content="End social isolation and find your joy. Grown Folks Collective is your third space for building genuine connections and meaningful community experiences." 
+        />
+      </Helmet>
+
       {/* 1. HERO */}
       {/* Changed to <section> with an aria-label because <header> is usually for site-wide nav */}
       <section className="home-hero-visual" aria-label="Welcome Hero">
