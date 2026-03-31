@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async"; // Necessary import
 import Checkout from "../Components/CheckoutForm.jsx";
 import { fetchGfcEvents } from "../Services/eventService.js";
 import "../Styles/IntentionalDinners.css";
@@ -71,6 +72,15 @@ const IntentionalDinners = () => {
 
   return (
     <div className="ic-page">
+      {/* Meta Data for SEO */}
+      <Helmet>
+        <title>Intentional Dinners | Grown Folks Collective</title>
+        <meta 
+          name="description" 
+          content="Experience a curated multi-course dinner built around guided, alcohol-free conversation. Join a small group of Atlanta professionals to trade small talk for genuine connection." 
+        />
+      </Helmet>
+
       {/* =============================================
           HERO - FULL WIDTH CENTERED DARK
          ============================================= */}
