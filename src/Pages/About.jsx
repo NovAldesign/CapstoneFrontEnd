@@ -50,7 +50,7 @@ const About = () => {
               WCAG 1.3.1 – Info and Relationships (Level A)                */}
           <div className="about-gold-spacer" aria-hidden="true"></div>
           <p className="about-hero-subhead">
-            GFC exists because Atlanta's accomplished singles deserved better
+            GFC exists because Atlanta's accomplished professionals, entreprenuers, & executives deserved better
             than a bar and more than an empty apartment on a Saturday night.
           </p>
         </div>
