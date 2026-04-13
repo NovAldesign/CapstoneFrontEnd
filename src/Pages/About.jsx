@@ -110,7 +110,7 @@ const About = () => {
                 We didn't start with a business plan. We started with a game night in a small Decatur restaurant and 36 people who showed up because they were tired of sitting at home. It sold out. Then we did it again. Sold out again.
               </p>
               <p className="about-body">
-                In under 90 days, we built a community of over 865 people — with zero advertising, zero paid promotion, and zero compromise on our values. Our guests drive from Monroe, Smyrna, Fayetteville, Lawrenceville, and Douglasville to be in our room on a Saturday night. Not because there's nothing else to do. Because this is the only room built for them.
+                In under 90 days, we built a community of over 1200 people — with zero advertising, zero paid promotion, and zero compromise on our values. Our guests drive from Monroe, Smyrna, Fayetteville, Lawrenceville, and Douglasville to be in our room on a Saturday night. Not because there's nothing else to do. Because this is the only room built for them.
               </p>
             </div>
           </div>
@@ -134,12 +134,12 @@ const About = () => {
               <div className="about-stat" role="group" aria-label="Events Hosted">
                 <dt className="about-stat-number">4</dt>
                 <dd className="about-stat-label">Events Hosted</dd>
-                <dd className="about-stat-desc">Since January 2025</dd>
+                <dd className="about-stat-desc">Since January 2026</dd>
               </div>
               <div className="about-stat" role="group" aria-label="Sold Out Events">
-                <dt className="about-stat-number">2</dt>
+                <dt className="about-stat-number">3</dt>
                 <dd className="about-stat-label">Sold Out</dd>
-                <dd className="about-stat-desc">Of our first four events</dd>
+                <dd className="about-stat-desc">Of our first five events</dd>
               </div>
               <div className="about-stat" role="group" aria-label="Venue Sales Lift">
                 <dt className="about-stat-number">250%+</dt>
@@ -147,7 +147,7 @@ const About = () => {
                 <dd className="about-stat-desc">Documented every event night</dd>
               </div>
               <div className="about-stat" role="group" aria-label="Community Members">
-                <dt className="about-stat-number">1000+</dt>
+                <dt className="about-stat-number">1200+</dt>
                 <dd className="about-stat-label">Community Members</dd>
                 <dd className="about-stat-desc">Across all platforms</dd>
               </div>
@@ -156,7 +156,7 @@ const About = () => {
             {/* Platform stats — also use <dl> for semantic key-value pairs */}
             <dl className="about-platform-row">
               <div className="about-platform">
-                <dt className="about-platform-num">820+</dt>
+                <dt className="about-platform-num">885+</dt>
                 <dd className="about-platform-name">TikTok Followers</dd>
               </div>
               {/* Decorative dividers must be hidden from AT */}
@@ -167,12 +167,12 @@ const About = () => {
               </div>
               <div className="about-platform-divider" aria-hidden="true"></div>
               <div className="about-platform">
-                <dt className="about-platform-num">85</dt>
+                <dt className="about-platform-num">100</dt>
                 <dd className="about-platform-name">Email Subscribers</dd>
               </div>
               <div className="about-platform-divider" aria-hidden="true"></div>
               <div className="about-platform">
-                <dt className="about-platform-num">36</dt>
+                <dt className="about-platform-num">35</dt>
                 <dd className="about-platform-name">Guests Per Event — Always</dd>
               </div>
             </dl>
@@ -196,7 +196,7 @@ const About = () => {
                 <div className="about-value-number" aria-hidden="true">01</div>
                 <h3 className="about-value-title">Intentionality</h3>
                 <p className="about-value-body">
-                  Every event is curated. Every guest is considered. We cap attendance at 36 people not because we can't grow, but because intimacy is the point.
+                  Every event is curated. Every guest is considered. We cap attendance at 35 people not because we can't grow, but because intimacy is the point.
                 </p>
               </article>
               <article className="about-value-card">
@@ -239,7 +239,7 @@ const About = () => {
                   Just ensure CSS doesn't remove list markers without also
                   adding role="list" (Safari VoiceOver bug fix):            */}
               <ul className="about-who-list" role="list">
-                <li>You're 35 or older and single</li>
+                <li>You're 35 or older</li>
                 <li>You're an entrepreneur, executive, or professional</li>
                 <li>You earn $80K or more and you've outgrown the nightlife scene</li>
                 <li>You want to meet people who match your energy — not just your zip code</li>
