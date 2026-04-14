@@ -1,9 +1,78 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@300;400;600;700&display=swap');
 
-/* =============================================
-   CONTACT PAGE - COMPLETE CSS
-   ============================================= */
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #1 — Skip Navigation Link  (WCAG 2.4.1 Level A)
+───────────────────────────────────────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background: #002147;
+  color: #C5A059;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  border-radius: 0 0 4px 4px;
+  border: 2px solid #C5A059;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid #C5A059;
+  outline-offset: 2px;
+}
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #2 — Screen-reader only utility  (WCAG 1.3.1 Level A)
+───────────────────────────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #3 — Global focus indicators  (WCAG 2.4.7 Level AA)
+   3px solid gold on every interactive element — keyboard users can
+   always see where focus is. outline:none is banned except here.
+───────────────────────────────────────────────────────────────────────────── */
+*:focus {
+  outline: none;
+}
+*:focus-visible {
+  outline: 3px solid #C5A059;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #4 — Reduced motion  (WCAG 2.3.3 / best practice)
+   Disable all transitions and animations for users who request it.
+───────────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE
+═══════════════════════════════════════════════════════════════════════════ */
 .contact-page {
   background-color: #FDFBFA;
   font-family: 'Montserrat', sans-serif;
@@ -11,9 +80,9 @@
   overflow-x: hidden;
 }
 
-/* =============================================
-   HERO - FULL WIDTH DARK
-   ============================================= */
+/* ═══════════════════════════════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════════════════════════════ */
 .contact-hero {
   background: #002147;
   padding: 120px 10% 100px;
@@ -21,7 +90,6 @@
   overflow: hidden;
 }
 
-/* Subtle diagonal texture */
 .contact-hero::before {
   content: '';
   position: absolute;
@@ -36,7 +104,6 @@
   pointer-events: none;
 }
 
-/* Gold top rule */
 .contact-hero::after {
   content: '';
   position: absolute;
@@ -44,7 +111,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--gold, #C5A059), transparent 70%);
+  background: linear-gradient(90deg, #C5A059, transparent 70%);
 }
 
 .contact-hero-inner {
@@ -58,7 +125,6 @@
   z-index: 1;
 }
 
-/* LEFT - title */
 .contact-hero-left {
   display: flex;
   flex-direction: column;
@@ -74,10 +140,16 @@
   margin-bottom: 20px;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #5 — Hero title line-height  (WCAG 1.4.12 Level AA)
+   Original line-height: 0.85 fails text-spacing requirements.
+   Lines overlap when users apply custom spacing via browser/OS settings.
+   Fixed to 1.0 — visually near-identical on large display type.
+───────────────────────────────────────────────────────────────────────────── */
 .contact-hero-title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(4rem, 9vw, 7.5rem);
-  line-height: 0.85;
+  line-height: 1.0; /* FIX: was 0.85 — fails WCAG 1.4.12 */
   font-weight: 900;
   text-transform: uppercase;
   color: #FFFFFF;
@@ -92,63 +164,23 @@
   margin: 32px 0;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #6 — Hero lead text contrast  (WCAG 1.4.3 Level AA)
+   rgba(255,255,255,0.78) on #002147 ≈ 10.4:1 ✓ — passes. No change.
+───────────────────────────────────────────────────────────────────────────── */
 .contact-hero-lead {
   font-family: 'Montserrat', sans-serif;
   font-size: 1.05rem;
   font-weight: 300;
   line-height: 1.9;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.85); /* slight bump from 0.78 for extra margin */
   max-width: 420px;
 }
 
-/* RIGHT - contact info */
-.contact-hero-right {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.contact-info-block {
-  padding: 20px 0;
-  border-bottom: 1px solid rgba(197, 160, 89, 0.15);
-}
-
-.contact-info-block:first-child {
-  border-top: 1px solid rgba(197, 160, 89, 0.15);
-}
-
-.contact-info-label {
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: rgba(197, 160, 89, 0.7);
-  margin-bottom: 6px;
-}
-
-.contact-info-value {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #FFFFFF;
-  text-decoration: none;
-  transition: color 0.2s;
-  display: block;
-}
-
-.contact-info-value:hover {
-  color: #C5A059;
-}
-
-.contact-info-static {
-  cursor: default;
-}
-
-.contact-info-static:hover {
-  color: #FFFFFF;
-}
-
-/* CTA links */
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #7 — nav landmark for hero CTA links  (WCAG 1.3.6)
+   The <nav aria-label="Quick contact actions"> in JSX needs no extra CSS.
+───────────────────────────────────────────────────────────────────────────── */
 .contact-hero-links {
   display: flex;
   gap: 14px;
@@ -169,6 +201,11 @@
   letter-spacing: 0.15em;
   transition: all 0.25s ease;
   white-space: nowrap;
+  /* ADA FIX #8 — min touch target 44×44px  (WCAG 2.5.5 Level AA)
+     13px top+bottom padding on ~12px text ≈ 38px — add min-height */
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .contact-hero-link:hover {
@@ -178,7 +215,7 @@
 
 .contact-hero-link.secondary {
   background: transparent;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.85);
   border: 1px solid rgba(197, 160, 89, 0.4);
 }
 
@@ -188,9 +225,117 @@
   background: transparent;
 }
 
-/* =============================================
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #9 — address element reset  (WCAG 1.3.1)
+   <address> is italic by default in browsers. Reset it.
+───────────────────────────────────────────────────────────────────────────── */
+.contact-hero-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  font-style: normal; /* FIX: <address> is italic by default */
+}
+
+.contact-info-block {
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(197, 160, 89, 0.15);
+}
+
+.contact-info-block:first-child {
+  border-top: 1px solid rgba(197, 160, 89, 0.15);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #10 — Info label contrast  (WCAG 1.4.3 Level AA)
+   rgba(197,160,89,0.7) on #002147 ≈ 3.9:1 — FAILS 4.5:1 for small text.
+   Fixed to opacity 1.0 (#C5A059 on #002147) = 5.6:1 ✓
+   Also: switched from <span> to <p> in JSX — reset <p> margins here.
+───────────────────────────────────────────────────────────────────────────── */
+.contact-info-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #C5A059; /* FIX: was rgba(197,160,89,0.7) — fails contrast */
+  margin: 0 0 6px 0; /* reset <p> default margin */
+}
+
+.contact-info-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: color 0.2s;
+  display: block;
+  margin: 0; /* reset <p> default margin */
+}
+
+.contact-info-value:hover {
+  color: #C5A059;
+}
+
+.contact-info-static {
+  cursor: default;
+}
+
+.contact-info-static:hover {
+  color: #FFFFFF;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #11 — Social icons  (WCAG 4.1.2 Level A)
+   Icons are 42×42px — just under the 44px minimum touch target.
+   Bumped to 44×44px.
+───────────────────────────────────────────────────────────────────────────── */
+.contact-socials-block {
+  padding-bottom: 24px;
+}
+
+/* Reset <ul> list defaults */
+.contact-socials {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin: 4px 0 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Reset <li> */
+.contact-socials li {
+  margin: 0;
+  padding: 0;
+}
+
+.contact-social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;  /* FIX: was 42px — below 44px minimum touch target */
+  height: 44px; /* FIX: was 42px */
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  color: rgba(255, 255, 255, 0.65);
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.contact-social-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.contact-social-icon:hover {
+  border-color: #C5A059;
+  color: #C5A059;
+  background: rgba(197, 160, 89, 0.08);
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    FORM SECTION
-   ============================================= */
+═══════════════════════════════════════════════════════════════════════════ */
 .contact-form-section {
   background-color: #FDFBFA;
   padding: 100px 5%;
@@ -230,10 +375,16 @@
   line-height: 1.1;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #12 — Form subhead contrast  (WCAG 1.4.3 Level AA)
+   #777 on #FFFFFF = 4.48:1 — just barely fails 4.5:1.
+   Fixed to #666 = 5.74:1 ✓
+   Wait — #666 on #FDFBFA also fails (see About.css fix). Use #555 = 7.0:1 ✓
+───────────────────────────────────────────────────────────────────────────── */
 .contact-form-subhead {
   font-size: 0.92rem;
   font-weight: 300;
-  color: #777;
+  color: #555; /* FIX: was #777 — fails 4.5:1 on white */
   line-height: 1.7;
   max-width: 520px;
   margin: 0 auto;
@@ -246,19 +397,59 @@
   transition: color 0.2s;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #13 — Inline link contrast  (WCAG 1.4.3 Level AA)
+   #C5A059 on #FFFFFF = 2.8:1 — FAILS for body text size.
+   For links that are underlined, WCAG allows 3:1 if underline is present
+   AND there is a non-color indicator. Underline satisfies this.
+   However 2.8:1 still fails the 3:1 threshold for this exception.
+   Fixed to #7A5C1E on white = 4.6:1 ✓ — a darker gold that reads as gold.
+───────────────────────────────────────────────────────────────────────────── */
+.contact-inline-link {
+  color: #7A5C1E; /* FIX: was #C5A059 — only 2.8:1 on white, FAILS */
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
 .contact-inline-link:hover {
   color: #002147;
 }
 
-/* =============================================
+/* ═══════════════════════════════════════════════════════════════════════════
    FORM ELEMENTS
-   ============================================= */
+═══════════════════════════════════════════════════════════════════════════ */
 .contact-luxe-form {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 0; /* gap handled per fieldset */
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #14 — <fieldset> reset  (WCAG 1.3.1 Level A)
+   Browsers add border, padding, and margin to <fieldset> by default.
+   Reset fully so layout is identical to original <div> version.
+───────────────────────────────────────────────────────────────────────────── */
+.contact-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-bottom: 28px;
+}
+
+.contact-fieldset--nested {
+  margin-bottom: 0;
+  gap: 24px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #15 — <legend> styled to look like original divider  (WCAG 1.3.1)
+   The original .contact-form-divider was a <div>. Now it's a <legend>.
+   Style it identically — no visual change for sighted users.
+───────────────────────────────────────────────────────────────────────────── */
 .contact-form-divider {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
@@ -267,6 +458,18 @@
   border-bottom: 2px solid #C5A059;
   padding-bottom: 10px;
   margin-top: 8px;
+  /* <legend> has quirky display behavior — force it to full width */
+  width: 100%;
+  display: block;
+  float: left; /* fixes fieldset legend layout in all browsers */
+  /* Clear float on the fieldset children */
+}
+
+/* Clearfix for legend float trick */
+.contact-fieldset::after {
+  content: '';
+  display: table;
+  clear: both;
 }
 
 .contact-form-row {
@@ -291,14 +494,55 @@
   display: block;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #16 — Required field asterisk color  (WCAG 1.4.3 Level AA)
+   Red asterisks must not be the ONLY indicator of required status
+   (color alone fails WCAG 1.4.1). We use both the asterisk AND
+   aria-required="true" in the JSX.
+───────────────────────────────────────────────────────────────────────────── */
+.contact-required {
+  color: #B91C1C; /* red asterisk — supplementary indicator only */
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #17 — Required field note  (WCAG 3.3.2 Level A)
+   Shown above the submit button to explain the asterisk convention.
+───────────────────────────────────────────────────────────────────────────── */
+.contact-required-note {
+  font-size: 0.78rem;
+  color: #555;
+  margin: -12px 0 4px;
+}
+
 .contact-label-optional {
   font-weight: 300;
   text-transform: none;
   letter-spacing: 0;
-  color: #999;
+  color: #666;
   font-size: 0.68rem;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #18 — Input hint text  (WCAG 1.3.1 Level A)
+   Hints are linked via aria-describedby in JSX.
+   They must be visible and meet contrast: #666 on white = 5.7:1 ✓
+───────────────────────────────────────────────────────────────────────────── */
+.contact-input-hint {
+  font-size: 0.72rem;
+  color: #666;
+  margin-top: 6px;
+  display: block;
+  font-weight: 400;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #19 — Input focus style  (WCAG 2.4.7 Level AA)
+   Original used outline:none with a box-shadow replacement.
+   This is technically acceptable IF the box-shadow is clearly visible.
+   We keep the box-shadow AND add a proper outline for maximum compatibility.
+───────────────────────────────────────────────────────────────────────────── */
 .contact-input-group input,
 .contact-input-group select,
 .contact-textarea {
@@ -307,25 +551,41 @@
   background: #FAFAFA;
   font-size: 0.95rem;
   font-family: 'Montserrat', sans-serif;
-  outline: none;
+  /* FIX: do NOT set outline:none globally — handled by *:focus-visible above */
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
   border-radius: 0;
   color: #002147;
   appearance: none;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.contact-input-group input:focus,
-.contact-input-group select:focus,
-.contact-textarea:focus {
+.contact-input-group input:focus-visible,
+.contact-input-group select:focus-visible,
+.contact-textarea:focus-visible {
   border-color: #C5A059;
   background: #FFFFFF;
-  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.25);
+  outline: 2px solid #C5A059; /* explicit outline for max AT compatibility */
+  outline-offset: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #20 — Placeholder text contrast  (WCAG 1.4.3 Level AA)
+   Default placeholder is ~#999 on #FAFAFA = 2.9:1 — FAILS.
+   Raised to #767676 on white = 4.54:1 ✓ (minimum passing grey on white)
+───────────────────────────────────────────────────────────────────────────── */
+.contact-input-group input::placeholder,
+.contact-textarea::placeholder {
+  color: #767676;
+  opacity: 1; /* Firefox reduces opacity by default */
 }
 
 .contact-input-group select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C5A059' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 16px center;
+  background-color: #FAFAFA;
   padding-right: 42px;
   cursor: pointer;
 }
@@ -337,29 +597,25 @@
   width: 100%;
 }
 
-/* =============================================
+/* ═══════════════════════════════════════════════════════════════════════════
    EVENT PLANNING CONDITIONAL SECTION
-   ============================================= */
+═══════════════════════════════════════════════════════════════════════════ */
 .contact-event-planning-section {
   background: rgba(0, 33, 71, 0.03);
   border: 1px solid rgba(197, 160, 89, 0.25);
   border-left: 3px solid #C5A059;
   padding: 28px 28px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
   animation: fadeSlideIn 0.3s ease;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #21 — Respect reduced motion for form animation
+   Already handled by the global prefers-reduced-motion rule above,
+   but explicitly call it out here for the fadeSlideIn animation.
+───────────────────────────────────────────────────────────────────────────── */
 @keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .contact-event-planning-label {
@@ -368,17 +624,27 @@
   font-weight: 700;
   color: #002147;
   font-style: italic;
+  /* This is now a <legend> — apply same width fix as .contact-form-divider */
+  width: 100%;
+  display: block;
+  margin-bottom: 4px;
 }
 
-/* =============================================
-   FEEDBACK
-   ============================================= */
+/* ═══════════════════════════════════════════════════════════════════════════
+   FEEDBACK  (WCAG 4.1.3 Level AA — Status Messages)
+═══════════════════════════════════════════════════════════════════════════ */
 .contact-feedback {
   padding: 18px 24px;
   font-size: 0.88rem;
   font-weight: 600;
   letter-spacing: 0.03em;
   line-height: 1.5;
+  /* ADA FIX #22 — tabIndex="-1" in JSX allows focus; add visible focus ring */
+}
+
+.contact-feedback:focus {
+  outline: 3px solid #C5A059;
+  outline-offset: 2px;
 }
 
 .contact-feedback.success {
@@ -387,15 +653,26 @@
   color: #002147;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #23 — Error feedback contrast  (WCAG 1.4.3 Level AA)
+   #7F1D1D on rgba(220,38,38,0.04) ≈ #7F1D1D on #FEF9F9 = 8.1:1 ✓ passes.
+   No change needed — documented here.
+───────────────────────────────────────────────────────────────────────────── */
 .contact-feedback.error {
   background: rgba(220, 38, 38, 0.04);
   border-left: 3px solid #DC2626;
   color: #7F1D1D;
 }
 
-/* =============================================
+/* ═══════════════════════════════════════════════════════════════════════════
    SUBMIT BUTTON
-   ============================================= */
+═══════════════════════════════════════════════════════════════════════════ */
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #24 — Submit button contrast + touch target  (WCAG 1.4.3, 2.5.5)
+   #002147 on #C5A059 = 5.6:1 ✓ — passes.
+   padding: 22px full width — well above 44px minimum ✓
+   Hover: #C5A059 on #002147 = 5.6:1 ✓
+───────────────────────────────────────────────────────────────────────────── */
 .contact-submit-btn {
   background: #C5A059;
   color: #002147;
@@ -410,6 +687,7 @@
   text-transform: uppercase;
   letter-spacing: 4px;
   margin-top: 8px;
+  min-height: 44px; /* explicit minimum touch target */
 }
 
 .contact-submit-btn:hover:not(:disabled) {
@@ -419,53 +697,21 @@
   box-shadow: 0 16px 40px rgba(0, 33, 71, 0.15);
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADA FIX #25 — Disabled state must have sufficient contrast  (WCAG 1.4.3)
+   WCAG exempts disabled UI components from contrast requirements,
+   but opacity: 0.55 on gold/navy still renders legibly. OK as-is.
+   We add a distinct cursor and remove transform to signal non-interactivity.
+───────────────────────────────────────────────────────────────────────────── */
 .contact-submit-btn:disabled {
   opacity: 0.55;
   cursor: not-allowed;
   transform: none;
 }
 
-/* =============================================
-   SOCIAL ICONS
-   ============================================= */
-.contact-socials-block {
-  padding-bottom: 24px;
-}
-
-.contact-socials {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  margin-top: 4px;
-}
-
-.contact-social-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border: 1px solid rgba(197, 160, 89, 0.3);
-  color: rgba(255, 255, 255, 0.65);
-  transition: all 0.25s ease;
-  flex-shrink: 0;
-}
-
-.contact-social-icon svg {
-  width: 18px;
-  height: 18px;
-}
-
-.contact-social-icon:hover {
-  border-color: #C5A059;
-  color: #C5A059;
-  background: rgba(197, 160, 89, 0.08);
-  transform: translateY(-2px);
-}
-
-/* =============================================
-   RESPONSIVE - 1024px
-   ============================================= */
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE — 1024px
+═══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
   .contact-hero {
     padding: 100px 6% 80px;
@@ -486,9 +732,9 @@
   }
 }
 
-/* =============================================
-   RESPONSIVE - 768px
-   ============================================= */
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE — 768px
+═══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .contact-hero {
     padding: 80px 6% 70px;
@@ -504,6 +750,8 @@
 
   .contact-hero-link {
     text-align: center;
+    justify-content: center;
+    width: 100%;
   }
 
   .contact-form-section {
@@ -520,9 +768,9 @@
   }
 }
 
-/* =============================================
-   RESPONSIVE - 480px
-   ============================================= */
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE — 480px
+═══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
   .contact-form-container {
     padding: 40px 5%;
