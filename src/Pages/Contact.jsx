@@ -33,6 +33,57 @@ const BUDGET_RANGES = [
   'Not sure yet',
 ];
 
+const SOCIALS = [
+  {
+    label: 'Instagram',
+    url: 'https://instagram.com/grownfolkscollective',
+    icon: (
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    label: 'TikTok',
+    url: 'https://tiktok.com/@grownfolkscollective',
+    icon: (
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z" />
+      </svg>
+    ),
+  },
+  {
+    label: 'Facebook',
+    url: 'https://facebook.com/grownfolkscollectiveatl',
+    icon: (
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+      </svg>
+    ),
+  },
+  {
+    label: 'Threads',
+    url: 'https://threads.net/@grownfolkscollective',
+    icon: (
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.473 12.01v-.017c.027-3.579.877-6.43 2.528-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.594 12c.022 3.086.713 5.496 2.051 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.583-1.3-.881-2.347-.887H12c-.912 0-1.708.283-2.27.801-.386.354-.623.818-.696 1.38l-2.02-.283c.148-1.048.6-1.97 1.328-2.683C9.394 7.57 10.62 7.002 12 7.002h.026c1.527.007 2.793.454 3.765 1.33 1.046.941 1.62 2.31 1.708 4.073.017.344.02.693.007 1.042.462.37.875.794 1.22 1.266 1.02 1.384 1.263 3.318.668 5.01C18.687 21.979 16.35 24 12.186 24zm.28-9.217c-.148 0-.295.005-.44.013-1.017.057-1.818.332-2.315.797-.43.4-.647.919-.618 1.464.056 1.023.97 1.682 2.332 1.607 1.133-.062 1.975-.468 2.502-1.206.41-.571.633-1.38.665-2.397a11.68 11.68 0 0 0-2.126-.278z" />
+      </svg>
+    ),
+  },
+  {
+    label: 'LinkedIn',
+    url: 'https://linkedin.com/company/grownfolkscollective',
+    icon: (
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" />
+        <circle cx="4" cy="4" r="2" />
+      </svg>
+    ),
+  },
+];
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -41,15 +92,17 @@ const Contact = () => {
     phone: '',
     reason: '',
     message: '',
-    eventDetails: { eventType: '', guestCount: '', preferredDate: '', budget: '' },
+    eventDetails: {
+      eventType: '',
+      guestCount: '',
+      preferredDate: '',
+      budget: '',
+    },
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback]         = useState(null);
 
-  // ADA FIX #1 — Focus management after submit  (WCAG 2.4.3 Level A)
-  // When feedback appears, move focus to it so screen-reader users
-  // are immediately informed of success/error without having to search.
   const feedbackRef = useRef(null);
   useEffect(() => {
     if (feedback && feedbackRef.current) {
@@ -113,7 +166,6 @@ const Contact = () => {
   const showEventSection = formData.reason === 'Plan an Event for Me';
 
   return (
-    // ADA FIX #2 — Skip navigation link  (WCAG 2.4.1 Level A)
     <div className="contact-page">
 
       <a href="#main-content" className="skip-link">Skip to main content</a>
@@ -126,30 +178,20 @@ const Contact = () => {
         />
       </Helmet>
 
-      {/* HERO */}
-      {/* ADA FIX #3 — <header role="banner"> landmark  (WCAG 1.3.6) */}
+      {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <header className="contact-hero" role="banner">
         <div className="contact-hero-inner">
 
-          {/* LEFT */}
+          {/* LEFT col */}
           <div className="contact-hero-left">
-            {/* ADA FIX #4 — Eyebrow aria-hidden: decorative label, heading provides the real name */}
             <span className="contact-eyebrow" aria-hidden="true">Get In Touch</span>
-
-            {/* ADA FIX #5 — line-height 0.85 fails WCAG 1.4.12 text spacing — fixed in CSS */}
             <h1 className="contact-hero-title">Contact Us</h1>
-
-            {/* Decorative spacer — hidden from AT */}
             <div className="contact-gold-spacer" aria-hidden="true"></div>
-
-            {/* ADA FIX #6 — Hero lead text contrast: rgba(255,255,255,0.78) is ~10:1 ✓ */}
             <p className="contact-hero-lead">
               Whether you have a question, want to learn more about membership,
               or want us to plan an event for you — we're here. Reach out and
               we'll respond within 48 hours.
             </p>
-
-            {/* ADA FIX #7 — CTA links need descriptive text (WCAG 2.4.6 Level AA) */}
             <nav className="contact-hero-links" aria-label="Quick contact actions">
               <Link to="/events" className="contact-hero-link">
                 View Upcoming Events
@@ -160,68 +202,35 @@ const Contact = () => {
             </nav>
           </div>
 
-          {/* RIGHT — contact info */}
-          {/* ADA FIX #8 — contact info blocks: use <address> + proper link semantics */}
+          {/* RIGHT col — contact info */}
           <address className="contact-hero-right">
 
+            {/* Social Icons */}
             <div className="contact-info-block contact-socials-block">
               <p className="contact-info-label" id="social-label">Follow Us</p>
-              {/* ADA FIX #9 — social icons must have accessible names  (WCAG 4.1.2 Level A)
-                  Icon-only links are invisible to screen readers without aria-label.
-                  Each link gets aria-label="Platform name (opens in new tab)"          */}
               <ul
                 className="contact-socials"
                 role="list"
                 aria-labelledby="social-label"
               >
-                <li>
-                  <a
-                    href="https://www.tiktok.com/@grownfolkscollective"
-                    className="contact-social-icon"
-                    aria-label="Follow us on TikTok (opens in new tab)"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {/* ADA FIX #10 — SVG icons must be aria-hidden since the link has a label */}
-                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.27 8.27 0 004.84 1.55V6.79a4.85 4.85 0 01-1.07-.1z"/>
-                    </svg>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.instagram.com/grownfolkscollective"
-                    className="contact-social-icon"
-                    aria-label="Follow us on Instagram (opens in new tab)"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                      <circle cx="12" cy="12" r="4"/>
-                      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
-                    </svg>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.meetup.com/grownfolkscollective"
-                    className="contact-social-icon"
-                    aria-label="Join us on Meetup (opens in new tab)"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M19.24 12.68c-.24-.96.1-2.01.87-2.63.17-.14.14-.4-.06-.5a2.83 2.83 0 00-1.3-.24c-.48.02-.94.18-1.32.46a5.04 5.04 0 00-3.43-1.35 5.08 5.08 0 00-5.08 5.08 5.08 5.08 0 005.08 5.08c1.68 0 3.17-.82 4.1-2.08.36.1.74.15 1.13.13a3.07 3.07 0 002.99-3.07 3.07 3.07 0 00-2.98-2.88z"/>
-                    </svg>
-                  </a>
-                </li>
+                {SOCIALS.map(({ label, url, icon }) => (
+                  <li key={label}>
+                    <a
+                      href={url}
+                      className="contact-social-icon"
+                      aria-label={`Follow Grown Folks Collective on ${label} (opens in new tab)`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {icon}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            {/* ADA FIX #11 — Email link must use href="mailto:" for functionality */}
+            {/* Email */}
             <div className="contact-info-block">
-              {/* Using <p> not <span> for the label so it's a proper text node */}
               <p className="contact-info-label">Email</p>
               <a
                 href="mailto:hello@grownfolkscollective.com"
@@ -231,37 +240,30 @@ const Contact = () => {
               </a>
             </div>
 
+            {/* Location */}
             <div className="contact-info-block">
               <p className="contact-info-label">Location</p>
-              {/* ADA FIX #12 — Non-interactive location text: use <p> not <a> 
-                  WCAG 2.4.4 — Links must have a purpose. A non-clickable <a>
-                  with no href is a broken link. Use <p> for static content.  */}
-              <p className="contact-info-value contact-info-static">
-                Atlanta, GA
-              </p>
+              <p className="contact-info-value contact-info-static">Atlanta, GA</p>
             </div>
 
+            {/* Response Time */}
             <div className="contact-info-block">
               <p className="contact-info-label">Response Time</p>
-              <p className="contact-info-value contact-info-static">
-                Within 48 Hours
-              </p>
+              <p className="contact-info-value contact-info-static">Within 48 Hours</p>
             </div>
 
           </address>
         </div>
       </header>
 
-      {/* ADA FIX #13 — <main> landmark required  (WCAG 2.4.1 Level A) */}
+      {/* ── MAIN ─────────────────────────────────────────────────────────── */}
       <main id="main-content">
-
         <section
           className="contact-form-section"
           aria-labelledby="contact-form-heading"
         >
           <div className="contact-form-container">
 
-            {/* ADA FIX #14 — Form needs a visible heading  (WCAG 2.4.6 Level AA) */}
             <header className="contact-form-header">
               <span className="contact-form-eyebrow" aria-hidden="true">Send a Message</span>
               <h2 className="contact-form-title" id="contact-form-heading">
@@ -270,15 +272,15 @@ const Contact = () => {
               <p className="contact-form-subhead">
                 Fill out the form below and we'll get back to you within 48 hours.
                 For faster response, email us directly at{' '}
-                <a href="mailto:hello@grownfolkscollective.com" className="contact-inline-link">
+                <a
+                  href="mailto:hello@grownfolkscollective.com"
+                  className="contact-inline-link"
+                >
                   hello@grownfolkscollective.com
                 </a>
               </p>
             </header>
 
-            {/* ADA FIX #15 — <form> needs aria-label  (WCAG 4.1.2 Level A)
-                When there are multiple forms on a page, or for robustness,
-                label the form so AT announces "Contact form" on focus.     */}
             <form
               onSubmit={handleSubmit}
               className="contact-luxe-form"
@@ -286,19 +288,15 @@ const Contact = () => {
               noValidate
             >
 
-              {/* ADA FIX #16 — Form section dividers must be <fieldset>+<legend>
-                  WCAG 1.3.1 Level A — "Your Information" is a grouping label.
-                  Using <fieldset>/<legend> gives screen readers context for
-                  each group of related fields.                               */}
+              {/* ── FIELDSET: Your Information ─────────────────────────── */}
               <fieldset className="contact-fieldset">
                 <legend className="contact-form-divider">Your Information</legend>
 
                 <div className="contact-form-row">
                   <div className="contact-input-group">
-                    {/* ADA FIX #17 — Labels are correctly associated via htmlFor ✓
-                        Adding autocomplete for better UX + WCAG 1.3.5 (Level AA) */}
                     <label className="contact-label" htmlFor="firstName">
-                      First Name <span className="contact-required" aria-hidden="true">*</span>
+                      First Name{' '}
+                      <span className="contact-required" aria-hidden="true">*</span>
                     </label>
                     <input
                       id="firstName"
@@ -309,14 +307,13 @@ const Contact = () => {
                       required
                       aria-required="true"
                       autoComplete="given-name"
-                      /* ADA FIX #18 — aria-required duplicates HTML required for
-                         older AT that may not read the native required attribute */
                     />
                   </div>
 
                   <div className="contact-input-group">
                     <label className="contact-label" htmlFor="lastName">
-                      Last Name <span className="contact-required" aria-hidden="true">*</span>
+                      Last Name{' '}
+                      <span className="contact-required" aria-hidden="true">*</span>
                     </label>
                     <input
                       id="lastName"
@@ -334,7 +331,8 @@ const Contact = () => {
                 <div className="contact-form-row">
                   <div className="contact-input-group">
                     <label className="contact-label" htmlFor="email">
-                      Email <span className="contact-required" aria-hidden="true">*</span>
+                      Email{' '}
+                      <span className="contact-required" aria-hidden="true">*</span>
                     </label>
                     <input
                       id="email"
@@ -345,14 +343,10 @@ const Contact = () => {
                       required
                       aria-required="true"
                       autoComplete="email"
-                      /* ADA FIX #19 — type="email" triggers correct mobile keyboard
-                         and provides native format validation hint              */
                     />
                   </div>
 
                   <div className="contact-input-group">
-                    {/* ADA FIX #20 — "(Optional)" must be in the label text,
-                        not only visual — screen readers need to hear it.     */}
                     <label className="contact-label" htmlFor="phone">
                       Phone{' '}
                       <span className="contact-label-optional">(Optional)</span>
@@ -365,11 +359,9 @@ const Contact = () => {
                       onChange={handleChange}
                       maxLength="14"
                       autoComplete="tel"
-                      /* ADA FIX #21 — Add inputMode for mobile numeric pad */
                       inputMode="numeric"
                       aria-describedby="phone-hint"
                     />
-                    {/* ADA FIX #22 — Input hints use aria-describedby  (WCAG 1.3.1) */}
                     <span id="phone-hint" className="contact-input-hint">
                       Format: (555) 555-5555
                     </span>
@@ -377,7 +369,7 @@ const Contact = () => {
                 </div>
               </fieldset>
 
-              {/* ─── Reason & Message ─────────────────────────── */}
+              {/* ── FIELDSET: Your Message ──────────────────────────────── */}
               <fieldset className="contact-fieldset">
                 <legend className="contact-form-divider">Your Message</legend>
 
@@ -394,8 +386,6 @@ const Contact = () => {
                     required
                     aria-required="true"
                   >
-                    {/* ADA FIX #23 — Placeholder option must have empty value
-                        so required validation fires correctly                */}
                     <option value="">Select a reason...</option>
                     {REASONS.map(r => (
                       <option key={r} value={r}>{r}</option>
@@ -403,10 +393,7 @@ const Contact = () => {
                   </select>
                 </div>
 
-                {/* ADA FIX #24 — Conditional section needs proper disclosure pattern
-                    WCAG 4.1.3 / 1.3.1 — When "Plan an Event" is selected,
-                    the new fields must be announced to AT users.
-                    aria-live="polite" on the wrapper announces the appearance. */}
+                {/* Conditional: event planning fields */}
                 <div aria-live="polite" aria-atomic="false">
                   {showEventSection && (
                     <fieldset className="contact-event-planning-section contact-fieldset contact-fieldset--nested">
@@ -453,8 +440,6 @@ const Contact = () => {
                           <label className="contact-label" htmlFor="event_preferredDate">
                             Preferred Date
                           </label>
-                          {/* ADA FIX #25 — Date inputs need a visible hint about format
-                              WCAG 3.3.2 – Labels or Instructions (Level A)           */}
                           <input
                             id="event_preferredDate"
                             type="date"
@@ -492,7 +477,8 @@ const Contact = () => {
 
                 <div className="contact-input-group">
                   <label className="contact-label" htmlFor="message">
-                    Message <span className="contact-required" aria-hidden="true">*</span>
+                    Message{' '}
+                    <span className="contact-required" aria-hidden="true">*</span>
                   </label>
                   <textarea
                     id="message"
@@ -503,36 +489,24 @@ const Contact = () => {
                     required
                     aria-required="true"
                     rows="6"
-                    /* ADA FIX #26 — rows attribute gives AT a sense of size;
-                       also prevents a 0-height textarea on some browsers       */
                   />
                 </div>
               </fieldset>
 
-              {/* ADA FIX #27 — Required field legend  (WCAG 3.3.2 Level A)
-                  Users must know which fields are required before submitting. */}
+              {/* Required field note */}
               <p className="contact-required-note">
                 <span aria-hidden="true">*</span> Required fields
               </p>
 
-              {/* ADA FIX #28 — Feedback region: aria-live + role="alert" for errors,
-                  role="status" for success; tabIndex="-1" so focus lands here.
-                  WCAG 4.1.3 – Status Messages (Level AA)                     */}
-              <div
-                aria-live="polite"
-                aria-atomic="true"
-              >
+              {/* Feedback region */}
+              <div aria-live="polite" aria-atomic="true">
                 {feedback && (
                   <div
                     ref={feedbackRef}
                     className={`contact-feedback ${feedback.type}`}
                     role={feedback.type === 'error' ? 'alert' : 'status'}
                     tabIndex={-1}
-                    /* ADA FIX #29 — tabIndex="-1" allows programmatic focus
-                       without adding the element to the natural tab order   */
                   >
-                    {/* ADA FIX #30 — Prefix message with type for AT users
-                        so they hear "Error: …" or "Success: …" immediately */}
                     <span className="sr-only">
                       {feedback.type === 'error' ? 'Error: ' : 'Success: '}
                     </span>
@@ -541,33 +515,25 @@ const Contact = () => {
                 )}
               </div>
 
-              {/* ADA FIX #31 — Submit button  (WCAG 4.1.2 Level A)
-                  type="submit" is correct ✓
-                  aria-disabled mirrors the disabled state for AT that
-                  may not fully read the native disabled attribute        */}
+              {/* Submit button */}
               <button
                 type="submit"
                 className="contact-submit-btn"
                 disabled={isSubmitting}
                 aria-disabled={isSubmitting}
                 aria-busy={isSubmitting}
-                /* ADA FIX #32 — aria-busy tells AT the form is processing */
               >
-                {isSubmitting ? (
-                  <>
-                    {/* ADA FIX #33 — Loading state must be announced to AT */}
-                    <span aria-live="polite" aria-atomic="true">Sending…</span>
-                  </>
-                ) : (
-                  'Send Message'
-                )}
+                {isSubmitting
+                  ? <span aria-live="polite" aria-atomic="true">Sending…</span>
+                  : 'Send Message'
+                }
               </button>
 
             </form>
           </div>
         </section>
-
       </main>
+
     </div>
   );
 };
