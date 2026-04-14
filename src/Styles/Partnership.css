@@ -1,28 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@300;400;600;700&display=swap');
+
 /* =============================================
-   UPDATED GRID FOR 5 TIERS
+   PARTNERSHIP PAGE - COMPLETE CSS v4
    ============================================= */
+
+.partnership-page {
+  background-color: #FDFBFA;
+  color: #002147;
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+}
+
+/* =============================================
+   HERO SECTION
+   ============================================= */
+.partner-hero {
+  min-height: 80vh;
+  background-image: linear-gradient(rgba(0, 33, 71, 0.65), rgba(0, 33, 71, 0.8)),
+                    url('https://static.vecteezy.com/system/resources/thumbnails/052/030/148/small/teamwork-and-partnership-multiracial-business-people-holding-hands-together-sitting-at-one-desk-in-modern-office-high-angle-free-space-photo.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+}
+
+.partner-hero-inner {
+  width: 100%;
+  padding: 100px 10%;
+}
+
+.partner-location-tag {
+  color: #C5A059;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.partner-luxe-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 10vw, 7.5rem);
+  line-height: 0.85;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 0 0 25px 0;
+  color: #FFFFFF;
+}
+
+.partner-gold-spacer {
+  width: 100px;
+  height: 2px;
+  background: #C5A059;
+  margin-bottom: 30px;
+}
+
+.partner-mission-narrative {
+  max-width: 640px;
+}
+
+.partner-narrative-lead {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: #FFFFFF;
+}
+
+.partner-narrative-body {
+  font-size: 1.15rem;
+  line-height: 1.9;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* =============================================
+   IMPACT STATS
+   ============================================= */
+.partner-impact-stats {
+  background-color: #002147;
+  padding: 80px 10%;
+}
+
+.partner-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.partner-stat-card {
+  text-align: center;
+  padding: 40px 20px;
+  border: 1px solid rgba(197, 160, 89, 0.2);
+  transition: all 0.3s ease;
+}
+
+.partner-stat-card:hover {
+  border-color: #C5A059;
+  background: rgba(197, 160, 89, 0.05);
+}
+
+.partner-stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  color: #C5A059;
+  margin-bottom: 10px;
+}
+
+.partner-stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* =============================================
+   TIERS GRID (5 TIERS)
+   ============================================= */
+.partner-tiers-section {
+  padding: 100px 5%;
+  background-color: #FDFBFA;
+}
+
 .partner-tier-grid {
   display: grid;
-  /* Adjusts from 3 columns to 2 to 1 based on screen size */
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
-  margin-bottom: 60px;
-  align-items: stretch;
+  max-width: 1400px;
+  margin: 60px auto;
 }
 
-/* =============================================
-   ELITE TITLE CARD STYLES
-   ============================================= */
-.partner-tier-card.partner-tier-elite {
+.partner-tier-card {
+  background: #FFFFFF;
+  border: 1px solid #E8E8E8;
+  padding: 50px 30px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  border-top: 4px solid #E8E8E8;
+}
+
+.partner-tier-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 30px 60px rgba(0, 33, 71, 0.1);
+  border-top-color: #C5A059;
+}
+
+/* Featured & Elite Enhancements */
+.partner-tier-featured {
   border: 2px solid #C5A059;
-  background: linear-gradient(145deg, #FFFFFF 0%, #FDFBFA 100%);
-  box-shadow: 0 15px 40px rgba(197, 160, 89, 0.15);
+  border-top: 4px solid #C5A059;
 }
 
-.partner-tier-elite .partner-tier-label {
+.partner-tier-elite {
+  background: linear-gradient(145deg, #FFFFFF 0%, #F9F6F0 100%);
+  border: 2px solid #C5A059;
+  border-top: 4px solid #002147;
+}
+
+.partner-tier-badge {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #C5A059;
   color: #002147;
-  font-weight: 900;
-  letter-spacing: 3px;
+  padding: 6px 16px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .partner-tier-elite .partner-tier-badge {
@@ -30,51 +182,185 @@
   color: #C5A059;
 }
 
+/* Typography inside cards */
+.partner-tier-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #C5A059;
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+
+.partner-tier-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #002147;
+  margin-bottom: 5px;
+}
+
+.partner-tier-price-note {
+  font-size: 0.7rem;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.partner-tier-best {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 25px;
+  min-height: 40px;
+}
+
+.partner-tier-divider {
+  width: 40px;
+  height: 1px;
+  background: #C5A059;
+  margin-bottom: 25px;
+}
+
+.partner-tier-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 35px 0;
+  flex: 1;
+}
+
+.partner-tier-features li {
+  font-size: 0.85rem;
+  padding: 10px 0;
+  border-bottom: 1px solid #F5F5F5;
+  color: #444;
+  line-height: 1.4;
+}
+
+.partner-tier-features li strong {
+  color: #002147;
+}
+
+/* Button styles */
+.partner-tier-btn {
+  text-align: center;
+  padding: 15px;
+  border: 1px solid #002147;
+  color: #002147;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  margin-top: auto;
+}
+
+.partner-tier-btn:hover {
+  background: #002147;
+  color: #FFFFFF;
+}
+
 .partner-tier-elite .partner-tier-btn {
   background: #C5A059;
   border-color: #C5A059;
-  color: #002147;
 }
 
 .partner-tier-elite .partner-tier-btn:hover {
   background: #002147;
-  color: #FFFFFF;
   border-color: #002147;
 }
 
-/* Highlight the Interview Feature */
-.partner-tier-features li strong {
-  color: #C5A059;
+/* =============================================
+   LUXE FORM STYLING
+   ============================================= */
+.partner-form-section {
+  padding: 100px 5%;
+  background-color: #F5F3F0;
+}
+
+.partner-proposal-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #FFFFFF;
+  padding: 80px 10%;
+  box-shadow: 0 40px 100px rgba(0, 33, 71, 0.05);
+}
+
+.partner-luxe-form {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+.partner-input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.partner-label {
+  font-size: 0.7rem;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
 }
 
-/* =============================================
-   EXPERIENCE PARTNER (POPPI/WELLNESS)
-   ============================================= */
-.partner-tier-card:nth-child(4) {
-  border-top: 3px solid #002147; /* Contrast for the Experience Tier */
+.partner-input-group input, 
+.partner-input-group select, 
+.partner-textarea {
+  padding: 18px;
+  border: 1px solid #E0E0E0;
+  background: #FAFAFA;
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
-/* =============================================
-   FORM IMPROVEMENTS
-   ============================================= */
+.partner-input-group input:focus, 
+.partner-textarea:focus {
+  border-color: #C5A059;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
+}
+
+.partner-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 20px;
+  background: #FAFAFA;
+  border: 1px solid #E0E0E0;
+}
+
+.partner-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
 .pw-toggle {
   position: absolute;
-  right: 14px;
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   color: #C5A059;
   font-weight: 700;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
   cursor: pointer;
-  z-index: 2;
 }
 
-/* Ensure the grid looks good on tablet */
-@media (max-width: 1100px) {
+/* =============================================
+   RESPONSIVE DESIGN
+   ============================================= */
+@media (max-width: 1024px) {
   .partner-tier-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -83,5 +369,11 @@
 @media (max-width: 768px) {
   .partner-tier-grid {
     grid-template-columns: 1fr;
+  }
+  .partner-form-row {
+    grid-template-columns: 1fr;
+  }
+  .partner-luxe-title {
+    font-size: 3.5rem;
   }
 }
