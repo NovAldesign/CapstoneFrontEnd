@@ -1,139 +1,129 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@300;400;600;700&display=swap');
-
+/* =============================================
+   GLOBAL RESET FOR THIS PAGE
+   ============================================= */
 .partnership-page {
-  background-color: #FDFBFA;
-  color: #002147;
-  font-family: 'Montserrat', sans-serif;
+  background-color: #FDFBFA !important;
+  color: #002147 !important;
+  font-family: 'Montserrat', sans-serif !important;
+  padding-bottom: 100px;
 }
 
 /* =============================================
-   TIER ROW - THE "SAME LINE" FIX
+   TIERS - SAME LINE FIX
    ============================================= */
 .partner-tier-row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap; /* Forces them to stay on one line on desktop */
-  gap: 20px;
-  justify-content: center;
-  padding: 40px 0;
-  overflow-x: auto; /* Allows scrolling on smaller screens if they don't fit */
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 20px !important;
+  justify-content: center !important;
+  padding: 40px 2% !important;
+  overflow-x: auto;
 }
 
 .partner-tier-card {
-  flex: 1;
-  min-width: 250px;
-  max-width: 320px;
-  background: #fff;
-  border-top: 4px solid #C5A059;
-  padding: 40px 25px;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease;
-  box-shadow: 0 10px 30px rgba(0, 33, 71, 0.05);
+  flex: 1 !important;
+  min-width: 250px !important;
+  background: #ffffff !important;
+  border: 1px solid #e8e8e8 !important;
+  border-top: 4px solid #C5A059 !important;
+  padding: 40px 20px !important;
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
 }
 
-.partner-tier-card:hover {
-  transform: translateY(-10px);
+.partner-tier-featured { border: 2px solid #C5A059 !important; border-top: 4px solid #C5A059 !important; }
+.partner-tier-elite { background: #f9f6f0 !important; border-top: 4px solid #002147 !important; }
+
+.partner-tier-price {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 2rem !important;
+  font-weight: 900 !important;
+  margin: 15px 0 !important;
 }
 
-/* Elite & Featured Styles */
-.partner-tier-featured { border: 2px solid #C5A059; border-top: 4px solid #C5A059; }
-.partner-tier-elite { background: #f9f6f0; border-top: 4px solid #002147; }
-.partner-tier-badge {
-  position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
-  background: #C5A059; color: #002147; padding: 5px 15px; font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+.partner-tier-features {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 20px 0 !important;
+  flex-grow: 1 !important;
 }
 
-/* Typography inside cards */
-.partner-tier-label { color: #C5A059; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
-.partner-tier-price { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: #002147; margin-bottom: 20px; }
-.partner-tier-features { list-style: none; padding: 0; margin-bottom: 30px; flex: 1; }
-.partner-tier-features li { font-size: 0.8rem; padding: 8px 0; border-bottom: 1px solid #eee; }
-
-/* Card Button */
-.partner-tier-btn {
-  text-align: center; padding: 12px; border: 1px solid #002147; color: #002147; 
-  text-decoration: none; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+.partner-tier-features li {
+  font-size: 0.85rem !important;
+  padding: 10px 0 !important;
+  border-bottom: 1px solid #f0f0f0 !important;
 }
 
 /* =============================================
-   FORM FIXES (Resolving Screenshot issues)
+   FORM STYLING - FIXING THE "NAKED" HTML
    ============================================= */
+.partner-proposal-container {
+  max-width: 900px !important;
+  margin: 50px auto !important;
+  background: #ffffff !important;
+  padding: 60px !important;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.1) !important;
+}
 
-/* 1. Fix the Submit Button (No more browser-grey) */
-.partner-submit-btn {
-  appearance: none;
-  -webkit-appearance: none;
-  background-color: #C5A059 !important;
+.partner-luxe-form {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 30px !important;
+}
+
+.partner-form-row {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 20px !important;
+}
+
+.partner-input-group {
+  display: flex !important;
+  flex-direction: column !important;
+  text-align: left !important;
+}
+
+.partner-label {
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  font-size: 0.75rem !important;
+  margin-bottom: 8px !important;
   color: #002147 !important;
-  border: none;
-  padding: 22px;
-  width: 100%;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  cursor: pointer;
-  margin-top: 20px;
-  transition: all 0.3s ease;
 }
 
-.partner-submit-btn:hover:not(:disabled) {
-  background-color: #002147 !important;
-  color: #C5A059 !important;
-  box-shadow: 0 10px 30px rgba(0, 33, 71, 0.2);
+.partner-input, .partner-select, .partner-textarea {
+  padding: 15px !important;
+  border: 1px solid #E0E0E0 !important;
+  background: #FAFAFA !important;
+  font-size: 1rem !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-/* 2. Fix Checkboxes (No more blue browser defaults) */
-.partner-checkbox-input {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
-  border: 2px solid #C5A059;
-  background-color: #fff;
-  cursor: pointer;
-  position: relative;
-  margin-right: 10px;
+.partner-checkbox-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+  background: #f8f8f8 !important;
+  padding: 20px !important;
 }
 
-.partner-checkbox-input:checked {
-  background-color: #002147;
-  border-color: #002147;
+.partner-submit-btn {
+  background: #C5A059 !important;
+  color: #002147 !important;
+  padding: 20px !important;
+  border: none !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+  cursor: pointer !important;
 }
 
-.partner-checkbox-input:checked::after {
-  content: '✓';
-  position: absolute;
-  color: #C5A059;
-  font-size: 14px;
-  top: -2px;
-  left: 2px;
-}
-
-/* 3. Fix the Dropdown Select styling */
-.partner-select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23C5A059%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-  background-repeat: no-repeat;
-  background-position: right 15px top 50%;
-  background-size: 12px;
-  padding-right: 40px !important;
-}
-
-/* Responsive Handling */
-@media (max-width: 1200px) {
-  .partner-tier-row {
-    flex-wrap: wrap; /* Stack on tablet/mobile */
-  }
-  .partner-tier-card {
-    max-width: 45%;
-  }
-}
-
-@media (max-width: 768px) {
-  .partner-tier-card {
-    max-width: 100%;
-    flex: none;
-  }
+/* Responsive Fix */
+@media (max-width: 800px) {
+  .partner-tier-row { flex-direction: column !important; align-items: center !important; }
+  .partner-form-row { grid-template-columns: 1fr !important; }
 }
