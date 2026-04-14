@@ -48,7 +48,6 @@ const Partnership = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFeedback(null);
-
     setIsSubmitting(true);
 
     try {
@@ -79,9 +78,7 @@ const Partnership = () => {
         status: "pending",
       });
     } catch (err) {
-      const errorMsg =
-        err.response?.data?.error ||
-        "Submission failed. Please check your connection and password strength.";
+      const errorMsg = err.response?.data?.error || "Submission failed. Please check your data.";
       setFeedback({ type: "error", message: errorMsg });
     } finally {
       setIsSubmitting(false);
@@ -97,40 +94,21 @@ const Partnership = () => {
     "Social Mixers",
   ];
 
-  const TIER_OPTIONS = [
-    "Elite Title Sponsor",
-    "Collective Partner",
-    "Community Supporter",
-    "Experience Partner (In-Kind)",
-    "Digital Ally",
-    "Venue Partner"
-  ];
-
   return (
     <div className="partnership-page">
       <Helmet>
         <title>Strategic Partnerships | Grown Folks Collective</title>
-        <meta 
-          name="description" 
-          content="Partner with Atlanta's premier community for intentional 35+ professionals. Exclusive title sponsorships and experience activations available." 
-        />
       </Helmet>
 
       {/* HERO */}
       <header className="partner-hero">
         <div className="partner-hero-inner">
           <span className="partner-location-tag">Atlanta & Surrounding Cities</span>
-          <h1 className="playfair partner-luxe-title">
-            Strategic<br />Alignment
-          </h1>
+          <h1 className="playfair partner-luxe-title">Strategic<br />Alignment</h1>
           <div className="partner-gold-spacer"></div>
           <div className="partner-mission-narrative">
-            <p className="partner-narrative-lead">
-              For the 35+ professional, success often comes at a silent cost: <strong>Social Isolation.</strong>
-            </p>
-            <p className="partner-narrative-body">
-              Atlanta's seasoned entrepreneurs are seeking true community. Partnership with the Collective is an active investment in <strong>Social Wellness.</strong>
-            </p>
+            <p className="partner-narrative-lead">Success often comes at a silent cost: <strong>Social Isolation.</strong></p>
+            <p className="partner-narrative-body">Partnership with the Collective is an active investment in <strong>Social Wellness.</strong></p>
           </div>
         </div>
       </header>
@@ -147,87 +125,66 @@ const Partnership = () => {
             <div className="partner-stat-label">Avg. Household Income</div>
           </div>
           <div className="partner-stat-card">
-            <div className="partner-stat-number">250%+</div>
-            <div className="partner-stat-label">Documented Venue Sales Lift</div>
-          </div>
-          <div className="partner-stat-card">
             <div className="partner-stat-number">0%</div>
             <div className="partner-stat-label">Alcohol-Free Programming</div>
           </div>
         </div>
       </section>
 
-      {/* TIERS */}
+      {/* TIERS ROW - FORCED TO ONE LINE */}
       <section className="partner-tiers-section">
         <div className="partner-tiers-inner">
           <span className="partner-tiers-eyebrow">Opportunities</span>
           <h2 className="playfair partner-tiers-heading">Choose Your Level of Impact</h2>
           
-          <div className="partner-tier-grid">
+          <div className="partner-tier-row">
             {/* Digital Ally */}
             <div className="partner-tier-card">
               <div className="partner-tier-label">Digital Ally</div>
               <div className="partner-tier-price">$75</div>
-              <div className="partner-tier-price-note">per month</div>
-              <div className="partner-tier-best">Ideal for digital creators & service providers</div>
-              <div className="partner-tier-divider"></div>
               <ul className="partner-tier-features">
                 <li>Directory listing on website</li>
                 <li>Monthly Spotlight in email</li>
                 <li>Digital event program credit</li>
-                <li>Partner network access</li>
               </ul>
-              <a href="#partner-form" className="partner-tier-btn">Select Tier</a>
+              <a href="#partner-form" className="partner-tier-btn">Select</a>
             </div>
 
-            {/* Community */}
+            {/* Community Supporter */}
             <div className="partner-tier-card">
               <div className="partner-tier-label">Community</div>
               <div className="partner-tier-price">$300–$500</div>
-              <div className="partner-tier-price-note">per event</div>
-              <div className="partner-tier-best">Ideal for local boutiques & small biz</div>
-              <div className="partner-tier-divider"></div>
               <ul className="partner-tier-features">
                 <li>Logo on event signage</li>
                 <li>1 Social media mention</li>
                 <li>Marketing materials at table</li>
-                <li>Verbal recognition by host</li>
               </ul>
-              <a href="#partner-form" className="partner-tier-btn">Select Tier</a>
+              <a href="#partner-form" className="partner-tier-btn">Select</a>
             </div>
 
-            {/* Collective */}
+            {/* Collective Partner */}
             <div className="partner-tier-card partner-tier-featured">
               <div className="partner-tier-badge">Recommended</div>
               <div className="partner-tier-label">Collective</div>
               <div className="partner-tier-price">$750–$1,000</div>
-              <div className="partner-tier-price-note">per event</div>
-              <div className="partner-tier-best">Best for health & financial brands</div>
-              <div className="partner-tier-divider"></div>
               <ul className="partner-tier-features">
                 <li>Branded activation space</li>
                 <li>3 social content pieces</li>
                 <li>Product sampling opportunity</li>
-                <li>Attendee email recap feature</li>
-                <li>2 Guest passes included</li>
               </ul>
-              <a href="#partner-form" className="partner-tier-btn">Select Tier</a>
+              <a href="#partner-form" className="partner-tier-btn">Select</a>
             </div>
 
             {/* Experience Partner */}
-            <div className="partner-tier-card">
+            <div className="partner-tier-card partner-tier-experience">
               <div className="partner-tier-label">Experience</div>
               <div className="partner-tier-price">Product + Fee</div>
-              <div className="partner-tier-price-note">In-Kind Activation</div>
-              <div className="partner-tier-best">For beverage & wellness brands (e.g. Poppi)</div>
-              <div className="partner-tier-divider"></div>
               <ul className="partner-tier-features">
                 <li>Dedicated product station</li>
-                <li>High-end aesthetic b-roll creation</li>
-                <li>"Hand-to-hand" marketing</li>
+                <li>High-end aesthetic b-roll</li>
                 <li>Brand mention in Newsletter</li>
               </ul>
-              <a href="#partner-form" className="partner-tier-btn">Inquire Now</a>
+              <a href="#partner-form" className="partner-tier-btn">Inquire</a>
             </div>
 
             {/* Elite Title Sponsor */}
@@ -235,52 +192,25 @@ const Partnership = () => {
               <div className="partner-tier-badge">Exclusive</div>
               <div className="partner-tier-label">Elite Title</div>
               <div className="partner-tier-price">$2,000+</div>
-              <div className="partner-tier-price-note">per event</div>
-              <div className="partner-tier-best">For firms seeking maximum authority</div>
-              <div className="partner-tier-divider"></div>
               <ul className="partner-tier-features">
-                <li><strong>Full Video Interview Feature</strong></li>
-                <li>3-Minute Event Opening Remarks</li>
+                <li><strong>Full Video Interview</strong></li>
+                <li>Event Opening Remarks</li>
                 <li>Industry Category Lockout</li>
-                <li>"Presented By" title branding</li>
-                <li>4 VIP guest passes</li>
               </ul>
-              <a href="#partner-form" className="partner-tier-btn">Secure Exclusivity</a>
+              <a href="#partner-form" className="partner-tier-btn">Secure</a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* FORM */}
+      {/* FORM SECTION */}
       <section className="partner-form-section" id="partner-form">
         <div className="partner-proposal-container">
           <h2 className="playfair partner-form-heading">Initiate Proposal</h2>
-          <p className="partner-form-intro">Define your alignment and create your partner portal account.</p>
-
           <form onSubmit={handleSubmit} className="partner-luxe-form">
-            <div className="partner-form-divider">Company Details</div>
-            <div className="partner-form-row">
-              <div className="partner-input-group">
-                <label className="partner-label">Company Name</label>
-                <input name="companyName" value={formData.companyName} onChange={handleChange} required />
-              </div>
-              <div className="partner-input-group">
-                <label className="partner-label">Industry</label>
-                <input name="industry" value={formData.industry} onChange={handleChange} required />
-              </div>
-            </div>
-
-            <div className="partner-form-row">
-              <div className="partner-input-group">
-                <label className="partner-label">Tier Requested</label>
-                <select name="tierRequested" value={formData.tierRequested} onChange={handleChange} required>
-                  {TIER_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
-              </div>
-              <div className="partner-input-group">
-                <label className="partner-label">Contact Person</label>
-                <input name="contactPerson" value={formData.contactPerson} onChange={handleChange} required />
-              </div>
+            <div className="partner-input-group">
+              <label className="partner-label">Company Name</label>
+              <input name="companyName" value={formData.companyName} onChange={handleChange} required />
             </div>
 
             <div className="partner-form-row">
@@ -307,7 +237,7 @@ const Partnership = () => {
 
             <div className="partner-input-group">
               <label className="partner-label">Experience Hosting Interest?</label>
-              <select name="hostingInterest" value={formData.hostingInterest} onChange={handleChange}>
+              <select name="hostingInterest" value={formData.hostingInterest} onChange={handleChange} className="partner-select">
                 <option value="">Select interest...</option>
                 <option value="Yes - 3 months">Yes — 3 month commitment</option>
                 <option value="Yes - 6 months">Yes — 6 month commitment</option>
@@ -326,6 +256,7 @@ const Partnership = () => {
                       value={event}
                       checked={formData.eventsInterested.includes(event)}
                       onChange={handleCheckbox}
+                      className="partner-checkbox-input"
                     />
                     <span>{event}</span>
                   </label>
@@ -334,7 +265,7 @@ const Partnership = () => {
             </div>
 
             <div className="partner-input-group">
-              <label className="partner-label">Alignment Details (Interview Goals / Activation Vision)</label>
+              <label className="partner-label">Alignment Details</label>
               <textarea
                 name="details"
                 className="partner-textarea"
@@ -345,9 +276,7 @@ const Partnership = () => {
               />
             </div>
 
-            <div aria-live="polite">
-                {feedback && <div className={`partner-feedback ${feedback.type}`}>{feedback.message}</div>}
-            </div>
+            {feedback && <div className={`partner-feedback ${feedback.type}`}>{feedback.message}</div>}
 
             <button type="submit" className="partner-submit-btn" disabled={isSubmitting}>
               {isSubmitting ? "Submitting..." : "Submit Strategic Proposal"}
