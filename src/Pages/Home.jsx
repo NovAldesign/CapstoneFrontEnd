@@ -172,7 +172,7 @@ const Home = () => {
         <div className="platform-block">
           <p className="rating-platform-name">Eventbrite Verified</p>
           <div className="rating-number">4.7</div>
-          <div className="testimonial-stars large" aria-label="4.7 out of 5">★★★★★</div>
+          <div className="testimonial-stars large" aria-label="4.8 out of 5">★★★★★</div>
           <p className="rating-label">Average event rating</p>
         </div>
         <div className="platform-block">
