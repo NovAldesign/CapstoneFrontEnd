@@ -6,6 +6,8 @@ import '../Styles/Contact.css';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
+const MESSAGE_MAX = 2000;
+
 const REASONS = [
   'General Inquiry',
   'Event Question',
@@ -101,7 +103,7 @@ const Contact = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [feedback, setFeedback]         = useState(null);
+  const [feedback, setFeedback] = useState(null);
 
   const feedbackRef = useRef(null);
   useEffect(() => {
@@ -154,10 +156,12 @@ const Contact = () => {
         eventDetails: { eventType: '', guestCount: '', preferredDate: '', budget: '' },
       });
     } catch (err) {
-      setFeedback({
-        type: 'error',
-        message: err.response?.data?.error || 'Something went wrong. Please try again.',
-      });
+      const message =
+        err.response?.data?.error ||
+        (err.request
+          ? 'Network error — please check your connection and try again.'
+          : 'Something went wrong. Please try again.');
+      setFeedback({ type: 'error', message });
     } finally {
       setIsSubmitting(false);
     }
@@ -475,6 +479,7 @@ const Contact = () => {
                   )}
                 </div>
 
+                {/* Message with character counter */}
                 <div className="contact-input-group">
                   <label className="contact-label" htmlFor="message">
                     Message{' '}
@@ -489,7 +494,17 @@ const Contact = () => {
                     required
                     aria-required="true"
                     rows="6"
+                    maxLength={MESSAGE_MAX}
+                    aria-describedby="message-counter"
                   />
+                  <span
+                    id="message-counter"
+                    className="contact-input-hint"
+                    aria-live="polite"
+                    style={{ textAlign: 'right', display: 'block' }}
+                  >
+                    {formData.message.length}/{MESSAGE_MAX}
+                  </span>
                 </div>
               </fieldset>
 
