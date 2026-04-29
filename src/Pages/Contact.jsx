@@ -1,10 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import axios from 'axios';
+import axios from '../api/axiosConfig';
 import '../Styles/Contact.css';
-
-const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const MESSAGE_MAX = 2000;
 
@@ -141,8 +139,8 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await axios.post(`${API}/api/contact`, formData);
-      setFeedback({
+      await axios.post('/contact', formData);
+            setFeedback({
         type: 'success',
         message: "Message received. We'll be in touch within 48 hours.",
       });
