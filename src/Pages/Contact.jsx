@@ -139,7 +139,7 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await axios.post('/contact', formData);
+      await axios.post('/api/contact', formData);
             setFeedback({
         type: 'success',
         message: "Message received. We'll be in touch within 48 hours.",
