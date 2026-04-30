@@ -5,19 +5,22 @@
   box-sizing: border-box;
 }
 
-/* FIXED: explicit font-size: 16px on html ensures all rem units
-   calculate from a reliable base. Without this, some browsers
-   use a different default which makes component rem values
-   render smaller than expected. */
 html {
   font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
 }
 
 html, body {
   width: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Prevents horizontal scrolling on mobile */
   background-color: #fcfcfc;
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -33,25 +36,28 @@ html, body {
 
 /* 3. Layout Classes */
 .container {
+  width: 90%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 5%;
 }
 
-/* FIXED: removed text-align: center — this was cascading into
-   every page that uses .page-content and overriding component-level
-   text-align values like text-align: right on the membership hero.
-   Center-align individual elements where needed instead. */
 .page-content {
-  padding-top: 80px;
+  padding-top: 40px; /* Adjusted since Navbar is now sticky */
   flex-grow: 1;
+  width: 100%;
 }
 
-/* 4. Navbar & Navigation Fixes */
+/* 4. Navbar & Navigation Elements */
 .nav-right-section {
   display: flex;
   align-items: center;
   gap: 20px;
+}
+
+@media (max-width: 600px) {
+  .nav-right-section {
+    gap: 10px;
+  }
 }
 
 .logout-btn, .logout-link {
@@ -67,8 +73,14 @@ html, body {
   white-space: nowrap;
 }
 
-/* 5. Admin Dashboard Button Logic */
+@media (max-width: 480px) {
+  .logout-btn {
+    padding: 6px 10px;
+    font-size: 0.7rem;
+  }
+}
 
+/* 5. Admin Dashboard Button Logic */
 .remove-btn {
   background-color: #002147 !important;
   color: #ffffff !important;
@@ -97,23 +109,13 @@ html, body {
   cursor: pointer;
 }
 
-.approve-member-btn {
-  background-color: #D4AF37 !important;
-  color: #002147 !important;
-  border: none !important;
-  padding: 15px;
-  width: 100%;
-  font-weight: 900;
-  text-transform: uppercase;
-  margin-bottom: 12px;
-  cursor: pointer;
-}
-
-.approve-member-btn:hover {
-  filter: brightness(1.1);
-}
-
 /* 6. Typography & Hero Elements */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 .events-header h1 {
   color: #002147;
   margin-bottom: 20px;
@@ -128,4 +130,14 @@ html, body {
   border-radius: 4px;
   cursor: pointer;
   text-transform: uppercase;
+  display: inline-block;
+  text-decoration: none;
+}
+
+@media (max-width: 480px) {
+  .hero-button {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+  }
 }

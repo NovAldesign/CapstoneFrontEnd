@@ -6,14 +6,19 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 5%;
-  height: 90px; /* Locked height to prevent logo takeover */
+  min-height: 80px;
+  height: auto;
   border-bottom: 2px solid #C5A059;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .nav-logo {
-  height: 60px; /* Constrains the logo size */
+  height: clamp(45px, 8vw, 65px);
   width: auto;
   display: block;
+  padding: 10px 0;
 }
 
 .nav-links {
@@ -23,8 +28,27 @@
   align-items: center;
 }
 
-/* --- Display Card Button & Hover Fix --- */
-/* Target the button by its specific class to ensure it stays visible */
+/* --- Mobile Nav Tweaks --- */
+@media (max-width: 768px) {
+  .nav-links {
+    gap: 10px;
+    font-size: 0.85rem;
+  }
+  .gfc-navbar {
+    padding: 0 3%;
+  }
+}
+
+/* --- Member Display Card & Button Fix --- */
+.member-display-card {
+  overflow: visible !important;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
 .approve-member-btn {
   display: block !important;
   background-color: #C5A059 !important; /* Brand Gold */
@@ -36,18 +60,22 @@
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
+  margin-top: 10px;
 }
 
-/* This fixes the "disappearing" issue on hover */
 .approve-member-btn:hover {
   background-color: #002147 !important; /* Swaps to Navy */
   color: #C5A059 !important;           /* Swaps to Gold text */
-  opacity: 1 !important;               /* Prevents it from fading out */
+  opacity: 1 !important;
   visibility: visible !important;
 }
 
-/* Ensure the display card itself isn't cutting off the button */
-.member-display-card {
-  overflow: visible !important;
-  padding: 20px;
+@media (max-width: 480px) {
+  .member-display-card {
+    padding: 15px;
+  }
+  .approve-member-btn {
+    padding: 12px;
+    font-size: 0.8rem;
+  }
 }
