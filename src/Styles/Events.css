@@ -84,31 +84,40 @@
 
 /* 2. THE FAMILY NARRATIVE SECTION */
 .family-narrative-section {
-  padding: clamp(60px, 10vw, 120px) 5%;
+  padding: 80px 0; /* Vertical space above and below the section */
   background-color: var(--white);
+  width: 100%;
 }
 
 .family-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(40px, 5vw, 100px);
+  gap: 60px; /* Space between the image and the text */
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.family-image-wrapper {
-  position: relative;
-  width: 100%;
+  padding: 0 5%;
 }
 
 .family-hero-img {
   width: 100%;
-  height: auto;
-  min-height: 350px;
-  max-height: 550px;
+  height: 500px;
   object-fit: cover;
-  box-shadow: 15px 15px 0px var(--cream);
+  box-shadow: 20px 20px 0px var(--cream);
+  display: block;
+}
+
+/* Mobile Fix for this section */
+@media (max-width: 1024px) {
+  .family-grid {
+    grid-template-columns: 1fr; /* Stacks image on top of text */
+    text-align: center;
+    gap: 40px;
+  }
+  
+  .family-hero-img {
+    height: 350px;
+  }
 }
 
 @media (min-width: 768px) {
