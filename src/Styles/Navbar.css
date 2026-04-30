@@ -1,10 +1,7 @@
 /* =============================================
-   NAVBAR - GFC
-   Original styles preserved exactly.
-   Mobile hamburger menu added below.
+   NAVBAR - GFC OPTIMIZED
    ============================================= */
 
-/* --- Navbar Fixes --- */
 .gfc-navbar {
   width: 100%;
   background-color: #002147;
@@ -18,20 +15,25 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 500;
+  z-index: 1000; /* Increased to stay above all content */
   box-sizing: border-box;
 }
 
 .nav-logo {
-  height: 48px;
+  height: clamp(38px, 5vw, 48px); /* Scales between 38px and 48px */
   width: auto;
   display: block;
+  transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+  transform: scale(1.02);
 }
 
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 4px;
+  gap: clamp(4px, 1vw, 15px); /* Responsive gap */
   align-items: center;
   margin: 0;
   padding: 0;
@@ -39,15 +41,15 @@
 
 /* Fix for "Partnerships" being too small */
 .nav-links .btn {
-  padding: 8px 10px;
+  padding: 8px 12px;
   white-space: nowrap;
   border: 1px solid transparent;
   text-decoration: none;
   color: rgba(255, 255, 255, 0.88);
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.78rem;
-  transition: color 0.2s, border-color 0.2s;
+  font-size: clamp(0.7rem, 1vw, 0.78rem); /* Fluid font size */
+  transition: all 0.2s ease-in-out;
 }
 
 .nav-links .btn:hover {
@@ -59,89 +61,45 @@
   color: #C5A059;
 }
 
-.nav-right-section .btn {
-  color: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(197, 160, 89, 0.5);
-  padding: 8px 18px;
+/* Auth Section */
+.nav-right-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-.nav-right-section .btn:hover {
-  color: #C5A059;
-  border-color: #C5A059;
-}
-
-/* Logout Button: Gold Background, Navy Font */
 .logout-btn-styled {
   background-color: #C5A059 !important;
   color: #002147 !important;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 22px;
   font-weight: 800;
   text-transform: uppercase;
   border-radius: 4px;
   cursor: pointer;
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   white-space: nowrap;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
 }
 
 .logout-btn-styled:hover {
   background-color: #FFFFFF !important;
+  box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
 }
 
-/* --- Dashboard & Card Buttons --- */
-
-/* REMOVE Button: Clean Blue, No Red Border */
-.remove-btn {
-  background-color: #002147 !important;
-  color: #fff !important;
-  border: none !important;
-  padding: 8px 16px;
-  text-transform: uppercase;
-  font-weight: 700;
-  border-radius: 4px;
-}
-
-/* WAITLIST Button: Blue Background, Gold Font */
-.waitlist-btn {
-  background-color: #002147 !important;
-  color: #C5A059 !important;
-  border: 2px solid #C5A059 !important;
-  padding: 12px 24px;
-  font-weight: 800;
-  text-transform: uppercase;
-  width: 100%;
-}
-
-/* APPROVE Button: Gold with Navy Text */
-body .approve-member-btn {
-  display: block !important;
-  visibility: visible !important;
-  background-color: #C5A059 !important;
-  color: #002147 !important;
-  padding: 15px;
-  width: 100%;
-  font-weight: 900;
-  border: none !important;
-  margin-bottom: 10px;
-}
-
-/* =============================================
-   HAMBURGER BUTTON
-   Hidden on desktop, shown on mobile
-   ============================================= */
+/* --- HAMBURGER BUTTON --- */
 .nav-hamburger {
   display: none;
   flex-direction: column;
-  justify-content: space-between;
-  width: 24px;
-  height: 16px;
+  justify-content: space-around; /* Better spacing for lines */
+  width: 28px;
+  height: 20px;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
-  flex-shrink: 0;
+  z-index: 1001;
 }
 
 .nav-hamburger span {
@@ -149,128 +107,93 @@ body .approve-member-btn {
   width: 100%;
   height: 2px;
   background: #C5A059;
-  transition: all 0.3s ease;
-  transform-origin: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* X shape when open */
+/* Hamburger to X Transformation */
 .nav-hamburger-open span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
-
 .nav-hamburger-open span:nth-child(2) {
   opacity: 0;
-  transform: scaleX(0);
+  transform: translateX(-20px);
 }
-
 .nav-hamburger-open span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* Mobile auth item - hidden on desktop */
-.nav-mobile-auth {
-  display: none;
-}
-
-/* =============================================
-   RESPONSIVE - 1100px
-   With 8+ links the navbar gets crowded.
-   Switch to hamburger at 1100px.
-   ============================================= */
+/* --- RESPONSIVE OPTIMIZATION (1100px and below) --- */
 @media (max-width: 1100px) {
-
   .nav-hamburger {
     display: flex;
   }
 
-  /* Hide desktop auth on mobile */
   .nav-right-section {
-    display: none;
+    display: none; /* Desktop Auth hidden */
   }
 
-  /* Full-screen drawer */
   .nav-links {
-    display: none;
     position: fixed;
-    top: 80px;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 0;
+    right: -100%; /* Hidden off-screen to the right */
+    width: 280px; /* Drawer width */
+    height: 100vh;
     background: #002147;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    padding: 24px 6%;
-    gap: 0;
-    overflow-y: auto;
-    border-top: 1px solid rgba(197, 160, 89, 0.3);
-    z-index: 499;
+    padding: 100px 30px 40px;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+    border-left: 1px solid rgba(197, 160, 89, 0.2);
   }
 
   .nav-links-open {
+    right: 0; /* Slide in drawer */
     display: flex;
   }
 
   .nav-links li {
     width: 100%;
-    border-bottom: 1px solid rgba(197, 160, 89, 0.1);
-  }
-
-  .nav-links li:last-child {
-    border-bottom: none;
   }
 
   .nav-links .btn {
     display: block;
     width: 100%;
-    padding: 16px 0;
-    font-size: 0.85rem;
-    letter-spacing: 0.15em;
-    border: none;
-    color: rgba(255, 255, 255, 0.8);
-  }
-
-  .nav-links .btn:hover {
-    color: #C5A059;
+    padding: 18px 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(197, 160, 89, 0.1);
+    border-radius: 0;
   }
 
   .nav-links .btn.active {
+    border-left: 3px solid #C5A059;
+    padding-left: 15px;
     color: #C5A059;
-    border: none;
-    border-left: 2px solid #C5A059;
-    padding-left: 12px;
   }
 
-  /* Show auth inside mobile drawer */
   .nav-mobile-auth {
-    display: block;
+    display: block !important;
     width: 100%;
-    margin-top: 20px;
+    margin-top: auto; /* Push to bottom of drawer */
     padding-top: 20px;
-    border-top: 1px solid rgba(197, 160, 89, 0.2) !important;
-    border-bottom: none !important;
   }
 
   .nav-mobile-auth .logout-btn-styled {
     width: 100%;
-    text-align: center;
-    border-radius: 0;
-    padding: 14px;
-  }
-
-  .nav-mobile-auth .btn {
-    color: #C5A059 !important;
-    padding: 14px 0;
-    font-size: 0.85rem;
+    border-radius: 4px;
   }
 }
 
+/* Final Mobile Polish */
 @media (max-width: 480px) {
   .gfc-navbar {
-    padding: 0 5%;
+    height: 70px;
+    padding: 0 20px;
   }
 
-  .nav-logo {
-    height: 40px;
+  .nav-links {
+    width: 85%; /* Slightly wider drawer on tiny phones */
+    padding-top: 90px;
   }
 }
