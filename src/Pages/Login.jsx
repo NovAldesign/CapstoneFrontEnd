@@ -4,11 +4,12 @@ import loginService from '../Services/loginService';
 import "../Styles/Login.css";
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
+  const [formData, setFormData]       = useState({ email: '', password: '', accessKey: '' });
+  const [showAccessKey, setShowAccessKey] = useState(false);
+  const [showPassword, setShowPassword]   = useState(false);
+  const [error, setError]             = useState('');
+  const [loading, setLoading]         = useState(false);
+  const navigate                      = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,11 +22,17 @@ const Login = () => {
     setError('');
 
     try {
-      const user = await loginService.login(formData.email, formData.password);
+      const user = await loginService.login(
+        formData.email,
+        formData.password,
+        formData.accessKey || ''
+      );
 
-      if (user.role === 'admin') {
+      // Route based on role
+      const role = user.role?.toLowerCase();
+      if (role === 'admin' || role === 'moderator') {
         navigate('/admin/dashboard');
-      } else if (user.role === 'partner') {
+      } else if (role === 'partner') {
         navigate('/partner/vault');
       } else {
         navigate('/member/profile');
@@ -80,7 +87,6 @@ const Login = () => {
             <p className="login-card-sub">Reconnect with your community.</p>
           </div>
 
-          {/* Rate limiter / error display — logic unchanged */}
           {error && (
             <div className="login-error" role="alert">
               {error}
@@ -130,13 +136,48 @@ const Login = () => {
                 <button
                   type="button"
                   className="login-show-btn"
-                  onClick={() => setShowPassword((p) => !p)}
+                  onClick={() => setShowPassword(p => !p)}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? 'Hide' : 'Show'}
                 </button>
               </div>
             </div>
+
+            {/* Access Key — staff/admin only, hidden by default */}
+            <div className="login-access-toggle">
+              <button
+                type="button"
+                className="login-access-toggle-btn"
+                onClick={() => {
+                  setShowAccessKey(p => !p);
+                  setFormData(prev => ({ ...prev, accessKey: '' }));
+                }}
+              >
+                {showAccessKey ? '− Staff login' : '+ Staff / Admin access'}
+              </button>
+            </div>
+
+            {showAccessKey && (
+              <div className="login-input-group login-access-key-group">
+                <label className="login-label" htmlFor="accessKey">
+                  Access Key
+                </label>
+                <input
+                  id="accessKey"
+                  type="password"
+                  name="accessKey"
+                  value={formData.accessKey}
+                  onChange={handleChange}
+                  placeholder="Enter your staff access key"
+                  autoComplete="off"
+                  className="login-input"
+                />
+                <span className="login-input-hint">
+                  Staff and admin use only.
+                </span>
+              </div>
+            )}
 
             <button
               type="submit"
@@ -169,7 +210,6 @@ const Login = () => {
 
         </div>
       </div>
-
     </div>
   );
 };
