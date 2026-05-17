@@ -132,6 +132,7 @@
 .stats-container {
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .navy-label {
@@ -157,18 +158,24 @@
   margin: 0 auto;
 }
 
+/* UPDATED STATS GRID LAYOUT BLOCK */
 .stats-grid {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 30px;
   margin-top: 60px;
+  width: 100%;
 }
 
 .stat-card-navy {
-  flex: 1;
   background: rgba(0, 33, 71, 0.04);
   padding: 60px 30px;
   border: 1px solid rgba(0, 33, 71, 0.1);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
@@ -180,10 +187,11 @@
 
 .stat-number-navy {
   font-family: 'Playfair Display', serif;
-  font-size: 4.5rem;
+  font-size: clamp(3rem, 5vw, 4.5rem);
   color: var(--navy);
   line-height: 1;
   margin-bottom: 15px;
+  word-break: break-all;
   transition: color 0.3s ease;
 }
 
@@ -209,6 +217,7 @@
   line-height: 1.7;
   font-weight: 400;
   opacity: 0.9;
+  margin: 0;
 }
 
 .stat-card-navy:hover .stat-number-navy, .stat-card-navy:focus-within .stat-number-navy { color: var(--gold); }
@@ -416,12 +425,6 @@
   margin: 0 0 0.5rem;
 }
 
-@media (max-width: 640px) {
-  .testimonials-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* =============================================
    5. PARTNERSHIP / SPONSORSHIP
    ============================================= */
@@ -572,20 +575,23 @@
 }
 
 /* =============================================
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN & BREAKPOINTS
    ============================================= */
 @media (max-width: 1024px) {
   .story-block, .story-block.reverse { flex-direction: column; gap: 50px; text-align: center; }
   .story-image img { height: 400px; box-shadow: 15px 15px 0px var(--gold); }
-  .stats-grid { flex-direction: column; align-items: center; }
+  
+  /* Fallback down to a clean single column stacked list on tablet layout widths */
+  .stats-grid { grid-template-columns: 1fr; justify-items: center; }
   .stat-card-navy { width: 100%; max-width: 450px; }
+  
   .hero-dark-overlay { padding-left: 0; justify-content: center; text-align: center; }
   .hero-content-luxe { padding: 0 20px; text-align: center; }
   .gold-spacer-v2 { margin: 0 auto 30px; }
 }
 
-/* FIXED BREAKPOINT FOR TRACTION GRID */
 @media (max-width: 640px) {
+  .testimonials-grid { grid-template-columns: 1fr; }
   .traction-grid, .traction-bottom-row { grid-template-columns: 1fr; border: none; }
   .traction-stat { border-right: none; border-bottom: 1px solid rgba(197,160,89,0.15); padding: 35px 20px; }
   .traction-platform-strip { border-right: none; border-bottom: 1px solid rgba(197,160,89,0.15); padding: 24px 20px; }
