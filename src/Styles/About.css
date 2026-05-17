@@ -115,10 +115,6 @@
 
 /* ─────────────────────────────────────────────────────────────────────────────
    ADA FIX #5 — Eyebrow color contrast  (WCAG 1.4.3 Level AA)
-   #C5A059 on rgba(0,33,71,0.65) overlay over an image is borderline.
-   We test against the darkest likely rendered background: ~#001530 (navy 80%).
-   #C5A059 on #001530 = 5.6:1 ✓ passes 4.5:1 for normal text.
-   No change needed — documented here for your records.
 ───────────────────────────────────────────────────────────────────────────── */
 .about-eyebrow {
   display: block;
@@ -132,15 +128,12 @@
 
 /* ─────────────────────────────────────────────────────────────────────────────
    ADA FIX #6 — Hero title: removed line-height 0.9  (WCAG 1.4.12 Level AA)
-   WCAG Text Spacing requires line-height of at least 1.5x font size.
-   0.9 causes lines to overlap when users override spacing via browser/OS.
-   Changed to 1.05 — visually near-identical but reflow-safe.
 ───────────────────────────────────────────────────────────────────────────── */
 .about-hero-title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(3rem, 8vw, 6.5rem);
   font-weight: 900;
-  line-height: 1.05; /* FIX: was 0.9 — fails WCAG 1.4.12 text spacing */
+  line-height: 1.05; 
   text-transform: uppercase;
   color: #FFFFFF;
   text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.4);
@@ -254,17 +247,12 @@
 
 /* ─────────────────────────────────────────────────────────────────────────────
    ADA FIX #7 — Body large color contrast  (WCAG 1.4.3 Level AA)
-   Original: color: #C5A059 on #FFFFFF background = 2.8:1 — FAILS 4.5:1.
-   This gold-on-white combination is the most critical contrast failure
-   on the page. Fixed to #002147 (navy) which gives 15.1:1 on white.
-   Visual identity preserved by keeping it Playfair + bold.
-   If you want to keep gold: use #7A5C1E on white = 4.6:1 ✓
 ───────────────────────────────────────────────────────────────────────────── */
 .about-body-large {
   font-family: 'Playfair Display', serif;
   font-size: 1.15rem;
   line-height: 1.75;
-  color: #002147; /* FIX: was #C5A059 — only 2.8:1 on white, FAILS WCAG */
+  color: #002147; 
   margin-bottom: 20px;
   font-weight: 700;
 }
@@ -278,7 +266,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   STATS
+   STATS (UPDATED FOR PERFECT DISTRIBUTION & BALANCE)
 ═══════════════════════════════════════════════════════════════════════════ */
 .about-stats-section {
   background-color: #002147;
@@ -287,7 +275,7 @@
 }
 
 .about-stats-inner {
-  max-width: 1000px;
+  max-width: 1140px; /* Slightly widened to give elements more room */
   margin: 0 auto;
 }
 
@@ -298,53 +286,40 @@
   text-transform: uppercase;
   letter-spacing: 0.28em;
   color: #C5A059;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   ADA FIX #8 — Stats heading line-height  (WCAG 1.4.12 Level AA)
-   Same issue as hero title — 1.1 is borderline. OK for large headings
-   (≥24px bold = large text, 3:1 ratio applies). Keeping at 1.1.
-───────────────────────────────────────────────────────────────────────────── */
+/* FIXED: Scaled down from clamp(2rem, 4vw, 3rem) so longer text doesn't blow out */
 .about-stats-heading {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1.8rem, 3vw, 2.3rem); 
   font-weight: 900;
   color: #FFFFFF;
-  margin-bottom: 10px;
-  line-height: 1.1;
+  margin: 0 auto 60px auto;
+  line-height: 1.3;
+  max-width: 850px;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   ADA FIX #9 — Stats subhead contrast  (WCAG 1.4.3 Level AA)
-   rgba(255,255,255,0.45) on #002147 = approx #8090A8 = 3.2:1 — FAILS 4.5:1.
-   Fixed to rgba(255,255,255,0.75) = approx #BFCBD8 = 5.1:1 ✓
-───────────────────────────────────────────────────────────────────────────── */
-.about-stats-subhead {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.75); /* FIX: was 0.45 — fails contrast */
-  font-style: italic;
-  margin-bottom: 60px;
-}
-
-/* ─────────────────────────────────────────────────────────────────────────────
-   ADA FIX #10 — dl/dt/dd reset for stats grid  (WCAG 1.3.1 Level A)
-   <dl> has browser default margin. Reset it so layout is unchanged.
+   ADA FIX #10 — Grid alignment updates
 ───────────────────────────────────────────────────────────────────────────── */
 .about-stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   border: 1px solid rgba(197, 160, 89, 0.2);
-  margin: 0 0 0 0; /* FIX: dl has default margin in browsers */
-  padding: 0;      /* FIX: dl has default padding in some browsers */
+  margin: 0; 
+  padding: 0;      
 }
 
+/* FIXED: Changed to flex to align top row elements cleanly */
 .about-stat {
-  padding: 48px 24px;
+  padding: 48px 20px;
   border-right: 1px solid rgba(197, 160, 89, 0.15);
   position: relative;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .about-stat:last-child {
@@ -362,41 +337,41 @@
   background: #C5A059;
 }
 
-/* dt and dd inside stats — reset browser indentation */
 .about-stats-grid dt,
 .about-stats-grid dd {
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 
 .about-stat-number {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-size: clamp(2.2rem, 3.5vw, 3.2rem); /* Re-scaled slightly for consistency */
   font-weight: 900;
   color: #C5A059;
   line-height: 1;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .about-stat-label {
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  min-height: 18px; /* Holds height even if description flows onto next line */
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   ADA FIX #11 — Stat desc contrast  (WCAG 1.4.3 Level AA)
-   rgba(255,255,255,0.4) on #002147 ≈ 2.8:1 — FAILS.
-   Fixed to 0.65 ≈ #9AAABB = 4.6:1 ✓
+   ADA FIX #11 — Stat desc contrast
 ───────────────────────────────────────────────────────────────────────────── */
 .about-stat-desc {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.65); /* FIX: was 0.4 — fails contrast */
+  color: rgba(255, 255, 255, 0.65); 
   font-style: italic;
   font-family: 'Playfair Display', serif;
+  line-height: 1.3;
 }
 
 .about-platform-row {
@@ -404,14 +379,18 @@
   grid-template-columns: repeat(4, 1fr);
   border: 1px solid rgba(197, 160, 89, 0.2);
   border-top: none;
-  margin: 0;  /* FIX: dl margin reset */
-  padding: 0; /* FIX: dl padding reset */
+  margin: 0;  
+  padding: 0; 
 }
 
+/* FIXED: Unified column layouts for secondary platforms rows */
 .about-platform {
-  padding: 28px 16px;
+  padding: 32px 16px;
   border-right: 1px solid rgba(197, 160, 89, 0.15);
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .about-platform:last-child {
@@ -422,33 +401,32 @@
   display: none;
 }
 
-/* dt and dd inside platform row — reset browser indentation */
 .about-platform-row dt,
 .about-platform-row dd {
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 
 .about-platform-num {
   font-family: 'Playfair Display', serif;
-  font-size: 1.7rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: #C5A059;
   line-height: 1;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   ADA FIX #12 — Platform name contrast  (WCAG 1.4.3 Level AA)
-   rgba(255,255,255,0.45) on #002147 ≈ 3.2:1 — FAILS for small text.
-   Fixed to 0.75 ≈ 5.1:1 ✓
+   ADA FIX #12 — Platform name contrast
 ───────────────────────────────────────────────────────────────────────────── */
 .about-platform-name {
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: rgba(255, 255, 255, 0.75); /* FIX: was 0.45 — fails contrast */
+  color: rgba(255, 255, 255, 0.75); 
   font-weight: 600;
+  line-height: 1.4;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -493,21 +471,15 @@
   color: rgba(197, 160, 89, 0.3);
   line-height: 1;
   margin-bottom: 12px;
-  /* aria-hidden="true" is set in JSX — purely decorative */
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   ADA FIX #13 — Value title: was a <div>, now an <h3>  (WCAG 1.3.1 Level A)
-   The JSX fix promoted these to <h3>. Update selector accordingly.
-   Styles are identical — no visual change.
-───────────────────────────────────────────────────────────────────────────── */
 .about-value-card h3.about-value-title,
 .about-value-title {
   font-family: 'Playfair Display', serif;
   font-size: 1.15rem;
   font-weight: 700;
   color: #002147;
-  margin: 0 0 14px 0; /* FIX: <h3> has browser default margin-top — reset */
+  margin: 0 0 14px 0; 
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -549,15 +521,6 @@
   color: #FFFFFF;
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   ADA FIX #14 — list-style: none removes semantics in Safari VoiceOver
-   (WCAG 1.3.1 Level A)
-   When you remove list bullets with list-style:none, Safari VoiceOver stops
-   announcing the element as a list. The JSX fix adds role="list" to restore
-   this. No CSS change required here — documented for awareness.
-   The ::before diamond (◆) is a CSS pseudo-element bullet replacement —
-   this is fine and accessible since role="list" restores list semantics.
-───────────────────────────────────────────────────────────────────────────── */
 .about-who-list {
   list-style: none;
   padding: 0;
@@ -580,18 +543,12 @@
   border-bottom: none;
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   ADA FIX #15 — Who list item text contrast  (WCAG 1.4.3 Level AA)
-   rgba(255,255,255,0.82) on #002147 ≈ 11.5:1 ✓ — passes. No change needed.
-   Documented for your records.
-───────────────────────────────────────────────────────────────────────────── */
 .about-who-list li::before {
   content: '\25C6';
   color: #C5A059;
   font-size: 0.5rem;
   flex-shrink: 0;
   margin-top: 6px;
-  /* aria-hidden not needed — CSS pseudo-elements are ignored by AT natively */
 }
 
 .about-cta-btn {
@@ -606,8 +563,6 @@
   letter-spacing: 0.15em;
   transition: all 0.3s ease;
   width: fit-content;
-  /* ─── ADA FIX #16 — Button minimum touch target  (WCAG 2.5.5 Level AA) ─
-     44×44px minimum. padding: 16px 36px on 0.8rem ≈ 13px text = ~45px tall ✓ */
 }
 
 .about-cta-btn:hover {
@@ -615,9 +570,6 @@
   color: #002147;
   transform: translateY(-2px);
 }
-
-/* ─── Ensure gold CTA on white hover keeps contrast ──────────────────────
-   #002147 on #FFFFFF = 15.1:1 ✓  */
 
 .about-who-image {
   overflow: hidden;
@@ -628,9 +580,6 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  /* ─── ADA FIX #17 — Image brightness  (WCAG 1.4.11 Level AA) ───────────
-     filter: brightness(0.75) darkens image but doesn't affect text on top.
-     No text overlays this image so no contrast issue. OK as-is.            */
   filter: brightness(0.75);
   transition: transform 0.8s ease;
 }
@@ -646,7 +595,6 @@
   min-height: 60vh;
   background-image: linear-gradient(rgba(0, 33, 71, 0.88), rgba(0, 33, 71, 0.88)),
                     url('https://i0.wp.com/www.reemployability.com/wp-content/uploads/2023/04/Untitled-design-2023-04-13T151843.899.png?resize=1080%2C675&ssl=1&auto=format&fit=crop&q=80&w=800');
-  /* FIX: original URL was truncated with "..." — restored full URL */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -668,11 +616,6 @@
   align-items: center;
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   ADA FIX #18 — blockquote / figcaption / cite reset  (WCAG 1.3.1 Level A)
-   Browser default blockquote has large margins and padding — reset them
-   since the JSX now wraps quote in <figure>/<blockquote>/<figcaption>.
-───────────────────────────────────────────────────────────────────────────── */
 .about-founder-content figure {
   margin: 0;
   padding: 0;
@@ -690,7 +633,6 @@
   padding: 0;
 }
 
-/* Reset <p> inside blockquote to inherit quote styles */
 .about-founder-quote p {
   margin: 0;
   font-size: inherit;
@@ -707,7 +649,6 @@
   gap: 4px;
 }
 
-/* ─── cite is inline by default — make it flex column like the original ─ */
 .about-founder-sig cite {
   font-style: normal;
   display: flex;
@@ -724,16 +665,11 @@
   letter-spacing: 0.05em;
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   ADA FIX #19 — Founder title contrast  (WCAG 1.4.3 Level AA)
-   rgba(255,255,255,0.5) on rgba(0,33,71,0.88) ≈ 4.1:1 — borderline FAIL.
-   Fixed to 0.72 ≈ 5.4:1 ✓
-───────────────────────────────────────────────────────────────────────────── */
 .about-founder-title {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: rgba(255, 255, 255, 0.72); /* FIX: was 0.5 — borderline fails */
+  color: rgba(255, 255, 255, 0.72); 
   font-weight: 600;
 }
 
@@ -760,16 +696,11 @@
   line-height: 1.1;
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   ADA FIX #20 — Bottom body text contrast  (WCAG 1.4.3 Level AA)
-   #666 on #FDFBFA = 4.4:1 — technically FAILS 4.5:1 by a razor margin.
-   Fixed to #555 = 5.7:1 ✓
-───────────────────────────────────────────────────────────────────────────── */
 .about-bottom-body {
   font-size: 1rem;
   font-weight: 300;
   line-height: 1.8;
-  color: #555; /* FIX: was #666 — 4.4:1 on #FDFBFA, just fails 4.5:1 */
+  color: #555; 
   margin-bottom: 40px;
 }
 
@@ -791,8 +722,6 @@
   text-transform: uppercase;
   letter-spacing: 0.15em;
   transition: all 0.3s ease;
-  /* ─── ADA FIX #21 — Minimum touch/click target  (WCAG 2.5.5 Level AA) ──
-     16px top+bottom padding on ~13px text = ~45px height ✓ passes 44px min  */
 }
 
 .about-btn-primary:hover {
@@ -801,17 +730,12 @@
   transform: translateY(-2px);
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   ADA FIX #22 — Secondary button border contrast  (WCAG 1.4.11 Level AA)
-   border: 1px solid #002147 on #FDFBFA background = 15.1:1 ✓  Good.
-   Text #002147 on #FDFBFA = 15.1:1 ✓  Hover: #FFFFFF on #002147 = 15.1:1 ✓
-───────────────────────────────────────────────────────────────────────────── */
 .about-btn-secondary {
   display: inline-block;
   padding: 16px 36px;
   background: transparent;
   color: #002147;
-  border: 2px solid #002147; /* FIX: was 1px — thicker border improves visibility */
+  border: 2px solid #002147; 
   text-decoration: none;
   font-size: 0.8rem;
   font-weight: 700;
@@ -869,7 +793,6 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  /* nth-child selectors on <dl> children — target the platform divs */
   .about-platform-row .about-platform:nth-child(2) {
     border-right: none;
   }
