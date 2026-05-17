@@ -59,7 +59,7 @@ const Login = () => {
               <div className="login-stat-label">Community members</div>
             </div>
             <div className="login-stat">
-              <div className="login-stat-number">200%+</div>
+              <div className="login-stat-number">250%+</div>
               <div className="login-stat-label">Venue sales lift</div>
             </div>
             <div className="login-stat">
