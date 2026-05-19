@@ -40,13 +40,13 @@ const Navbar = () => {
         <li><NavLink to="/about" className={navClass} onClick={closeMenu}>About Us</NavLink></li>
         <li><NavLink to="/contact" className={navClass} onClick={closeMenu}>Contact Us</NavLink></li>
 
-        {user && user.role === "admin" && (
+        {/* {user && user.role === "admin" && (
           <li>
             <NavLink to="/admin/dashboard" className={navClass} onClick={closeMenu}>
               Admin
             </NavLink>
           </li>
-        )}
+        )} */}
 
         {/* Mobile-only auth */}
         <li className="nav-mobile-auth">
@@ -65,7 +65,7 @@ const Navbar = () => {
         </li>
       </ul>
 
-      {/* Desktop auth */}
+      {/* Desktop auth
       <div className="nav-right-section">
         {user ? (
           <button onClick={handleLogout} className="logout-btn-styled">
@@ -74,7 +74,7 @@ const Navbar = () => {
         ) : (
           <NavLink to="/login" className={navClass}>Login</NavLink>
         )}
-      </div>
+      </div> */}
 
       {/* Hamburger */}
       <button
