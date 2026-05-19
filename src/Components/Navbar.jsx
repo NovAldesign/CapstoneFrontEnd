@@ -33,10 +33,10 @@ const Navbar = () => {
       <ul className={`nav-links ${menuOpen ? "nav-links-open" : ""}`}>
         <li><NavLink to="/" end className={navClass} onClick={closeMenu}>Home</NavLink></li>
         <li><NavLink to="/events" className={navClass} onClick={closeMenu}>Events</NavLink></li>
-        <li><NavLink to="/travel" className={navClass} onClick={closeMenu}>Travel</NavLink></li>
-        <li><NavLink to="/ic-dinners" className={navClass} onClick={closeMenu}>IC Dinners</NavLink></li>
-        <li><NavLink to="/membership" className={navClass} onClick={closeMenu}>Membership</NavLink></li>
-        <li><NavLink to="/partnerships" className={navClass} onClick={closeMenu}>Partnerships</NavLink></li>
+        {/* <li><NavLink to="/travel" className={navClass} onClick={closeMenu}>Travel</NavLink></li> */}
+        {/* <li><NavLink to="/ic-dinners" className={navClass} onClick={closeMenu}>IC Dinners</NavLink></li>
+        <li><NavLink to="/membership" className={navClass} onClick={closeMenu}>Membership</NavLink></li> */}
+        {/* <li><NavLink to="/partnerships" className={navClass} onClick={closeMenu}>Partnerships</NavLink></li> */}
         <li><NavLink to="/about" className={navClass} onClick={closeMenu}>About Us</NavLink></li>
         <li><NavLink to="/contact" className={navClass} onClick={closeMenu}>Contact Us</NavLink></li>
 
