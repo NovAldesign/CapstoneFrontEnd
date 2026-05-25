@@ -1,17 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@300;400;600;700&display=swap');
 
 /* =============================================
-   CORE UTILITIES & LAYOUT
+   1. CORE UTILITIES & LAYOUT
    ============================================= */
+:root {
+  --navy: #002147;
+  --gold: #C5A059;
+  --cream: #FDFBFA;
+  --white: #FFFFFF;
+}
+
 .partnership-page {
-  background-color: #FDFBFA;
-  color: #002147;
+  background-color: var(--cream);
+  color: var(--navy);
   font-family: 'Montserrat', sans-serif;
   overflow-x: hidden;
 }
 
 /* =============================================
-   HERO SECTION
+   2. HERO SECTION
    ============================================= */
 .partner-hero {
   min-height: 80vh;
@@ -21,6 +28,7 @@
   background-position: center;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .partner-hero-inner {
@@ -29,7 +37,7 @@
 }
 
 .partner-location-tag {
-  color: #C5A059;
+  color: var(--gold);
   text-transform: uppercase;
   letter-spacing: 5px;
   font-size: 0.8rem;
@@ -45,13 +53,13 @@
   font-weight: 900;
   text-transform: uppercase;
   margin: 0 0 25px 0;
-  color: #FFFFFF;
+  color: var(--white);
 }
 
 .partner-gold-spacer {
   width: 100px;
   height: 2px;
-  background: #C5A059;
+  background: var(--gold);
   margin-bottom: 30px;
 }
 
@@ -64,7 +72,7 @@
   font-size: 1.3rem;
   line-height: 1.6;
   margin-bottom: 20px;
-  color: #FFFFFF;
+  color: var(--white);
 }
 
 .partner-narrative-body {
@@ -75,10 +83,10 @@
 }
 
 /* =============================================
-   IMPACT STATS
+   3. IMPACT STATS
    ============================================= */
 .partner-impact-stats {
-  background-color: #002147;
+  background-color: var(--navy);
   padding: 80px 10%;
 }
 
@@ -96,10 +104,11 @@
   padding: 40px 20px;
   border: 1px solid rgba(197, 160, 89, 0.2);
   transition: all 0.3s ease;
+  background: transparent;
 }
 
 .partner-stat-card:hover {
-  border-color: #C5A059;
+  border-color: var(--gold);
   background: rgba(197, 160, 89, 0.05);
 }
 
@@ -107,7 +116,7 @@
   font-family: 'Playfair Display', serif;
   font-size: 3rem;
   font-weight: 900;
-  color: #C5A059;
+  color: var(--gold);
   margin-bottom: 10px;
 }
 
@@ -119,54 +128,52 @@
 }
 
 /* =============================================
-   PARTNERSHIP TIERS SECTION (5 TIERS)
+   4. PARTNERSHIP TIERS SECTION (5 TIERS)
    ============================================= */
 .partner-tiers-section {
   padding: 100px 5%;
-  background-color: #FDFBFA;
+  background-color: var(--cream);
 }
 
 .partner-tier-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 24px;
   max-width: 1400px;
   margin: 60px auto;
+  align-items: stretch;
 }
 
 .partner-tier-card {
-  background: #FFFFFF;
+  background: var(--white);
   border: 1px solid #E8E8E8;
-  padding: 50px 30px;
+  padding: 50px 25px;
   display: flex;
   flex-direction: column;
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
   border-top: 4px solid #E8E8E8;
+  box-sizing: border-box;
 }
 
 .partner-tier-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 30px 60px rgba(0, 33, 71, 0.1);
-  border-top-color: #C5A059;
+  border-top-color: var(--gold);
 }
 
-/* Specific Tiers Customizations */
-.partner-tier-card:nth-child(4) {
-  border-top: 4px solid #002147; /* Contrast Tier Styling */
-}
-
+/* Specific Card Tier Adjustments */
 .partner-tier-featured {
-  border: 2px solid #C5A059;
+  border: 2px solid var(--gold);
   background: linear-gradient(145deg, #FFFFFF 0%, #FDFBFA 100%);
   box-shadow: 0 15px 40px rgba(197, 160, 89, 0.15);
-  border-top: 4px solid #C5A059;
+  border-top: 4px solid var(--gold);
 }
 
 .partner-tier-elite {
   background: linear-gradient(145deg, #FFFFFF 0%, #F9F6F0 100%);
-  border: 2px solid #C5A059;
-  border-top: 4px solid #002147;
+  border: 2px solid var(--gold);
+  border-top: 4px solid var(--navy);
 }
 
 /* Badges and Labels */
@@ -175,20 +182,20 @@
   top: -15px;
   left: 50%;
   transform: translateX(-50%);
-  background: #C5A059;
-  color: #002147;
-  letter-spacing: 2px;
+  background: var(--gold);
+  color: var(--navy);
   padding: 6px 16px;
   font-size: 0.65rem;
-  font-weight: 700;
+  font-weight: 900;
   text-transform: uppercase;
+  letter-spacing: 2px;
   z-index: 2;
+  white-space: nowrap;
 }
 
 .partner-tier-elite .partner-tier-badge {
-  background: #002147;
-  color: #C5A059;
-  font-weight: 900;
+  background: var(--navy);
+  color: var(--gold);
   letter-spacing: 3px;
 }
 
@@ -196,7 +203,7 @@
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: #C5A059;
+  color: var(--gold);
   margin-bottom: 12px;
   letter-spacing: 2px;
 }
@@ -205,7 +212,7 @@
   font-family: 'Playfair Display', serif;
   font-size: 2rem;
   font-weight: 900;
-  color: #002147;
+  color: var(--navy);
   margin-bottom: 5px;
 }
 
@@ -223,16 +230,17 @@
   color: #666;
   margin-bottom: 25px;
   min-height: 40px;
+  line-height: 1.4;
 }
 
 .partner-tier-divider {
   width: 40px;
   height: 1px;
-  background: #C5A059;
+  background: var(--gold);
   margin-bottom: 25px;
 }
 
-/* Card Features List */
+/* Features List */
 .partner-tier-features {
   list-style: none;
   padding: 0;
@@ -248,16 +256,20 @@
   line-height: 1.4;
 }
 
-.partner-tier-features li strong {
-  color: #C5A059; /* Highlights core interview or prominent features */
+.partner-tier-features li:last-child {
+  border-bottom: none;
 }
 
-/* Action Buttons */
+.partner-tier-features li strong {
+  color: var(--gold);
+}
+
+/* Tier Action Buttons */
 .partner-tier-btn {
   text-align: center;
   padding: 15px;
-  border: 1px solid #002147;
-  color: #002147;
+  border: 1px solid var(--navy);
+  color: var(--navy);
   text-decoration: none;
   font-size: 0.75rem;
   font-weight: 700;
@@ -266,27 +278,30 @@
   transition: all 0.3s ease;
   margin-top: auto;
   display: block;
+  background: transparent;
+  cursor: pointer;
+  width: 100%;
 }
 
 .partner-tier-btn:hover {
-  background: #002147;
-  color: #FFFFFF;
+  background: var(--navy);
+  color: var(--white);
 }
 
 .partner-tier-elite .partner-tier-btn {
-  background: #C5A059;
-  border-color: #C5A059;
-  color: #002147;
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
 }
 
 .partner-tier-elite .partner-tier-btn:hover {
-  background: #002147;
-  color: #FFFFFF;
-  border-color: #002147;
+  background: var(--navy);
+  color: var(--white);
+  border-color: var(--navy);
 }
 
 /* =============================================
-   LUXE FORM STYLING
+   5. LUXE FORM STYLING
    ============================================= */
 .partner-form-section {
   padding: 100px 5%;
@@ -296,9 +311,10 @@
 .partner-proposal-container {
   max-width: 900px;
   margin: 0 auto;
-  background: #FFFFFF;
+  background: var(--white);
   padding: 80px 10%;
   box-shadow: 0 40px 100px rgba(0, 33, 71, 0.05);
+  box-sizing: border-box;
 }
 
 .partner-luxe-form {
@@ -319,6 +335,7 @@
   text-transform: uppercase;
   letter-spacing: 1.5px;
   margin-bottom: 10px;
+  color: var(--navy);
 }
 
 .partner-input-group input, 
@@ -333,15 +350,19 @@
   transition: all 0.3s ease;
   width: 100%;
   box-sizing: border-box;
+  color: var(--navy);
+  border-radius: 0;
 }
 
 .partner-input-group input:focus, 
+.partner-input-group select:focus,
 .partner-textarea:focus {
-  border-color: #C5A059;
-  background: #FFFFFF;
+  border-color: var(--gold);
+  background: var(--white);
   box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
 }
 
+/* Checkboxes */
 .partner-checkbox-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -357,6 +378,13 @@
   gap: 10px;
   font-size: 0.85rem;
   cursor: pointer;
+  color: #333;
+}
+
+.partner-checkbox-label input[type="checkbox"] {
+  accent-color: var(--gold);
+  width: 16px;
+  height: 16px;
 }
 
 .pw-toggle {
@@ -366,7 +394,7 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #C5A059;
+  color: var(--gold);
   font-weight: 700;
   font-size: 0.6rem;
   text-transform: uppercase;
@@ -375,22 +403,34 @@
 }
 
 /* =============================================
-   RESPONSIVE DESIGN
+   6. RESPONSIVE DESIGN MEDIA QUERIES
    ============================================= */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .partner-tier-grid {
     grid-template-columns: repeat(2, 1fr);
+    max-width: 900px;
   }
 }
 
 @media (max-width: 768px) {
   .partner-tier-grid {
     grid-template-columns: 1fr;
+    max-width: 450px;
   }
+  
+  .partner-hero-inner {
+    padding: 80px 5%;
+  }
+
   .partner-luxe-title {
-    font-size: 3.5rem;
+    font-size: clamp(2.5rem, 8vw, 4rem);
   }
+  
   .partner-proposal-container {
     padding: 40px 5%;
+  }
+  
+  .partner-checkbox-grid {
+    grid-template-columns: 1fr;
   }
 }
