@@ -1,13 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@300;400;600;700&display=swap');
 
 /* =============================================
-   1. CORE UTILITIES & LAYOUT
+   1. ROOT VARIABLES & SETUP
    ============================================= */
 :root {
   --navy: #002147;
   --gold: #C5A059;
   --cream: #FDFBFA;
   --white: #FFFFFF;
+  --text-gray: #555;
 }
 
 .partnership-page {
@@ -17,420 +18,268 @@
   overflow-x: hidden;
 }
 
+.playfair { 
+  font-family: 'Playfair Display', serif; 
+}
+
 /* =============================================
-   2. HERO SECTION
+   2. HEADER & NARRATIVE
    ============================================= */
 .partner-hero {
-  min-height: 80vh;
-  background-image: linear-gradient(rgba(0, 33, 71, 0.65), rgba(0, 33, 71, 0.8)),
-                    url('https://static.vecteezy.com/system/resources/thumbnails/052/030/148/small/teamwork-and-partnership-multiracial-business-people-holding-hands-together-sitting-at-one-desk-in-modern-office-high-angle-free-space-photo.jpg');
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.partner-hero-inner {
-  width: 100%;
-  padding: 100px 10%;
-}
-
-.partner-location-tag {
-  color: var(--gold);
-  text-transform: uppercase;
-  letter-spacing: 5px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  display: block;
-  margin-bottom: 20px;
-}
-
-.partner-luxe-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(3.5rem, 10vw, 7.5rem);
-  line-height: 0.85;
-  font-weight: 900;
-  text-transform: uppercase;
-  margin: 0 0 25px 0;
-  color: var(--white);
-}
-
-.partner-gold-spacer {
-  width: 100px;
-  height: 2px;
-  background: var(--gold);
-  margin-bottom: 30px;
-}
-
-.partner-mission-narrative {
-  max-width: 640px;
-}
-
-.partner-narrative-lead {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.3rem;
-  line-height: 1.6;
-  margin-bottom: 20px;
-  color: var(--white);
-}
-
-.partner-narrative-body {
-  font-size: 1.15rem;
-  line-height: 1.9;
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-/* =============================================
-   3. IMPACT STATS
-   ============================================= */
-.partner-impact-stats {
-  background-color: var(--navy);
-  padding: 80px 10%;
-}
-
-.partner-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 30px;
+  padding: clamp(100px, 15vh, 180px) 20px 80px;
+  text-align: center;
   max-width: 1200px;
   margin: 0 auto;
-  align-items: stretch;
 }
 
-.partner-stat-card {
-  text-align: center;
-  padding: 40px 20px;
-  border: 1px solid rgba(197, 160, 89, 0.2);
-  transition: all 0.3s ease;
-  background: transparent;
-}
-
-.partner-stat-card:hover {
-  border-color: var(--gold);
-  background: rgba(197, 160, 89, 0.05);
-}
-
-.partner-stat-number {
-  font-family: 'Playfair Display', serif;
-  font-size: 3rem;
-  font-weight: 900;
-  color: var(--gold);
-  margin-bottom: 10px;
-}
-
-.partner-stat-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-/* =============================================
-   4. PARTNERSHIP TIERS SECTION (5 TIERS)
-   ============================================= */
-.partner-tiers-section {
-  padding: 100px 5%;
-  background-color: var(--cream);
-}
-
-.partner-tier-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-  max-width: 1400px;
-  margin: 60px auto;
-  align-items: stretch;
-}
-
-.partner-tier-card {
-  background: var(--white);
-  border: 1px solid #E8E8E8;
-  padding: 50px 25px;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  position: relative;
-  border-top: 4px solid #E8E8E8;
-  box-sizing: border-box;
-}
-
-.partner-tier-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 30px 60px rgba(0, 33, 71, 0.1);
-  border-top-color: var(--gold);
-}
-
-/* Specific Card Tier Adjustments */
-.partner-tier-featured {
-  border: 2px solid var(--gold);
-  background: linear-gradient(145deg, #FFFFFF 0%, #FDFBFA 100%);
-  box-shadow: 0 15px 40px rgba(197, 160, 89, 0.15);
-  border-top: 4px solid var(--gold);
-}
-
-.partner-tier-elite {
-  background: linear-gradient(145deg, #FFFFFF 0%, #F9F6F0 100%);
-  border: 2px solid var(--gold);
-  border-top: 4px solid var(--navy);
-}
-
-/* Badges and Labels */
-.partner-tier-badge {
-  position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--gold);
-  color: var(--navy);
-  padding: 6px 16px;
-  font-size: 0.65rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  z-index: 2;
-  white-space: nowrap;
-}
-
-.partner-tier-elite .partner-tier-badge {
-  background: var(--navy);
-  color: var(--gold);
-  letter-spacing: 3px;
-}
-
-.partner-tier-label {
-  font-size: 0.75rem;
-  font-weight: 700;
+.location-tag {
+  letter-spacing: 5px;
+  font-size: 0.8rem;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 12px;
-  letter-spacing: 2px;
+  font-weight: 600;
+  display: block;
 }
 
-.partner-tier-price {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
+.luxe-title {
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  line-height: 0.95;
   font-weight: 900;
-  color: var(--navy);
-  margin-bottom: 5px;
-}
-
-.partner-tier-price-note {
-  font-size: 0.7rem;
-  color: #999;
+  margin: 30px 0;
   text-transform: uppercase;
-  margin-bottom: 15px;
 }
 
-.partner-tier-best {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 25px;
-  min-height: 40px;
-  line-height: 1.4;
-}
-
-.partner-tier-divider {
-  width: 40px;
+.gold-spacer-bar {
+  width: 100px;
   height: 1px;
   background: var(--gold);
+  margin: 50px auto;
+}
+
+.mission-narrative {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.narrative-lead {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  color: var(--navy);
   margin-bottom: 25px;
-}
-
-/* Features List */
-.partner-tier-features {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 35px 0;
-  flex: 1;
-}
-
-.partner-tier-features li {
-  font-size: 0.85rem;
-  padding: 10px 0;
-  border-bottom: 1px solid #F5F5F5;
-  color: #444;
+  text-align: center;
   line-height: 1.4;
 }
 
-.partner-tier-features li:last-child {
-  border-bottom: none;
+.narrative-body, .narrative-impact {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-gray);
+  margin-bottom: 20px;
 }
 
-.partner-tier-features li strong {
-  color: var(--gold);
-}
-
-/* Tier Action Buttons */
-.partner-tier-btn {
-  text-align: center;
-  padding: 15px;
-  border: 1px solid var(--navy);
+.narrative-impact {
+  border-left: 3px solid var(--gold);
+  padding-left: 20px;
+  font-weight: 500;
   color: var(--navy);
-  text-decoration: none;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  transition: all 0.3s ease;
-  margin-top: auto;
-  display: block;
-  background: transparent;
-  cursor: pointer;
-  width: 100%;
-}
-
-.partner-tier-btn:hover {
-  background: var(--navy);
-  color: var(--white);
-}
-
-.partner-tier-elite .partner-tier-btn {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--navy);
-}
-
-.partner-tier-elite .partner-tier-btn:hover {
-  background: var(--navy);
-  color: var(--white);
-  border-color: var(--navy);
 }
 
 /* =============================================
-   5. LUXE FORM STYLING
+   3. STATS SECTION
    ============================================= */
-.partner-form-section {
-  padding: 100px 5%;
-  background-color: #F5F3F0;
-}
-
-.partner-proposal-container {
-  max-width: 900px;
-  margin: 0 auto;
-  background: var(--white);
-  padding: 80px 10%;
-  box-shadow: 0 40px 100px rgba(0, 33, 71, 0.05);
+.impact-stats-section {
+  background: var(--navy);
+  color: var(--white);
+  padding: 80px 40px;
+  width: 100%;
   box-sizing: border-box;
 }
 
-.partner-luxe-form {
-  display: flex;
-  flex-direction: column;
-  gap: 35px;
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.partner-input-group {
-  display: flex;
-  flex-direction: column;
-  position: relative;
+.stat-card { 
+  text-align: center; 
 }
 
-.partner-label {
-  font-size: 0.7rem;
+.stat-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  color: var(--gold);
+  margin-bottom: 10px;
+  font-weight: 900;
+}
+
+.stat-card p { 
+  font-size: 0.85rem; 
+  opacity: 0.8; 
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* =============================================
+   4. TIERS DISPLAY (Fixed Layout Engine)
+   ============================================= */
+.tier-showcase { 
+  padding: 100px 20px; 
+  text-align: center; 
+}
+
+.section-title { 
+  font-size: clamp(2rem, 5vw, 2.5rem); 
+  margin-bottom: 60px; 
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.tier-grid {
+  display: grid;
+  /* Automatically scales cleanly whether you display 3, 4, or 5 tiers */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.tier-item {
+  background: var(--white);
+  padding: 50px 30px;
+  border-top: 5px solid var(--gold);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  transition: transform 0.3s ease;
+}
+
+.tier-item:hover {
+  transform: translateY(-50px);
+}
+
+.tier-label {
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.75rem;
   font-weight: 700;
+}
+
+.tier-item h3 { 
+  font-family: 'Playfair Display', serif; 
+  font-size: 1.8rem; 
+  margin: 15px 0; 
+  color: var(--navy);
+}
+
+/* =============================================
+   5. LUXE FORM CONTAINER
+   ============================================= */
+.proposal-container {
+  max-width: 800px;
+  margin: 0 auto 150px;
+  background: var(--white);
+  padding: 80px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.02);
+  box-sizing: border-box;
+}
+
+.form-intro { 
+  margin-bottom: 50px; 
+  color: var(--gold); 
+  text-transform: uppercase; 
+  font-size: 0.75rem; 
+  letter-spacing: 2px; 
+  text-align: center;
+  font-weight: 600;
+}
+
+.luxe-form { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 40px; 
+}
+
+.form-row { 
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px; 
+}
+
+.input-group { 
+  display: flex; 
+  flex-direction: column; 
+}
+
+.input-group label {
+  font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   margin-bottom: 10px;
-  color: var(--navy);
+  color: #888;
+  font-weight: 600;
 }
 
-.partner-input-group input, 
-.partner-input-group select, 
-.partner-textarea {
-  padding: 18px;
-  border: 1px solid #E0E0E0;
-  background: #FAFAFA;
+.input-group input, 
+.input-group select, 
+.input-group textarea {
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  background: transparent;
   font-family: inherit;
   font-size: 1rem;
   outline: none;
-  transition: all 0.3s ease;
-  width: 100%;
-  box-sizing: border-box;
   color: var(--navy);
+  transition: border-color 0.3s ease;
   border-radius: 0;
 }
 
-.partner-input-group input:focus, 
-.partner-input-group select:focus,
-.partner-textarea:focus {
-  border-color: var(--gold);
-  background: var(--white);
-  box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
+.input-group input:focus, 
+.input-group select:focus, 
+.input-group textarea:focus {
+  border-bottom: 1px solid var(--gold);
 }
 
-/* Checkboxes */
-.partner-checkbox-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
+.gold-submit-btn {
+  background: var(--navy);
+  color: var(--white);
   padding: 20px;
-  background: #FAFAFA;
-  border: 1px solid #E0E0E0;
-}
-
-.partner-checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  color: #333;
-}
-
-.partner-checkbox-label input[type="checkbox"] {
-  accent-color: var(--gold);
-  width: 16px;
-  height: 16px;
-}
-
-.pw-toggle {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
   border: none;
-  color: var(--gold);
-  font-weight: 700;
-  font-size: 0.6rem;
   text-transform: uppercase;
+  letter-spacing: 4px;
+  font-weight: 700;
+  margin-top: 20px;
   cursor: pointer;
-  z-index: 2;
+  transition: background-color 0.3s ease;
+  font-size: 0.85rem;
+}
+
+.gold-submit-btn:hover { 
+  background: var(--gold); 
 }
 
 /* =============================================
-   6. RESPONSIVE DESIGN MEDIA QUERIES
+   6. RESPONSIVE MEDIA QUERIES
    ============================================= */
-@media (max-width: 1200px) {
-  .partner-tier-grid {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 900px;
+@media (max-width: 850px) {
+  .proposal-container {
+    padding: 40px 20px;
+    margin-bottom: 80px;
   }
-}
-
-@media (max-width: 768px) {
-  .partner-tier-grid {
+  
+  .form-row {
     grid-template-columns: 1fr;
-    max-width: 450px;
+    gap: 40px;
   }
   
-  .partner-hero-inner {
-    padding: 80px 5%;
-  }
-
-  .partner-luxe-title {
-    font-size: clamp(2.5rem, 8vw, 4rem);
-  }
-  
-  .partner-proposal-container {
-    padding: 40px 5%;
-  }
-  
-  .partner-checkbox-grid {
-    grid-template-columns: 1fr;
+  .tier-showcase {
+    padding: 60px 20px;
   }
 }
