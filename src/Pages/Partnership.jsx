@@ -206,7 +206,7 @@ const Partnership = () => {
                 value={formData.companyName}
                 onChange={handleChange}
                 required
-                placeholder="Acme Co."
+                placeholder="Herndon Spritz & Co."
               />
             </div>
             <div className="input-group">
