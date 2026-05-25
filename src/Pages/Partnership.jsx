@@ -117,234 +117,224 @@ const Partnership = () => {
         <title>Partner With Us | Grown Folks Collective</title>
       </Helmet>
 
-      {/* HERO */}
+      {/* HERO & NARRATIVE */}
       <header className="partner-hero">
-        <div className="partner-hero-inner">
-          <span className="partner-eyebrow">Atlanta &amp; Surrounding Cities</span>
-          <h1 className="partner-hero-title">Partner With<br />the Collective</h1>
-          <div className="partner-gold-rule"></div>
-          <p className="partner-hero-sub">
+        <div className="mission-narrative">
+          <span className="location-tag">Atlanta &amp; Surrounding Cities</span>
+          <h1 className="playfair luxe-title">Partner With<br />the Collective</h1>
+          <div className="gold-spacer-bar"></div>
+          <p className="narrative-lead">
             We bring together adults 35+ who are intentional about how they spend their time, energy, and money.
-            <br />Partner with us for a single event to see the alignment firsthand, and let's build from there.
+          </p>
+          <p className="narrative-body">
+            Partner with us for a single event to see the alignment firsthand, and let's build from there. Our curated environment removes traditional corporate noise, letting your brand make lasting, high-level connections.
           </p>
         </div>
       </header>
 
-      {/* WHO WE ARE */}
-      <section className="partner-audience">
-        <div className="partner-audience-inner">
-          <div className="partner-stat-card">
-            <div className="partner-stat-num">35+</div>
-            <div className="partner-stat-label">Core demographic age</div>
+      {/* STATS SECTION */}
+      <section className="impact-stats-section">
+        <div className="stats-grid">
+          <div className="stat-card">
+            <h4 className="playfair">35+</h4>
+            <p>Core demographic age</p>
           </div>
-          <div className="partner-stat-card">
-            <div className="partner-stat-num">$80K+</div>
-            <div className="partner-stat-label">Avg. household income</div>
+          <div className="stat-card">
+            <h4 className="playfair">$80K+</h4>
+            <p>Avg. household income</p>
           </div>
-          <div className="partner-stat-card">
-            <div className="partner-stat-num">100%</div>
-            <div className="partner-stat-label">Alcohol-free programming</div>
+          <div className="stat-card">
+            <h4 className="playfair">100%</h4>
+            <p>Alcohol-free programming</p>
           </div>
-          <div className="partner-stat-card">
-            <div className="partner-stat-num">ATL</div>
-            <div className="partner-stat-label">Based &amp; rooted locally</div>
-          </div>
-        </div>
-      </section>
-
-      {/* WHAT YOU GET */}
-      <section className="partner-what-section">
-        <div className="partner-section-inner">
-          <span className="partner-eyebrow">The Approach</span>
-          <h2 className="partner-section-heading">Test the Fit. Build the Bridge.</h2>
-          <div className="partner-offer-grid">
-            <div className="partner-offer-card">
-              <div className="partner-offer-icon">◈</div>
-              <h3>Per-Event Sponsorship</h3>
-              <p>No long contracts right away. Sponsor an individual event—whether a dinner, mixer, or retreat—and see how our crowd connects with your product.</p>
-            </div>
-            <div className="partner-offer-card">
-              <div className="partner-offer-icon">◈</div>
-              <h3>Collaborative Review</h3>
-              <p>After the event, we look at the traction, engagement, and data together. If it feels seamless, we can map out a permanent arrangement.</p>
-            </div>
-            <div className="partner-offer-card">
-              <div className="partner-offer-icon">◈</div>
-              <h3>Authentic Alignment</h3>
-              <p>We only work with brands that match our community's values. That high bar is exactly why our collective trusts what our partners put in front of them.</p>
-            </div>
+          <div className="stat-card">
+            <h4 className="playfair">ATL</h4>
+            <p>Based &amp; rooted locally</p>
           </div>
         </div>
       </section>
 
-      {/* TIERS */}
-      <section className="partner-tiers-section">
-        <div className="partner-section-inner">
-          <span className="partner-eyebrow">Partnership Levels</span>
-          <h2 className="partner-section-heading">Find Your Level</h2>
-          <div className="partner-tier-row">
-            {tiers.map((tier) => (
-              <div
-                key={tier.id}
-                className={`partner-tier-card${tier.featured ? " partner-tier-featured" : ""}${tier.elite ? " partner-tier-elite" : ""}`}
-              >
-                {tier.featured && <div className="partner-tier-badge">Most Popular</div>}
-                {tier.elite && <div className="partner-tier-badge partner-tier-badge-elite">Premium</div>}
-                <div className="partner-tier-label">{tier.label}</div>
-                <div className="partner-tier-price">{tier.price}</div>
-                <div className="partner-tier-desc">{tier.description}</div>
-                <ul className="partner-tier-features">
-                  {tier.features.map((f) => (
-                    <li key={f}>{f}</li>
-                  ))}
-                </ul>
-                <button
-                  className="partner-tier-btn"
-                  onClick={() => handleTierSelect(tier.label)}
-                  type="button"
-                >
-                  {tier.elite ? "Inquire" : tier.featured ? "Select" : "Get Started"}
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FORM */}
-      <section className="partner-form-section" id="partner-form">
-        <div className="partner-form-inner">
-          <span className="partner-eyebrow">Get Started</span>
-          <h2 className="partner-section-heading">Let's Connect</h2>
-          <p className="partner-form-sub">Tell us a bit about your brand. We'll find the right event format to pilot our partnership and follow up within 48 hours.</p>
-
-          <form onSubmit={handleSubmit} className="partner-form">
-
-            <div className="partner-form-row">
-              <div className="partner-input-group">
-                <label className="partner-label" htmlFor="companyName">Company / Brand Name</label>
-                <input
-                  id="companyName"
-                  name="companyName"
-                  value={formData.companyName}
-                  onChange={handleChange}
-                  required
-                  placeholder="Acme Co."
-                />
-              </div>
-              <div className="partner-input-group">
-                <label className="partner-label" htmlFor="contactPerson">Your Name</label>
-                <input
-                  id="contactPerson"
-                  name="contactPerson"
-                  value={formData.contactPerson}
-                  onChange={handleChange}
-                  required
-                  placeholder="First &amp; Last"
-                />
-              </div>
-            </div>
-
-            <div className="partner-form-row">
-              <div className="partner-input-group">
-                <label className="partner-label" htmlFor="email">Email</label>
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  placeholder="you@company.com"
-                />
-              </div>
-              <div className="partner-input-group">
-                <label className="partner-label" htmlFor="phone">Phone (optional)</label>
-                <input
-                  id="phone"
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="(404) 000-0000"
-                />
-              </div>
-            </div>
-
-            <div className="partner-input-group">
-              <label className="partner-label" htmlFor="tierRequested">Partnership Level Requested</label>
-              <select
-                id="tierRequested"
-                name="tierRequested"
-                value={formData.tierRequested}
-                onChange={handleChange}
-                className="partner-select"
-              >
-                <option value="">Select a level...</option>
-                {tiers.map((t) => (
-                  <option key={t.id} value={t.label}>{t.label} — {t.price}</option>
+      {/* TIERS SHOWCASE */}
+      <section className="tier-showcase">
+        <span className="location-tag">Partnership Levels</span>
+        <h2 className="playfair section-title">Find Your Level</h2>
+        
+        <div className="tier-grid">
+          {tiers.map((tier) => (
+            <div key={tier.id} className="tier-item">
+              <span className="tier-label">{tier.label}</span>
+              <h3 className="playfair">{tier.price}</h3>
+              <p className="narrative-body" style={{ minHeight: "60px", fontSize: "0.95rem" }}>
+                {tier.description}
+              </p>
+              <div className="gold-spacer-bar" style={{ margin: "20px 0", width: "40px" }}></div>
+              <ul className="partner-tier-features" style={{ listStyle: "none", padding: 0, margin: "0 0 30px 0", flex: 1 }}>
+                {tier.features.map((feature, idx) => (
+                  <li key={idx} style={{ fontSize: "0.85rem", padding: "8px 0", borderBottom: "1px solid #eee", color: "#666" }}>
+                    {feature}
+                  </li>
                 ))}
-                <option value="Not sure">Not sure yet / Want to customize</option>
-              </select>
-            </div>
-
-            <div className="partner-input-group">
-              <label className="partner-label">Events You're Interested In Auditioning</label>
-              <div className="partner-checkbox-grid">
-                {eventOptions.map((event) => (
-                  <label key={event} className="partner-checkbox-label">
-                    <input
-                      type="checkbox"
-                      value={event}
-                      checked={formData.eventsInterested.includes(event)}
-                      onChange={handleCheckbox}
-                    />
-                    <span>{event}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div className="partner-input-group">
-              <label className="partner-label" htmlFor="hostingInterest">Interested in hosting or co-creating an experience?</label>
-              <select
-                id="hostingInterest"
-                name="hostingInterest"
-                value={formData.hostingInterest}
-                onChange={handleChange}
-                className="partner-select"
+              </ul>
+              <button
+                className="gold-submit-btn"
+                style={{ width: "100%", marginTop: "auto", padding: "15px", fontSize: "0.75rem" }}
+                onClick={() => handleTierSelect(tier.label)}
+                type="button"
               >
-                <option value="">Select...</option>
-                <option value="Yes - Pilot first event">Yes — Let's pitch a custom concept for our initial pilot event</option>
-                <option value="Maybe">Maybe — Tell me more about co-branded experiences</option>
-                <option value="No">No — Standard brand placement / space sponsorship only</option>
-              </select>
+                {tier.elite ? "Inquire" : tier.featured ? "Select" : "Get Started"}
+              </button>
             </div>
+          ))}
+        </div>
+      </section>
 
-            <div className="partner-input-group">
-              <label className="partner-label" htmlFor="details">Anything else we should know about your brand timeline?</label>
-              <textarea
-                id="details"
-                name="details"
-                className="partner-textarea"
-                value={formData.details}
-                placeholder="Tell us about your brand positioning, what target products you want to feature during this event, or details about your permanent timeline goals..."
+      {/* FORM SECTION */}
+      <section className="proposal-container" id="partner-form">
+        <span className="form-intro">Get Started</span>
+        <h2 className="playfair narrative-lead" style={{ marginTop: "10px" }}>Let's Connect</h2>
+        <p className="narrative-body" style={{ textAlign: "center", marginBottom: "40px" }}>
+          Tell us a bit about your brand. We'll find the right event format to pilot our partnership and follow up within 48 hours.
+        </p>
+
+        <form onSubmit={handleSubmit} className="luxe-form">
+          <div className="form-row">
+            <div className="input-group">
+              <label htmlFor="companyName">Company / Brand Name</label>
+              <input
+                id="companyName"
+                name="companyName"
+                value={formData.companyName}
                 onChange={handleChange}
-                rows={5}
+                required
+                placeholder="Acme Co."
               />
             </div>
+            <div className="input-group">
+              <label htmlFor="contactPerson">Your Name</label>
+              <input
+                id="contactPerson"
+                name="contactPerson"
+                value={formData.contactPerson}
+                onChange={handleChange}
+                required
+                placeholder="First &amp; Last"
+              />
+            </div>
+          </div>
 
-            {feedback && (
-              <div className={`partner-feedback partner-feedback--${feedback.type}`}>
-                {feedback.message}
-              </div>
-            )}
+          <div className="form-row">
+            <div className="input-group">
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                placeholder="you@company.com"
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="phone">Phone (optional)</label>
+              <input
+                id="phone"
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="(404) 000-0000"
+              />
+            </div>
+          </div>
 
-            <button type="submit" className="partner-submit-btn" disabled={isSubmitting}>
-              {isSubmitting ? "Sending..." : "Send Partnership Inquiry"}
-            </button>
-          </form>
-        </div>
+          <div className="input-group">
+            <label htmlFor="tierRequested">Partnership Level Requested</label>
+            <select
+              id="tierRequested"
+              name="tierRequested"
+              value={formData.tierRequested}
+              onChange={handleChange}
+              style={{ background: "transparent", color: "var(--navy)" }}
+            >
+              <option value="">Select a level...</option>
+              {tiers.map((t) => (
+                <option key={t.id} value={t.label}>{t.label} — {t.price}</option>
+              ))}
+              <option value="Not sure">Not sure yet / Want to customize</option>
+            </select>
+          </div>
+
+          <div className="input-group">
+            <label style={{ marginBottom: "15px" }}>Events You're Interested In Auditioning</label>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: "15px",
+              padding: "20px",
+              background: "#fcfbfa",
+              border: "1px solid #eee"
+            }}>
+              {eventOptions.map((event) => (
+                <label key={event} style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.85rem", cursor: "pointer" }}>
+                  <input
+                    type="checkbox"
+                    value={event}
+                    checked={formData.eventsInterested.includes(event)}
+                    onChange={handleCheckbox}
+                    style={{ accentColor: "var(--gold)" }}
+                  />
+                  <span>{event}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="hostingInterest">Interested in hosting or co-creating an experience?</label>
+            <select
+              id="hostingInterest"
+              name="hostingInterest"
+              value={formData.hostingInterest}
+              onChange={handleChange}
+            >
+              <option value="">Select...</option>
+              <option value="Yes - Pilot first event">Yes — Let's pitch a custom concept for our initial pilot event</option>
+              <option value="Maybe">Maybe — Tell me more about co-branded experiences</option>
+              <option value="No">No — Standard brand placement / space sponsorship only</option>
+            </select>
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="details">Anything else we should know about your brand timeline?</label>
+            <textarea
+              id="details"
+              name="details"
+              value={formData.details}
+              placeholder="Tell us about your brand positioning, what target products you want to feature during this event..."
+              onChange={handleChange}
+              rows={5}
+            />
+          </div>
+
+          {feedback && (
+            <div style={{
+              padding: "15px",
+              textAlign: "center",
+              fontSize: "0.9rem",
+              fontWeight: "600",
+              color: feedback.type === "success" ? "var(--gold)" : "#d9534f",
+              background: feedback.type === "success" ? "#fbf9f5" : "#fdf2f2",
+              border: `1px solid ${feedback.type === "success" ? "var(--gold)" : "#d9534f"}`
+            }}>
+              {feedback.message}
+            </div>
+          )}
+
+          <button type="submit" className="gold-submit-btn" disabled={isSubmitting}>
+            {isSubmitting ? "Sending..." : "Send Partnership Inquiry"}
+          </button>
+        </form>
       </section>
     </div>
   );
