@@ -4,310 +4,332 @@
    1. ROOT VARIABLES & SETUP
    ============================================= */
 :root {
-  --navy: #002147;
-  --gold: #C5A059;
-  --cream: #FDFBFA;
-  --white: #FFFFFF;
-  --text-gray: #555;
+  --navy: #002147 !important;
+  --gold: #C5A059 !important;
+  --cream: #FDFBFA !important;
+  --white: #FFFFFF !important;
+  --text-gray: #555 !important;
 }
 
 .partnership-page {
-  background-color: var(--cream);
-  color: var(--navy);
-  font-family: 'Montserrat', sans-serif;
+  background-color: #FDFBFA !important;
+  color: #002147 !important;
+  font-family: 'Montserrat', sans-serif !important;
   overflow-x: hidden;
 }
 
 .playfair { 
-  font-family: 'Playfair Display', serif; 
+  font-family: 'Playfair Display', serif !important; 
 }
 
 /* =============================================
-   2. HERO & NARRATIVE (With Image Implementation)
+   2. HERO & NARRATIVE
    ============================================= */
 .partner-hero {
   min-height: 85vh;
-  /* Dark tint overlay applied cleanly over the partnership photo asset */
   background-image: linear-gradient(rgba(0, 33, 71, 0.75), rgba(0, 33, 71, 0.85)),
-                    url('https://static.vecteezy.com/system/resources/thumbnails/052/030/148/small/teamwork-and-partnership-multiracial-business-people-holding-hands-together-sitting-at-one-desk-in-modern-office-high-angle-free-space-photo.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: scroll;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 120px 20px 80px;
-  text-align: center;
-  box-sizing: border-box;
-  width: 100%;
+                    url('https://static.vecteezy.com/system/resources/thumbnails/052/030/148/small/teamwork-and-partnership-multiracial-business-people-holding-hands-together-sitting-at-one-desk-in-modern-office-high-angle-free-space-photo.jpg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 140px 20px 100px !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
 }
 
 .mission-narrative {
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 900px !important;
+  margin: 0 auto !important;
 }
 
-/* Inverting hero colors to pop off the new dark background image */
 .partner-hero .location-tag {
-  color: var(--gold);
-  letter-spacing: 5px;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  font-weight: 700;
-  display: block;
-  margin-bottom: 15px;
+  color: #C5A059 !important;
+  letter-spacing: 5px !important;
+  font-size: 0.85rem !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+  margin-bottom: 15px !important;
 }
 
 .partner-hero .luxe-title {
-  color: var(--white);
-  font-size: clamp(2.5rem, 7vw, 5.5rem);
-  line-height: 1.0;
-  font-weight: 900;
-  margin: 20px 0;
-  text-transform: uppercase;
+  color: #FFFFFF !important;
+  font-size: clamp(2.5rem, 7vw, 5.5rem) !important;
+  line-height: 1.0 !important;
+  font-weight: 900 !important;
+  margin: 20px 0 !important;
+  text-transform: uppercase !important;
 }
 
 .partner-hero .gold-spacer-bar {
-  width: 120px;
-  height: 2px;
-  background: var(--gold);
-  margin: 40px auto;
+  width: 120px !important;
+  height: 2px !important;
+  background: #C5A059 !important;
+  margin: 40px auto !important;
 }
 
 .partner-hero .narrative-lead {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.3rem, 3vw, 2rem);
-  color: var(--white);
-  margin-bottom: 25px;
-  line-height: 1.4;
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(1.3rem, 3vw, 2rem) !important;
+  color: #FFFFFF !important;
+  margin-bottom: 25px !important;
+  line-height: 1.4 !important;
 }
 
 .partner-hero .narrative-body {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: rgba(255, 255, 255, 0.85);
-  max-width: 750px;
-  margin: 0 auto;
-  font-weight: 300;
+  font-size: 1.1rem !important;
+  line-height: 1.8 !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+  max-width: 750px !important;
+  margin: 0 auto !important;
+  font-weight: 300 !important;
 }
 
 /* =============================================
-   3. IMPACT STATS SECTION
+   3. IMPACT STATS SECTION (Fixing Spacing & Alignment)
    ============================================= */
 .impact-stats-section {
-  background: var(--navy);
-  color: var(--white);
-  padding: 100px 40px;
-  width: 100%;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
+  background: #002147 !important;
+  color: #FFFFFF !important;
+  padding: 100px 40px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
 .stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 30px;
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 30px !important;
+  max-width: 1200px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
 }
 
 .stat-card { 
-  text-align: center;
-  padding: 40px 20px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(197, 160, 89, 0.25);
-  border-radius: 4px;
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-.stat-card:hover {
-  border-color: var(--gold);
-  transform: translateY(-5px);
+  text-align: center !important;
+  padding: 40px 20px !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(197, 160, 89, 0.3) !important;
+  border-radius: 6px !important;
 }
 
 .stat-card h4 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  color: var(--gold);
-  margin: 0 0 15px 0;
-  font-weight: 900;
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(2.5rem, 5vw, 3.5rem) !important;
+  color: #C5A059 !important;
+  margin: 0 0 10px 0 !important;
+  font-weight: 900 !important;
 }
 
 .stat-card p { 
-  font-size: 0.75rem; 
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0;
-  font-weight: 600;
-  line-height: 1.4;
+  font-size: 0.75rem !important; 
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+  margin: 0 !important;
+  font-weight: 600 !important;
 }
 
 /* =============================================
    4. TIERS DISPLAY
    ============================================= */
 .tier-showcase { 
-  padding: 120px 20px; 
-  text-align: center; 
+  padding: 120px 20px !important; 
+  text-align: center !important; 
 }
 
 .location-tag {
-  color: var(--gold);
-  letter-spacing: 3px;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  font-weight: 700;
+  color: #C5A059 !important;
+  letter-spacing: 3px !important;
+  font-size: 0.8rem !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
 }
 
 .section-title { 
-  font-size: clamp(2rem, 5vw, 2.75rem); 
-  margin: 15px 0 60px 0; 
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--navy);
+  font-size: clamp(2rem, 5vw, 2.75rem) !important; 
+  margin: 15px 0 60px 0 !important; 
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+  color: #002147 !important;
 }
 
 .tier-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: left;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+  gap: 30px !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  text-align: left !important;
 }
 
 .tier-item {
-  background: var(--white);
-  padding: 50px 35px;
-  border-top: 5px solid var(--gold);
-  box-shadow: 0 15px 45px rgba(0, 33, 71, 0.04);
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.tier-item:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 25px 50px rgba(0, 33, 71, 0.08);
+  background: #FFFFFF !important;
+  padding: 50px 35px !important;
+  border-top: 5px solid #C5A059 !important;
+  box-shadow: 0 15px 45px rgba(0, 33, 71, 0.04) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
 }
 
 .tier-label {
-  color: var(--gold);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 0.75rem;
-  font-weight: 700;
+  color: #C5A059 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
 }
 
 .tier-item h3 { 
-  font-family: 'Playfair Display', serif; 
-  font-size: 2rem; 
-  margin: 15px 0; 
-  color: var(--navy);
+  font-family: 'Playfair Display', serif !important; 
+  font-size: 2rem !important; 
+  margin: 15px 0 !important; 
+  color: #002147 !important;
+}
+
+/* Force-styling the Tier Buttons inside the map loop */
+.tier-item .gold-submit-btn {
+  background: #002147 !important;
+  color: #FFFFFF !important;
+  width: 100% !important;
+  padding: 16px !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: background 0.3s ease !important;
+  margin-top: auto !important;
+}
+
+.tier-item .gold-submit-btn:hover {
+  background: #C5A059 !important;
 }
 
 /* =============================================
    5. LUXE FORM & CHECKBOXES
    ============================================= */
 .proposal-container {
-  max-width: 850px;
-  margin: 40px auto 120px;
-  background: var(--white);
-  padding: 80px 60px;
-  box-shadow: 0 30px 70px rgba(0, 33, 71, 0.03);
-  box-sizing: border-box;
+  max-width: 850px !important;
+  margin: 60px auto 120px !important;
+  background: #FFFFFF !important;
+  padding: 80px 60px !important;
+  box-shadow: 0 30px 70px rgba(0, 33, 71, 0.03) !important;
+  box-sizing: border-box !important;
 }
 
 .form-intro { 
-  display: block;
-  margin-bottom: 10px; 
-  color: var(--gold); 
-  text-transform: uppercase; 
-  font-size: 0.8rem; 
-  letter-spacing: 3px; 
-  text-align: center;
-  font-weight: 700;
+  display: block !important;
+  margin-bottom: 10px !important; 
+  color: #C5A059 !important; 
+  text-transform: uppercase !important; 
+  font-size: 0.8rem !important; 
+  letter-spacing: 3px !important; 
+  text-align: center !important;
+  font-weight: 700 !important;
 }
 
 .luxe-form { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 40px; 
-  margin-top: 40px;
+  display: flex !important; 
+  flex-direction: column !important; 
+  gap: 40px !important; 
+  margin-top: 40px !important;
 }
 
 .form-row { 
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px; 
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 30px !important; 
 }
 
 .input-group { 
-  display: flex; 
-  flex-direction: column; 
+  display: flex !important; 
+  flex-direction: column !important; 
 }
 
 .input-group label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-bottom: 12px;
-  color: var(--navy);
-  font-weight: 700;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.5px !important;
+  margin-bottom: 12px !important;
+  color: #002147 !important;
+  font-weight: 700 !important;
 }
 
 .input-group input, 
 .input-group select, 
 .input-group textarea {
-  padding: 14px 0;
-  border: none;
-  border-bottom: 1px solid #E0E0E0;
-  background: transparent;
-  font-family: inherit;
-  font-size: 1rem;
-  outline: none;
-  color: var(--navy);
-  transition: border-color 0.3s ease;
-  border-radius: 0;
+  padding: 14px 0 !important;
+  border: none !important;
+  border-bottom: 1px solid #E0E0E0 !important;
+  background: transparent !important;
+  font-family: inherit !important;
+  font-size: 1rem !important;
+  outline: none !important;
+  color: #002147 !important;
+  border-radius: 0 !important;
 }
 
-.input-group input:focus, 
-.input-group select:focus, 
-.input-group textarea:focus {
-  border-bottom: 1px solid var(--gold);
-}
-
-/* Fixing the checkbox layout array */
+/* Fixing the dynamic checkbox grid presentation */
 .partner-checkbox-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  padding: 30px;
-  background: #FAFAFA;
-  border: 1px solid #E8E8E8;
-  margin-top: 5px;
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 20px !important;
+  padding: 35px !important;
+  background: #FAFAFA !important;
+  border: 1px solid #E8E8E8 !important;
+  margin-top: 10px !important;
 }
 
 .partner-checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  color: var(--navy);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  cursor: pointer !important;
+}
+
+/* Normalizing the typography alongside the checkboxes */
+.partner-checkbox-label span {
+  font-size: 0.8rem !important;
+  color: #002147 !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
 }
 
 .partner-checkbox-label input[type="checkbox"] {
-  accent-color: var(--gold);
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
+  accent-color: #C5A059 !important;
+  width: 18px !important;
+  height: 18px !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+}
+
+/* Locking Down the Global Submit Action Button */
+.gold-submit-btn {
+  background: #002147 !important;
+  color: #FFFFFF !important;
+  padding: 20px !important;
+  border: none !important;
+  text-transform: uppercase !important;
+  letter-spacing: 4px !important;
+  font-weight: 700 !important;
+  margin-top: 20px !important;
+  cursor: pointer !important;
+  font-size: 0.85rem !important;
+  transition: background 0.3s ease !important;
+  width: 100% !important;
+}
+
+.gold-submit-btn:hover { 
+  background: #C5A059 !important; 
 }
 
 /* =============================================
@@ -315,17 +337,12 @@
    ============================================= */
 @media (max-width: 850px) {
   .form-row {
-    grid-template-columns: 1fr;
-    gap: 40px;
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
   }
 
   .partner-checkbox-grid {
-    grid-template-columns: 1fr;
-    padding: 20px;
-  }
-  
-  .proposal-container {
-    padding: 50px 25px;
-    margin: 20px;
+    grid-template-columns: 1fr !important;
+    padding: 20px !important;
   }
 }
