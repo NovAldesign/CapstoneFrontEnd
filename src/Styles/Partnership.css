@@ -1,522 +1,396 @@
-/* =============================================
-   PARTNERSHIP PAGE
-   Brand: Navy #002147 | Gold #C5A059 | Cream #FDFBFA
-   ============================================= */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@300;400;600;700&display=swap');
 
+/* =============================================
+   CORE UTILITIES & LAYOUT
+   ============================================= */
 .partnership-page {
   background-color: #FDFBFA;
   color: #002147;
   font-family: 'Montserrat', sans-serif;
-  padding-bottom: 120px;
+  overflow-x: hidden;
 }
 
 /* =============================================
-   SHARED UTILITIES
-   ============================================= */
-.partner-eyebrow {
-  display: block;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: #C5A059;
-  margin-bottom: 14px;
-}
-
-.partner-gold-rule {
-  width: 48px;
-  height: 2px;
-  background: #C5A059;
-  margin: 28px auto;
-}
-
-.partner-section-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 80px 5%;
-  text-align: center;
-}
-
-.partner-section-heading {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-  font-weight: 700;
-  color: #002147;
-  margin: 0 0 48px;
-  line-height: 1.2;
-}
-
-/* =============================================
-   HERO
+   HERO SECTION
    ============================================= */
 .partner-hero {
-  background-color: #002147;
-  color: #FDFBFA;
-  padding: 120px 5% 90px;
-  text-align: center;
+  min-height: 80vh;
+  background-image: linear-gradient(rgba(0, 33, 71, 0.65), rgba(0, 33, 71, 0.8)),
+                    url('https://static.vecteezy.com/system/resources/thumbnails/052/030/148/small/teamwork-and-partnership-multiracial-business-people-holding-hands-together-sitting-at-one-desk-in-modern-office-high-angle-free-space-photo.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
 }
 
 .partner-hero-inner {
-  max-width: 700px;
-  margin: 0 auto;
+  width: 100%;
+  padding: 100px 10%;
 }
 
-.partner-hero .partner-eyebrow {
+.partner-location-tag {
   color: #C5A059;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 20px;
 }
 
-.partner-hero-title {
+.partner-luxe-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 700;
-  color: #FDFBFA;
-  line-height: 1.15;
-  margin: 0 0 16px;
+  font-size: clamp(3.5rem, 10vw, 7.5rem);
+  line-height: 0.85;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 0 0 25px 0;
+  color: #FFFFFF;
 }
 
-.partner-hero-sub {
-  font-size: 1rem;
-  line-height: 1.75;
-  color: rgba(253, 251, 250, 0.8);
-  max-width: 580px;
-  margin: 0 auto;
+.partner-gold-spacer {
+  width: 100px;
+  height: 2px;
+  background: #C5A059;
+  margin-bottom: 30px;
+}
+
+.partner-mission-narrative {
+  max-width: 640px;
+}
+
+.partner-narrative-lead {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: #FFFFFF;
+}
+
+.partner-narrative-body {
+  font-size: 1.15rem;
+  line-height: 1.9;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 /* =============================================
-   AUDIENCE STATS
+   IMPACT STATS
    ============================================= */
-.partner-audience {
-  background: #002147;
-  border-top: 1px solid rgba(197, 160, 89, 0.25);
-  padding: 0 5% 80px;
+.partner-impact-stats {
+  background-color: #002147;
+  padding: 80px 10%;
 }
 
-.partner-audience-inner {
-  max-width: 1000px;
-  margin: 0 auto;
+.partner-stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: stretch;
 }
 
 .partner-stat-card {
-  background: rgba(253, 251, 250, 0.03);
-  border: 1px solid rgba(197, 160, 89, 0.15);
-  padding: 30px 15px;
   text-align: center;
+  padding: 40px 20px;
+  border: 1px solid rgba(197, 160, 89, 0.2);
+  transition: all 0.3s ease;
 }
 
-.partner-stat-num {
+.partner-stat-card:hover {
+  border-color: #C5A059;
+  background: rgba(197, 160, 89, 0.05);
+}
+
+.partner-stat-number {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-size: 3rem;
   font-weight: 900;
   color: #C5A059;
-  line-height: 1;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .partner-stat-label {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: rgba(253, 251, 250, 0.6);
-  font-weight: 600;
-  line-height: 1.4;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* =============================================
-   WHAT WE OFFER
-   ============================================= */
-.partner-what-section {
-  background: #fff;
-}
-
-.partner-offer-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  text-align: left;
-}
-
-.partner-offer-card {
-  border-top: 2px solid #C5A059;
-  padding: 24px 0 0;
-}
-
-.partner-offer-icon {
-  font-size: 1.2rem;
-  color: #C5A059;
-  margin-bottom: 16px;
-}
-
-.partner-offer-card h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #002147;
-  margin: 0 0 14px;
-}
-
-.partner-offer-card p {
-  font-size: 0.9rem;
-  line-height: 1.7;
-  color: #444;
-  margin: 0;
-}
-
-/* =============================================
-   TIERS
+   PARTNERSHIP TIERS SECTION (5 TIERS)
    ============================================= */
 .partner-tiers-section {
-  background: #FDFBFA;
+  padding: 100px 5%;
+  background-color: #FDFBFA;
 }
 
-.partner-tier-row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+.partner-tier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
-  justify-content: center;
-  padding: 16px 0;
+  max-width: 1400px;
+  margin: 60px auto;
 }
 
 .partner-tier-card {
-  flex: 1;
-  min-width: 280px;
-  max-width: 340px;
-  background: #fff;
-  border: 1px solid #e8e8e8;
-  border-top: 4px solid #C5A059;
-  padding: 40px 24px 32px;
-  text-align: center;
+  background: #FFFFFF;
+  border: 1px solid #E8E8E8;
+  padding: 50px 30px;
   display: flex;
   flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  border-top: 4px solid #E8E8E8;
+}
+
+.partner-tier-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 30px 60px rgba(0, 33, 71, 0.1);
+  border-top-color: #C5A059;
+}
+
+/* Specific Tiers Customizations */
+.partner-tier-card:nth-child(4) {
+  border-top: 4px solid #002147; /* Contrast Tier Styling */
 }
 
 .partner-tier-featured {
   border: 2px solid #C5A059;
-  border-top: 5px solid #C5A059;
-  box-shadow: 0 12px 40px rgba(197, 160, 89, 0.15);
-  transform: scale(1.02);
+  background: linear-gradient(145deg, #FFFFFF 0%, #FDFBFA 100%);
+  box-shadow: 0 15px 40px rgba(197, 160, 89, 0.15);
+  border-top: 4px solid #C5A059;
 }
 
 .partner-tier-elite {
-  background: #f7f4ee;
-  border-top-color: #002147;
+  background: linear-gradient(145deg, #FFFFFF 0%, #F9F6F0 100%);
+  border: 2px solid #C5A059;
+  border-top: 4px solid #002147;
 }
 
+/* Badges and Labels */
 .partner-tier-badge {
   position: absolute;
-  top: -14px;
+  top: -15px;
   left: 50%;
   transform: translateX(-50%);
   background: #C5A059;
   color: #002147;
+  letter-spacing: 2px;
+  padding: 6px 16px;
   font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 5px 14px;
+  z-index: 2;
 }
 
-.partner-tier-badge-elite {
+.partner-tier-elite .partner-tier-badge {
   background: #002147;
   color: #C5A059;
+  font-weight: 900;
+  letter-spacing: 3px;
 }
 
 .partner-tier-label {
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #666;
+  color: #C5A059;
   margin-bottom: 12px;
-  margin-top: 8px;
+  letter-spacing: 2px;
 }
 
 .partner-tier-price {
   font-family: 'Playfair Display', serif;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 900;
   color: #002147;
-  margin-bottom: 16px;
-  line-height: 1.2;
+  margin-bottom: 5px;
 }
 
-.partner-tier-desc {
+.partner-tier-price-note {
+  font-size: 0.7rem;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.partner-tier-best {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
   font-size: 0.85rem;
-  color: #555;
-  line-height: 1.5;
-  margin-bottom: 24px;
+  color: #666;
+  margin-bottom: 25px;
+  min-height: 40px;
 }
 
+.partner-tier-divider {
+  width: 40px;
+  height: 1px;
+  background: #C5A059;
+  margin-bottom: 25px;
+}
+
+/* Card Features List */
 .partner-tier-features {
   list-style: none;
   padding: 0;
-  margin: 0 0 32px;
-  flex-grow: 1;
-  text-align: left;
+  margin: 0 0 35px 0;
+  flex: 1;
 }
 
 .partner-tier-features li {
-  font-size: 0.82rem;
-  line-height: 1.5;
+  font-size: 0.85rem;
   padding: 10px 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #F5F5F5;
   color: #444;
+  line-height: 1.4;
 }
 
-.partner-tier-features li:last-child {
-  border-bottom: none;
+.partner-tier-features li strong {
+  color: #C5A059; /* Highlights core interview or prominent features */
 }
 
+/* Action Buttons */
 .partner-tier-btn {
-  display: block;
-  background: transparent;
+  text-align: center;
+  padding: 15px;
   border: 1px solid #002147;
   color: #002147;
-  padding: 13px 16px;
+  text-decoration: none;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  cursor: pointer;
-  width: 100%;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
   margin-top: auto;
-  transition: all 0.2s ease;
+  display: block;
 }
 
 .partner-tier-btn:hover {
   background: #002147;
-  color: #fff;
+  color: #FFFFFF;
 }
 
-.partner-tier-featured .partner-tier-btn {
+.partner-tier-elite .partner-tier-btn {
   background: #C5A059;
   border-color: #C5A059;
   color: #002147;
 }
 
-.partner-tier-featured .partner-tier-btn:hover {
-  background: #b08d47;
-  border-color: #b08d47;
+.partner-tier-elite .partner-tier-btn:hover {
+  background: #002147;
+  color: #FFFFFF;
+  border-color: #002147;
 }
 
 /* =============================================
-   FORM
+   LUXE FORM STYLING
    ============================================= */
 .partner-form-section {
-  background: #fff;
-  border-top: 1px solid #eee;
+  padding: 100px 5%;
+  background-color: #F5F3F0;
 }
 
-.partner-form-inner {
-  max-width: 780px;
+.partner-proposal-container {
+  max-width: 900px;
   margin: 0 auto;
-  padding: 80px 5%;
+  background: #FFFFFF;
+  padding: 80px 10%;
+  box-shadow: 0 40px 100px rgba(0, 33, 71, 0.05);
 }
 
-.partner-form-inner .partner-section-heading {
-  text-align: left;
-}
-
-.partner-form-sub {
-  font-size: 0.92rem;
-  color: #555;
-  line-height: 1.7;
-  margin: -24px 0 40px;
-}
-
-.partner-form {
+.partner-luxe-form {
   display: flex;
   flex-direction: column;
-  gap: 28px;
-}
-
-.partner-form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 35px;
 }
 
 .partner-input-group {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .partner-label {
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  margin-bottom: 8px;
-  color: #002147;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
 }
 
-.partner-input-group input,
-.partner-select,
+.partner-input-group input, 
+.partner-input-group select, 
 .partner-textarea {
-  padding: 14px 16px;
-  border: 1px solid #ddd;
-  background: #fafafa;
-  font-size: 0.95rem;
-  font-family: 'Montserrat', sans-serif;
-  color: #002147;
+  padding: 18px;
+  border: 1px solid #E0E0E0;
+  background: #FAFAFA;
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
   width: 100%;
   box-sizing: border-box;
-  outline: none;
-  transition: all 0.2s ease;
-  border-radius: 0;
 }
 
-/* Re-added native arrow styling support for cross-browser stability */
-.partner-select {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path fill='%23002147' d='M0 3l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
-  background-size: 12px;
-  padding-right: 40px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
-.partner-input-group input:focus,
-.partner-select:focus,
+.partner-input-group input:focus, 
 .partner-textarea:focus {
   border-color: #C5A059;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(197, 160, 89, 0.08);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
 }
 
 .partner-checkbox-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  background: #f8f8f6;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
   padding: 20px;
-  border: 1px solid #f0f0ed;
+  background: #FAFAFA;
+  border: 1px solid #E0E0E0;
 }
 
 .partner-checkbox-label {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   font-size: 0.85rem;
-  color: #333;
   cursor: pointer;
 }
 
-.partner-checkbox-label input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: #C5A059;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.partner-feedback {
-  padding: 14px 18px;
-  font-size: 0.87rem;
-  font-weight: 600;
-}
-
-.partner-feedback--success {
-  background: #f0f7ee;
-  color: #2a6020;
-  border-left: 4px solid #4a9e35;
-}
-
-.partner-feedback--error {
-  background: #fdf0f0;
-  color: #8b2020;
-  border-left: 4px solid #c94040;
-}
-
-.partner-submit-btn {
-  background: #C5A059;
-  color: #002147;
+.pw-toggle {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
   border: none;
-  padding: 18px 36px;
-  font-size: 0.78rem;
+  color: #C5A059;
   font-weight: 700;
+  font-size: 0.6rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
   cursor: pointer;
-  font-family: 'Montserrat', sans-serif;
-  align-self: flex-start;
-  transition: all 0.2s ease;
-  min-width: 240px;
-}
-
-.partner-submit-btn:hover:not(:disabled) {
-  background: #b08d47;
-  box-shadow: 0 4px 14px rgba(197, 160, 89, 0.2);
-}
-
-.partner-submit-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  z-index: 2;
 }
 
 /* =============================================
-   RESPONSIVE MEDIA QUERIES
+   RESPONSIVE DESIGN
    ============================================= */
-@media (max-width: 960px) {
-  .partner-offer-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-  
-  .partner-tier-featured {
-    transform: scale(1);
-  }
-}
-
-@media (max-width: 800px) {
-  .partner-audience-inner {
+@media (max-width: 1024px) {
+  .partner-tier-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  .partner-tier-row {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .partner-tier-card {
-    width: 100%;
-    max-width: 450px;
-  }
-
-  .partner-form-row {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  .partner-submit-btn {
-    align-self: stretch;
-    width: 100%;
   }
 }
 
-@media (max-width: 500px) {
-  .partner-audience-inner {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  
-  .partner-checkbox-grid {
+@media (max-width: 768px) {
+  .partner-tier-grid {
     grid-template-columns: 1fr;
   }
-
-  .partner-hero-title {
-    font-size: 2.2rem;
+  .partner-luxe-title {
+    font-size: 3.5rem;
   }
-  
-  .partner-section-inner {
-    padding: 60px 5%;
+  .partner-proposal-container {
+    padding: 40px 5%;
   }
 }
