@@ -1,129 +1,522 @@
 /* =============================================
-   GLOBAL RESET FOR THIS PAGE
+   PARTNERSHIP PAGE
+   Brand: Navy #002147 | Gold #C5A059 | Cream #FDFBFA
    ============================================= */
+
 .partnership-page {
-  background-color: #FDFBFA !important;
-  color: #002147 !important;
-  font-family: 'Montserrat', sans-serif !important;
-  padding-bottom: 100px;
+  background-color: #FDFBFA;
+  color: #002147;
+  font-family: 'Montserrat', sans-serif;
+  padding-bottom: 120px;
 }
 
 /* =============================================
-   TIERS - SAME LINE FIX
+   SHARED UTILITIES
    ============================================= */
+.partner-eyebrow {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #C5A059;
+  margin-bottom: 14px;
+}
+
+.partner-gold-rule {
+  width: 48px;
+  height: 2px;
+  background: #C5A059;
+  margin: 28px auto;
+}
+
+.partner-section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 5%;
+  text-align: center;
+}
+
+.partner-section-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 700;
+  color: #002147;
+  margin: 0 0 48px;
+  line-height: 1.2;
+}
+
+/* =============================================
+   HERO
+   ============================================= */
+.partner-hero {
+  background-color: #002147;
+  color: #FDFBFA;
+  padding: 120px 5% 90px;
+  text-align: center;
+}
+
+.partner-hero-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.partner-hero .partner-eyebrow {
+  color: #C5A059;
+}
+
+.partner-hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 700;
+  color: #FDFBFA;
+  line-height: 1.15;
+  margin: 0 0 16px;
+}
+
+.partner-hero-sub {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: rgba(253, 251, 250, 0.8);
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+/* =============================================
+   AUDIENCE STATS
+   ============================================= */
+.partner-audience {
+  background: #002147;
+  border-top: 1px solid rgba(197, 160, 89, 0.25);
+  padding: 0 5% 80px;
+}
+
+.partner-audience-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.partner-stat-card {
+  background: rgba(253, 251, 250, 0.03);
+  border: 1px solid rgba(197, 160, 89, 0.15);
+  padding: 30px 15px;
+  text-align: center;
+}
+
+.partner-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 900;
+  color: #C5A059;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.partner-stat-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(253, 251, 250, 0.6);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* =============================================
+   WHAT WE OFFER
+   ============================================= */
+.partner-what-section {
+  background: #fff;
+}
+
+.partner-offer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  text-align: left;
+}
+
+.partner-offer-card {
+  border-top: 2px solid #C5A059;
+  padding: 24px 0 0;
+}
+
+.partner-offer-icon {
+  font-size: 1.2rem;
+  color: #C5A059;
+  margin-bottom: 16px;
+}
+
+.partner-offer-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #002147;
+  margin: 0 0 14px;
+}
+
+.partner-offer-card p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #444;
+  margin: 0;
+}
+
+/* =============================================
+   TIERS
+   ============================================= */
+.partner-tiers-section {
+  background: #FDFBFA;
+}
+
 .partner-tier-row {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  gap: 20px !important;
-  justify-content: center !important;
-  padding: 40px 2% !important;
-  overflow-x: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  padding: 16px 0;
 }
 
 .partner-tier-card {
-  flex: 1 !important;
-  min-width: 250px !important;
-  background: #ffffff !important;
-  border: 1px solid #e8e8e8 !important;
-  border-top: 4px solid #C5A059 !important;
-  padding: 40px 20px !important;
-  text-align: center !important;
-  display: flex !important;
-  flex-direction: column !important;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
+  flex: 1;
+  min-width: 280px;
+  max-width: 340px;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-top: 4px solid #C5A059;
+  padding: 40px 24px 32px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
 }
 
-.partner-tier-featured { border: 2px solid #C5A059 !important; border-top: 4px solid #C5A059 !important; }
-.partner-tier-elite { background: #f9f6f0 !important; border-top: 4px solid #002147 !important; }
+.partner-tier-featured {
+  border: 2px solid #C5A059;
+  border-top: 5px solid #C5A059;
+  box-shadow: 0 12px 40px rgba(197, 160, 89, 0.15);
+  transform: scale(1.02);
+}
+
+.partner-tier-elite {
+  background: #f7f4ee;
+  border-top-color: #002147;
+}
+
+.partner-tier-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #C5A059;
+  color: #002147;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 5px 14px;
+}
+
+.partner-tier-badge-elite {
+  background: #002147;
+  color: #C5A059;
+}
+
+.partner-tier-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #666;
+  margin-bottom: 12px;
+  margin-top: 8px;
+}
 
 .partner-tier-price {
-  font-family: 'Playfair Display', serif !important;
-  font-size: 2rem !important;
-  font-weight: 900 !important;
-  margin: 15px 0 !important;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #002147;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.partner-tier-desc {
+  font-size: 0.85rem;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 24px;
 }
 
 .partner-tier-features {
-  list-style: none !important;
-  padding: 0 !important;
-  margin: 20px 0 !important;
-  flex-grow: 1 !important;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px;
+  flex-grow: 1;
+  text-align: left;
 }
 
 .partner-tier-features li {
-  font-size: 0.85rem !important;
-  padding: 10px 0 !important;
-  border-bottom: 1px solid #f0f0f0 !important;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+  color: #444;
+}
+
+.partner-tier-features li:last-child {
+  border-bottom: none;
+}
+
+.partner-tier-btn {
+  display: block;
+  background: transparent;
+  border: 1px solid #002147;
+  color: #002147;
+  padding: 13px 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  width: 100%;
+  margin-top: auto;
+  transition: all 0.2s ease;
+}
+
+.partner-tier-btn:hover {
+  background: #002147;
+  color: #fff;
+}
+
+.partner-tier-featured .partner-tier-btn {
+  background: #C5A059;
+  border-color: #C5A059;
+  color: #002147;
+}
+
+.partner-tier-featured .partner-tier-btn:hover {
+  background: #b08d47;
+  border-color: #b08d47;
 }
 
 /* =============================================
-   FORM STYLING - FIXING THE "NAKED" HTML
+   FORM
    ============================================= */
-.partner-proposal-container {
-  max-width: 900px !important;
-  margin: 50px auto !important;
-  background: #ffffff !important;
-  padding: 60px !important;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.1) !important;
+.partner-form-section {
+  background: #fff;
+  border-top: 1px solid #eee;
 }
 
-.partner-luxe-form {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 30px !important;
+.partner-form-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 80px 5%;
+}
+
+.partner-form-inner .partner-section-heading {
+  text-align: left;
+}
+
+.partner-form-sub {
+  font-size: 0.92rem;
+  color: #555;
+  line-height: 1.7;
+  margin: -24px 0 40px;
+}
+
+.partner-form {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
 .partner-form-row {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 20px !important;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
 }
 
 .partner-input-group {
-  display: flex !important;
-  flex-direction: column !important;
-  text-align: left !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .partner-label {
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  font-size: 0.75rem !important;
-  margin-bottom: 8px !important;
-  color: #002147 !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  color: #002147;
 }
 
-.partner-input, .partner-select, .partner-textarea {
-  padding: 15px !important;
-  border: 1px solid #E0E0E0 !important;
-  background: #FAFAFA !important;
-  font-size: 1rem !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
+.partner-input-group input,
+.partner-select,
+.partner-textarea {
+  padding: 14px 16px;
+  border: 1px solid #ddd;
+  background: #fafafa;
+  font-size: 0.95rem;
+  font-family: 'Montserrat', sans-serif;
+  color: #002147;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.2s ease;
+  border-radius: 0;
+}
+
+/* Re-added native arrow styling support for cross-browser stability */
+.partner-select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path fill='%23002147' d='M0 3l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 12px;
+  padding-right: 40px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.partner-input-group input:focus,
+.partner-select:focus,
+.partner-textarea:focus {
+  border-color: #C5A059;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(197, 160, 89, 0.08);
 }
 
 .partner-checkbox-grid {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 10px !important;
-  background: #f8f8f8 !important;
-  padding: 20px !important;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  background: #f8f8f6;
+  padding: 20px;
+  border: 1px solid #f0f0ed;
+}
+
+.partner-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.partner-checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #C5A059;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.partner-feedback {
+  padding: 14px 18px;
+  font-size: 0.87rem;
+  font-weight: 600;
+}
+
+.partner-feedback--success {
+  background: #f0f7ee;
+  color: #2a6020;
+  border-left: 4px solid #4a9e35;
+}
+
+.partner-feedback--error {
+  background: #fdf0f0;
+  color: #8b2020;
+  border-left: 4px solid #c94040;
 }
 
 .partner-submit-btn {
-  background: #C5A059 !important;
-  color: #002147 !important;
-  padding: 20px !important;
-  border: none !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 2px !important;
-  cursor: pointer !important;
+  background: #C5A059;
+  color: #002147;
+  border: none;
+  padding: 18px 36px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  align-self: flex-start;
+  transition: all 0.2s ease;
+  min-width: 240px;
 }
 
-/* Responsive Fix */
+.partner-submit-btn:hover:not(:disabled) {
+  background: #b08d47;
+  box-shadow: 0 4px 14px rgba(197, 160, 89, 0.2);
+}
+
+.partner-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =============================================
+   RESPONSIVE MEDIA QUERIES
+   ============================================= */
+@media (max-width: 960px) {
+  .partner-offer-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  
+  .partner-tier-featured {
+    transform: scale(1);
+  }
+}
+
 @media (max-width: 800px) {
-  .partner-tier-row { flex-direction: column !important; align-items: center !important; }
-  .partner-form-row { grid-template-columns: 1fr !important; }
+  .partner-audience-inner {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .partner-tier-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .partner-tier-card {
+    width: 100%;
+    max-width: 450px;
+  }
+
+  .partner-form-row {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .partner-submit-btn {
+    align-self: stretch;
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  .partner-audience-inner {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .partner-checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .partner-hero-title {
+    font-size: 2.2rem;
+  }
+  
+  .partner-section-inner {
+    padding: 60px 5%;
+  }
 }
