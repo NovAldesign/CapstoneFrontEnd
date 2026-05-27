@@ -92,7 +92,9 @@ const Partnership = () => {
 
   const handleTierSelect = (tierLabel) => {
     setFormData((prev) => ({ ...prev, tierRequested: tierLabel }));
-    document.getElementById("partner-form").scrollIntoView({ behavior: "smooth" });
+    document
+      .getElementById("partner-form")
+      .scrollIntoView({ behavior: "smooth" });
   };
 
   const handleSubmit = async (e) => {
@@ -111,10 +113,15 @@ const Partnership = () => {
       };
 
       await partnershipService.createInquiry(cleanedData);
-      setFeedback({ type: "success", message: "We received your inquiry. Expect to hear from us within 48 hours." });
+      setFeedback({
+        type: "success",
+        message:
+          "We received your inquiry. Expect to hear from us within 48 hours.",
+      });
       setFormData(defaultForm);
     } catch (err) {
-      const errorMsg = err.response?.data?.error || "Something went wrong. Please try again.";
+      const errorMsg =
+        err.response?.data?.error || "Something went wrong. Please try again.";
       setFeedback({ type: "error", message: errorMsg });
     } finally {
       setIsSubmitting(false);
@@ -131,13 +138,21 @@ const Partnership = () => {
       <header className="partner-hero">
         <div className="mission-narrative">
           <span className="location-tag">Atlanta &amp; Surrounding Cities</span>
-          <h1 className="playfair luxe-title">Partner With<br />the Collective</h1>
+          <h1 className="playfair luxe-title">
+            Partner With
+            <br />
+            the Collective
+          </h1>
           <div className="gold-spacer-bar"></div>
           <p className="narrative-lead">
-            We bring together adults 35+ who are intentional about how they spend their time, energy, and money.
+            We bring together adults 35+ who are intentional about how they
+            spend their time, energy, and money.
           </p>
           <p className="narrative-body">
-            Partner with us for a single event to see the alignment firsthand, and let's build from there. Our curated environment removes traditional corporate noise, letting your brand make lasting, high-level connections.
+            Partner with us for a single event to see the alignment firsthand,
+            and let's build from there. Our curated environment removes
+            traditional corporate noise, letting your brand make lasting,
+            high-level connections.
           </p>
         </div>
       </header>
@@ -168,30 +183,61 @@ const Partnership = () => {
       <section className="tier-showcase">
         <span className="location-tag">Partnership Levels</span>
         <h2 className="playfair section-title">Find Your Level</h2>
-        
+
         <div className="tier-grid">
           {tiers.map((tier) => (
             <div key={tier.id} className="tier-item">
               <span className="tier-label">{tier.label}</span>
               <h3 className="playfair">{tier.price}</h3>
-              <p className="narrative-body" style={{ minHeight: "60px", fontSize: "0.95rem" }}>
+              <p
+                className="narrative-body"
+                style={{ minHeight: "60px", fontSize: "0.95rem" }}
+              >
                 {tier.description}
               </p>
-              <div className="gold-spacer-bar" style={{ margin: "20px 0", width: "40px" }}></div>
-              <ul className="partner-tier-features" style={{ listStyle: "none", padding: 0, margin: "0 0 30px 0", flex: 1 }}>
+              <div
+                className="gold-spacer-bar"
+                style={{ margin: "20px 0", width: "40px" }}
+              ></div>
+              <ul
+                className="partner-tier-features"
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  margin: "0 0 30px 0",
+                  flex: 1,
+                }}
+              >
                 {tier.features.map((feature, idx) => (
-                  <li key={idx} style={{ fontSize: "0.85rem", padding: "8px 0", borderBottom: "1px solid #eee", color: "#666" }}>
+                  <li
+                    key={idx}
+                    style={{
+                      fontSize: "0.85rem",
+                      padding: "8px 0",
+                      borderBottom: "1px solid #eee",
+                      color: "#666",
+                    }}
+                  >
                     {feature}
                   </li>
                 ))}
               </ul>
               <button
                 className="gold-submit-btn"
-                style={{ width: "100%", marginTop: "auto", padding: "15px", fontSize: "0.75rem" }}
+                style={{
+                  width: "100%",
+                  marginTop: "auto",
+                  padding: "15px",
+                  fontSize: "0.75rem",
+                }}
                 onClick={() => handleTierSelect(tier.label)}
                 type="button"
               >
-                {tier.elite ? "Inquire" : tier.featured ? "Select" : "Get Started"}
+                {tier.elite
+                  ? "Inquire"
+                  : tier.featured
+                    ? "Select"
+                    : "Get Started"}
               </button>
             </div>
           ))}
@@ -201,9 +247,15 @@ const Partnership = () => {
       {/* FORM SECTION */}
       <section className="proposal-container" id="partner-form">
         <span className="form-intro">Get Started</span>
-        <h2 className="playfair narrative-lead" style={{ marginTop: "10px" }}>Let's Connect</h2>
-        <p className="narrative-body" style={{ textAlign: "center", marginBottom: "40px" }}>
-          Tell us a bit about your brand. We'll find the right event format to pilot our partnership and follow up within 48 hours.
+        <h2 className="playfair narrative-lead" style={{ marginTop: "10px" }}>
+          Let's Connect
+        </h2>
+        <p
+          className="narrative-body"
+          style={{ textAlign: "center", marginBottom: "40px" }}
+        >
+          Tell us a bit about your brand. We'll find the right event format to
+          pilot our partnership and follow up within 48 hours.
         </p>
 
         <form onSubmit={handleSubmit} className="luxe-form">
@@ -269,52 +321,84 @@ const Partnership = () => {
             >
               <option value="">Select a level...</option>
               {tiers.map((t) => (
-                <option key={t.id} value={t.label}>{t.label} — {t.price}</option>
+                <option key={t.id} value={t.label}>
+                  {t.label} — {t.price}
+                </option>
               ))}
               <option value="Not sure">Not sure yet / Want to customize</option>
             </select>
           </div>
 
-          {/* Clean Decoupled CSS Grid Layout Blocks */}
+          {/* Clean, Uniform Grid Blocks */}
           <div className="input-group">
-            <label style={{ marginBottom: "15px", display: "block" }}>
-              Sponsorship Opportunities
+            <label
+              style={{
+                marginBottom: "15px",
+                display: "block",
+                letterSpacing: "0.05em",
+                fontWeight: "600",
+              }}
+            >
+              SPONSORSHIP OPPORTUNITIES
             </label>
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-              gap: "16px",
-              padding: "24px",
-              background: "#fcfbfa",
-              border: "1px solid #e2e2e2",
-              borderRadius: "4px"
-            }}>
+            <div
+              style={{
+                display: "grid",
+                // Creates a strictly balanced 2-column grid layout on desktop, collapses elegantly on mobile
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: "20px 30px", // Generous spacing between rows and columns
+                padding: "24px",
+                background: "#fcfbfa",
+                border: "1px solid #e2e2e2",
+                borderRadius: "4px",
+              }}
+            >
               {eventOptions.map((event) => {
-                const inputId = `event-${event.replace(/\s+/g, '-').toLowerCase()}`;
+                const inputId = `event-${event.replace(/\s+/g, "-").toLowerCase()}`;
                 return (
-                  <div key={event} style={{ display: "flex", alignItems: "flex-start", gap: "12px", cursor: "pointer" }}>
-                    <input
-                      type="checkbox"
-                      id={inputId}
-                      value={event}
-                      checked={formData.eventsInterested.includes(event)}
-                      onChange={handleCheckbox}
-                      style={{ 
-                        accentColor: "var(--gold)",
-                        width: "18px",
-                        height: "18px",
-                        marginTop: "2px",
-                        cursor: "pointer"
+                  <div
+                    key={event}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: "14px",
+                    }}
+                  >
+                    {/* Wrapper to force the checkbox to always keep a perfect, uniform square shape */}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        minWidth: "18px",
+                        height: "20px",
                       }}
-                    />
-                    <label 
+                    >
+                      <input
+                        type="checkbox"
+                        id={inputId}
+                        value={event}
+                        checked={formData.eventsInterested.includes(event)}
+                        onChange={handleCheckbox}
+                        style={{
+                          accentColor: "var(--gold)",
+                          width: "18px",
+                          height: "18px",
+                          margin: 0,
+                          cursor: "pointer",
+                        }}
+                      />
+                    </div>
+                    <label
                       htmlFor={inputId}
-                      style={{ 
-                        fontSize: "0.9rem", 
+                      style={{
+                        fontSize: "0.85rem",
                         lineHeight: "1.4",
-                        color: "#1a1a1a",
+                        color: "var(--navy)", // Kept uniform with your brand styles
+                        fontWeight: "600",
+                        letterSpacing: "0.03em",
                         cursor: "pointer",
-                        userSelect: "none"
+                        userSelect: "none",
+                        textTransform: "uppercase", // Matches your current screenshot aesthetic
                       }}
                     >
                       {event}
@@ -326,7 +410,9 @@ const Partnership = () => {
           </div>
 
           <div className="input-group">
-            <label htmlFor="hostingInterest">Interested in hosting or co-creating an experience?</label>
+            <label htmlFor="hostingInterest">
+              Interested in hosting or co-creating an experience?
+            </label>
             <select
               id="hostingInterest"
               name="hostingInterest"
@@ -334,14 +420,22 @@ const Partnership = () => {
               onChange={handleChange}
             >
               <option value="">Select...</option>
-              <option value="Yes - Pilot first event">Yes — Let's pitch a custom concept for our initial pilot event</option>
-              <option value="Maybe">Maybe — Tell me more about co-branded experiences</option>
-              <option value="No">No — Standard brand placement / space sponsorship only</option>
+              <option value="Yes - Pilot first event">
+                Yes — Let's pitch a custom concept for our initial pilot event
+              </option>
+              <option value="Maybe">
+                Maybe — Tell me more about co-branded experiences
+              </option>
+              <option value="No">
+                No — Standard brand placement / space sponsorship only
+              </option>
             </select>
           </div>
 
           <div className="input-group">
-            <label htmlFor="details">Anything else we should know about your brand timeline?</label>
+            <label htmlFor="details">
+              Anything else we should know about your brand timeline?
+            </label>
             <textarea
               id="details"
               name="details"
@@ -353,20 +447,26 @@ const Partnership = () => {
           </div>
 
           {feedback && (
-            <div style={{
-              padding: "15px",
-              textAlign: "center",
-              fontSize: "0.9rem",
-              fontWeight: "600",
-              color: feedback.type === "success" ? "var(--gold)" : "#d9534f",
-              background: feedback.type === "success" ? "#fbf9f5" : "#fdf2f2",
-              border: `1px solid ${feedback.type === "success" ? "var(--gold)" : "#d9534f"}`
-            }}>
+            <div
+              style={{
+                padding: "15px",
+                textAlign: "center",
+                fontSize: "0.9rem",
+                fontWeight: "600",
+                color: feedback.type === "success" ? "var(--gold)" : "#d9534f",
+                background: feedback.type === "success" ? "#fbf9f5" : "#fdf2f2",
+                border: `1px solid ${feedback.type === "success" ? "var(--gold)" : "#d9534f"}`,
+              }}
+            >
               {feedback.message}
             </div>
           )}
 
-          <button type="submit" className="gold-submit-btn" disabled={isSubmitting}>
+          <button
+            type="submit"
+            className="gold-submit-btn"
+            disabled={isSubmitting}
+          >
             {isSubmitting ? "Sending..." : "Send Partnership Inquiry"}
           </button>
         </form>
