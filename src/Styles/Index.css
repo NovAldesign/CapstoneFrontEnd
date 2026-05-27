@@ -1,4 +1,19 @@
-/* 1. Global Reset & Layout */
+/* ==========================================================================
+   1. GLOBAL SYSTEM VARIABLES (Tokens aligned across Home, Membership & Forms)
+   ========================================================================== */
+:root {
+  --navy: #002147;
+  --gold: #C5A059;         /* Core editorial brand gold */
+  --gold-accent: #b8972a;  /* Accent high-contrast form gold */
+  --cream: #FDFBFA;
+  --white: #FFFFFF;
+  --gray-light: #FAFAFA;
+  --border-muted: #E0E0E0;
+}
+
+/* ==========================================================================
+   2. GLOBAL RESET & BASE LAYOUT
+   ========================================================================== */
 * {
   margin: 0;
   padding: 0;
@@ -20,13 +35,15 @@ html, body {
   width: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* Prevents horizontal scrolling on mobile */
-  background-color: #fcfcfc;
+  overflow-x: hidden; /* Prevents horizontal scrolling on mobile layout bounds */
+  background-color: var(--cream);
   font-family: 'Montserrat', sans-serif;
+  color: var(--navy);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* 2. The Root Container */
+/* The Root Application Viewport Container */
 #root {
   display: flex;
   flex-direction: column;
@@ -34,9 +51,25 @@ html, body {
   width: 100%;
 }
 
-/* 2. THE FAMILY NARRATIVE SECTION */
+/* ==========================================================================
+   3. BRAND TYPOGRAPHY CODES (Forces thickness & scaling symmetry)
+   ========================================================================== */
+.playfair {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900; /* Mirrors the extreme bold thickness seen on hero assets */
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ==========================================================================
+   4. THE FAMILY NARRATIVE LOGISTICS SECTION
+   ========================================================================== */
 .family-narrative-section {
-  padding: 80px 0; /* Vertical space above and below the section */
+  padding: 80px 0;
   background-color: var(--white);
   width: 100%;
 }
@@ -44,7 +77,7 @@ html, body {
 .family-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px; /* Space between the image and the text */
+  gap: 60px;
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
@@ -59,10 +92,10 @@ html, body {
   display: block;
 }
 
-/* Mobile Fix for this section */
+/* Mobile Layout Breakdown */
 @media (max-width: 1024px) {
   .family-grid {
-    grid-template-columns: 1fr; /* Stacks image on top of text */
+    grid-template-columns: 1fr; /* Stacks image asset above editorial text block */
     text-align: center;
     gap: 40px;
   }
@@ -72,7 +105,9 @@ html, body {
   }
 }
 
-/* 4. Navbar & Navigation Elements */
+/* ==========================================================================
+   5. NAVIGATION COMPONENT HOOKS
+   ========================================================================== */
 .nav-right-section {
   display: flex;
   align-items: center;
@@ -86,8 +121,8 @@ html, body {
 }
 
 .logout-btn, .logout-link {
-  color: #002147 !important;
-  background-color: #D4AF37 !important;
+  color: var(--navy) !important;
+  background-color: var(--gold) !important;
   font-weight: 700;
   text-transform: uppercase;
   font-size: 0.85rem;
@@ -96,6 +131,12 @@ html, body {
   border: none;
   cursor: pointer;
   white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.logout-btn:hover, .logout-link:hover {
+  background-color: var(--navy) !important;
+  color: var(--white) !important;
 }
 
 @media (max-width: 480px) {
@@ -105,10 +146,12 @@ html, body {
   }
 }
 
-/* 5. Admin Dashboard Button Logic */
+/* ==========================================================================
+   6. INTERACTIVE INTERFACE ACTIONS (Buttons & Interactive Panels)
+   ========================================================================== */
 .remove-btn {
-  background-color: #002147 !important;
-  color: #ffffff !important;
+  background-color: var(--navy) !important;
+  color: var(--white) !important;
   border: none !important;
   padding: 8px 18px;
   font-weight: 600;
@@ -119,36 +162,35 @@ html, body {
 }
 
 .remove-btn:hover {
-  background-color: #D4AF37 !important;
-  color: #002147 !important;
+  background-color: var(--gold) !important;
+  color: var(--navy) !important;
 }
 
 .waitlist-btn {
-  background-color: #002147 !important;
-  color: #D4AF37 !important;
-  border: 1px solid #D4AF37 !important;
+  background-color: var(--navy) !important;
+  color: var(--gold) !important;
+  border: 1px solid var(--gold) !important;
   padding: 12px 24px;
   font-weight: 800;
   text-transform: uppercase;
   width: 100%;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* 6. Typography & Hero Elements */
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+.waitlist-btn:hover {
+  background-color: var(--gold) !important;
+  color: var(--navy) !important;
 }
 
 .events-header h1 {
-  color: #002147;
+  color: var(--navy);
   margin-bottom: 20px;
 }
 
 .hero-button {
-  background-color: #D4AF37 !important;
-  color: #002147 !important;
+  background-color: var(--gold) !important;
+  color: var(--navy) !important;
   border: none;
   padding: 15px 30px;
   font-weight: bold;
@@ -157,6 +199,12 @@ img {
   text-transform: uppercase;
   display: inline-block;
   text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.hero-button:hover {
+  background-color: var(--navy) !important;
+  color: var(--white) !important;
 }
 
 @media (max-width: 480px) {
