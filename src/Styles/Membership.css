@@ -640,3 +640,124 @@
     padding: 18px;
   }
 }
+/* =============================================
+   MEMBERSHIP SUCCESS & CANCELLED SCREENS
+   Add these to the bottom of Membership.css
+   ============================================= */
+
+.membership-page .ms-screen {
+  min-height: 100vh;
+  background-color: #002147;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+}
+
+.membership-page .ms-inner {
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+}
+
+.membership-page .ms-icon {
+  margin-bottom: 32px;
+}
+
+.membership-page .ms-eyebrow {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #C5A059;
+  margin-bottom: 16px;
+}
+
+.membership-page .ms-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 8vw, 4.5rem);
+  font-weight: 900;
+  color: #FFFFFF;
+  line-height: 1;
+  margin: 0 0 24px;
+}
+
+.membership-page .ms-divider {
+  width: 48px;
+  height: 1px;
+  background: #C5A059;
+  margin: 0 auto 28px;
+}
+
+.membership-page .ms-body {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 300;
+  margin-bottom: 36px;
+}
+
+.membership-page .ms-ref {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 36px;
+  padding: 18px;
+  border: 1px solid rgba(197, 160, 89, 0.2);
+}
+
+.membership-page .ms-ref-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 700;
+}
+
+.membership-page .ms-ref-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: #C5A059;
+  letter-spacing: 0.1em;
+}
+
+.membership-page .ms-btn {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.membership-page .ms-ghost-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  color: rgba(255, 255, 255, 0.5);
+  padding: 18px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: border-color 0.25s, color 0.25s;
+}
+
+.membership-page .ms-ghost-btn:hover {
+  border-color: #C5A059;
+  color: #C5A059;
+}
+
+.membership-page .ms-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.membership-page .ms-countdown {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.25);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 20px;
+}
