@@ -73,8 +73,6 @@ const Membership = () => {
       if (cachedData) {
         try {
           const parsed = JSON.parse(cachedData);
-          
-          // Rehydrate state with cached values seamlessly
           setFormData({
             firstName: parsed.firstName || '',
             lastName: parsed.lastName || '',
@@ -87,8 +85,6 @@ const Membership = () => {
               isolationBarrier: parsed.connectionGoals?.isolationBarrier || '',
             },
           });
-          
-          // Clear the storage immediately to prevent stale initialization loops
           localStorage.removeItem('gfc_form_cache');
         } catch (err) {
           console.error('Error parsing cached form data:', err);
@@ -124,6 +120,14 @@ const Membership = () => {
     }, 150);
   };
 
+  // Helper to scroll smoothly directly to the card selector section instead of top of page
+  const scrollToTierSelector = () => {
+    const selectorSection = document.querySelector('.tier-selector-section');
+    if (selectorSection) {
+      selectorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -131,19 +135,15 @@ const Membership = () => {
    
     try {
       const submissionData = { ...formData };
-      
-      // Cache values into local storage right before reaching out to the third party endpoint
       localStorage.setItem('gfc_form_cache', JSON.stringify(submissionData));
 
       const response = await membershipService.createMembership(submissionData);
    
-      // Redirect to Stripe Checkout
       if (response.checkoutUrl) {
         window.location.href = response.checkoutUrl;
         return;
       }
    
-      // Fallback if no checkout URL returned (Wipe cache since creation completed natively)
       localStorage.removeItem('gfc_form_cache');
       setFeedback({
         type: 'success',
@@ -156,7 +156,7 @@ const Membership = () => {
       const errorMsg =
         err.response?.data?.error ||
         'Submission error. Please check your details and try again.';
-      setFeedback({ type: 'error', message: errorMsg });
+      setFeedback({ type: 'error', message: message });
     } finally {
       setIsSubmitting(false);
     }
@@ -252,7 +252,7 @@ const Membership = () => {
           <h2 className="section-header-font">Request Membership</h2>
           <p className="form-intro-font">Let's start the conversation.</p>
 
-          {/* Selected tier display */}
+          {/* Selected tier display (Optimized to scroll only to selector segment) */}
           <div className="selected-tier-display">
             <div>
               <div className="tier-display-label">Selected Tier</div>
@@ -264,13 +264,64 @@ const Membership = () => {
             <button
               type="button"
               className="tier-change-link"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              onClick={scrollToTierSelector}
             >
-              Change &uarr;
+              Compare Tiers &uarr;
             </button>
           </div>
 
           <form onSubmit={handleSubmit} className="luxe-form" noValidate>
+
+            {/* Inline Tier Selector Switch Button Row */}
+            <div className="form-row">
+              <div className="input-group">
+                <label className="label-font">Membership Level</label>
+                <div className="tier-toggle-container" style={{ display: 'flex', gap: '10px', marginTop: '5px' }}>
+                  <button
+                    type="button"
+                    className={`toggle-btn ${formData.tier === 'Social' ? 'active-toggle' : 'inactive-toggle'}`}
+                    onClick={() => setFormData(prev => ({ ...prev, tier: 'Social' }))}
+                    style={{
+                      flex: 1,
+                      padding: '12px',
+                      fontFamily: 'inherit',
+                      fontSize: '0.9rem',
+                      fontWeight: '600',
+                      letterSpacing: '1px',
+                      textTransform: 'uppercase',
+                      cursor: 'pointer',
+                      border: formData.tier === 'Social' ? '2px solid #C5A059' : '1px solid #ddd',
+                      backgroundColor: formData.tier === 'Social' ? '#002147' : '#fff',
+                      color: formData.tier === 'Social' ? '#fff' : '#002147',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    Social Pass ($39/mo)
+                  </button>
+                  <button
+                    type="button"
+                    className={`toggle-btn ${formData.tier === 'Founding' ? 'active-toggle' : 'inactive-toggle'}`}
+                    onClick={() => setFormData(prev => ({ ...prev, tier: 'Founding' }))}
+                    style={{
+                      flex: 1,
+                      padding: '12px',
+                      fontFamily: 'inherit',
+                      fontSize: '0.9rem',
+                      fontWeight: '600',
+                      letterSpacing: '1px',
+                      textTransform: 'uppercase',
+                      cursor: 'pointer',
+                      border: formData.tier === 'Founding' ? '2px solid #C5A059' : '1px solid #ddd',
+                      backgroundColor: formData.tier === 'Founding' ? '#002147' : '#fff',
+                      color: formData.tier === 'Founding' ? '#fff' : '#002147',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    Founding Member ($69/mo)
+                  </button>
+                </div>
+              </div>
+            </div>
 
             {/* Identity */}
             <div className="form-row">
