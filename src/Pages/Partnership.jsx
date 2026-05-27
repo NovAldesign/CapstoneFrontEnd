@@ -49,12 +49,12 @@ const tiers = [
 ];
 
 const eventOptions = [
-  "Intentional Dinners",
-  "Golf Simulations",
-  "Luxury Bingo",
-  "Game Nights / Spades",
+  "Intentional Conversations Over Dinner / Mocktails",
+  "Golf Simulations / Bowling",
+  "R&B Bingo",
+  "Game Nights / Spades Tournament",
   "Group Travel / Retreats",
-  "Social Mixers",
+  "Cookout / Field Day",
 ];
 
 const defaultForm = {
