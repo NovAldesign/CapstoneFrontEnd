@@ -90,8 +90,8 @@ const Partnership = () => {
     }));
   };
 
-  const handleTierSelect = (tierId) => {
-    setFormData((prev) => ({ ...prev, tierRequested: tierId }));
+  const handleTierSelect = (tierLabel) => {
+    setFormData((prev) => ({ ...prev, tierRequested: tierLabel }));
     document.getElementById("partner-form").scrollIntoView({ behavior: "smooth" });
   };
 
@@ -100,7 +100,17 @@ const Partnership = () => {
     setFeedback(null);
     setIsSubmitting(true);
     try {
-      await partnershipService.createInquiry(formData);
+      // Create copy and apply safe formatting trims
+      const cleanedData = {
+        ...formData,
+        companyName: formData.companyName.trim(),
+        contactPerson: formData.contactPerson.trim(),
+        email: formData.email.trim().toLowerCase(),
+        phone: formData.phone.trim(),
+        details: formData.details.trim(),
+      };
+
+      await partnershipService.createInquiry(cleanedData);
       setFeedback({ type: "success", message: "We received your inquiry. Expect to hear from us within 48 hours." });
       setFormData(defaultForm);
     } catch (err) {
@@ -265,28 +275,53 @@ const Partnership = () => {
             </select>
           </div>
 
+          {/* Clean Decoupled CSS Grid Layout Blocks */}
           <div className="input-group">
-            <label style={{ marginBottom: "15px" }}>Sponsorship Opportunities</label>
+            <label style={{ marginBottom: "15px", display: "block" }}>
+              Sponsorship Opportunities
+            </label>
             <div style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-              gap: "15px",
-              padding: "20px",
+              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+              gap: "16px",
+              padding: "24px",
               background: "#fcfbfa",
-              border: "1px solid #eee"
+              border: "1px solid #e2e2e2",
+              borderRadius: "4px"
             }}>
-              {eventOptions.map((event) => (
-                <label key={event} style={{ display: "flex", alignItems: "right", gap: "6px", fontSize: "0.85rem", cursor: "pointer" }}>
-                  <input
-                    type="checkbox"
-                    value={event}
-                    checked={formData.eventsInterested.includes(event)}
-                    onChange={handleCheckbox}
-                    style={{ accentColor: "var(--gold)" }}
-                  />
-                  <span>{event}</span>
-                </label>
-              ))}
+              {eventOptions.map((event) => {
+                const inputId = `event-${event.replace(/\s+/g, '-').toLowerCase()}`;
+                return (
+                  <div key={event} style={{ display: "flex", alignItems: "flex-start", gap: "12px", cursor: "pointer" }}>
+                    <input
+                      type="checkbox"
+                      id={inputId}
+                      value={event}
+                      checked={formData.eventsInterested.includes(event)}
+                      onChange={handleCheckbox}
+                      style={{ 
+                        accentColor: "var(--gold)",
+                        width: "18px",
+                        height: "18px",
+                        marginTop: "2px",
+                        cursor: "pointer"
+                      }}
+                    />
+                    <label 
+                      htmlFor={inputId}
+                      style={{ 
+                        fontSize: "0.9rem", 
+                        lineHeight: "1.4",
+                        color: "#1a1a1a",
+                        cursor: "pointer",
+                        userSelect: "none"
+                      }}
+                    >
+                      {event}
+                    </label>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
