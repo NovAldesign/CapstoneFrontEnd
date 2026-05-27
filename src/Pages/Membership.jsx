@@ -13,11 +13,11 @@ const TIERS = [
     badge: null,
     featured: false,
     features: [
-      '1 Game Night ticket per month ($20 value)',
-      'Priority booking 24 hrs before public sale',
-      'Discounted tickets on Wind Down & Cookout events ($40 instead of $50)',
-      'Access to private member community',
-      'Choose 1 card deck at month 3 — GFC Playing Cards or Intentional Conversation Cards',
+      'Your Game Night ticket covered every month — that\'s $20 back immediately',
+      'Priority access 24 hrs before the public — you never miss out',
+      '$10 off every Wind Down Wednesday and Cookout ticket',
+      'Private member community — connections that extend beyond the events',
+      'At month 3, choose your GFC card deck: Playing Cards or Conversation Cards',
     ],
   },
   {
@@ -29,12 +29,12 @@ const TIERS = [
     featured: true,
     features: [
       'Everything in Social Pass',
-      '1 free Guest Pass per month — bring anyone to any event',
-      '48-hr priority booking (longer window than Social Pass)',
-      '1 free Wind Down Wednesday or Cookout ticket per quarter',
-      '50% off the GFC Wooden Box upgrade at month 3',
-      'Choose 1 card deck at month 3 — GFC Playing Cards or Intentional Conversation Cards',
-      'Founding Member status locked for life',
+      'Bring a guest to any event free — every single month',
+      '48-hr priority booking — first access before anyone else',
+      'One free Wind Down Wednesday or Cookout ticket per quarter',
+      '50% off the GFC Wooden Box at month 3',
+      'At month 3, choose your GFC card deck: Playing Cards or Conversation Cards',
+      'Founding Member rate and status locked in for life',
     ],
   },
 ];
@@ -196,7 +196,7 @@ const Membership = () => {
 
         <div className="founding-note">
           <p>
-            <strong>Founding Member offer:</strong> Only 40 Founding Member spots available.
+            <strong>Founding Member offer:</strong> Only 40 spots available.
             Once filled, this tier closes permanently. Members lock in their rate for life.
           </p>
         </div>

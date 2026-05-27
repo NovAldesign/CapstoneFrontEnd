@@ -34,8 +34,6 @@
   padding-left: 5%;
 }
 
-/* FIXED: increased max-width so title has room to sit on two lines
-   "THE" on line 1, "COLLECTIVE" on line 2 — no mid-word breaks */
 .membership-page .hero-content-right {
   max-width: 900px;
   margin-left: auto;
@@ -55,10 +53,6 @@
   text-align: right;
 }
 
-/* FIXED: clamp max reduced from 7.5rem to 6rem so "COLLECTIVE"
-   fits on one line within the container.
-   overflow-wrap: normal + word-break: normal prevents
-   mid-word breaks — the title will only break at the space. */
 .membership-page .luxe-title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(3rem, 8vw, 6rem);
@@ -145,12 +139,14 @@
   margin-bottom: 60px;
 }
 
+/* ── 2-tier centered grid ── */
 .membership-page .tier-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  max-width: 960px;
+  grid-template-columns: repeat(2, minmax(0, 380px));
+  gap: 36px;
+  max-width: 820px;
   margin: 0 auto;
+  justify-content: center;
 }
 
 .membership-page .tier-card,
@@ -168,8 +164,8 @@
   padding: 48px 28px;
   position: relative;
   cursor: pointer;
-  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
-  background: rgba(255, 255, 255, 0.03);
+  transition: border-color 0.3s ease, transform 0.3s ease;
+  background: transparent;
 }
 
 .membership-page .tier-card:focus-visible {
@@ -179,13 +175,13 @@
 
 .membership-page .tier-card:hover {
   border-color: #C5A059;
-  background: rgba(197, 160, 89, 0.05);
+  background: transparent;
   transform: translateY(-6px);
 }
 
 .membership-page .tier-card.active {
   border: 2px solid #C5A059;
-  background: rgba(197, 160, 89, 0.08);
+  background: transparent;
   transform: translateY(-4px);
 }
 
@@ -375,6 +371,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  margin-bottom: 36px;
   transition: all 0.3s ease;
 }
 
@@ -482,144 +479,6 @@
   background-position: right 16px center;
   padding-right: 42px;
   cursor: pointer;
-}
-
-/* =============================================
-   PASSWORD TOGGLE
-   ============================================= */
-.membership-page .password-input-container {
-  position: relative;
-  width: 100%;
-}
-
-.membership-page .password-input-container input {
-  width: 100%;
-  padding-right: 72px;
-}
-
-.membership-page .password-toggle-text {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #C5A059;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  cursor: pointer;
-  z-index: 5;
-  padding: 0;
-  line-height: 1;
-  outline: none;
-  transition: color 0.2s;
-}
-
-.membership-page .password-toggle-text:hover {
-  color: #002147;
-}
-
-/* =============================================
-   SLIDER
-   ============================================= */
-.membership-page .slider-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.membership-page .slider-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #888;
-  font-weight: 600;
-}
-
-.membership-page .slider-value {
-  text-align: center;
-  font-family: 'Playfair Display', serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #C5A059;
-  line-height: 1;
-}
-
-.membership-page input[type='range'] {
-  appearance: none;
-  width: 100%;
-  height: 2px;
-  background: #E0E0E0;
-  outline: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-.membership-page input[type='range']::-webkit-slider-thumb {
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  background: #002147;
-  border: 2px solid #C5A059;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.membership-page input[type='range']::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  background: #002147;
-  border: 2px solid #C5A059;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-/* =============================================
-   CHECKBOX
-   ============================================= */
-.membership-page .checkbox-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin: 8px 0;
-}
-
-.membership-page .checkbox-row input[type='checkbox'] {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #C5A059;
-  appearance: none;
-  background: #FAFAFA;
-  cursor: pointer;
-  position: relative;
-  flex-shrink: 0;
-  padding: 0;
-  border-radius: 0;
-  outline: none;
-}
-
-.membership-page .checkbox-row input[type='checkbox']:checked {
-  background: #002147;
-  border-color: #002147;
-}
-
-.membership-page .checkbox-row input[type='checkbox']:checked::after {
-  content: '';
-  position: absolute;
-  left: 4px;
-  top: 1px;
-  width: 6px;
-  height: 10px;
-  border: 2px solid #C5A059;
-  border-top: none;
-  border-left: none;
-  transform: rotate(45deg);
 }
 
 /* =============================================
