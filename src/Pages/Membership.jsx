@@ -132,9 +132,32 @@ const Membership = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setFeedback(null);
+
+    // ── CLIENT-SIDE VALIDATION SAFETY OVERRIDE ──
+    if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.dob) {
+      setFeedback({
+        type: 'error',
+        message: 'All application fields (Name, Email, Phone, and Date of Birth) are required to join the Collective.',
+      });
+      setIsSubmitting(false);
+      return;
+    }
    
     try {
-      const submissionData = { ...formData };
+      // Explicitly layout the submission model structure
+      const submissionData = {
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        dob: formData.dob,
+        tier: formData.tier,
+        connectionGoals: {
+          primaryInterest: formData.connectionGoals.primaryInterest,
+          isolationBarrier: formData.connectionGoals.isolationBarrier,
+        }
+      };
+
       localStorage.setItem('gfc_form_cache', JSON.stringify(submissionData));
 
       const response = await membershipService.createMembership(submissionData);
@@ -157,7 +180,6 @@ const Membership = () => {
         err.response?.data?.error ||
         'Submission error. Please check your details and try again.';
       
-      // ✓ FIXED: Changed 'message: message' to 'message: errorMsg' to stop app crash
       setFeedback({ type: 'error', message: errorMsg });
     } finally {
       setIsSubmitting(false);
