@@ -266,7 +266,7 @@ const Partnership = () => {
           </div>
 
           <div className="input-group">
-            <label style={{ marginBottom: "15px" }}>Events You're Interested In Auditioning</label>
+            <label style={{ marginBottom: "15px" }}>Sponsorship Opportunities</label>
             <div style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
@@ -276,7 +276,7 @@ const Partnership = () => {
               border: "1px solid #eee"
             }}>
               {eventOptions.map((event) => (
-                <label key={event} style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.85rem", cursor: "pointer" }}>
+                <label key={event} style={{ display: "flex", alignItems: "right", gap: "6px", fontSize: "0.85rem", cursor: "pointer" }}>
                   <input
                     type="checkbox"
                     value={event}
