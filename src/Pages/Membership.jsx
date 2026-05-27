@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import '../Styles/Membership.css';
@@ -63,6 +63,40 @@ const Membership = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState(null);
 
+  // ── STRIPE CANCELLATION RESTORE SYSTEM ──
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isCancelled = urlParams.get('cancelled');
+
+    if (isCancelled) {
+      const cachedData = localStorage.getItem('gfc_form_cache');
+      if (cachedData) {
+        try {
+          const parsed = JSON.parse(cachedData);
+          
+          // Rehydrate state with cached values seamlessly
+          setFormData({
+            firstName: parsed.firstName || '',
+            lastName: parsed.lastName || '',
+            email: parsed.email || '',
+            phone: parsed.phone || '',
+            dob: parsed.dob || '',
+            tier: parsed.tier || 'Founding',
+            connectionGoals: {
+              primaryInterest: parsed.connectionGoals?.primaryInterest || 'Meet New People',
+              isolationBarrier: parsed.connectionGoals?.isolationBarrier || '',
+            },
+          });
+          
+          // Clear the storage immediately to prevent stale initialization loops
+          localStorage.removeItem('gfc_form_cache');
+        } catch (err) {
+          console.error('Error parsing cached form data:', err);
+        }
+      }
+    }
+  }, []);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const val = type === 'checkbox' ? checked : value;
@@ -91,37 +125,42 @@ const Membership = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setIsSubmitting(true);
-  setFeedback(null);
- 
-  try {
-    const submissionData = { ...formData };
-    const response = await membershipService.createMembership(submissionData);
- 
-    // Redirect to Stripe Checkout
-    if (response.checkoutUrl) {
-      window.location.href = response.checkoutUrl;
-      return;
+    e.preventDefault();
+    setIsSubmitting(true);
+    setFeedback(null);
+   
+    try {
+      const submissionData = { ...formData };
+      
+      // Cache values into local storage right before reaching out to the third party endpoint
+      localStorage.setItem('gfc_form_cache', JSON.stringify(submissionData));
+
+      const response = await membershipService.createMembership(submissionData);
+   
+      // Redirect to Stripe Checkout
+      if (response.checkoutUrl) {
+        window.location.href = response.checkoutUrl;
+        return;
+      }
+   
+      // Fallback if no checkout URL returned (Wipe cache since creation completed natively)
+      localStorage.removeItem('gfc_form_cache');
+      setFeedback({
+        type: 'success',
+        message: 'Application received. Your journey with the Collective begins now.',
+      });
+      setTimeout(() => navigate('/'), 2800);
+   
+    } catch (err) {
+      console.error('Submission Error:', err.response?.data);
+      const errorMsg =
+        err.response?.data?.error ||
+        'Submission error. Please check your details and try again.';
+      setFeedback({ type: 'error', message: errorMsg });
+    } finally {
+      setIsSubmitting(false);
     }
- 
-    // Fallback if no checkout URL returned
-    setFeedback({
-      type: 'success',
-      message: 'Application received. Your journey with the Collective begins now.',
-    });
-    setTimeout(() => navigate('/'), 2800);
- 
-  } catch (err) {
-    console.error('Submission Error:', err.response?.data);
-    const errorMsg =
-      err.response?.data?.error ||
-      'Submission error. Please check your details and try again.';
-    setFeedback({ type: 'error', message: errorMsg });
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+  };
 
   const selectedTier = TIERS.find(t => t.id === formData.tier);
 
