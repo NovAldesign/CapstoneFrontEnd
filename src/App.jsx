@@ -19,6 +19,7 @@ import Login from "./Pages/Login.jsx";
 import AdminDashboard from "./Pages/AdminDashboard.jsx";
 import CheckoutPage from "./Pages/CheckoutPage.jsx";
 import SuccessPage from "./Pages/SuccessPage.jsx";
+import MembershipSuccess from "./Pages/MembershipSuccess.jsx"; // 🔥 IMPORTED: Your custom success page
 
 // --- Styles ---
 import "./Styles/App.css";
@@ -36,6 +37,10 @@ function App() {
           <Route path="/travel" element={<Travel />} />
           <Route path="/ic-dinners" element={<IntentionalDinners />} />
           <Route path="/membership" element={<Membership />} />
+          
+          {/* 🔥 CONNECTED: Maps Stripe's success redirect cleanly to your new page */}
+          <Route path="/membership/success" element={<MembershipSuccess />} />
+          
           <Route path="/partnerships" element={<Partnerships />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
