@@ -448,7 +448,7 @@ const About = () => {
                 We didn't start with a business plan. We started with a game night in a small Decatur restaurant and 36 people who showed up because they were tired of sitting at home. It sold out. Then we did it again. Sold out again.
               </p>
               <p className="about-body">
-                Through word of mouth and absolute necessity, we built a community of over 1,500 people — with zero advertising, zero paid promotion, and zero compromise on our values. Our guests drive from Monroe, Smyrna, Fayetteville, Lawrenceville, and Douglasville to be in our room on a Saturday night. Not because there's nothing else to do. Because this is the only room built for them.
+                Through word of mouth and absolute necessity, we built a community of over 1,600 people — with zero advertising, zero paid promotion, and zero compromise on our values. Our guests drive from Monroe, Smyrna, Fayetteville, Lawrenceville, and Douglasville to be in our room on a Saturday night. Not because there's nothing else to do. Because this is the only room built for them.
               </p>
             </div>
           </div>
