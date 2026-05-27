@@ -139,7 +139,7 @@ const Membership = () => {
 
       const response = await membershipService.createMembership(submissionData);
    
-      if (response.checkoutUrl) {
+      if (response && response.checkoutUrl) {
         window.location.href = response.checkoutUrl;
         return;
       }
@@ -156,7 +156,9 @@ const Membership = () => {
       const errorMsg =
         err.response?.data?.error ||
         'Submission error. Please check your details and try again.';
-      setFeedback({ type: 'error', message: message });
+      
+      // ✓ FIXED: Changed 'message: message' to 'message: errorMsg' to stop app crash
+      setFeedback({ type: 'error', message: errorMsg });
     } finally {
       setIsSubmitting(false);
     }
