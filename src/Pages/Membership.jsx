@@ -91,32 +91,37 @@ const Membership = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setFeedback(null);
-
-    try {
-      const submissionData = { ...formData };
-
-      await membershipService.createMembership(submissionData);
-
-      setFeedback({
-        type: 'success',
-        message: 'Application received. Your journey with the Collective begins now.',
-      });
-
-      setTimeout(() => navigate('/login'), 2800);
-
-    } catch (err) {
-      console.error('Submission Error:', err.response?.data);
-      const errorMsg =
-        err.response?.data?.error ||
-        'Submission error. Please check your details and try again.';
-      setFeedback({ type: 'error', message: errorMsg });
-    } finally {
-      setIsSubmitting(false);
+  e.preventDefault();
+  setIsSubmitting(true);
+  setFeedback(null);
+ 
+  try {
+    const submissionData = { ...formData };
+    const response = await membershipService.createMembership(submissionData);
+ 
+    // Redirect to Stripe Checkout
+    if (response.checkoutUrl) {
+      window.location.href = response.checkoutUrl;
+      return;
     }
-  };
+ 
+    // Fallback if no checkout URL returned
+    setFeedback({
+      type: 'success',
+      message: 'Application received. Your journey with the Collective begins now.',
+    });
+    setTimeout(() => navigate('/'), 2800);
+ 
+  } catch (err) {
+    console.error('Submission Error:', err.response?.data);
+    const errorMsg =
+      err.response?.data?.error ||
+      'Submission error. Please check your details and try again.';
+    setFeedback({ type: 'error', message: errorMsg });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const selectedTier = TIERS.find(t => t.id === formData.tier);
 
