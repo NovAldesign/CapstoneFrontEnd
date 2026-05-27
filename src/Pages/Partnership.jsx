@@ -244,232 +244,256 @@ const Partnership = () => {
         </div>
       </section>
 
-      {/* FORM SECTION */}
-      <section className="proposal-container" id="partner-form">
-        <span className="form-intro">Get Started</span>
-        <h2 className="playfair narrative-lead" style={{ marginTop: "10px" }}>
-          Let's Connect
-        </h2>
-        <p
-          className="narrative-body"
-          style={{ textAlign: "center", marginBottom: "40px" }}
-        >
-          Tell us a bit about your brand. We'll find the right event format to
-          pilot our partnership and follow up within 48 hours.
-        </p>
+      {/* FORM SECTION - OPTION 3: INVERTED NAVY CAP STYLE */}
+      <section 
+        className="proposal-container" 
+        id="partner-form"
+        style={{
+          border: "1px solid #e2e2e2",
+          borderRadius: "8px",
+          overflow: "hidden",
+          background: "#ffffff",
+          maxWidth: "950px",
+          margin: "80px auto",
+          padding: 0 // Removes standard outer padding so the header card fits perfectly edge-to-edge
+        }}
+      >
+        {/* Dark Luxe Header Cap */}
+        <div style={{ 
+          backgroundColor: "var(--navy)", 
+          padding: "50px 30px", 
+          textAlign: "center" 
+        }}>
+          <span className="form-intro" style={{ color: "var(--gold)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+            Get Started
+          </span>
+          <h2 className="playfair luxe-title" style={{ color: "#ffffff", marginTop: "12px", marginBottom: 0, fontSize: "2.2rem" }}>
+            Let's Connect
+          </h2>
+        </div>
 
-        <form onSubmit={handleSubmit} className="luxe-form">
-          <div className="form-row">
-            <div className="input-group">
-              <label htmlFor="companyName">Company / Brand Name</label>
-              <input
-                id="companyName"
-                name="companyName"
-                value={formData.companyName}
-                onChange={handleChange}
-                required
-                placeholder="Herndon Spritz & Co."
-              />
-            </div>
-            <div className="input-group">
-              <label htmlFor="contactPerson">Your Name</label>
-              <input
-                id="contactPerson"
-                name="contactPerson"
-                value={formData.contactPerson}
-                onChange={handleChange}
-                required
-                placeholder="First &amp; Last"
-              />
-            </div>
-          </div>
+        {/* Content Body Inner Wrapper */}
+        <div style={{ padding: "40px 50px" }}>
+          <p
+            className="narrative-body"
+            style={{ textAlign: "center", marginBottom: "50px", color: "#555555" }}
+          >
+            Tell us a bit about your brand. We'll find the right event format to
+            pilot our partnership and follow up within 48 hours.
+          </p>
 
-          <div className="form-row">
-            <div className="input-group">
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                placeholder="you@company.com"
-              />
+          <form onSubmit={handleSubmit} className="luxe-form">
+            <div className="form-row">
+              <div className="input-group">
+                <label htmlFor="companyName">Company / Brand Name</label>
+                <input
+                  id="companyName"
+                  name="companyName"
+                  value={formData.companyName}
+                  onChange={handleChange}
+                  required
+                  placeholder="Herndon Spritz & Co."
+                />
+              </div>
+              <div className="input-group">
+                <label htmlFor="contactPerson">Your Name</label>
+                <input
+                  id="contactPerson"
+                  name="contactPerson"
+                  value={formData.contactPerson}
+                  onChange={handleChange}
+                  required
+                  placeholder="First &amp; Last"
+                />
+              </div>
             </div>
-            <div className="input-group">
-              <label htmlFor="phone">Phone (optional)</label>
-              <input
-                id="phone"
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="(404) 000-0000"
-              />
+
+            <div className="form-row">
+              <div className="input-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  placeholder="you@company.com"
+                />
+              </div>
+              <div className="input-group">
+                <label htmlFor="phone">Phone (optional)</label>
+                <input
+                  id="phone"
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="(404) 000-0000"
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="input-group">
-            <label htmlFor="tierRequested">Partnership Level Requested</label>
-            <select
-              id="tierRequested"
-              name="tierRequested"
-              value={formData.tierRequested}
-              onChange={handleChange}
-              style={{ background: "transparent", color: "var(--navy)" }}
-            >
-              <option value="">Select a level...</option>
-              {tiers.map((t) => (
-                <option key={t.id} value={t.label}>
-                  {t.label} — {t.price}
-                </option>
-              ))}
-              <option value="Not sure">Not sure yet / Want to customize</option>
-            </select>
-          </div>
+            <div className="input-group">
+              <label htmlFor="tierRequested">Partnership Level Requested</label>
+              <select
+                id="tierRequested"
+                name="tierRequested"
+                value={formData.tierRequested}
+                onChange={handleChange}
+                style={{ background: "transparent", color: "var(--navy)" }}
+              >
+                <option value="">Select a level...</option>
+                {tiers.map((t) => (
+                  <option key={t.id} value={t.label}>
+                    {t.label} — {t.price}
+                  </option>
+                ))}
+                <option value="Not sure">Not sure yet / Want to customize</option>
+              </select>
+            </div>
 
-          {/* Clean, Uniform Grid Blocks */}
-          <div className="input-group">
-            <label
-              style={{
-                marginBottom: "15px",
-                display: "block",
-                letterSpacing: "0.05em",
-                fontWeight: "600",
-              }}
-            >
-              SPONSORSHIP OPPORTUNITIES
-            </label>
-            <div
-              style={{
-                display: "grid",
-                // Creates a strictly balanced 2-column grid layout on desktop, collapses elegantly on mobile
-                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                gap: "20px 30px", // Generous spacing between rows and columns
-                padding: "24px",
-                background: "#fcfbfa",
-                border: "1px solid #e2e2e2",
-                borderRadius: "4px",
-              }}
-            >
-              {eventOptions.map((event) => {
-                const inputId = `event-${event.replace(/\s+/g, "-").toLowerCase()}`;
-                return (
-                  <div
-                    key={event}
-                    style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: "14px",
-                    }}
-                  >
-                    {/* Wrapper to force the checkbox to always keep a perfect, uniform square shape */}
+            {/* Clean, Uniform Grid Blocks */}
+            <div className="input-group">
+              <label
+                style={{
+                  marginBottom: "15px",
+                  display: "block",
+                  letterSpacing: "0.05em",
+                  fontWeight: "600",
+                }}
+              >
+                SPONSORSHIP OPPORTUNITIES
+              </label>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                  gap: "20px 30px",
+                  padding: "24px",
+                  background: "#fcfbfa",
+                  border: "1px solid #e2e2e2",
+                  borderRadius: "4px",
+                }}
+              >
+                {eventOptions.map((event) => {
+                  const inputId = `event-${event.replace(/\s+/g, "-").toLowerCase()}`;
+                  return (
                     <div
+                      key={event}
                       style={{
                         display: "flex",
-                        alignItems: "center",
-                        minWidth: "18px",
-                        height: "20px",
+                        alignItems: "flex-start",
+                        gap: "14px",
                       }}
                     >
-                      <input
-                        type="checkbox"
-                        id={inputId}
-                        value={event}
-                        checked={formData.eventsInterested.includes(event)}
-                        onChange={handleCheckbox}
+                      <div
                         style={{
-                          accentColor: "var(--gold)",
-                          width: "18px",
-                          height: "18px",
-                          margin: 0,
-                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          minWidth: "18px",
+                          height: "20px",
                         }}
-                      />
+                      >
+                        <input
+                          type="checkbox"
+                          id={inputId}
+                          value={event}
+                          checked={formData.eventsInterested.includes(event)}
+                          onChange={handleCheckbox}
+                          style={{
+                            accentColor: "var(--gold)",
+                            width: "18px",
+                            height: "18px",
+                            margin: 0,
+                            cursor: "pointer",
+                          }}
+                        />
+                      </div>
+                      <label
+                        htmlFor={inputId}
+                        style={{
+                          fontSize: "0.85rem",
+                          lineHeight: "1.4",
+                          color: "var(--navy)",
+                          fontWeight: "600",
+                          letterSpacing: "0.03em",
+                          cursor: "pointer",
+                          userSelect: "none",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {event}
+                      </label>
                     </div>
-                    <label
-                      htmlFor={inputId}
-                      style={{
-                        fontSize: "0.85rem",
-                        lineHeight: "1.4",
-                        color: "var(--navy)", // Kept uniform with your brand styles
-                        fontWeight: "600",
-                        letterSpacing: "0.03em",
-                        cursor: "pointer",
-                        userSelect: "none",
-                        textTransform: "uppercase", // Matches your current screenshot aesthetic
-                      }}
-                    >
-                      {event}
-                    </label>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
 
-          <div className="input-group">
-            <label htmlFor="hostingInterest">
-              Interested in hosting or co-creating an experience?
-            </label>
-            <select
-              id="hostingInterest"
-              name="hostingInterest"
-              value={formData.hostingInterest}
-              onChange={handleChange}
-            >
-              <option value="">Select...</option>
-              <option value="Yes - Pilot first event">
-                Yes — Let's pitch a custom concept for our initial pilot event
-              </option>
-              <option value="Maybe">
-                Maybe — Tell me more about co-branded experiences
-              </option>
-              <option value="No">
-                No — Standard brand placement / space sponsorship only
-              </option>
-            </select>
-          </div>
-
-          <div className="input-group">
-            <label htmlFor="details">
-              Anything else we should know about your brand timeline?
-            </label>
-            <textarea
-              id="details"
-              name="details"
-              value={formData.details}
-              placeholder="Tell us about your brand positioning, what target products you want to feature during this event..."
-              onChange={handleChange}
-              rows={5}
-            />
-          </div>
-
-          {feedback && (
-            <div
-              style={{
-                padding: "15px",
-                textAlign: "center",
-                fontSize: "0.9rem",
-                fontWeight: "600",
-                color: feedback.type === "success" ? "var(--gold)" : "#d9534f",
-                background: feedback.type === "success" ? "#fbf9f5" : "#fdf2f2",
-                border: `1px solid ${feedback.type === "success" ? "var(--gold)" : "#d9534f"}`,
-              }}
-            >
-              {feedback.message}
+            <div className="input-group">
+              <label htmlFor="hostingInterest">
+                Interested in hosting or co-creating an experience?
+              </label>
+              <select
+                id="hostingInterest"
+                name="hostingInterest"
+                value={formData.hostingInterest}
+                onChange={handleChange}
+              >
+                <option value="">Select...</option>
+                <option value="Yes - Pilot first event">
+                  Yes — Let's pitch a custom concept for our initial pilot event
+                </option>
+                <option value="Maybe">
+                  Maybe — Tell me more about co-branded experiences
+                </option>
+                <option value="No">
+                  No — Standard brand placement / space sponsorship only
+                </option>
+              </select>
             </div>
-          )}
 
-          <button
-            type="submit"
-            className="gold-submit-btn"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Sending..." : "Send Partnership Inquiry"}
-          </button>
-        </form>
+            <div className="input-group">
+              <label htmlFor="details">
+                Anything else we should know about your brand timeline?
+              </label>
+              <textarea
+                id="details"
+                name="details"
+                value={formData.details}
+                placeholder="Tell us about your brand positioning, what target products you want to feature during this event..."
+                onChange={handleChange}
+                rows={5}
+              />
+            </div>
+
+            {feedback && (
+              <div
+                style={{
+                  padding: "15px",
+                  textAlign: "center",
+                  fontSize: "0.9rem",
+                  fontWeight: "600",
+                  color: feedback.type === "success" ? "var(--gold)" : "#d9534f",
+                  background: feedback.type === "success" ? "#fbf9f5" : "#fdf2f2",
+                  border: `1px solid ${feedback.type === "success" ? "var(--gold)" : "#d9534f"}`,
+                  marginBottom: "20px"
+                }}
+              >
+                {feedback.message}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="gold-submit-btn"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Sending..." : "Send Partnership Inquiry"}
+            </button>
+          </form>
+        </div>
       </section>
     </div>
   );
