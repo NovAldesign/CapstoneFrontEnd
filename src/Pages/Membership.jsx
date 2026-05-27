@@ -53,17 +53,11 @@ const Membership = () => {
     email: '',
     phone: '',
     dob: '',
-    industry: '',
     tier: 'Founding',
     connectionGoals: {
       primaryInterest: 'Meet New People',
       isolationBarrier: '',
     },
-    preferences: {
-      dietaryRestrictions: '',
-      apparelSize: 'M',
-    },
-    hasPassport: false,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -102,15 +96,7 @@ const Membership = () => {
     setFeedback(null);
 
     try {
-      const submissionData = {
-        ...formData,
-        preferences: {
-          ...formData.preferences,
-          dietaryRestrictions: formData.preferences.dietaryRestrictions
-            ? formData.preferences.dietaryRestrictions.split(',').map(s => s.trim())
-            : [],
-        },
-      };
+      const submissionData = { ...formData };
 
       await membershipService.createMembership(submissionData);
 
@@ -223,7 +209,7 @@ const Membership = () => {
           <p className="form-intro-font">Let's start the conversation.</p>
 
           {/* Selected tier display */}
-          <div className="selected-tier-display-row">
+          <div className="selected-tier-display">
             <div>
               <div className="tier-display-label">Selected Tier</div>
               <div className="tier-display-value">{selectedTier?.name}</div>
@@ -290,14 +276,6 @@ const Membership = () => {
                   required
                 />
               </div>
-              <div className="input-group">
-                <label className="label-font" htmlFor="industry">Industry</label>
-                <input
-                  id="industry" type="text" name="industry"
-                  value={formData.industry} onChange={handleChange}
-                  placeholder="e.g. Technology, Real Estate"
-                />
-              </div>
             </div>
 
             {/* Experience & Preferences */}
@@ -314,39 +292,9 @@ const Membership = () => {
                 >
                   <option value="Meet New People">Meet New People</option>
                   <option value="Play / Games">Play / Games</option>
-                  <option value="Travel">Travel</option>
                   <option value="Local Events">Local Events</option>
                 </select>
               </div>
-              <div className="input-group">
-                <label className="label-font" htmlFor="apparelSize">Apparel Size</label>
-                <select
-                  id="apparelSize"
-                  name="preferences.apparelSize"
-                  value={formData.preferences.apparelSize}
-                  onChange={handleChange}
-                >
-                  <option value="S">Small</option>
-                  <option value="M">Medium</option>
-                  <option value="L">Large</option>
-                  <option value="XL">XL</option>
-                  <option value="XXL">XXL</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="input-group">
-              <label className="label-font" htmlFor="dietaryRestrictions">
-                Dietary Restrictions{' '}
-                <span className="label-note">(comma separated)</span>
-              </label>
-              <input
-                id="dietaryRestrictions" type="text"
-                name="preferences.dietaryRestrictions"
-                value={formData.preferences.dietaryRestrictions}
-                onChange={handleChange}
-                placeholder="e.g. Vegan, No Shellfish"
-              />
             </div>
 
             <div className="input-group">
@@ -361,19 +309,6 @@ const Membership = () => {
                 onChange={handleChange}
                 placeholder="Share your story..."
               />
-            </div>
-
-            <div className="checkbox-row">
-              <input
-                type="checkbox"
-                name="hasPassport"
-                id="passport"
-                checked={formData.hasPassport}
-                onChange={handleChange}
-              />
-              <label htmlFor="passport" className="label-font">
-                I have a valid passport
-              </label>
             </div>
 
             {feedback && (
