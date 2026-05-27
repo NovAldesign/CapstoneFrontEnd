@@ -170,11 +170,11 @@ const Partnership = () => {
           </div>
           <div className="stat-card">
             <h4 className="playfair">100%</h4>
-            <p>Alcohol-free programming</p>
+            <p>Alcohol & Smoke-free environment</p>
           </div>
           <div className="stat-card">
-            <h4 className="playfair">ATL</h4>
-            <p>Based &amp; rooted locally</p>
+            <h4 className="playfair">1,600+</h4>
+            <p>Community in Atlanta</p>
           </div>
         </div>
       </section>
