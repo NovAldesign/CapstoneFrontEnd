@@ -160,14 +160,24 @@ const Membership = () => {
 
       localStorage.setItem('gfc_form_cache', JSON.stringify(submissionData));
 
+      console.log("🚀 Sending data to backend via membershipService...");
       const response = await membershipService.createMembership(submissionData);
+      
+      // 🔍 DEBUG LOG: Inspect this in the browser dev tools to see what the service returns!
+      console.log("📥 Full Backend Response Object Received:", response);
    
-      // 🔥 FIXED: Reads 'url' or 'data.url' to capture the Stripe checkout session payload key cleanly
-      const targetUrl = response?.url || response?.data?.url;
+      // ⚡️ UNIVERSAL PROPERTY EXTRACTOR: Resolves 'url' across direct returns or nested data wrappers
+      const targetUrl = 
+        response?.url || 
+        response?.data?.url || 
+        response?.data?.data?.url;
 
       if (targetUrl) {
+        console.log("✈️ Redirecting user to Stripe Checkout Portal:", targetUrl);
         window.location.href = targetUrl;
         return;
+      } else {
+        console.warn("⚠️ Form saved successfully, but no redirect URL was found in the object wrapper.");
       }
    
       localStorage.removeItem('gfc_form_cache');
@@ -279,7 +289,7 @@ const Membership = () => {
           <h2 className="section-header-font">Request Membership</h2>
           <p className="form-intro-font">Let's start the conversation.</p>
 
-          {/* Selected tier display (Optimized to scroll only to selector segment) */}
+          {/* Selected tier display */}
           <div className="selected-tier-display">
             <div>
               <div className="tier-display-label">Selected Tier</div>
