@@ -162,8 +162,11 @@ const Membership = () => {
 
       const response = await membershipService.createMembership(submissionData);
    
-      if (response && response.checkoutUrl) {
-        window.location.href = response.checkoutUrl;
+      // 🔥 FIXED: Reads 'url' or 'data.url' to capture the Stripe checkout session payload key cleanly
+      const targetUrl = response?.url || response?.data?.url;
+
+      if (targetUrl) {
+        window.location.href = targetUrl;
         return;
       }
    
