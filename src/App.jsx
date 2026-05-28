@@ -15,6 +15,7 @@ import Partnerships from "./Pages/Partnership.jsx";
 import About from "./Pages/About.jsx";
 import Contact from "./Pages/Contact.jsx";
 import Login from "./Pages/Login.jsx";
+import ResetPassword from "./Pages/ResetPassword.jsx"; // Added for password reset support
 import AdminDashboard from "./Pages/AdminDashboard.jsx";
 import SuccessPage from "./Pages/SuccessPage.jsx";
 import MembershipSuccess from "./Pages/MembershipSuccess.jsx"; 
@@ -42,6 +43,9 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
+          
+          {/* UPDATED: Dynamic parameter route catches cryptographic tokens out of reset urls */}
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           
           {/* UPDATED: Matches your backend multi-event checkout redirect route path */}
           <Route path="/events/success" element={<SuccessPage />} />
