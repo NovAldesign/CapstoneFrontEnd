@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async"; 
-import { useCart } from "../Context/CartContext.jsx"; // 1. Hooking into your new cart architecture
+import { useCart } from "../Context/CartContext.jsx"; 
 import {
   fetchGfcEvents,
   formatEventDate,
   formatEventTime,
 } from "../Services/eventService";
+import CartDrawer from "../Components/CartDrawer.jsx"; // Imported the sliding bar component
 import "../Styles/Events.css";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isCartOpen, setIsCartOpen] = useState(false); // Controls the visibility of the sliding drawer
   
-  // 2. Extracting core actions and cart layout data from context
+  // Extracting core actions and cart layout data from context
   const { addToCart, cartItems } = useCart();
 
   useEffect(() => {
@@ -47,6 +49,9 @@ const Events = () => {
       </div>
     );
   }
+
+  // Helper to quickly calculate total item count for the floating badge
+  const totalCartItemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <div className="events-page-wrapper">
@@ -139,10 +144,6 @@ const Events = () => {
           <div className="events-grid">
             {upcomingEvents.length > 0 ? (
               upcomingEvents.map((event) => {
-                const isSoldOut = event.ticketTypes?.every(
-                  (t) => t.sold >= t.quantity,
-                );
-
                 return (
                   <div key={event._id || Math.random()} className="event-card">
                     <div className="event-img-wrapper">
@@ -161,15 +162,15 @@ const Events = () => {
                         {event.location?.name} {event.location?.city && `, ${event.location.city}`}
                       </div>
 
-                      {/* NEW: Clean Tiered Ticket Selection Area */}
+                      {/* Clean Tiered Ticket Selection Area */}
                       <div className="ticket-tiers-selection-zone" style={{ borderTop: '1px solid #f0f0f0', paddingTop: '12px', marginTop: 'auto' }}>
-                        <h4 style={{ fontSize: '11px', uppercase: true, color: '#aaa', letterSpacing: '1px', marginBottom: '8px', fontWeight: 'bold' }}>
+                        <h4 style={{ fontSize: '11px', textTransform: 'uppercase', color: '#aaa', letterSpacing: '1px', marginBottom: '8px', fontWeight: 'bold' }}>
                           Select Passes
                         </h4>
                         
                         {event.ticketTypes && event.ticketTypes.length > 0 ? (
                           event.ticketTypes.map((ticket) => {
-                            // Match cart memory positions dynamically
+                            // Match cart items dynamically to find current quantities
                             const cartMatch = cartItems.find(
                               item => item.eventId === event._id && item.ticketTypeId === ticket._id
                             );
@@ -180,7 +181,7 @@ const Events = () => {
                               <div 
                                 key={ticket._id} 
                                 className="ticket-tier-row" 
-                                style={{ display: 'flex', alignItems: 'center', justifyBetween: 'space-between', justifyContent: 'space-between', background: '#f9f9f9', padding: '8px 12px', borderRadius: '6px', marginBottom: '6px', fontSize: '13px' }}
+                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f9f9f9', padding: '8px 12px', borderRadius: '6px', marginBottom: '6px', fontSize: '13px' }}
                               >
                                 <div>
                                   <div style={{ fontWeight: '600', color: '#002147' }}>{ticket.name}</div>
@@ -201,7 +202,8 @@ const Events = () => {
                                     cursor: ticketSoldOut ? 'not-allowed' : 'pointer',
                                     backgroundColor: ticketSoldOut ? '#ccc' : '#002147',
                                     color: '#fff',
-                                    transition: 'background 0.2s'
+                                    transition: 'background 0.2s',
+                                    fontWeight: 'bold'
                                   }}
                                   onMouseEnter={(e) => !ticketSoldOut && (e.target.style.backgroundColor = '#C5A059')}
                                   onMouseLeave={(e) => !ticketSoldOut && (e.target.style.backgroundColor = '#002147')}
@@ -257,6 +259,37 @@ const Events = () => {
           </section>
         )}
       </div>
+
+      {/* FLOATING ACTION BUTTON: Displays when tickets are actively staged in memory */}
+      {totalCartItemsCount > 0 && (
+        <button 
+          onClick={() => setIsCartOpen(true)}
+          style={{ 
+            position: 'fixed', 
+            bottom: '30px', 
+            right: '30px', 
+            backgroundColor: '#C5A059', 
+            color: '#fff', 
+            border: 'none', 
+            padding: '15px 25px', 
+            borderRadius: '50px', 
+            fontWeight: 'bold', 
+            boxShadow: '0 4px 15px rgba(0,0,0,0.2)', 
+            cursor: 'pointer', 
+            zIndex: 99,
+            letterSpacing: '0.5px',
+            fontSize: '14px',
+            transition: 'transform 0.2s'
+          }}
+          onMouseEnter={(e) => (e.target.style.transform = 'scale(1.05)')}
+          onMouseLeave={(e) => (e.target.style.transform = 'scale(1)')}
+        >
+          🛒 View Selected Passes ({totalCartItemsCount})
+        </button>
+      )}
+
+      {/* SLIDING DRAWER PANEL ELEMENT */}
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </div>
   );
 };
