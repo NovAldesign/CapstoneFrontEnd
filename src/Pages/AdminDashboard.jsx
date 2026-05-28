@@ -96,7 +96,7 @@ const AdminDashboard = () => {
     const totalCapacity   = events.reduce((a, e) => a + (e.capacity || 0), 0);
     const totalSold       = events.reduce((a, e) => a + (e.totalSold || 0), 0);
 
-    const totalRevenue    = events.reduce((a, e) => {
+    const totalRevenue = events.reduce((a, e) => {
       const eventRev = (e.ticketTypes || []).reduce((ta, t) => {
         const sold = Math.min(t.quantity || 0, e.totalSold || 0);
         return ta + (sold * (t.price || 0));
@@ -106,7 +106,6 @@ const AdminDashboard = () => {
 
     const fillRate = totalCapacity > 0 ? Math.round((totalSold / totalCapacity) * 100) : 0;
 
-    // Member industry breakdown
     const industries = membership.reduce((acc, m) => {
       const ind = m.industry || 'Unknown';
       acc[ind] = (acc[ind] || 0) + 1;
@@ -114,7 +113,6 @@ const AdminDashboard = () => {
     }, {});
     const topIndustry = Object.entries(industries).sort((a, b) => b[1] - a[1])[0]?.[0] || '—';
 
-    // Recent signups (last 30 days)
     const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
     const recentSignups = membership.filter(m => new Date(m.createdAt) > thirtyDaysAgo).length;
 
@@ -144,7 +142,7 @@ const AdminDashboard = () => {
     );
   }, [events, eventSearch]);
 
-  // ── Members ─────────────────────────────────────────────────────────────
+  // ── Members Handlers ────────────────────────────────────────────────────
   const calculateAge = (dob) => {
     if (!dob) return 'N/A';
     return Math.abs(new Date(Date.now() - new Date(dob).getTime()).getUTCFullYear() - 1970);
@@ -189,7 +187,7 @@ const AdminDashboard = () => {
     exportToCSV(data, `gfc-members-${new Date().toISOString().slice(0,10)}.csv`);
   };
 
-  // ── Events ──────────────────────────────────────────────────────────────
+  // ── Events Handlers ─────────────────────────────────────────────────────
   const resetEventForm = () => {
     setEventForm(EMPTY_FORM);
     setTicketTypes([{ ...EMPTY_TICKET }]);
@@ -343,8 +341,6 @@ const AdminDashboard = () => {
       {/* ── OVERVIEW TAB ─────────────────────────────────────────────── */}
       {activeTab === 'overview' && (
         <div className="overview-tab">
-
-          {/* Primary stats */}
           <div className="stats-section">
             <h3 className="section-heading">Membership</h3>
             <div className="stats-grid">
@@ -367,7 +363,6 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* Industry Breakdown */}
           <div className="stats-section">
             <h3 className="section-heading">Member Industries</h3>
             <div className="industry-breakdown">
@@ -389,7 +384,6 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* Recent Events Summary */}
           <div className="stats-section">
             <h3 className="section-heading">Event Performance</h3>
             <div className="event-perf-table">
@@ -438,8 +432,6 @@ const AdminDashboard = () => {
       {activeTab === 'members' && (
         <div className="admin-layout">
           <div className="table-container">
-
-            {/* Toolbar */}
             <div className="table-toolbar">
               <input
                 className="search-input"
@@ -562,8 +554,6 @@ const AdminDashboard = () => {
       {/* ── EVENTS TAB ───────────────────────────────────────────────── */}
       {activeTab === 'events' && (
         <div className="admin-layout">
-
-          {/* Event detail panel */}
           {selectedEvent ? (
             <div className="event-detail-panel">
               <div className="event-detail-header">
@@ -575,7 +565,6 @@ const AdminDashboard = () => {
               </div>
               <div className="gold-spacer-v2" />
 
-              {/* Event stats */}
               <div className="stats-grid mini">
                 <StatCard label="Tickets Sold"  value={selectedEvent.totalSold || 0}    accent="#C9A84C" />
                 <StatCard label="Capacity"       value={selectedEvent.capacity || 0}     accent="#7B68EE" />
@@ -589,7 +578,6 @@ const AdminDashboard = () => {
                 />
               </div>
 
-              {/* Ticket types breakdown */}
               {selectedEvent.ticketTypes?.length > 0 && (
                 <section className="detail-group">
                   <h4 className="detail-heading">Ticket Types</h4>
@@ -609,7 +597,6 @@ const AdminDashboard = () => {
                 </section>
               )}
 
-              {/* Promo codes */}
               {selectedEvent.promoCodes?.length > 0 && (
                 <section className="detail-group">
                   <h4 className="detail-heading">Promo Codes</h4>
@@ -630,7 +617,6 @@ const AdminDashboard = () => {
                 </section>
               )}
 
-              {/* Attendees */}
               <section className="detail-group">
                 <div className="section-row">
                   <h4 className="detail-heading">Attendees</h4>
@@ -681,11 +667,11 @@ const AdminDashboard = () => {
               </div>
               <table className="admin-table">
                 <thead>
-                  <tr><th>Name</th><th>Type</th><th>Date</th><th>Sold</th><th>Cap</th><th>Fill</th><th>Status</th><th>Actions</th></tr>
+                  <tr><th>Name</th><th>Type</th><th>Date</th><th>Sold</th><th>Cap</th><th>Fill</th><th>Status</th></tr>
                 </thead>
                 <tbody>
                   {filteredEvents.length === 0 && (
-                    <tr><td colSpan={8} className="empty-cell">No events yet — create your first one!</td></tr>
+                    <tr><td colSpan={7} className="empty-cell">No events yet — create your first one!</td></tr>
                   )}
                   {filteredEvents.map(ev => {
                     const sold = ev.totalSold || 0;
@@ -693,23 +679,20 @@ const AdminDashboard = () => {
                     const fill = cap > 0 ? Math.round((sold / cap) * 100) : 0;
                     return (
                       <tr key={ev._id} className="admin-row">
-                        <td className="clickable-name" onClick={() => setSelectedEvent(ev)}>{ev.name}</td>
+                        <td className="clickable-name" onClick={() => setSelectedEvent(ev)}>
+                          {ev.name}
+                        </td>
                         <td>{ev.eventType}</td>
-                        <td>{new Date(ev.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+                        <td className="td-muted">{new Date(ev.date).toLocaleDateString()}</td>
                         <td>{sold}</td>
                         <td>{cap}</td>
                         <td>
                           <div className="mini-bar-wrap">
-                            <div className="mini-bar" style={{ width: `${fill}%`, background: fill >= 80 ? '#4CAF7D' : fill >= 50 ? '#E8A838' : '#C9A84C' }} />
+                            <div className="mini-bar" style={{ width: `${fill}%`, background: fill >= 80 ? '#4CAF7D' : '#E8A838' }} />
                             <span>{fill}%</span>
                           </div>
                         </td>
                         <td><Badge text={ev.status} type={ev.status} /></td>
-                        <td style={{ display: 'flex', gap: '0.4rem' }}>
-                          <button className="waitlist-action-btn" onClick={() => setSelectedEvent(ev)}>View</button>
-                          <button className="waitlist-action-btn" onClick={() => handleEditEvent(ev)}>Edit</button>
-                          <button className="btn-delete" onClick={() => handleDeleteEvent(ev._id)}>Del</button>
-                        </td>
                       </tr>
                     );
                   })}
@@ -720,196 +703,281 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* ── CREATE / EDIT EVENT TAB ───────────────────────────────────── */}
+      {/* ── CREATE / EDIT EVENT TAB ──────────────────────────────────── */}
       {activeTab === 'create-event' && (
-        <div className="event-form-panel">
-          <div className="form-panel-header">
-            <h3 className="playfair">{editingEvent ? `Editing: ${editingEvent.name}` : 'Create New Event'}</h3>
-            {editingEvent && (
-              <button className="waitlist-action-btn" onClick={() => { resetEventForm(); setActiveTab('events'); }}>
-                Cancel
-              </button>
-            )}
-          </div>
-          <div className="gold-spacer-v2"></div>
+        <div className="admin-form-container">
+          <form onSubmit={handleEventSubmit} className="admin-creation-form">
+            <h2 className="playfair">{editingEvent ? '✏️ Edit Gathering' : '＋ Schedule New Gathering'}</h2>
+            <p className="subtitle">Configure details, custom ticket tiers, and bundle promo options</p>
+            <div className="gold-spacer-v2" />
 
-          <form onSubmit={handleEventSubmit} className="event-form">
-
-            <h4 className="form-section-heading">Core Info</h4>
-            <div className="form-group">
-              <label>Event Name *</label>
-              <input name="name" value={eventForm.name} onChange={handleEventFormChange} required placeholder="e.g. Luxury Bingo Night" />
-            </div>
-            <div className="form-group">
-              <label>Description *</label>
-              <textarea name="description" value={eventForm.description} onChange={handleEventFormChange} rows={4} required placeholder="Tell people what makes this event special…" />
-            </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label>Start Date & Time *</label>
-                <input type="datetime-local" name="date" value={eventForm.date} onChange={handleEventFormChange} required />
+            <div className="form-row-grid">
+              <div className="form-group flex-2">
+                <label>Event Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={eventForm.name}
+                  onChange={handleEventFormChange}
+                  required
+                  placeholder="e.g. Spades Tournament & Game Night"
+                />
               </div>
-              <div className="form-group">
-                <label>End Date & Time *</label>
-                <input type="datetime-local" name="endDate" value={eventForm.endDate} onChange={handleEventFormChange} required />
-              </div>
-            </div>
-            <div className="form-row">
               <div className="form-group">
                 <label>Event Type</label>
                 <select name="eventType" value={eventForm.eventType} onChange={handleEventFormChange}>
-                  {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Status</label>
-                <select name="status" value={eventForm.status} onChange={handleEventFormChange}>
-                  <option value="draft">Draft</option>
-                  <option value="published">Published</option>
-                  <option value="cancelled">Cancelled</option>
-                  <option value="completed">Completed</option>
+                  {EVENT_TYPES.map(type => (
+                    <option key={type} value={type}>{type}</option>
+                  ))}
                 </select>
               </div>
             </div>
 
-            <h4 className="form-section-heading">Location</h4>
-            <div className="form-row">
+            <div className="form-group">
+              <label>Event Description</label>
+              <textarea
+                name="description"
+                value={eventForm.description}
+                onChange={handleEventFormChange}
+                required
+                placeholder="Detail the experience layout, target community vibe, and attendance criteria..."
+                rows={4}
+              />
+            </div>
+
+            <div className="form-row-grid">
               <div className="form-group">
-                <label>Venue Name *</label>
-                <input name="locationName" value={eventForm.locationName} onChange={handleEventFormChange} required placeholder="e.g. The Gathering Spot" />
+                <label>Start Date & Time</label>
+                <input
+                  type="datetime-local"
+                  name="date"
+                  value={eventForm.date}
+                  onChange={handleEventFormChange}
+                  required
+                />
               </div>
               <div className="form-group">
-                <label>Address</label>
-                <input name="locationAddress" value={eventForm.locationAddress} onChange={handleEventFormChange} placeholder="123 Peachtree St" />
+                <label>End Date & Time</label>
+                <input
+                  type="datetime-local"
+                  name="endDate"
+                  value={eventForm.endDate}
+                  onChange={handleEventFormChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Max Attendance Capacity</label>
+                <input
+                  type="number"
+                  name="capacity"
+                  value={eventForm.capacity}
+                  onChange={handleEventFormChange}
+                  required
+                  min="1"
+                />
               </div>
             </div>
-            <div className="form-row">
+
+            <h3 className="form-subheading">📍 Venue Details</h3>
+            <div className="form-row-grid">
+              <div className="form-group flex-2">
+                <label>Venue / Location Name</label>
+                <input
+                  type="text"
+                  name="locationName"
+                  value={eventForm.locationName}
+                  onChange={handleEventFormChange}
+                  placeholder="e.g. Rudolph's Restaurant, Tea Bar"
+                />
+              </div>
+              <div className="form-group flex-2">
+                <label>Street Address</label>
+                <input
+                  type="text"
+                  name="locationAddress"
+                  value={eventForm.locationAddress}
+                  onChange={handleEventFormChange}
+                  placeholder="e.g. 123 Main Street"
+                />
+              </div>
               <div className="form-group">
                 <label>City</label>
-                <input name="locationCity" value={eventForm.locationCity} onChange={handleEventFormChange} />
+                <input
+                  type="text"
+                  name="locationCity"
+                  value={eventForm.locationCity}
+                  onChange={handleEventFormChange}
+                />
               </div>
               <div className="form-group">
                 <label>State</label>
-                <input name="locationState" value={eventForm.locationState} onChange={handleEventFormChange} />
+                <input
+                  type="text"
+                  name="locationState"
+                  value={eventForm.locationState}
+                  onChange={handleEventFormChange}
+                  maxLength="2"
+                />
               </div>
             </div>
 
-            <h4 className="form-section-heading">
-              Tickets
-              <button type="button" className="add-row-btn" onClick={addTicket}>+ Add Ticket Type</button>
-            </h4>
-            <div className="form-group">
-              <label className="checkbox-label">
-                <input type="checkbox" name="isFree" checked={eventForm.isFree} onChange={handleEventFormChange} />
-                This is a free event
-              </label>
-            </div>
-            {ticketTypes.map((ticket, i) => (
-              <div key={i} className="sub-card">
-                <div className="sub-card-header">
-                  <span>Ticket {i + 1}</span>
-                  {ticketTypes.length > 1 && (
-                    <button type="button" className="remove-row-btn" onClick={() => removeTicket(i)}>Remove</button>
-                  )}
-                </div>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>Name</label>
-                    <input value={ticket.name} onChange={e => updateTicket(i, 'name', e.target.value)} placeholder="General Admission" />
-                  </div>
-                  <div className="form-group">
-                    <label>Price in cents (5000 = $50)</label>
-                    <input type="number" value={ticket.price} onChange={e => updateTicket(i, 'price', Number(e.target.value))} min="0" disabled={eventForm.isFree} />
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>Quantity</label>
-                    <input type="number" value={ticket.quantity} onChange={e => updateTicket(i, 'quantity', Number(e.target.value))} min="0" />
-                  </div>
-                  <div className="form-group">
-                    <label>Description</label>
-                    <input value={ticket.description} onChange={e => updateTicket(i, 'description', e.target.value)} placeholder="What's included…" />
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            <h4 className="form-section-heading">
-              Promo Codes
-              <button type="button" className="add-row-btn" onClick={addPromo}>+ Add Code</button>
-            </h4>
-            {promoCodes.length === 0 && <p className="empty-hint">No promo codes yet.</p>}
-            {promoCodes.map((promo, i) => (
-              <div key={i} className="sub-card">
-                <div className="sub-card-header">
-                  <span>Promo {i + 1}</span>
-                  <button type="button" className="remove-row-btn" onClick={() => removePromo(i)}>Remove</button>
-                </div>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>Code</label>
-                    <input value={promo.code} onChange={e => updatePromo(i, 'code', e.target.value.toUpperCase())} placeholder="GFCVIP" />
-                  </div>
-                  <div className="form-group">
-                    <label>Discount Type</label>
-                    <select value={promo.discountType} onChange={e => updatePromo(i, 'discountType', e.target.value)}>
-                      <option value="percent">Percent (%)</option>
-                      <option value="fixed">Fixed ($)</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>Value</label>
-                    <input type="number" value={promo.discountValue} onChange={e => updatePromo(i, 'discountValue', Number(e.target.value))} min="0" />
-                  </div>
-                  <div className="form-group">
-                    <label>Max Uses</label>
-                    <input type="number" value={promo.maxUses} onChange={e => updatePromo(i, 'maxUses', e.target.value)} placeholder="Unlimited" />
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>Expires At</label>
-                    <input type="datetime-local" value={promo.expiresAt} onChange={e => updatePromo(i, 'expiresAt', e.target.value)} />
-                  </div>
-                  <div className="form-group" style={{ justifyContent: 'flex-end', paddingTop: '1.5rem' }}>
-                    <label className="checkbox-label">
-                      <input type="checkbox" checked={promo.active} onChange={e => updatePromo(i, 'active', e.target.checked)} />
-                      Active
-                    </label>
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            <h4 className="form-section-heading">Additional Details</h4>
-            <div className="form-row">
+            <h3 className="form-subheading">🖼️ Event Branding</h3>
+            <div className="form-row-grid file-upload-row">
               <div className="form-group">
-                <label>Capacity</label>
-                <input type="number" name="capacity" value={eventForm.capacity} onChange={handleEventFormChange} min="1" />
+                <label className="file-input-label">
+                  Choose Cover Image (JPEG, PNG, WEBP)
+                  <input type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
+                </label>
               </div>
-              <div className="form-group">
-                <label>Featured Sponsor</label>
-                <input name="featuredSponsor" value={eventForm.featuredSponsor} onChange={handleEventFormChange} placeholder="Optional" />
-              </div>
-            </div>
-            <div className="form-group">
-              <label>Cover Image</label>
-              <input type="file" accept="image/*" onChange={handleImageChange} />
-              {imagePreview && <img src={imagePreview} alt="Preview" className="image-preview" />}
-            </div>
-
-            <div className="form-actions">
-              <button type="submit" className="gold-fill-btn" disabled={eventLoading}>
-                {eventLoading ? 'Saving…' : editingEvent ? '✓ Update Event' : '✓ Publish Event'}
-              </button>
-              {editingEvent && (
-                <button type="button" className="waitlist-action-btn" onClick={() => { resetEventForm(); setActiveTab('events'); }}>
-                  Cancel
-                </button>
+              {imagePreview && (
+                <div className="image-preview-box">
+                  <img src={imagePreview} alt="Preview" />
+                  <button type="button" className="btn-remove-img" onClick={() => { setImageFile(null); setImagePreview(null); }}>×</button>
+                </div>
               )}
+            </div>
+
+            <div className="section-row-header">
+              <h3 className="form-subheading">🎟️ Ticket Allocation Tiers</h3>
+              <button type="button" className="add-row-btn" onClick={addTicket}>＋ Add Tier</button>
+            </div>
+            {ticketTypes.map((ticket, index) => (
+              <div key={index} className="dynamic-form-row card-item-row">
+                <input
+                  type="text"
+                  placeholder="Tier Name (e.g. General Admission)"
+                  value={ticket.name}
+                  onChange={(e) => updateTicket(index, 'name', e.target.value)}
+                  required
+                  style={{ flex: 2 }}
+                />
+                <input
+                  type="number"
+                  placeholder="Price (in Cents - e.g. 3000 = $30)"
+                  value={ticket.price || ''}
+                  onChange={(e) => updateTicket(index, 'price', Number(e.target.value))}
+                  required
+                  style={{ flex: 1 }}
+                />
+                <input
+                  type="number"
+                  placeholder="Total Qty Available"
+                  value={ticket.quantity || ''}
+                  onChange={(e) => updateTicket(index, 'quantity', Number(e.target.value))}
+                  required
+                  style={{ flex: 1 }}
+                />
+                <input
+                  type="text"
+                  placeholder="Short perks details..."
+                  value={ticket.description || ''}
+                  onChange={(e) => updateTicket(index, 'description', e.target.value)}
+                  style={{ flex: 2 }}
+                />
+                {ticketTypes.length > 1 && (
+                  <button type="button" className="row-delete-btn" onClick={() => removeTicket(index)}>×</button>
+                )}
+              </div>
+            ))}
+
+            <div className="section-row-header" style={{ marginTop: '30px' }}>
+              <h3 className="form-subheading">🏷️ Event Specific Promo Codes</h3>
+              <button type="button" className="add-row-btn" onClick={addPromo}>＋ Add Code</button>
+            </div>
+            {promoCodes.length === 0 ? (
+              <p className="empty-hint-text">No custom single-event overrides added yet. Global multi-event automated cart rules apply during user checkouts.</p>
+            ) : (
+              promoCodes.map((promo, index) => (
+                <div key={index} className="dynamic-form-row card-item-row compact">
+                  <input
+                    type="text"
+                    placeholder="CODE"
+                    value={promo.code}
+                    onChange={(e) => updatePromo(index, 'code', e.target.value.toUpperCase().trim())}
+                    required
+                    style={{ flex: 1.5, textTransform: 'uppercase' }}
+                  />
+                  <select
+                    value={promo.discountType}
+                    onChange={(e) => updatePromo(index, 'discountType', e.target.value)}
+                    style={{ flex: 1.2 }}
+                  >
+                    <option value="percent">Percent (%)</option>
+                    <option value="flat">Flat Cents ($)</option>
+                  </select>
+                  <input
+                    type="number"
+                    placeholder="Value"
+                    value={promo.discountValue || ''}
+                    onChange={(e) => updatePromo(index, 'discountValue', Number(e.target.value))}
+                    required
+                    style={{ flex: 1 }}
+                  />
+                  <input
+                    type="number"
+                    placeholder="Max Uses"
+                    value={promo.maxUses || ''}
+                    onChange={(e) => updatePromo(index, 'maxUses', e.target.value ? Number(e.target.value) : '')}
+                    style={{ flex: 1 }}
+                  />
+                  <input
+                    type="date"
+                    value={promo.expiresAt ? promo.expiresAt.substring(0, 10) : ''}
+                    onChange={(e) => updatePromo(index, 'expiresAt', e.target.value)}
+                    style={{ flex: 1.5 }}
+                  />
+                  <label className="toggle-label" style={{ flex: 0.8 }}>
+                    Active
+                    <input
+                      type="checkbox"
+                      checked={promo.active}
+                      onChange={(e) => updatePromo(index, 'active', e.target.checked)}
+                    />
+                  </label>
+                  <button type="button" className="row-delete-btn" onClick={() => removePromo(index)}>×</button>
+                </div>
+              ))
+            )}
+
+            <h3 className="form-subheading">⚙️ Visibility & Metadata</h3>
+            <div className="form-row-grid compact-flags">
+              <div className="form-group">
+                <label>Publish Status</label>
+                <select name="status" value={eventForm.status} onChange={handleEventFormChange}>
+                  <option value="published">Published (Visible on Live Feed)</option>
+                  <option value="draft">Draft (Admin Only View)</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Featured Partner / Corporate Sponsor</label>
+                <input
+                  type="text"
+                  name="featuredSponsor"
+                  value={eventForm.featuredSponsor}
+                  onChange={handleEventFormChange}
+                  placeholder="e.g. Nov'Al Web Agency, Local Tea Bar"
+                />
+              </div>
+              <div className="form-group checkbox-align">
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    name="isFree"
+                    checked={eventForm.isFree}
+                    onChange={handleEventFormChange}
+                  />
+                  Mark as an Entirely Complimentary Gathering
+                </label>
+              </div>
+            </div>
+
+            <div className="form-actions-row">
+              <button type="button" className="cancel-form-btn" onClick={() => { resetEventForm(); setActiveTab('events'); }}>
+                Cancel
+              </button>
+              <button type="submit" disabled={eventLoading} className="submit-form-btn gold-fill-btn">
+                {eventLoading ? 'Synchronizing Gathering...' : editingEvent ? 'Save Event Updates' : 'Publish Gathering to Registry'}
+              </button>
             </div>
           </form>
         </div>
