@@ -17,7 +17,6 @@ import About from "./Pages/About.jsx";
 import Contact from "./Pages/Contact.jsx";
 import Login from "./Pages/Login.jsx";
 import AdminDashboard from "./Pages/AdminDashboard.jsx";
-import CheckoutPage from "./Pages/CheckoutPage.jsx";
 import SuccessPage from "./Pages/SuccessPage.jsx";
 import MembershipSuccess from "./Pages/MembershipSuccess.jsx"; // 🔥 IMPORTED: Your custom success page
 
