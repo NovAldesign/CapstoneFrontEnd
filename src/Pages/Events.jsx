@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async"; 
+import { useCart } from "../Context/CartContext.jsx"; // 1. Hooking into your new cart architecture
 import {
   fetchGfcEvents,
   formatEventDate,
   formatEventTime,
 } from "../Services/eventService";
-import Checkout from "../Components/CheckoutForm.jsx";
 import "../Styles/Events.css";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [checkoutEvent, setCheckoutEvent] = useState(null);
+  
+  // 2. Extracting core actions and cart layout data from context
+  const { addToCart, cartItems } = useCart();
 
   useEffect(() => {
     const getEvents = async () => {
       try {
         const data = await fetchGfcEvents();
-        // Ensure data is an array so .filter() doesn't crash the page
         setEvents(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching GFC events:", error);
-        setEvents([]); // Fallback to empty array
+        setEvents([]); 
       } finally {
         setLoading(false);
       }
@@ -31,7 +32,6 @@ const Events = () => {
 
   const now = new Date();
 
-  // Safety-wrapped filter logic to prevent "filter is not a function"
   const upcomingEvents = (Array.isArray(events) ? events : [])
     .filter((e) => e && new Date(e.date) >= now && e.status === "published")
     .sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -39,16 +39,6 @@ const Events = () => {
   const pastEvents = (Array.isArray(events) ? events : [])
     .filter((e) => e && new Date(e.date) < now)
     .sort((a, b) => new Date(b.date) - new Date(a.date));
-
-  const openCheckout = (event) => {
-    setCheckoutEvent(event);
-    document.body.style.overflow = "hidden";
-  };
-
-  const closeCheckout = () => {
-    setCheckoutEvent(null);
-    document.body.style.overflow = "";
-  };
 
   if (loading) {
     return (
@@ -80,7 +70,7 @@ const Events = () => {
             </h1>
             <div className="gold-spacer-v2"></div>
             <p className="narrative-lead-white">
-              From intimate dinners in Atlanta to global retreats. Find your
+              From intimate dinners in Atlanta to dynamic local socials. Find your
               sanctuary.
             </p>
           </div>
@@ -152,9 +142,6 @@ const Events = () => {
                 const isSoldOut = event.ticketTypes?.every(
                   (t) => t.sold >= t.quantity,
                 );
-                const lowestPrice = event.ticketTypes?.length
-                  ? Math.min(...event.ticketTypes.map((t) => t.price))
-                  : 0;
 
                 return (
                   <div key={event._id || Math.random()} className="event-card">
@@ -170,30 +157,65 @@ const Events = () => {
                         {formatEventDate(event.date)} &nbsp;·&nbsp; {formatEventTime(event.date)}
                       </span>
                       <h3 className="playfair">{event.name}</h3>
-                      <div className="event-location">
+                      <div className="event-location" style={{ marginBottom: '15px' }}>
                         {event.location?.name} {event.location?.city && `, ${event.location.city}`}
                       </div>
-                      <div className="event-card-footer">
-                        <div className="event-price-display">
-                          {event.isFree ? (
-                            <span className="event-price-free">Free</span>
-                          ) : (
-                            <span className="event-price-from">
-                              From <strong>${(lowestPrice / 100).toFixed(0)}</strong>
-                            </span>
-                          )}
-                        </div>
-                        {isSoldOut ? (
-                          <span className="btn-sold-out">Sold Out</span>
+
+                      {/* NEW: Clean Tiered Ticket Selection Area */}
+                      <div className="ticket-tiers-selection-zone" style={{ borderTop: '1px solid #f0f0f0', paddingTop: '12px', marginTop: 'auto' }}>
+                        <h4 style={{ fontSize: '11px', uppercase: true, color: '#aaa', letterSpacing: '1px', marginBottom: '8px', fontWeight: 'bold' }}>
+                          Select Passes
+                        </h4>
+                        
+                        {event.ticketTypes && event.ticketTypes.length > 0 ? (
+                          event.ticketTypes.map((ticket) => {
+                            // Match cart memory positions dynamically
+                            const cartMatch = cartItems.find(
+                              item => item.eventId === event._id && item.ticketTypeId === ticket._id
+                            );
+                            const quantityInCart = cartMatch ? cartMatch.quantity : 0;
+                            const ticketSoldOut = ticket.sold >= ticket.quantity;
+
+                            return (
+                              <div 
+                                key={ticket._id} 
+                                className="ticket-tier-row" 
+                                style={{ display: 'flex', alignItems: 'center', justifyBetween: 'space-between', justifyContent: 'space-between', background: '#f9f9f9', padding: '8px 12px', borderRadius: '6px', marginBottom: '6px', fontSize: '13px' }}
+                              >
+                                <div>
+                                  <div style={{ fontWeight: '600', color: '#002147' }}>{ticket.name}</div>
+                                  <div style={{ color: '#C5A059', fontWeight: 'bold' }}>
+                                    ${(ticket.price / 100).toFixed(2)}
+                                  </div>
+                                </div>
+
+                                <button
+                                  onClick={() => addToCart(event, ticket)}
+                                  disabled={ticketSoldOut}
+                                  className={ticketSoldOut ? "btn-sold-out-mini" : "btn-gold-card-mini"}
+                                  style={{
+                                    padding: '6px 12px',
+                                    fontSize: '11px',
+                                    borderRadius: '4px',
+                                    border: 'none',
+                                    cursor: ticketSoldOut ? 'not-allowed' : 'pointer',
+                                    backgroundColor: ticketSoldOut ? '#ccc' : '#002147',
+                                    color: '#fff',
+                                    transition: 'background 0.2s'
+                                  }}
+                                  onMouseEnter={(e) => !ticketSoldOut && (e.target.style.backgroundColor = '#C5A059')}
+                                  onMouseLeave={(e) => !ticketSoldOut && (e.target.style.backgroundColor = '#002147')}
+                                >
+                                  {ticketSoldOut ? 'Sold Out' : quantityInCart > 0 ? `In Cart (${quantityInCart})` : 'Add Ticket'}
+                                </button>
+                              </div>
+                            );
+                          })
                         ) : (
-                          <button
-                            className="btn-gold-card"
-                            onClick={() => openCheckout(event)}
-                          >
-                            Get Tickets
-                          </button>
+                          <span style={{ fontSize: '12px', color: '#999' }}>General Admission Pass Entry only</span>
                         )}
                       </div>
+
                     </div>
                   </div>
                 );
@@ -235,11 +257,6 @@ const Events = () => {
           </section>
         )}
       </div>
-
-      {/* CHECKOUT MODAL */}
-      {checkoutEvent && (
-        <Checkout event={checkoutEvent} onClose={closeCheckout} />
-      )}
     </div>
   );
 };
