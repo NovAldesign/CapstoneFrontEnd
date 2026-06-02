@@ -1,12 +1,13 @@
 import axios from 'axios';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+// Standardized to VITE_BACKEND_URL to match Railway and your Events layout setup perfectly
+const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
 // -------------------------------------------------------
 // Auth helper — reads your stored token for admin calls
 // -------------------------------------------------------
 const authHeader = () => {
-  const token = localStorage.getItem('gfc_token');  // ← was 'token'
+  const token = localStorage.getItem('gfc_token');
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
