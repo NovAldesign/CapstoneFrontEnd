@@ -69,14 +69,18 @@ const Events = () => {
 
   const now = new Date();
 
-  // const upcomingEvents = (Array.isArray(events) ? events : [])
-  //   .filter((e) => e && new Date(e.date) >= now && e.status === "published")
-  //   .sort((a, b) => new Date(a.date) - new Date(b.date));
+  // 👍 Derived states declared safely above the early return loader check
+  const upcomingEvents = (Array.isArray(events) ? events : [])
+    .filter((e) => e && new Date(e.date) >= now && e.status === "published")
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   const pastEvents = (Array.isArray(events) ? events : [])
     .filter((e) => e && new Date(e.date) < now)
     .sort((a, b) => new Date(b.date) - new Date(a.date));
 
+  const totalCartItemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  // 👍 Safe to return the loading skeleton here now that all template scoping variables are bound
   if (loading) {
     return (
       <div className="loader-container">
@@ -84,8 +88,6 @@ const Events = () => {
       </div>
     );
   }
-
-  const totalCartItemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <div className="events-page-wrapper">
@@ -208,7 +210,7 @@ const Events = () => {
                           <div className="ticket-tiers-selection-zone" style={{ borderTop: '1px solid #f0f0f0', paddingTop: '12px', marginTop: 'auto' }}>
                             <h4 style={{ fontSize: '11px', textTransform: 'uppercase', color: '#aaa', letterSpacing: '1px', marginBottom: '8px', fontWeight: 'bold' }}>
                               Select Passes
-                        </h4>
+                            </h4>
                         
                             {event.ticketTypes && event.ticketTypes.length > 0 ? (
                               event.ticketTypes.map((ticket) => {
