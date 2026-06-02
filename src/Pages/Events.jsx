@@ -69,9 +69,9 @@ const Events = () => {
 
   const now = new Date();
 
-  const upcomingEvents = (Array.isArray(events) ? events : [])
-    .filter((e) => e && new Date(e.date) >= now && e.status === "published")
-    .sort((a, b) => new Date(a.date) - new Date(b.date));
+  // const upcomingEvents = (Array.isArray(events) ? events : [])
+  //   .filter((e) => e && new Date(e.date) >= now && e.status === "published")
+  //   .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   const pastEvents = (Array.isArray(events) ? events : [])
     .filter((e) => e && new Date(e.date) < now)
