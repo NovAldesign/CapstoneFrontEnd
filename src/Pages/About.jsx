@@ -484,7 +484,7 @@ const About = () => {
                 <dd className="about-stat-desc">Documented every event night</dd>
               </div>
               <div className="about-stat" role="group" aria-label="Community Members">
-                <dt className="about-stat-number">1,600+</dt>
+                <dt className="about-stat-number">1,700+</dt>
                 <dd className="about-stat-label">Community Members</dd>
                 <dd className="about-stat-desc">Across all platforms</dd>
               </div>
