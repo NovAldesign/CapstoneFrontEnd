@@ -6,15 +6,50 @@ import {
   formatEventDate,
   formatEventTime,
 } from "../Services/eventService";
-import CartDrawer from "../Components/CartDrawer.jsx"; // Imported the sliding bar component
+import CartDrawer from "../Components/CartDrawer.jsx"; 
 import "../Styles/Events.css";
+
+// --- SUB-COMPONENT TO DYNAMICALLY FETCH & INJECT EVENTBRITE DETAILS ---
+const EventbriteCardContent = ({ eventbriteId, fallbackImage, fallbackTitle, children }) => {
+  const [externalData, setExternalData] = useState(null);
+
+  useEffect(() => {
+    if (!eventbriteId) return;
+    
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+    
+    fetch(`${backendUrl}/api/events/external/${eventbriteId}`)
+      .then((res) => res.ok ? res.json() : null)
+      .then((data) => {
+        if (data) setExternalData(data);
+      })
+      .catch((err) => console.error("Error sync loading Eventbrite asset package:", err));
+  }, [eventbriteId]);
+
+  const displayImage = externalData?.image || fallbackImage || "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800";
+  const displayTitle = externalData?.title || fallbackTitle;
+
+  return (
+    <>
+      <div className="event-img-wrapper">
+        <img
+          src={displayImage}
+          alt={displayTitle}
+          className="event-img"
+        />
+      </div>
+      <div className="event-info">
+        {children(displayTitle, externalData?.description)}
+      </div>
+    </>
+  );
+};
 
 const Events = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isCartOpen, setIsCartOpen] = useState(false); // Controls the visibility of the sliding drawer
+  const [isCartOpen, setIsCartOpen] = useState(false); 
   
-  // Extracting core actions and cart layout data from context
   const { addToCart, cartItems } = useCart();
 
   useEffect(() => {
@@ -50,7 +85,6 @@ const Events = () => {
     );
   }
 
-  // Helper to quickly calculate total item count for the floating badge
   const totalCartItemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
@@ -146,79 +180,87 @@ const Events = () => {
               upcomingEvents.map((event) => {
                 return (
                   <div key={event._id || Math.random()} className="event-card">
-                    <div className="event-img-wrapper">
-                      <img
-                        src={event.coverImage || "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800"}
-                        alt={event.name}
-                        className="event-img"
-                      />
-                    </div>
-                    <div className="event-info">
-                      <span className="event-date-tag">
-                        {formatEventDate(event.date)} &nbsp;·&nbsp; {formatEventTime(event.date)}
-                      </span>
-                      <h3 className="playfair">{event.name}</h3>
-                      <div className="event-location" style={{ marginBottom: '15px' }}>
-                        {event.location?.name} {event.location?.city && `, ${event.location.city}`}
-                      </div>
+                    <EventbriteCardContent
+                      eventbriteId={event.eventbriteId}
+                      fallbackImage={event.coverImage}
+                      fallbackTitle={event.name}
+                    >
+                      {(resolvedTitle, resolvedDescription) => (
+                        <>
+                          <span className="event-date-tag">
+                            {formatEventDate(event.date)} &nbsp;·&nbsp; {formatEventTime(event.date)}
+                          </span>
+                          <h3 className="playfair">{resolvedTitle}</h3>
+                          <div className="event-location" style={{ marginBottom: '15px' }}>
+                            {event.location?.name} {event.location?.city && `, ${event.location.city}`}
+                          </div>
 
-                      {/* Clean Tiered Ticket Selection Area */}
-                      <div className="ticket-tiers-selection-zone" style={{ borderTop: '1px solid #f0f0f0', paddingTop: '12px', marginTop: 'auto' }}>
-                        <h4 style={{ fontSize: '11px', textTransform: 'uppercase', color: '#aaa', letterSpacing: '1px', marginBottom: '8px', fontWeight: 'bold' }}>
-                          Select Passes
+                          {/* Render beautiful description markup blocks if loaded from Eventbrite */}
+                          {resolvedDescription && (
+                            <div 
+                              className="eventbrite-rich-description-render" 
+                              style={{ fontSize: '14px', lineHeight: '1.6', color: '#555', marginBottom: '20px', maxHeight: '150px', overflowY: 'auto', borderBottom: '1px solid #f0f0f0', paddingBottom: '10px' }}
+                              dangerouslySetInnerHTML={{ __html: resolvedDescription }}
+                            />
+                          )}
+
+                          {/* Clean Tiered Ticket Selection Area linked right back to your Cart setup */}
+                          <div className="ticket-tiers-selection-zone" style={{ borderTop: '1px solid #f0f0f0', paddingTop: '12px', marginTop: 'auto' }}>
+                            <h4 style={{ fontSize: '11px', textTransform: 'uppercase', color: '#aaa', letterSpacing: '1px', marginBottom: '8px', fontWeight: 'bold' }}>
+                              Select Passes
                         </h4>
                         
-                        {event.ticketTypes && event.ticketTypes.length > 0 ? (
-                          event.ticketTypes.map((ticket) => {
-                            // Match cart items dynamically to find current quantities
-                            const cartMatch = cartItems.find(
-                              item => item.eventId === event._id && item.ticketTypeId === ticket._id
-                            );
-                            const quantityInCart = cartMatch ? cartMatch.quantity : 0;
-                            const ticketSoldOut = ticket.sold >= ticket.quantity;
+                            {event.ticketTypes && event.ticketTypes.length > 0 ? (
+                              event.ticketTypes.map((ticket) => {
+                                const cartMatch = cartItems.find(
+                                  item => item.eventId === event._id && item.ticketTypeId === ticket._id
+                                );
+                                const quantityInCart = cartMatch ? cartMatch.quantity : 0;
+                                const ticketSoldOut = ticket.sold >= ticket.quantity;
 
-                            return (
-                              <div 
-                                key={ticket._id} 
-                                className="ticket-tier-row" 
-                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f9f9f9', padding: '8px 12px', borderRadius: '6px', marginBottom: '6px', fontSize: '13px' }}
-                              >
-                                <div>
-                                  <div style={{ fontWeight: '600', color: '#002147' }}>{ticket.name}</div>
-                                  <div style={{ color: '#C5A059', fontWeight: 'bold' }}>
-                                    ${(ticket.price / 100).toFixed(2)}
+                                return (
+                                  <div 
+                                    key={ticket._id} 
+                                    className="ticket-tier-row" 
+                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f9f9f9', padding: '8px 12px', borderRadius: '6px', marginBottom: '6px', fontSize: '13px' }}
+                                  >
+                                    <div>
+                                      <div style={{ fontWeight: '600', color: '#002147' }}>{ticket.name}</div>
+                                      <div style={{ color: '#C5A059', fontWeight: 'bold' }}>
+                                        ${(ticket.price / 100).toFixed(2)}
+                                      </div>
+                                    </div>
+
+                                    <button
+                                      onClick={() => addToCart(event, ticket)}
+                                      disabled={ticketSoldOut}
+                                      className={ticketSoldOut ? "btn-sold-out-mini" : "btn-gold-card-mini"}
+                                      style={{
+                                        padding: '6px 12px',
+                                        fontSize: '11px',
+                                        borderRadius: '4px',
+                                        border: 'none',
+                                        cursor: ticketSoldOut ? 'not-allowed' : 'pointer',
+                                        backgroundColor: ticketSoldOut ? '#ccc' : '#002147',
+                                        color: '#fff',
+                                        transition: 'background 0.2s',
+                                        fontWeight: 'bold'
+                                      }}
+                                      onMouseEnter={(e) => !ticketSoldOut && (e.target.style.backgroundColor = '#C5A059')}
+                                      onMouseLeave={(e) => !ticketSoldOut && (e.target.style.backgroundColor = '#002147')}
+                                    >
+                                      {ticketSoldOut ? 'Sold Out' : quantityInCart > 0 ? `In Cart (${quantityInCart})` : 'Add Ticket'}
+                                    </button>
                                   </div>
-                                </div>
-
-                                <button
-                                  onClick={() => addToCart(event, ticket)}
-                                  disabled={ticketSoldOut}
-                                  className={ticketSoldOut ? "btn-sold-out-mini" : "btn-gold-card-mini"}
-                                  style={{
-                                    padding: '6px 12px',
-                                    fontSize: '11px',
-                                    borderRadius: '4px',
-                                    border: 'none',
-                                    cursor: ticketSoldOut ? 'not-allowed' : 'pointer',
-                                    backgroundColor: ticketSoldOut ? '#ccc' : '#002147',
-                                    color: '#fff',
-                                    transition: 'background 0.2s',
-                                    fontWeight: 'bold'
-                                  }}
-                                  onMouseEnter={(e) => !ticketSoldOut && (e.target.style.backgroundColor = '#C5A059')}
-                                  onMouseLeave={(e) => !ticketSoldOut && (e.target.style.backgroundColor = '#002147')}
-                                >
-                                  {ticketSoldOut ? 'Sold Out' : quantityInCart > 0 ? `In Cart (${quantityInCart})` : 'Add Ticket'}
-                                </button>
-                              </div>
-                            );
-                          })
-                        ) : (
-                          <span style={{ fontSize: '12px', color: '#999' }}>General Admission Pass Entry only</span>
-                        )}
-                      </div>
-
-                    </div>
+                                );
+                              })
+                            ) : (
+                              <span style={{ fontSize: '12px', color: '#999' }}>General Admission Pass Entry only</span>
+                            )}
+                          </div>
+                        </>
+                      )}
+                    </EventbriteCardContent>
                   </div>
                 );
               })
@@ -260,7 +302,7 @@ const Events = () => {
         )}
       </div>
 
-      {/* FLOATING ACTION BUTTON: Displays when tickets are actively staged in memory */}
+      {/* FLOATING ACTION BUTTON */}
       {totalCartItemsCount > 0 && (
         <button 
           onClick={() => setIsCartOpen(true)}
