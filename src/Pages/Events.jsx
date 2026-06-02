@@ -56,6 +56,7 @@ const Events = () => {
     const getEvents = async () => {
       try {
         const data = await fetchGfcEvents();
+        console.log("📊 RAW EVENTS FROM BACKEND DATABASE:", data); // 🌟 Added to help you inspect the exact payload in DevTools
         setEvents(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching GFC events:", error);
@@ -69,9 +70,11 @@ const Events = () => {
 
   const now = new Date();
 
-  // 👍 Derived states declared safely above the early return loader check
+  // 🛠️ FIX: Made status case-insensitive (.toLowerCase()) so "Published" and "published" both pass.
+  // 💡 DEBUG NOTE: If your cards STILL don't show up, change this temporary line to:
+  //    const upcomingEvents = Array.isArray(events) ? events : [];
   const upcomingEvents = (Array.isArray(events) ? events : [])
-    .filter((e) => e && new Date(e.date) >= now && e.status === "published")
+    .filter((e) => e && new Date(e.date) >= now && e.status?.toLowerCase() === "published")
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   const pastEvents = (Array.isArray(events) ? events : [])
@@ -80,7 +83,6 @@ const Events = () => {
 
   const totalCartItemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
-  // 👍 Safe to return the loading skeleton here now that all template scoping variables are bound
   if (loading) {
     return (
       <div className="loader-container">
@@ -212,7 +214,7 @@ const Events = () => {
                               Select Passes
                             </h4>
                         
-                            {event.ticketTypes && event.ticketTypes.length > 0 ? (
+                            {event.ticketTypes && event.ticketTypes.length > 0 ? =
                               event.ticketTypes.map((ticket) => {
                                 const cartMatch = cartItems.find(
                                   item => item.eventId === event._id && item.ticketTypeId === ticket._id
