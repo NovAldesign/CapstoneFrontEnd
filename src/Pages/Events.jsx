@@ -56,7 +56,7 @@ const Events = () => {
     const getEvents = async () => {
       try {
         const data = await fetchGfcEvents();
-        console.log("📊 RAW EVENTS FROM BACKEND DATABASE:", data); // 🌟 Added to help you inspect the exact payload in DevTools
+        console.log("📊 RAW EVENTS FROM BACKEND DATABASE:", data);
         setEvents(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching GFC events:", error);
@@ -70,9 +70,6 @@ const Events = () => {
 
   const now = new Date();
 
-  // 🛠️ FIX: Made status case-insensitive (.toLowerCase()) so "Published" and "published" both pass.
-  // 💡 DEBUG NOTE: If your cards STILL don't show up, change this temporary line to:
-  //    const upcomingEvents = Array.isArray(events) ? events : [];
   const upcomingEvents = (Array.isArray(events) ? events : [])
     .filter((e) => e && new Date(e.date) >= now && e.status?.toLowerCase() === "published")
     .sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -214,7 +211,8 @@ const Events = () => {
                               Select Passes
                             </h4>
                         
-                            {event.ticketTypes && event.ticketTypes.length > 0 ? =
+                            {/* 🛠️ FIXED: Removed syntax-breaking extra "=" symbol below */}
+                            {event.ticketTypes && event.ticketTypes.length > 0 ? (
                               event.ticketTypes.map((ticket) => {
                                 const cartMatch = cartItems.find(
                                   item => item.eventId === event._id && item.ticketTypeId === ticket._id
