@@ -65,8 +65,7 @@ const SuccessPage = () => {
                 style={{ 
                     display: 'inline-block', 
                     backgroundColor: '#002147', 
-                    color: '#white', 
-                    color: '#fff',
+                    color: '#fff', // 🛠️ FIXED: Removed duplicate color key and '#white' string literal error
                     textDecoration: 'none',
                     padding: '14px 30px', 
                     borderRadius: '4px', 
