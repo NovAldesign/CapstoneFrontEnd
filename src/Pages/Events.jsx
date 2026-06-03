@@ -29,8 +29,12 @@ const EventbriteCardContent = ({ eventbriteId, fallbackImage, fallbackTitle, chi
 
   return (
     <>
-      <div className="event-img-wrapper">
-        <img src={displayImage} alt={displayTitle} className="event-img" />
+      <div className="event-img-wrapper" style={{ width: '100%', height: '240px', overflow: 'hidden', backgroundColor: '#002147' }}>
+        <img 
+          src={displayImage} 
+          alt={displayTitle} 
+          style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+        />
       </div>
       <div className="event-info">
         {children(displayTitle, externalData?.description, displayImage, externalData?.ticketTiers)}
@@ -56,7 +60,7 @@ const Events = () => {
       } catch (error) {
         console.error("Error fetching GFC events:", error);
         setEvents([]); 
-      } beautiful: {
+      } finally {
         setLoading(false);
       }
     };
@@ -178,9 +182,11 @@ const Events = () => {
                             {resolvedTitle}
                           </h3>
                           
-                          <div className="event-location" style={{ marginBottom: '12px' }}>
-                            {event.location?.name} {event.location?.city && `, ${event.location.city}`}
-                          </div>
+                          {event.location && (event.location.name || event.location.address || event.location.city) && (
+                            <div className="event-location" style={{ marginBottom: '12px' }}>
+                              {event.location.name}{event.location.address && ` - ${event.location.address}`}{event.location.city && `, ${event.location.city}`}
+                            </div>
+                          )}
 
                           <p 
                             onClick={() => {
@@ -189,7 +195,7 @@ const Events = () => {
                             }}
                             style={{ fontSize: '13px', color: '#C5A059', cursor: 'pointer', marginBottom: '18px', fontWeight: '600' }}
                           >
-                            ✨ View Details, Schedule & Full FAQs →
+                            View Details & Tiers →
                           </p>
 
                           <div className="ticket-tiers-selection-zone" style={{ borderTop: '1px solid #f0f0f0', paddingTop: '12px', marginTop: 'auto' }}>
@@ -222,7 +228,7 @@ const Events = () => {
       </div>
 
       {/* ======================================================= */}
-      {/* 🌟 SCROLLABLE READ-MORE DETAIL DRAWERS MODAL */}
+      {/* 🌟 SCROLLABLE MODAL (NO STUBBED DATA / NO EXTERNAL EMOJIS) */}
       {/* ======================================================= */}
       {selectedModalEvent && (
         <div 
@@ -233,7 +239,7 @@ const Events = () => {
             style={{ backgroundColor: '#fff', width: '100%', maxWidth: '750px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 25px 50px rgba(0,0,0,0.3)', position: 'relative', display: 'flex', flexDirection: 'column', maxHeight: '92vh' }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Button */}
+            {/* Close Window Trigger */}
             <button 
               onClick={() => setSelectedModalEvent(null)}
               style={{ position: 'absolute', top: '15px', right: '15px', background: '#fff', border: 'none', width: '36px', height: '36px', borderRadius: '50%', fontSize: '14px', fontWeight: 'bold', color: '#002147', cursor: 'pointer', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}
@@ -241,130 +247,103 @@ const Events = () => {
               ✕
             </button>
 
-            {/* Header / Image Cover Banner */}
-            <div style={{ width: '100%', height: '220px', overflow: 'hidden', position: 'relative' }}>
-              <img src={selectedModalEvent.resolvedImage || selectedModalEvent.coverImage} alt={selectedModalEvent.resolvedTitle} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            {/* Modal Image Header Containment */}
+            <div style={{ width: '100%', height: '240px', overflow: 'hidden', position: 'relative', backgroundColor: '#002147' }}>
+              <img 
+                src={selectedModalEvent.resolvedImage || selectedModalEvent.coverImage} 
+                alt={selectedModalEvent.resolvedTitle} 
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+              />
               <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(0,33,71,0.95))', padding: '20px' }}>
                 <span style={{ color: '#C5A059', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '1px', fontWeight: 'bold' }}>
-                  📅 {formatEventDate(selectedModalEvent.date)} @ {formatEventTime(selectedModalEvent.date)}
+                  {formatEventDate(selectedModalEvent.date)} @ {formatEventTime(selectedModalEvent.date)}
                 </span>
                 <h2 className="playfair" style={{ color: '#fff', margin: '5px 0 0 0', fontSize: '24px' }}>{selectedModalEvent.resolvedTitle}</h2>
               </div>
             </div>
 
-            {/* Main Content Area (Scrollable container to handle all long paragraphs safely) */}
+            {/* Main Details Body */}
             <div style={{ padding: '25px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '24px' }}>
               
-              {/* SECTION: Quick Event Parameters Highlights */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', background: '#f8fafc', padding: '16px', borderRadius: '10px', fontSize: '13px', border: '1px solid #e2e8f0' }}>
-                <div>⏱️ <strong>Duration:</strong> 3 hours 30 minutes</div>
-                <div>👤 <strong>Age Demographics:</strong> Adults 35+ Community Filter</div>
-                <div>🚗 <strong>Parking Facility:</strong> 100% Free On-Site Parking Space</div>
-                <div>🚪 <strong>Door Timeline:</strong> Gathering Entry opens at 5:30 PM</div>
-              </div>
-
-              {/* SECTION: The Full Structured Location Breakdown */}
-              <div>
-                <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>📍 Experience Location</h3>
-                <div style={{ fontSize: '14px', color: '#333', background: '#fbf8f3', padding: '14px 16px', borderRadius: '8px', borderLeft: '4px solid #C5A059', lineHeight: '1.5' }}>
-                  <strong>{selectedModalEvent.location?.name || "The Humming Bird Restaurant & Lounge"}</strong><br />
-                  {selectedModalEvent.location?.address || "Decatur Area Curated Space"} <br />
-                  {selectedModalEvent.location?.city || "Atlanta Metro Area"}, {selectedModalEvent.location?.state || "GA"}
-                  <p style={{ margin: '8px 0 0 0', fontSize: '12.5px', color: '#666', fontStyle: 'italic' }}>
-                    *Note: This venue has been fully selected to support premium, smoke-free, and alcohol-free adult gatherings.
-                  </p>
+              {/* DYNAMIC LOCATION PARSING ONLY */}
+              {selectedModalEvent.location && (selectedModalEvent.location.name || selectedModalEvent.location.address) && (
+                <div>
+                  <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Location</h3>
+                  <div style={{ fontSize: '14px', color: '#333', background: '#fbf8f3', padding: '14px 16px', borderRadius: '8px', borderLeft: '4px solid #C5A059', lineHeight: '1.5' }}>
+                    {selectedModalEvent.location.name && <strong>{selectedModalEvent.location.name}<br /></strong>}
+                    {selectedModalEvent.location.address && <>{selectedModalEvent.location.address}<br /></>}
+                    {selectedModalEvent.location.city}{selectedModalEvent.location.state && `, ${selectedModalEvent.location.state}`}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* SECTION: Timeline Agenda Schedule */}
-              <div>
-                <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>🕒 Gathering Agenda Schedule</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13.5px', paddingLeft: '4px' }}>
-                  <div style={{ display: 'flex', gap: '15px' }}><strong style={{ color: '#C5A059', minWidth: '65px' }}>5:30 PM</strong> <span style={{ color: '#444' }}>Doors Open & Curated Pre-Game Social Check-In</span></div>
-                  <div style={{ display: 'flex', gap: '15px' }}><strong style={{ color: '#C5A059', minWidth: '65px' }}>6:00 PM</strong> <span style={{ color: '#444' }}>Welcome Address & Dynamic Rotation Seating Setup</span></div>
-                  <div style={{ display: 'flex', gap: '15px' }}><strong style={{ color: '#C5A059', minWidth: '65px' }}>6:15 PM</strong> <span style={{ color: '#444' }}>Spades Tournament Launch & Classic Board Game Bays Open</span></div>
-                  <div style={{ display: 'flex', gap: '15px' }}><strong style={{ color: '#C5A059', minWidth: '65px' }}>8:00 PM</strong> <span style={{ color: '#444' }}>Heavy Hors D'oeuvres Service & Open Karaoke Block</span></div>
-                  <div style={{ display: 'flex', gap: '15px' }}><strong style={{ color: '#C5A059', minWidth: '65px' }}>9:00 PM</strong> <span style={{ color: '#444' }}>Closing Circles & Community Connect Networking Mixer</span></div>
+              {/* DYNAMIC AGENDA PARSING ONLY */}
+              {selectedModalEvent.agenda && selectedModalEvent.agenda.length > 0 && (
+                <div>
+                  <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Schedule</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13.5px' }}>
+                    {selectedModalEvent.agenda.map((item, idx) => (
+                      <div key={idx} style={{ display: 'flex', gap: '15px' }}>
+                        <strong style={{ color: '#C5A059', minWidth: '70px' }}>{item.time}</strong>
+                        <span style={{ color: '#444' }}>{item.description}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* SECTION: Overview Description with READ MORE Accordion Integration */}
+              {/* DYNAMIC EXACT EVENTBRITE DESCRIPTION OVERVIEW */}
               <div>
-                <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>📝 Experience Overview</h3>
+                <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Event Overview</h3>
                 <div 
-                  style={{ fontSize: '14px', lineHeight: '1.6', color: '#444', maxHeight: isExpandedOverview ? 'none' : '150px', overflow: 'hidden', position: 'relative' }}
-                  dangerouslySetInnerHTML={{ __html: selectedModalEvent.resolvedDescription || selectedModalEvent.description || `
-                    <p><strong>Tired of spending Saturday nights scrolling on the couch? So are we.</strong> The Grown Folks Collective is shifting the landscape for how adults gather, build, and interact in Atlanta.</p>
-                    <p>This isn't your standard game night. It's an intentional outlet tailored for creators, business professionals, and elite operators to network, connect, and thrive outside of corporate stress or loud club settings.</p>
-                    <p><strong>WHAT WE ARE FEATURING:</strong></p>
-                    <ul>
-                      <li><strong>The Spades Tournament Block:</strong> Real, friendly competition. Partners will rotate, matching you with dynamic operators across the room.</li>
-                      <li><strong>The Retro Classic Lounge:</strong> Full access to Uno, Taboo, Giant Jenga, Dominoes, and Connect Four.</li>
-                      <li><strong>Social Flow:</strong> Curated structures designed to mix players constantly so you'll naturally converse with everyone in attendance.</li>
-                    </ul>
-                  `}}
+                  style={{ fontSize: '14px', lineHeight: '1.6', color: '#444', maxHeight: isExpandedOverview ? 'none' : '160px', overflow: 'hidden', position: 'relative' }}
+                  dangerouslySetInnerHTML={{ __html: selectedModalEvent.resolvedDescription || selectedModalEvent.description || "No overview available." }}
                 />
                 
-                {/* Read More Toggle Trigger Link */}
-                <button 
-                  onClick={() => setIsExpandedOverview(!isExpandedOverview)}
-                  style={{ background: 'none', border: 'none', color: '#C5A059', fontWeight: '700', fontSize: '13px', cursor: 'pointer', padding: '6px 0', display: 'block', marginTop: '6px' }}
-                >
-                  {isExpandedOverview ? "🔼 Read Less Overview" : "🔽 Read More Overview & Details..."}
-                </button>
+                {(selectedModalEvent.resolvedDescription || selectedModalEvent.description) && (
+                  <button 
+                    onClick={() => setIsExpandedOverview(!isExpandedOverview)}
+                    style={{ background: 'none', border: 'none', color: '#C5A059', fontWeight: '700', fontSize: '13px', cursor: 'pointer', padding: '6px 0', display: 'block', marginTop: '6px' }}
+                  >
+                    {isExpandedOverview ? "Read Less" : "Read More..."}
+                  </button>
+                )}
               </div>
 
-              {/* SECTION: Exhaustive Frequently Asked Questions (Full Link Lineup) */}
-              <div>
-                <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>💬 Frequently Asked Questions</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '13.5px' }}>
-                  
-                  <div>
-                    <strong style={{ color: '#002147', display: 'block' }}>Q: What is included with my reservation entry pass?</strong>
-                    <span style={{ color: '#555', lineHeight: '1.5', display: 'block', marginTop: '2px' }}>
-                      A: Every registration pass provides unlimited access to all board game configurations, entry into the tournament rotation structures, a complimentary premium signature GFC artisan mocktail, and passed heavy appetizers.
-                    </span>
+              {/* DYNAMIC FAQS PARSING ONLY */}
+              {selectedModalEvent.faqs && selectedModalEvent.faqs.length > 0 && (
+                <div>
+                  <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Frequently Asked Questions</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '13.5px' }}>
+                    {selectedModalEvent.faqs.map((faq, idx) => (
+                      <div key={idx}>
+                        <strong style={{ color: '#002147', display: 'block' }}>Q: {faq.question}</strong>
+                        <span style={{ color: '#555', lineHeight: '1.5', display: 'block', marginTop: '2px' }}>A: {faq.answer}</span>
+                      </div>
+                    ))}
                   </div>
-
-                  <div>
-                    <strong style={{ color: '#002147', display: 'block' }}>Q: Why is this experience strictly an alcohol-free and smoke-free environment?</strong>
-                    <span style={{ color: '#555', lineHeight: '1.5', display: 'block', marginTop: '2px' }}>
-                      A: Our mission centers on building true spaces for genuine, authentic human connection. By intentionally eliminating standard social crutches like alcohol, we preserve a premium setting tailored for clear minds, real laughters, and lasting community ties.
-                    </span>
-                  </div>
-
-                  <div>
-                    <strong style={{ color: '#002147', display: 'block' }}>Q: Can I attend this gathering alone?</strong>
-                    <span style={{ color: '#555', lineHeight: '1.5', display: 'block', marginTop: '2px' }}>
-                      A: Absolutely! Over 60% of our community members sign up independently. We intentionally mix the table seating structures, card assignments, and social groupings constantly throughout the evening so you will feel right at home immediately.
-                    </span>
-                  </div>
-
-                  <div>
-                    <strong style={{ color: '#002147', display: 'block' }}>Q: What is the recommended dress code configuration?</strong>
-                    <span style={{ color: '#555', lineHeight: '1.5', display: 'block', marginTop: '2px' }}>
-                      A: Think smart, intentional casual or stylish lounge comfort. We want you relaxed enough to laugh comfortably, but sharp enough to network effectively with founders and peers.
-                    </span>
-                  </div>
-
                 </div>
-              </div>
+              )}
 
-              {/* SECTION: Policies & Guardrails */}
+              {/* TERMS & VERBATIM ACCOUNTABILITY DISCLAIMER */}
               <div>
-                <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>🛡️ Refund & Liability Terms</h3>
-                <div style={{ fontSize: '12.5px', lineHeight: '1.6', color: '#666', background: '#fff5f5', padding: '14px', borderRadius: '8px', border: '1px solid #fed7d7' }}>
-                  <p style={{ margin: '0 0 6px 0' }}>• <strong>All Sales Final Policy:</strong> Due to curated food ordering windows, specific catering adjustments, and locked restaurant venue arrangements, all ticket pass sales are entirely non-refundable.</p>
-                  <p style={{ margin: 0 }}>• <strong>Pass Assignment Delegation:</strong> If an unexpected professional commitment arrives, you can fully re-assign your seat pass over to another member of the collective by notifying our coordinators up to 24 hours prior to the event timeline.</p>
+                <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Policies & Terms</h3>
+                <div style={{ fontSize: '13px', lineHeight: '1.6', color: '#666', background: '#fff5f5', padding: '14px', borderRadius: '8px', border: '1px solid #fed7d7', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div>
+                    <strong>Refund Policy:</strong> All sales are final. Admission passes are entirely non-refundable.
+                  </div>
+                  <div style={{ color: '#b91c1c', fontWeight: '700', borderTop: '1px dashed #fecaca', paddingTop: '8px', marginTop: '4px' }}>
+                    We are not liable for anything happening to you at our event.
+                  </div>
                 </div>
               </div>
 
             </div>
 
-            {/* Locked Footer Action Zone: Tiers Selector and Purchase Buttons */}
+            {/* Locked Purchase Footer Area */}
             <div style={{ padding: '20px 25px', borderTop: '1px solid #eee', background: '#fafafa' }}>
               <h4 style={{ textTransform: 'uppercase', fontSize: '11px', letterSpacing: '1px', color: '#777', marginBottom: '10px', fontWeight: 'bold' }}>
-                Select Entry Tier Pass to Secure Registration
+                Select Ticket Tier
               </h4>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -384,7 +363,7 @@ const Events = () => {
                         disabled={checkoutLoading !== null}
                         style={{ padding: '8px 16px', fontSize: '12px', borderRadius: '4px', border: 'none', backgroundColor: isTierLoading ? '#ccc' : '#002147', color: '#fff', fontWeight: 'bold', cursor: checkoutLoading !== null ? 'not-allowed' : 'pointer' }}
                       >
-                        {isTierLoading ? 'Connecting...' : 'Secure Pass'}
+                        {isTierLoading ? 'Connecting...' : 'Purchase Pass'}
                       </button>
                     </div>
                   );
