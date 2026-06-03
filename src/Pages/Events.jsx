@@ -253,7 +253,7 @@ const Events = () => {
                                 const ticketSoldOut = ticket.sold >= ticket.quantity;
 
                                 return (
-                                  <div key={ticket._id} className="ticket-tier-row" style={{ display: 'flex', alignItems: 'center', justifyBetween: 'space-between', background: '#f9f9f9', padding: '8px 12px', borderRadius: '6px', marginBottom: '6px', fontSize: '13px' }}>
+                                  <div key={ticket._id} className="ticket-tier-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f9f9f9', padding: '8px 12px', borderRadius: '6px', marginBottom: '6px', fontSize: '13px' }}>
                                     <div>
                                       <div style={{ fontWeight: '600', color: '#002147' }}>{ticket.name}</div>
                                       <div style={{ color: '#C5A059', fontWeight: 'bold' }}>${(ticket.price / 100).toFixed(2)}</div>
