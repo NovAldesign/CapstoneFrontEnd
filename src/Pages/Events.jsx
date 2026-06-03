@@ -37,7 +37,15 @@ const EventbriteCardContent = ({ eventbriteId, fallbackImage, fallbackTitle, chi
         />
       </div>
       <div className="event-info">
-        {children(displayTitle, externalData?.description, displayImage, externalData?.ticketTiers)}
+        {children(
+          displayTitle,
+          externalData?.description,
+          displayImage,
+          externalData?.ticketTiers,
+          externalData?.agenda,
+          externalData?.highlights,
+          externalData?.location
+        )}
       </div>
     </>
   );
@@ -83,12 +91,12 @@ const Events = () => {
         customerEmail: undefined, 
         cartItems: [
           {
-            eventId: eventInstance._id,
-            eventName: eventInstance.name || eventInstance.resolvedTitle,
-            ticketTypeId: selectedTier.id || selectedTier._id || "standard-pass",
+            eventId:        eventInstance._id,
+            eventName:      eventInstance.name || eventInstance.resolvedTitle,
+            ticketTypeId:   selectedTier.id || selectedTier._id || "standard-pass",
             ticketTypeName: selectedTier.name,
-            priceInCents: Math.round(calculatedPrice * 100), 
-            quantity: 1
+            priceInCents:   Math.round(calculatedPrice * 100), 
+            quantity:       1
           }
         ]
       };
@@ -111,6 +119,39 @@ const Events = () => {
     } finally {
       setCheckoutLoading(null);
     }
+  };
+
+  const openModal = (event, resolvedTitle, resolvedDescription, resolvedImage, externalTiers, externalAgenda, externalHighlights, externalLocation) => {
+    const availableTiers = event.ticketTypes && event.ticketTypes.length > 0
+      ? event.ticketTypes
+      : externalTiers || [];
+
+    // Merge location: prefer DB location, fall back to Eventbrite location
+    const resolvedLocation = (event.location?.name || event.location?.address)
+      ? event.location
+      : externalLocation || null;
+
+    // Merge agenda: prefer DB agenda, fall back to Eventbrite agenda
+    const resolvedAgenda = event.agenda && event.agenda.length > 0
+      ? event.agenda
+      : externalAgenda || [];
+
+    // Merge highlights: prefer DB highlights, fall back to Eventbrite highlights
+    const resolvedHighlights = event.highlights && event.highlights.length > 0
+      ? event.highlights
+      : externalHighlights || [];
+
+    setIsExpandedOverview(false);
+    setSelectedModalEvent({
+      ...event,
+      resolvedTitle,
+      resolvedDescription,
+      resolvedImage,
+      availableTiers,
+      resolvedLocation,
+      resolvedAgenda,
+      resolvedHighlights,
+    });
   };
 
   const now = new Date();
@@ -152,83 +193,72 @@ const Events = () => {
           </div>
 
           <div className="events-grid">
-            {upcomingEvents.map((event) => {
-              return (
-                <div key={event._id || Math.random()} className="event-card">
-                  <EventbriteCardContent
-                    eventbriteId={event.eventbriteId}
-                    fallbackImage={event.coverImage}
-                    fallbackTitle={event.name}
-                  >
-                    {(resolvedTitle, resolvedDescription, resolvedImage, externalTiers) => {
-                      const availableTiers = event.ticketTypes && event.ticketTypes.length > 0 
-                        ? event.ticketTypes 
-                        : externalTiers || [];
+            {upcomingEvents.map((event) => (
+              <div key={event._id || Math.random()} className="event-card">
+                <EventbriteCardContent
+                  eventbriteId={event.eventbriteId}
+                  fallbackImage={event.coverImage}
+                  fallbackTitle={event.name}
+                >
+                  {(resolvedTitle, resolvedDescription, resolvedImage, externalTiers, externalAgenda, externalHighlights, externalLocation) => {
+                    const availableTiers = event.ticketTypes && event.ticketTypes.length > 0 
+                      ? event.ticketTypes 
+                      : externalTiers || [];
 
-                      return (
-                        <>
-                          <span className="event-date-tag">
-                            {formatEventDate(event.date)} &nbsp;·&nbsp; {formatEventTime(event.date)}
-                          </span>
-                          
-                          <h3 
-                            className="playfair" 
-                            style={{ cursor: "pointer", color: '#002147' }}
-                            onClick={() => {
-                              setIsExpandedOverview(false);
-                              setSelectedModalEvent({ ...event, resolvedTitle, resolvedDescription, resolvedImage, availableTiers });
-                            }}
-                          >
-                            {resolvedTitle}
-                          </h3>
-                          
-                          {event.location && (event.location.name || event.location.address || event.location.city) && (
-                            <div className="event-location" style={{ marginBottom: '12px' }}>
-                              {event.location.name}{event.location.address && ` - ${event.location.address}`}{event.location.city && `, ${event.location.city}`}
-                            </div>
-                          )}
-
-                          <p 
-                            onClick={() => {
-                              setIsExpandedOverview(false);
-                              setSelectedModalEvent({ ...event, resolvedTitle, resolvedDescription, resolvedImage, availableTiers });
-                            }}
-                            style={{ fontSize: '13px', color: '#C5A059', cursor: 'pointer', marginBottom: '18px', fontWeight: '600' }}
-                          >
-                            View Details & Tiers →
-                          </p>
-
-                          <div className="ticket-tiers-selection-zone" style={{ borderTop: '1px solid #f0f0f0', paddingTop: '12px', marginTop: 'auto' }}>
-                            {availableTiers.map((ticket, index) => {
-                              const finalPrice = parseCleanPrice(ticket);
-                              return (
-                                <div 
-                                  key={ticket._id || index} 
-                                  onClick={() => {
-                                    setIsExpandedOverview(false);
-                                    setSelectedModalEvent({ ...event, resolvedTitle, resolvedDescription, resolvedImage, availableTiers });
-                                  }}
-                                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f9f9f9', padding: '8px 12px', borderRadius: '6px', marginBottom: '6px', fontSize: '13px', cursor: 'pointer' }}
-                                >
-                                  <span style={{ fontWeight: '600', color: '#002147' }}>{ticket.name}</span>
-                                  <span style={{ color: '#C5A059', fontWeight: 'bold' }}>${finalPrice.toFixed(2)}</span>
-                                </div>
-                              );
-                            })}
+                    return (
+                      <>
+                        <span className="event-date-tag">
+                          {formatEventDate(event.date)} &nbsp;·&nbsp; {formatEventTime(event.date)}
+                        </span>
+                        
+                        <h3 
+                          className="playfair" 
+                          style={{ cursor: "pointer", color: '#002147' }}
+                          onClick={() => openModal(event, resolvedTitle, resolvedDescription, resolvedImage, externalTiers, externalAgenda, externalHighlights, externalLocation)}
+                        >
+                          {resolvedTitle}
+                        </h3>
+                        
+                        {event.location && (event.location.name || event.location.address || event.location.city) && (
+                          <div className="event-location" style={{ marginBottom: '12px' }}>
+                            {event.location.name}{event.location.address && ` - ${event.location.address}`}{event.location.city && `, ${event.location.city}`}
                           </div>
-                        </>
-                      );
-                    }}
-                  </EventbriteCardContent>
-                </div>
-              );
-            })}
+                        )}
+
+                        <p 
+                          onClick={() => openModal(event, resolvedTitle, resolvedDescription, resolvedImage, externalTiers, externalAgenda, externalHighlights, externalLocation)}
+                          style={{ fontSize: '13px', color: '#C5A059', cursor: 'pointer', marginBottom: '18px', fontWeight: '600' }}
+                        >
+                          View Details & Tiers →
+                        </p>
+
+                        <div className="ticket-tiers-selection-zone" style={{ borderTop: '1px solid #f0f0f0', paddingTop: '12px', marginTop: 'auto' }}>
+                          {availableTiers.map((ticket, index) => {
+                            const finalPrice = parseCleanPrice(ticket);
+                            return (
+                              <div 
+                                key={ticket._id || index} 
+                                onClick={() => openModal(event, resolvedTitle, resolvedDescription, resolvedImage, externalTiers, externalAgenda, externalHighlights, externalLocation)}
+                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f9f9f9', padding: '8px 12px', borderRadius: '6px', marginBottom: '6px', fontSize: '13px', cursor: 'pointer' }}
+                              >
+                                <span style={{ fontWeight: '600', color: '#002147' }}>{ticket.name}</span>
+                                <span style={{ color: '#C5A059', fontWeight: 'bold' }}>${finalPrice.toFixed(2)}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </>
+                    );
+                  }}
+                </EventbriteCardContent>
+              </div>
+            ))}
           </div>
         </section>
       </div>
 
       {/* ======================================================= */}
-      {/* 🌟 SCROLLABLE MODAL (NO STUBBED DATA / NO EXTERNAL EMOJIS) */}
+      {/* SCROLLABLE MODAL                                         */}
       {/* ======================================================= */}
       {selectedModalEvent && (
         <div 
@@ -239,7 +269,7 @@ const Events = () => {
             style={{ backgroundColor: '#fff', width: '100%', maxWidth: '750px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 25px 50px rgba(0,0,0,0.3)', position: 'relative', display: 'flex', flexDirection: 'column', maxHeight: '92vh' }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Window Trigger */}
+            {/* Close Button */}
             <button 
               onClick={() => setSelectedModalEvent(null)}
               style={{ position: 'absolute', top: '15px', right: '15px', background: '#fff', border: 'none', width: '36px', height: '36px', borderRadius: '50%', fontSize: '14px', fontWeight: 'bold', color: '#002147', cursor: 'pointer', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}
@@ -247,7 +277,7 @@ const Events = () => {
               ✕
             </button>
 
-            {/* Modal Image Header Containment */}
+            {/* Modal Image Header */}
             <div style={{ width: '100%', height: '240px', overflow: 'hidden', position: 'relative', backgroundColor: '#002147' }}>
               <img 
                 src={selectedModalEvent.resolvedImage || selectedModalEvent.coverImage} 
@@ -258,48 +288,87 @@ const Events = () => {
                 <span style={{ color: '#C5A059', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '1px', fontWeight: 'bold' }}>
                   {formatEventDate(selectedModalEvent.date)} @ {formatEventTime(selectedModalEvent.date)}
                 </span>
-                <h2 className="playfair" style={{ color: '#fff', margin: '5px 0 0 0', fontSize: '24px' }}>{selectedModalEvent.resolvedTitle}</h2>
+                <h2 className="playfair" style={{ color: '#fff', margin: '5px 0 0 0', fontSize: '24px' }}>
+                  {selectedModalEvent.resolvedTitle}
+                </h2>
               </div>
             </div>
 
             {/* Main Details Body */}
             <div style={{ padding: '25px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '24px' }}>
-              
-              {/* DYNAMIC LOCATION PARSING ONLY */}
-              {selectedModalEvent.location && (selectedModalEvent.location.name || selectedModalEvent.location.address) && (
+
+              {/* HIGHLIGHTS */}
+              {selectedModalEvent.resolvedHighlights && selectedModalEvent.resolvedHighlights.length > 0 && (
                 <div>
-                  <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Location</h3>
-                  <div style={{ fontSize: '14px', color: '#333', background: '#fbf8f3', padding: '14px 16px', borderRadius: '8px', borderLeft: '4px solid #C5A059', lineHeight: '1.5' }}>
-                    {selectedModalEvent.location.name && <strong>{selectedModalEvent.location.name}<br /></strong>}
-                    {selectedModalEvent.location.address && <>{selectedModalEvent.location.address}<br /></>}
-                    {selectedModalEvent.location.city}{selectedModalEvent.location.state && `, ${selectedModalEvent.location.state}`}
+                  <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 10px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>
+                    Event Highlights
+                  </h3>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {selectedModalEvent.resolvedHighlights.map((item, idx) => (
+                      <span 
+                        key={idx} 
+                        style={{ background: '#f4f0e8', color: '#002147', borderLeft: '3px solid #C5A059', padding: '6px 12px', borderRadius: '4px', fontSize: '13px', fontWeight: '600' }}
+                      >
+                        {item}
+                      </span>
+                    ))}
                   </div>
                 </div>
               )}
 
-              {/* DYNAMIC AGENDA PARSING ONLY */}
-              {selectedModalEvent.agenda && selectedModalEvent.agenda.length > 0 && (
+              {/* LOCATION */}
+              {selectedModalEvent.resolvedLocation && (selectedModalEvent.resolvedLocation.name || selectedModalEvent.resolvedLocation.address) && (
                 <div>
-                  <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Schedule</h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13.5px' }}>
-                    {selectedModalEvent.agenda.map((item, idx) => (
-                      <div key={idx} style={{ display: 'flex', gap: '15px' }}>
-                        <strong style={{ color: '#C5A059', minWidth: '70px' }}>{item.time}</strong>
-                        <span style={{ color: '#444' }}>{item.description}</span>
+                  <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>
+                    Location
+                  </h3>
+                  <div style={{ fontSize: '14px', color: '#333', background: '#fbf8f3', padding: '14px 16px', borderRadius: '8px', borderLeft: '4px solid #C5A059', lineHeight: '1.5' }}>
+                    {selectedModalEvent.resolvedLocation.name && (
+                      <strong>{selectedModalEvent.resolvedLocation.name}<br /></strong>
+                    )}
+                    {selectedModalEvent.resolvedLocation.address && (
+                      <>{selectedModalEvent.resolvedLocation.address}<br /></>
+                    )}
+                    {selectedModalEvent.resolvedLocation.city}
+                    {selectedModalEvent.resolvedLocation.state && `, ${selectedModalEvent.resolvedLocation.state}`}
+                    {selectedModalEvent.resolvedLocation.zip && ` ${selectedModalEvent.resolvedLocation.zip}`}
+                  </div>
+                </div>
+              )}
+
+              {/* AGENDA / SCHEDULE */}
+              {selectedModalEvent.resolvedAgenda && selectedModalEvent.resolvedAgenda.length > 0 && (
+                <div>
+                  <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>
+                    Schedule
+                  </h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13.5px' }}>
+                    {selectedModalEvent.resolvedAgenda.map((item, idx) => (
+                      <div key={idx} style={{ display: 'flex', gap: '15px', alignItems: 'flex-start' }}>
+                        <strong style={{ color: '#C5A059', minWidth: '70px', flexShrink: 0 }}>{item.time}</strong>
+                        <div>
+                          {item.title && (
+                            <div style={{ fontWeight: '700', color: '#002147', marginBottom: '2px' }}>{item.title}</div>
+                          )}
+                          {item.description && (
+                            <div style={{ color: '#444', lineHeight: '1.5' }}>{item.description}</div>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* DYNAMIC EXACT EVENTBRITE DESCRIPTION OVERVIEW */}
+              {/* EVENT OVERVIEW / DESCRIPTION */}
               <div>
-                <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Event Overview</h3>
+                <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>
+                  Event Overview
+                </h3>
                 <div 
                   style={{ fontSize: '14px', lineHeight: '1.6', color: '#444', maxHeight: isExpandedOverview ? 'none' : '160px', overflow: 'hidden', position: 'relative' }}
                   dangerouslySetInnerHTML={{ __html: selectedModalEvent.resolvedDescription || selectedModalEvent.description || "No overview available." }}
                 />
-                
                 {(selectedModalEvent.resolvedDescription || selectedModalEvent.description) && (
                   <button 
                     onClick={() => setIsExpandedOverview(!isExpandedOverview)}
@@ -310,10 +379,12 @@ const Events = () => {
                 )}
               </div>
 
-              {/* DYNAMIC FAQS PARSING ONLY */}
+              {/* FAQS */}
               {selectedModalEvent.faqs && selectedModalEvent.faqs.length > 0 && (
                 <div>
-                  <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Frequently Asked Questions</h3>
+                  <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>
+                    Frequently Asked Questions
+                  </h3>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '13.5px' }}>
                     {selectedModalEvent.faqs.map((faq, idx) => (
                       <div key={idx}>
@@ -325,24 +396,24 @@ const Events = () => {
                 </div>
               )}
 
-              {/* TERMS & VERBATIM ACCOUNTABILITY DISCLAIMER */}
+              {/* POLICIES & TERMS */}
               <div>
-                <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Policies & Terms</h3>
-                <div style={{ fontSize: '13px', lineHeight: '1.6', color: '#666', background: '#fff5f5', padding: '14px', borderRadius: '8px', border: '1px solid #fed7d7', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>
+                  Policies & Terms
+                </h3>
+                <div style={{ fontSize: '13px', lineHeight: '1.6', color: '#555', background: '#fafafa', padding: '14px', borderRadius: '8px', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   <div>
-                    <strong>Refund Policy:</strong> All sales are final. Admission passes are entirely non-refundable.
+                    <strong style={{ color: '#002147' }}>Refund Policy:</strong> All sales are final. Admission passes are entirely non-refundable. Pass entries may be transferred to another individual up to 24 hours prior to the event start time.
                   </div>
-                  <div style={{ color: '#b91c1c', fontWeight: '700', borderTop: '1px dashed #fecaca', paddingTop: '8px', marginTop: '4px' }}>
-                    <div style={{ color: '#555', fontWeight: '600', borderTop: '1px dashed #fecaca', paddingTop: '8px', marginTop: '4px', fontSize: '12px' }}>
-  By purchasing a ticket and attending this event, guests acknowledge and accept that Grown Folks Collective and its affiliated organizers shall not be held liable for any personal injury, loss, or damages incurred during the event. Attendance is at the guest's own risk.
-</div>
+                  <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '10px', fontSize: '12px', color: '#666' }}>
+                    <strong style={{ color: '#002147' }}>Limitation of Liability:</strong> By purchasing a ticket and attending this event, guests acknowledge and accept that The Grown Folks Collective and its affiliated organizers shall not be held liable for any personal injury, loss, theft, or damages incurred during or in connection with the event. Attendance is voluntary and at the guest's own risk.
                   </div>
                 </div>
               </div>
 
             </div>
 
-            {/* Locked Purchase Footer Area */}
+            {/* Ticket Purchase Footer */}
             <div style={{ padding: '20px 25px', borderTop: '1px solid #eee', background: '#fafafa' }}>
               <h4 style={{ textTransform: 'uppercase', fontSize: '11px', letterSpacing: '1px', color: '#777', marginBottom: '10px', fontWeight: 'bold' }}>
                 Select Ticket Tier
@@ -359,7 +430,6 @@ const Events = () => {
                         <div style={{ fontWeight: '700', color: '#002147', fontSize: '13.5px' }}>{tier.name}</div>
                         <div style={{ color: '#C5A059', fontWeight: 'bold', fontSize: '13.5px' }}>${finalPrice.toFixed(2)}</div>
                       </div>
-
                       <button
                         onClick={() => handleDirectStripeCheckout(selectedModalEvent, tier)}
                         disabled={checkoutLoading !== null}
