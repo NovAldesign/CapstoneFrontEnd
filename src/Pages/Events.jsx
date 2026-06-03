@@ -334,7 +334,7 @@ const Events = () => {
                   </div>
                   <div style={{ color: '#b91c1c', fontWeight: '700', borderTop: '1px dashed #fecaca', paddingTop: '8px', marginTop: '4px' }}>
                     <div style={{ color: '#555', fontWeight: '600', borderTop: '1px dashed #fecaca', paddingTop: '8px', marginTop: '4px', fontSize: '12px' }}>
-  By purchasing a ticket and attending this event, guests acknowledge and accept that The Grown Folks Collective and its affiliated organizers shall not be held liable for any personal injury, loss, or damages incurred during the event. Attendance is at the guest's own risk.
+  By purchasing a ticket and attending this event, guests acknowledge and accept that Grown Folks Collective and its affiliated organizers shall not be held liable for any personal injury, loss, or damages incurred during the event. Attendance is at the guest's own risk.
 </div>
                   </div>
                 </div>
