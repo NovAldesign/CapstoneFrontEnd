@@ -315,50 +315,62 @@ const Events = () => {
           )}
         </section>
 
-        {/* PARTNERSHIP & MEMBERSHIP SECTION */}
-        <section style={{ backgroundColor: '#C5A059', borderRadius: '16px', padding: '60px 50px', margin: '60px 0 20px 0' }}>
-          <div style={{ textAlign: 'center', marginBottom: '45px' }}>
-            <span style={{ textTransform: 'uppercase', fontSize: '11px', letterSpacing: '2px', fontWeight: '700', color: '#002147', opacity: 0.7 }}>
-              Get Involved
-            </span>
-            <h2 className="playfair" style={{ color: '#002147', fontSize: '36px', margin: '10px 0 12px 0', fontWeight: 'normal' }}>
-              Join the Movement Against Social Isolation
-            </h2>
-            <p style={{ color: '#002147', fontSize: '15px', lineHeight: '1.7', maxWidth: '620px', margin: '0 auto', opacity: 0.85 }}>
-              Social isolation is one of the defining challenges of our generation. Every event we host is a direct response to that — and we're always looking for people and brands who want to be part of the solution.
-            </p>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
-            <div style={{ backgroundColor: 'rgba(0, 33, 71, 0.08)', border: '1px solid rgba(0,33,71,0.15)', borderRadius: '12px', padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              <div>
-                <h3 className="playfair" style={{ color: '#002147', fontSize: '22px', marginBottom: '12px' }}>Join The Collective</h3>
-                <p style={{ color: '#002147', fontSize: '14px', lineHeight: '1.7', marginBottom: '24px', opacity: 0.85 }}>
-                  Studies show that loneliness among high-achieving adults is at an all-time high — and professional success doesn't make it easier. The Grown Folks Collective exists to change that. Join a curated community of Atlanta professionals who gather intentionally, connect authentically, and leave every experience feeling genuinely seen. This isn't networking. This is belonging.
-                </p>
-              </div>
-              <button
-                onClick={() => window.location.href = '/membership'}
-                style={{ width: 'fit-content', padding: '12px 28px', backgroundColor: '#002147', color: '#C5A059', border: '2px solid #002147', borderRadius: '4px', fontSize: '12px', fontWeight: '700', letterSpacing: '1.5px', textTransform: 'uppercase', cursor: 'pointer' }}
-              >
-                Join The Collective
-              </button>
+        {/* OVERHAULED INVOLVEMENT SECTION (MATCHES TESTIMONIALS STRUCTURE) */}
+        <section style={{ backgroundColor: '#0a1628', borderRadius: '12px', padding: '5rem 2rem', margin: '60px 0 20px 0', color: '#ffffff' }}>
+          <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+            
+            <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+              <span style={{ fontFamily: "'Trebuchet MS', sans-serif", fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(204, 214, 240, 0.6)' }}>
+                Get Involved
+              </span>
+              <h2 className="playfair" style={{ color: '#ffffff', fontSize: '2rem', fontWeight: '400', margin: '0.25rem 0 0' }}>
+                Join the Movement Against Social Isolation
+              </h2>
+              <div style={{ width: '50px', height: '1px', background: 'rgba(201, 168, 76, 0.3)', margin: '15px auto 0 auto' }}></div>
             </div>
 
-            <div style={{ backgroundColor: 'rgba(0, 33, 71, 0.08)', border: '1px solid rgba(0,33,71,0.15)', borderRadius: '12px', padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              <div>
-                <h3 className="playfair" style={{ color: '#002147', fontSize: '22px', marginBottom: '12px' }}>Partner With Us</h3>
-                <p style={{ color: '#002147', fontSize: '14px', lineHeight: '1.7', marginBottom: '24px', opacity: 0.85 }}>
-                  We partner with brands, venues, and organizations that share our commitment to real human connection. Whether you're looking to co-host an experience, sponsor an event, or place your brand in front of a room full of engaged Atlanta professionals — we want to hear from you. Let's build something that actually matters.
-                </p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              
+              {/* Membership Card */}
+              <div style={{ backgroundColor: '#111e35', border: '1px solid rgba(201, 168, 76, 0.55)', borderRadius: '4px', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ fontFamily: "Georgia, serif", fontSize: '3.5rem', color: '#c9a84c', lineHeight: '1', marginBottom: '0.5rem', opacity: 0.7, height: '45px' }}>“</div>
+                  <h3 className="playfair" style={{ color: '#ffffff', fontSize: '1.4rem', fontWeight: '400', margin: '0 0 1rem 0' }}>Join The Collective</h3>
+                  <p style={{ fontFamily: "Georgia, serif", fontSize: '0.95rem', lineHeight: '1.8', color: '#ccd6f0', fontStyle: 'italic', margin: '0 0 2rem 0' }}>
+                    Studies show that loneliness among high-achieving adults is at an all-time high — and professional success doesn't make it easier. The Grown Folks Collective exists to change that. Join a curated community of Atlanta professionals who gather intentionally, connect authentically, and leave every experience feeling genuinely seen. This isn't networking. This is belonging.
+                  </p>
+                </div>
+                <button
+                  onClick={() => window.location.href = '/membership'}
+                  style={{ width: 'fit-content', padding: '12px 24px', backgroundColor: 'transparent', color: '#c9a84c', border: '1px solid rgba(201, 168, 76, 0.6)', borderRadius: '4px', fontFamily: "'Trebuchet MS', sans-serif", fontSize: '11px', fontWeight: 'bold', letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.3s ease' }}
+                >
+                  Join The Collective
+                </button>
               </div>
-              <button
-                onClick={() => window.location.href = '/partnerships'}
-                style={{ width: 'fit-content', padding: '12px 28px', backgroundColor: '#002147', color: '#C5A059', border: '2px solid #002147', borderRadius: '4px', fontSize: '12px', fontWeight: '700', letterSpacing: '1.5px', textTransform: 'uppercase', cursor: 'pointer' }}
-              >
-                Explore Sponsorship & Partnership Opportunities
-              </button>
+
+              {/* Partnerships Card */}
+              <div style={{ backgroundColor: '#111e35', border: '1px solid rgba(201, 168, 76, 0.25)', borderRadius: '4px', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ fontFamily: "Georgia, serif", fontSize: '3.5rem', color: '#c9a84c', lineHeight: '1', marginBottom: '0.5rem', opacity: 0.7, height: '45px' }}>“</div>
+                  <h3 className="playfair" style={{ color: '#ffffff', fontSize: '1.4rem', fontWeight: '400', margin: '0 0 1rem 0' }}>Partner With Us</h3>
+                  <p style={{ fontFamily: "Georgia, serif", fontSize: '0.95rem', lineHeight: '1.8', color: '#ccd6f0', fontStyle: 'italic', margin: '0 0 2rem 0' }}>
+                    We partner with brands, venues, and organizations that share our commitment to real human connection. Whether you're looking to co-host an experience, sponsor an event, or place your brand in front of a room full of engaged Atlanta professionals — we want to hear from you. Let's build something that actually matters.
+                  </p>
+                </div>
+                <button
+                  onClick={() => window.location.href = '/partnerships'}
+                  style={{ width: 'fit-content', padding: '12px 24px', backgroundColor: 'transparent', color: '#ccd6f0', border: '1px solid rgba(204, 214, 240, 0.3)', borderRadius: '4px', fontFamily: "'Trebuchet MS', sans-serif", fontSize: '11px', fontWeight: 'bold', letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.3s ease' }}
+                >
+                  Explore Partnerships
+                </button>
+              </div>
+
             </div>
+
+            <div style={{ textAlign: 'center', marginTop: '2.5rem', fontFamily: "'Trebuchet MS', sans-serif", fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(204, 214, 240, 0.5)' }}>
+              ✦ Intentional spaces • Verified local experiences ✦
+            </div>
+
           </div>
         </section>
 
@@ -501,44 +513,19 @@ const Events = () => {
 
               <div>
                 <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Event Overview</h3>
-                <div
+                <div 
                   style={{ fontSize: '14px', lineHeight: '1.6', color: '#444', maxHeight: isExpandedOverview ? 'none' : '160px', overflow: 'hidden', position: 'relative' }}
                   dangerouslySetInnerHTML={{ __html: selectedModalEvent.resolvedDescription || selectedModalEvent.description || "No overview available." }}
                 />
+                
                 {(selectedModalEvent.resolvedDescription || selectedModalEvent.description) && (
-                  <button
+                  <button 
                     onClick={() => setIsExpandedOverview(!isExpandedOverview)}
                     style={{ background: 'none', border: 'none', color: '#C5A059', fontWeight: '700', fontSize: '13px', cursor: 'pointer', padding: '6px 0', display: 'block', marginTop: '6px' }}
                   >
                     {isExpandedOverview ? "Read Less" : "Read More..."}
                   </button>
                 )}
-              </div>
-
-              {selectedModalEvent.faqs?.length > 0 && (
-                <div>
-                  <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Frequently Asked Questions</h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '13.5px' }}>
-                    {selectedModalEvent.faqs.map((faq, idx) => (
-                      <div key={idx}>
-                        <strong style={{ color: '#002147', display: 'block' }}>Q: {faq.question}</strong>
-                        <span style={{ color: '#555', lineHeight: '1.5', display: 'block', marginTop: '2px' }}>A: {faq.answer}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div>
-                <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Policies & Terms</h3>
-                <div style={{ fontSize: '13px', lineHeight: '1.6', color: '#555', background: '#fafafa', padding: '14px', borderRadius: '8px', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <div>
-                    <strong style={{ color: '#002147' }}>Refund Policy:</strong> All sales are final. Admission passes are entirely non-refundable. Pass entries may be transferred to another individual up to 24 hours prior to the event start time.
-                  </div>
-                  <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '10px', fontSize: '12px', color: '#666' }}>
-                    <strong style={{ color: '#002147' }}>Limitation of Liability:</strong> By purchasing a ticket and attending this event, guests acknowledge and accept that The Grown Folks Collective and its affiliated organizers shall not be held liable for any personal injury, loss, theft, or damages incurred during or in connection with the event. Attendance is voluntary and at the guest's own risk.
-                  </div>
-                </div>
               </div>
 
             </div>
@@ -574,7 +561,6 @@ const Events = () => {
           </div>
         </div>
       )}
-
     </div>
   );
 };
