@@ -360,15 +360,12 @@ const Events = () => {
                 onClick={() => window.location.href = '/partnerships'}
                 style={{ width: 'fit-content', padding: '12px 24px', backgroundColor: 'transparent', color: '#ccd6f0', border: '1px solid rgba(204, 214, 240, 0.3)', borderRadius: '4px', fontFamily: "'Trebuchet MS', sans-serif", fontSize: '11px', fontWeight: 'bold', letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.3s ease' }}
               >
-                Explore Partnerships
+                Explore Partnership Opportunities
               </button>
             </div>
 
           </div>
 
-          <div style={{ textAlign: 'center', marginTop: '2.5rem', fontFamily: "'Trebuchet MS', sans-serif", fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(204, 214, 240, 0.5)' }}>
-            ✦ Intentional spaces • Verified local experiences ✦
-          </div>
 
         </div>
       </section>
