@@ -184,21 +184,6 @@ const Events = () => {
             <h1 className="playfair luxe-title-white">Curated<br />Gatherings.</h1>
             <div className="gold-spacer-v2"></div>
             <p className="narrative-lead-white" style={{ marginBottom: '25px' }}>Intimate spaces in Atlanta designed for deep connection.</p>
-            
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', marginTop: '10px' }}>
-              <button 
-                onClick={() => window.location.href = '/membership'}
-                style={{ backgroundColor: '#C5A059', color: '#002147', border: 'none', padding: '12px 24px', fontSize: '14px', fontWeight: '700', borderRadius: '6px', cursor: 'pointer' }}
-              >
-                Join the Collective to Save
-              </button>
-              <button 
-                onClick={() => window.location.href = '/partnerships'}
-                style={{ backgroundColor: 'transparent', color: '#fff', border: '2px solid #fff', padding: '12px 24px', fontSize: '14px', fontWeight: '700', borderRadius: '6px', cursor: 'pointer' }}
-              >
-                Partner with Us
-              </button>
-            </div>
           </div>
         </div>
       </header>
@@ -322,7 +307,7 @@ const Events = () => {
                                   }}
                                   style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f9f9f9', padding: '8px 12px', borderRadius: '6px', marginBottom: '6px', fontSize: '13px', cursor: 'pointer' }}
                                 >
-                                  <span style={{ fontWeight: '600', color: '#002147' }}>{ticket.name}</span>
+                                  <span style={{ fontWeight: '600', color: '#002147' }}>{tier.name}</span>
                                   <span style={{ color: '#C5A059', fontWeight: 'bold' }}>${finalPrice.toFixed(2)}</span>
                                 </div>
                               );
@@ -336,6 +321,45 @@ const Events = () => {
               ))}
             </div>
           )}
+        </section>
+
+        {/* SEO PERSISTENT CALL-TO-ACTION DRIVERS */}
+        <section className="seo-drivers-section" style={{ padding: '60px 0 20px 0', borderTop: '1px solid #eee', marginTop: '40px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', flexWrap: 'wrap' }}>
+            
+            {/* Membership Driver Card */}
+            <div style={{ backgroundColor: '#fcfcfc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '30px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div>
+                <h3 className="playfair" style={{ color: '#002147', fontSize: '22px', marginBottom: '10px' }}>Join The Collective</h3>
+                <p style={{ color: '#555', fontSize: '14px', lineHeight: '1.6', marginBottom: '20px' }}>
+                  Secure exclusive baseline access to our curated Atlanta professional community lounge. Unlock priority invitations, preferred ticket tier adjustments, and community frameworks centering around tax-advantaged business strategy travel and shared growth.
+                </p>
+              </div>
+              <button 
+                onClick={() => window.location.href = '/membership'}
+                style={{ backgroundColor: '#C5A059', color: '#002147', border: 'none', padding: '12px 20px', fontSize: '13px', fontWeight: '700', borderRadius: '6px', cursor: 'pointer', width: 'fit-content' }}
+              >
+                Join the Collective to Save
+              </button>
+            </div>
+
+            {/* Partnerships Driver Card */}
+            <div style={{ backgroundColor: '#fcfcfc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '30px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div>
+                <h3 className="playfair" style={{ color: '#002147', fontSize: '22px', marginBottom: '10px' }}>Explore Partnership Opportunities</h3>
+                <p style={{ color: '#555', fontSize: '14px', lineHeight: '1.6', marginBottom: '20px' }}>
+                  Align your brand with forward-thinking innovators. We collaborate with companies and local ventures to build corporate alignment, activate bespoke spaces, and facilitate sustainable employee morale partnerships across the ecosystem.
+                </p>
+              </div>
+              <button 
+                onClick={() => window.location.href = '/partnerships'}
+                style={{ backgroundColor: '#002147', color: '#fff', border: 'none', padding: '12px 20px', fontSize: '13px', fontWeight: '700', borderRadius: '6px', cursor: 'pointer', width: 'fit-content' }}
+              >
+                Partner with Us
+              </button>
+            </div>
+
+          </div>
         </section>
       </div>
 
