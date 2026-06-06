@@ -314,67 +314,64 @@ const Events = () => {
             </div>
           )}
         </section>
+      </div>
 
-        {/* OVERHAULED INVOLVEMENT SECTION (MATCHES TESTIMONIALS STRUCTURE) */}
-        <section style={{ backgroundColor: '#0a1628', borderRadius: '12px', padding: '5rem 2rem', margin: '60px 0 20px 0', color: '#ffffff' }}>
-          <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+      {/* OVERHAULED INVOLVEMENT SECTION (FULL WIDTH GRID BACKGROUND) */}
+      <section style={{ backgroundColor: '#0a1628', padding: '5rem 2rem', margin: '60px 0 0 0', color: '#ffffff', width: '100vw', position: 'relative', left: '50%', right: '50%', marginLeft: '-50vw', marginRight: '-50vw' }}>
+        <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+          
+          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <span style={{ fontFamily: "'Trebuchet MS', sans-serif", fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(204, 214, 240, 0.6)' }}>
+              Get Involved
+            </span>
+            <h2 className="playfair" style={{ color: '#ffffff', fontSize: '2rem', fontWeight: '400', margin: '0.25rem 0 0' }}>
+              Join the Movement Against Social Isolation
+            </h2>
+            <div style={{ width: '50px', height: '1px', background: 'rgba(201, 168, 76, 0.3)', margin: '15px auto 0 auto' }}></div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
             
-            <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-              <span style={{ fontFamily: "'Trebuchet MS', sans-serif", fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(204, 214, 240, 0.6)' }}>
-                Get Involved
-              </span>
-              <h2 className="playfair" style={{ color: '#ffffff', fontSize: '2rem', fontWeight: '400', margin: '0.25rem 0 0' }}>
-                Join the Movement Against Social Isolation
-              </h2>
-              <div style={{ width: '50px', height: '1px', background: 'rgba(201, 168, 76, 0.3)', margin: '15px auto 0 auto' }}></div>
+            {/* Membership Card */}
+            <div style={{ backgroundColor: '#111e35', border: '1px solid rgba(201, 168, 76, 0.55)', borderRadius: '4px', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div>
+                <h3 className="playfair" style={{ color: '#ffffff', fontSize: '1.4rem', fontWeight: '400', margin: '0 0 1rem 0' }}>Join The Collective</h3>
+                <p style={{ fontFamily: "Georgia, serif", fontSize: '0.95rem', lineHeight: '1.8', color: '#ccd6f0', fontStyle: 'italic', margin: '0 0 2rem 0' }}>
+                  Studies show that loneliness among high-achieving adults is at an all-time high — and professional success doesn't make it easier. The Grown Folks Collective exists to change that. Join a curated community of Atlanta professionals who gather intentionally, connect authentically, and leave every experience feeling genuinely seen. This isn't networking. This is belonging.
+                </p>
+              </div>
+              <button
+                onClick={() => window.location.href = '/membership'}
+                style={{ width: 'fit-content', padding: '12px 24px', backgroundColor: 'transparent', color: '#c9a84c', border: '1px solid rgba(201, 168, 76, 0.6)', borderRadius: '4px', fontFamily: "'Trebuchet MS', sans-serif", fontSize: '11px', fontWeight: 'bold', letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.3s ease' }}
+              >
+                Join The Collective
+              </button>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-              
-              {/* Membership Card */}
-              <div style={{ backgroundColor: '#111e35', border: '1px solid rgba(201, 168, 76, 0.55)', borderRadius: '4px', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <div>
-                  <div style={{ fontFamily: "Georgia, serif", fontSize: '3.5rem', color: '#c9a84c', lineHeight: '1', marginBottom: '0.5rem', opacity: 0.7, height: '45px' }}>“</div>
-                  <h3 className="playfair" style={{ color: '#ffffff', fontSize: '1.4rem', fontWeight: '400', margin: '0 0 1rem 0' }}>Join The Collective</h3>
-                  <p style={{ fontFamily: "Georgia, serif", fontSize: '0.95rem', lineHeight: '1.8', color: '#ccd6f0', fontStyle: 'italic', margin: '0 0 2rem 0' }}>
-                    Studies show that loneliness among high-achieving adults is at an all-time high — and professional success doesn't make it easier. The Grown Folks Collective exists to change that. Join a curated community of Atlanta professionals who gather intentionally, connect authentically, and leave every experience feeling genuinely seen. This isn't networking. This is belonging.
-                  </p>
-                </div>
-                <button
-                  onClick={() => window.location.href = '/membership'}
-                  style={{ width: 'fit-content', padding: '12px 24px', backgroundColor: 'transparent', color: '#c9a84c', border: '1px solid rgba(201, 168, 76, 0.6)', borderRadius: '4px', fontFamily: "'Trebuchet MS', sans-serif", fontSize: '11px', fontWeight: 'bold', letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.3s ease' }}
-                >
-                  Join The Collective
-                </button>
+            {/* Partnerships Card */}
+            <div style={{ backgroundColor: '#111e35', border: '1px solid rgba(201, 168, 76, 0.25)', borderRadius: '4px', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div>
+                <h3 className="playfair" style={{ color: '#ffffff', fontSize: '1.4rem', fontWeight: '400', margin: '0 0 1rem 0' }}>Partner With Us</h3>
+                <p style={{ fontFamily: "Georgia, serif", fontSize: '0.95rem', lineHeight: '1.8', color: '#ccd6f0', fontStyle: 'italic', margin: '0 0 2rem 0' }}>
+                  We partner with brands, venues, and organizations that share our commitment to real human connection. Whether you're looking to co-host an experience, sponsor an event, or place your brand in front of a room full of engaged Atlanta professionals — we want to hear from you. Let's build something that actually matters.
+                </p>
               </div>
-
-              {/* Partnerships Card */}
-              <div style={{ backgroundColor: '#111e35', border: '1px solid rgba(201, 168, 76, 0.25)', borderRadius: '4px', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <div>
-                  <div style={{ fontFamily: "Georgia, serif", fontSize: '3.5rem', color: '#c9a84c', lineHeight: '1', marginBottom: '0.5rem', opacity: 0.7, height: '45px' }}>“</div>
-                  <h3 className="playfair" style={{ color: '#ffffff', fontSize: '1.4rem', fontWeight: '400', margin: '0 0 1rem 0' }}>Partner With Us</h3>
-                  <p style={{ fontFamily: "Georgia, serif", fontSize: '0.95rem', lineHeight: '1.8', color: '#ccd6f0', fontStyle: 'italic', margin: '0 0 2rem 0' }}>
-                    We partner with brands, venues, and organizations that share our commitment to real human connection. Whether you're looking to co-host an experience, sponsor an event, or place your brand in front of a room full of engaged Atlanta professionals — we want to hear from you. Let's build something that actually matters.
-                  </p>
-                </div>
-                <button
-                  onClick={() => window.location.href = '/partnerships'}
-                  style={{ width: 'fit-content', padding: '12px 24px', backgroundColor: 'transparent', color: '#ccd6f0', border: '1px solid rgba(204, 214, 240, 0.3)', borderRadius: '4px', fontFamily: "'Trebuchet MS', sans-serif", fontSize: '11px', fontWeight: 'bold', letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.3s ease' }}
-                >
-                  Explore Partnerships
-                </button>
-              </div>
-
-            </div>
-
-            <div style={{ textAlign: 'center', marginTop: '2.5rem', fontFamily: "'Trebuchet MS', sans-serif", fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(204, 214, 240, 0.5)' }}>
-              ✦ Intentional spaces • Verified local experiences ✦
+              <button
+                onClick={() => window.location.href = '/partnerships'}
+                style={{ width: 'fit-content', padding: '12px 24px', backgroundColor: 'transparent', color: '#ccd6f0', border: '1px solid rgba(204, 214, 240, 0.3)', borderRadius: '4px', fontFamily: "'Trebuchet MS', sans-serif", fontSize: '11px', fontWeight: 'bold', letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.3s ease' }}
+              >
+                Explore Partnerships
+              </button>
             </div>
 
           </div>
-        </section>
 
-      </div>
+          <div style={{ textAlign: 'center', marginTop: '2.5rem', fontFamily: "'Trebuchet MS', sans-serif", fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(204, 214, 240, 0.5)' }}>
+            ✦ Intentional spaces • Verified local experiences ✦
+          </div>
+
+        </div>
+      </section>
 
       {/* SHOPPING CART SIDEBAR */}
       {isCartOpen && (
