@@ -307,7 +307,7 @@ const Events = () => {
                                   }}
                                   style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f9f9f9', padding: '8px 12px', borderRadius: '6px', marginBottom: '6px', fontSize: '13px', cursor: 'pointer' }}
                                 >
-                                  <span style={{ fontWeight: '600', color: '#002147' }}>{tier.name}</span>
+                                  <span style={{ fontWeight: '600', color: '#002147' }}>{ticket.name}</span>
                                   <span style={{ color: '#C5A059', fontWeight: 'bold' }}>${finalPrice.toFixed(2)}</span>
                                 </div>
                               );
