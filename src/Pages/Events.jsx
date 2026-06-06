@@ -12,14 +12,10 @@ const EventbriteCardContent = ({ eventbriteId, fallbackImage, fallbackTitle, chi
 
   useEffect(() => {
     if (!eventbriteId) return;
-    
     const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://capstonebackend-production-87ed.up.railway.app';
-    
     fetch(`${backendUrl}/api/events/external/${eventbriteId}`)
       .then((res) => res.ok ? res.json() : null)
-      .then((data) => {
-        if (data) setExternalData(data);
-      })
+      .then((data) => { if (data) setExternalData(data); })
       .catch((err) => console.error("Error loading Eventbrite asset package:", err));
   }, [eventbriteId]);
 
@@ -28,11 +24,11 @@ const EventbriteCardContent = ({ eventbriteId, fallbackImage, fallbackTitle, chi
 
   return (
     <>
-      <div className="event-img-wrapper" style={{ width: '100%', height: '240px', overflow: 'hidden', backgroundColor: '#002147' }}>
-        <img 
-          src={displayImage} 
-          alt={displayTitle} 
-          style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+      <div className="event-img-wrapper" style={{ width: '100%', height: '240px', overflow: 'hidden' }}>
+        <img
+          src={displayImage}
+          alt={displayTitle}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
         />
       </div>
       <div className="event-info">
@@ -48,8 +44,7 @@ const Events = () => {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [selectedModalEvent, setSelectedModalEvent] = useState(null);
   const [isExpandedOverview, setIsExpandedOverview] = useState(false);
-  
-  // Basket State Controls
+
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -60,7 +55,7 @@ const Events = () => {
         setEvents(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching GFC events:", error);
-        setEvents([]); 
+        setEvents([]);
       } finally {
         setLoading(false);
       }
@@ -76,26 +71,22 @@ const Events = () => {
 
   const handleAddToCart = (eventInstance, selectedTier) => {
     const calculatedPrice = parseCleanPrice(selectedTier);
-    
     setCart((prevCart) => {
       const existingIndex = prevCart.findIndex(item => item.ticketTypeId === (selectedTier.id || selectedTier._id));
-      
       if (existingIndex > -1) {
         const newCart = [...prevCart];
         newCart[existingIndex].quantity += 1;
         return newCart;
       }
-      
       return [...prevCart, {
         eventId:        eventInstance._id,
         eventName:      eventInstance.name || eventInstance.resolvedTitle,
         ticketTypeId:   selectedTier.id || selectedTier._id || "standard-pass",
         ticketTypeName: selectedTier.name,
-        priceInCents:   Math.round(calculatedPrice * 100), 
+        priceInCents:   Math.round(calculatedPrice * 100),
         quantity:       1
       }];
     });
-
     setIsCartOpen(true);
   };
 
@@ -106,19 +97,13 @@ const Events = () => {
   const handleCartStripeCheckout = async () => {
     if (cart.length === 0) return;
     setCheckoutLoading(true);
-
     try {
       const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://capstonebackend-production-87ed.up.railway.app';
-      
       const response = await fetch(`${backendUrl}/api/events/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customerEmail: undefined,
-          cartItems: cart
-        }),
+        body: JSON.stringify({ customerEmail: undefined, cartItems: cart }),
       });
-
       const data = await response.json();
       if (data.url) {
         window.location.href = data.url;
@@ -138,14 +123,13 @@ const Events = () => {
     .filter((e) => e && new Date(e.date) >= now && e.status?.toLowerCase() === "published")
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  // Updated Discount Calculations (5% and 10%)
   const uniqueEventIdsInCart = [...new Set(cart.map(item => item.eventId))];
   let currentDiscountLabel = "";
   if (uniqueEventIdsInCart.length === 2) currentDiscountLabel = "5% Multi-Event Discount Applied!";
-  if (uniqueEventIdsInCart.length >= 3) currentDiscountLabel = "10% Mega-Bundle Discount Applied!";
+  if (uniqueEventIdsInCart.length >= 3)  currentDiscountLabel = "10% Mega-Bundle Discount Applied!";
 
   const cartTotalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const cartSubtotal = cart.reduce((sum, item) => sum + ((item.priceInCents * item.quantity) / 100), 0);
+  const cartSubtotal   = cart.reduce((sum, item) => sum + ((item.priceInCents * item.quantity) / 100), 0);
 
   if (loading) {
     return (
@@ -157,18 +141,17 @@ const Events = () => {
 
   return (
     <div className="events-page-wrapper" style={{ position: 'relative', overflowX: 'hidden' }}>
-      {/* Meta Data for SEO */}
       <Helmet>
         <title>Events | Grown Folks Collective</title>
-        <meta 
-          name="description" 
-          content="Join our next curated gathering in Atlanta. Trade networking for true belonging in a sanctuary designed for high-level connection, joy, and alcohol-free community." 
+        <meta
+          name="description"
+          content="Join our next curated gathering in Atlanta. Trade networking for true belonging in a sanctuary designed for high-level connection, joy, and alcohol-free community."
         />
       </Helmet>
 
-      {/* Floating Sticky Cart Drawer Trigger Button */}
+      {/* Floating Cart Button */}
       {cart.length > 0 && (
-        <button 
+        <button
           onClick={() => setIsCartOpen(true)}
           style={{ position: 'fixed', bottom: '30px', right: '30px', backgroundColor: '#002147', color: '#fff', border: '2px solid #C5A059', borderRadius: '50%', width: '65px', height: '65px', cursor: 'pointer', zIndex: 900, boxShadow: '0 10px 25px rgba(0,0,0,0.3)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
         >
@@ -189,19 +172,17 @@ const Events = () => {
         </div>
       </header>
 
-      {/* RESTORED FAMILY NARRATIVE */}
+      {/* FAMILY NARRATIVE */}
       <section className="family-narrative-section" style={{ padding: '80px 0', backgroundColor: '#fff' }}>
         <div className="container">
           <div className="family-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '50px', alignItems: 'center' }}>
-            
             <div className="family-image-wrapper">
-              <img 
-                src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800" 
-                alt="Grown Folks Collective Connection" 
-                style={{ width: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 15px 35px rgba(0,0,0,0.08)' }} 
+              <img
+                src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800"
+                alt="Grown Folks Collective Connection"
+                style={{ width: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 15px 35px rgba(0,0,0,0.08)' }}
               />
             </div>
-
             <div className="family-text-content">
               <h2 className="playfair" style={{ color: '#002147', fontSize: '38px', margin: '0 0 20px 0', fontWeight: 'normal' }}>Connection.</h2>
               <p className="narrative-lead" style={{ color: '#C5A059', fontSize: '18px', lineHeight: '1.6', fontWeight: '500', marginBottom: '20px' }}>
@@ -213,7 +194,6 @@ const Events = () => {
               <p style={{ color: '#444', fontSize: '15px', lineHeight: '1.7', marginBottom: '30px' }}>
                 This is your space to <strong>unplug from professional stress</strong> and reconnect with the things you love. We aren't just building a network; we are building a family.
               </p>
-
               <div className="family-values" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', borderTop: '1px solid #eee', paddingTop: '25px' }}>
                 <div className="value-item">
                   <strong style={{ color: '#002147', display: 'block', fontSize: '14px', marginBottom: '4px' }}>Diverse Expertise</strong>
@@ -229,7 +209,6 @@ const Events = () => {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -243,11 +222,10 @@ const Events = () => {
             <div className="gold-spacer-small"></div>
           </div>
 
-          {/* MULTI-EVENT DISCOUNT EXPLANATORY BANNER */}
+          {/* MULTI-EVENT DISCOUNT BANNER */}
           <div style={{ maxWidth: '600px', margin: '0 auto 30px auto', background: '#fbf8f3', border: '1px solid #eef2f6', borderLeft: '4px solid #C5A059', borderRadius: '4px', padding: '16px 20px', textAlign: 'center' }}>
             <p style={{ margin: 0, color: '#002147', fontSize: '14px', lineHeight: '1.6', fontWeight: '500' }}>
-              <strong>Breathe deeper, connect longer.</strong> Planning to join us for multiple experiences? 
-              Your rewards accumulate automatically at checkout:
+              <strong>Breathe deeper, connect longer.</strong> Planning to join us for multiple experiences? Your rewards accumulate automatically at checkout:
             </p>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '10px', fontSize: '13px', fontWeight: 'bold', flexWrap: 'wrap' }}>
               <span style={{ color: '#C5A059' }}>🎟️ Select 2 Different Events = Get 5% Off Everything</span>
@@ -271,18 +249,14 @@ const Events = () => {
                     fallbackTitle={event.name}
                   >
                     {(resolvedTitle, resolvedDescription, resolvedImage, externalTiers) => {
-                      const availableTiers = event.ticketTypes && event.ticketTypes.length > 0 
-                        ? event.ticketTypes 
-                        : externalTiers || [];
-
+                      const availableTiers = event.ticketTypes?.length ? event.ticketTypes : externalTiers || [];
                       return (
                         <>
                           <span className="event-date-tag">
                             {formatEventDate(event.date)} &nbsp;·&nbsp; {formatEventTime(event.date)}
                           </span>
-                          
-                          <h3 
-                            className="playfair" 
+                          <h3
+                            className="playfair"
                             style={{ cursor: "pointer", color: '#002147' }}
                             onClick={() => {
                               setIsExpandedOverview(false);
@@ -291,14 +265,12 @@ const Events = () => {
                           >
                             {resolvedTitle}
                           </h3>
-                          
                           {event.location && (event.location.name || event.location.address || event.location.city) && (
                             <div className="event-location" style={{ marginBottom: '12px' }}>
                               {event.location.name}{event.location.address && ` - ${event.location.address}`}{event.location.city && `, ${event.location.city}`}
                             </div>
                           )}
-
-                          <p 
+                          <p
                             onClick={() => {
                               setIsExpandedOverview(false);
                               setSelectedModalEvent({ ...event, resolvedTitle, resolvedDescription, resolvedImage, availableTiers });
@@ -307,13 +279,12 @@ const Events = () => {
                           >
                             View Details & Tiers →
                           </p>
-
                           <div className="ticket-tiers-selection-zone" style={{ borderTop: '1px solid #f0f0f0', paddingTop: '12px', marginTop: 'auto' }}>
                             {availableTiers.map((ticket, index) => {
                               const finalPrice = parseCleanPrice(ticket);
                               return (
-                                <div 
-                                  key={ticket._id || index} 
+                                <div
+                                  key={ticket._id || index}
                                   onClick={() => {
                                     setIsExpandedOverview(false);
                                     setSelectedModalEvent({ ...event, resolvedTitle, resolvedDescription, resolvedImage, availableTiers });
@@ -336,55 +307,101 @@ const Events = () => {
           )}
         </section>
 
-        {/* SEO PERSISTENT CALL-TO-ACTION DRIVERS */}
-        <section className="seo-drivers-section" style={{ padding: '60px 0 20px 0', borderTop: '1px solid #eee', marginTop: '40px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', flexWrap: 'wrap' }}>
-            
-            {/* Membership Driver Card */}
-            <div style={{ backgroundColor: '#fcfcfc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '30px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        {/* ============================================================ */}
+        {/* PARTNERSHIP & MEMBERSHIP SECTION — Gold background, navy text */}
+        {/* ============================================================ */}
+        <section style={{
+          backgroundColor: '#C5A059',
+          borderRadius: '16px',
+          padding: '60px 50px',
+          margin: '60px 0 20px 0',
+        }}>
+          <div style={{ textAlign: 'center', marginBottom: '45px' }}>
+            <span style={{ textTransform: 'uppercase', fontSize: '11px', letterSpacing: '2px', fontWeight: '700', color: '#002147', opacity: 0.7 }}>
+              Get Involved
+            </span>
+            <h2 className="playfair" style={{ color: '#002147', fontSize: '36px', margin: '10px 0 12px 0', fontWeight: 'normal' }}>
+              Join the Movement Against Social Isolation
+            </h2>
+            <p style={{ color: '#002147', fontSize: '15px', lineHeight: '1.7', maxWidth: '620px', margin: '0 auto', opacity: 0.85 }}>
+              Social isolation is one of the defining challenges of our generation. Every event we host is a direct response to that — and we're always looking for people and brands who want to be part of the solution.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
+
+            {/* Membership Card */}
+            <div style={{ backgroundColor: 'rgba(0, 33, 71, 0.08)', border: '1px solid rgba(0,33,71,0.15)', borderRadius: '12px', padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
-                <h3 className="playfair" style={{ color: '#002147', fontSize: '22px', marginBottom: '10px' }}>Join The Collective</h3>
-                <p style={{ color: '#555', fontSize: '14px', lineHeight: '1.6', marginBottom: '20px' }}>
-                  Become part of a dedicated effort to end the modern epidemic of social isolation. By joining our curated professional community lounge in Atlanta, you unlock access to deep-level conversations, persistent real-world connections, and premium shared environments designed intentionally to help you find true belonging among peers.
+                <h3 className="playfair" style={{ color: '#002147', fontSize: '22px', marginBottom: '12px' }}>
+                  Join The Collective
+                </h3>
+                <p style={{ color: '#002147', fontSize: '14px', lineHeight: '1.7', marginBottom: '24px', opacity: 0.85 }}>
+                  Studies show that loneliness among high-achieving adults is at an all-time high — and professional success doesn't make it easier. The Grown Folks Collective exists to change that. Join a curated community of Atlanta professionals who gather intentionally, connect authentically, and leave every experience feeling genuinely seen. This isn't networking. This is belonging.
                 </p>
               </div>
-              <button 
+              <button
                 onClick={() => window.location.href = '/membership'}
-                className="luxe-button-gold"
-                style={{ width: 'fit-content' }}
+                style={{
+                  width: 'fit-content',
+                  padding: '12px 28px',
+                  backgroundColor: '#002147',
+                  color: '#C5A059',
+                  border: '2px solid #002147',
+                  borderRadius: '4px',
+                  fontSize: '12px',
+                  fontWeight: '700',
+                  letterSpacing: '1.5px',
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                }}
               >
                 Join The Collective
               </button>
             </div>
 
-            {/* Partnerships Driver Card */}
-            <div style={{ backgroundColor: '#fcfcfc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '30px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            {/* Partnership Card */}
+            <div style={{ backgroundColor: 'rgba(0, 33, 71, 0.08)', border: '1px solid rgba(0,33,71,0.15)', borderRadius: '12px', padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
-                <h3 className="playfair" style={{ color: '#002147', fontSize: '22px', marginBottom: '10px' }}>Explore Partnership Opportunities</h3>
-                <p style={{ color: '#555', fontSize: '14px', lineHeight: '1.6', marginBottom: '20px' }}>
-                  Align your brand with forward-thinking innovators to help fight social isolation. We collaborate with companies and local ventures to activate bespoke spaces, sponsor events, and facilitate sustainable employee morale partnerships. Click below to see what to expect on the next page and start your collaboration application.
+                <h3 className="playfair" style={{ color: '#002147', fontSize: '22px', marginBottom: '12px' }}>
+                  Partner With Us
+                </h3>
+                <p style={{ color: '#002147', fontSize: '14px', lineHeight: '1.7', marginBottom: '24px', opacity: 0.85 }}>
+                  We partner with brands, venues, and organizations that share our commitment to real human connection. Whether you're looking to co-host an experience, sponsor an event, or place your brand in front of a room full of engaged Atlanta professionals — we want to hear from you. Let's build something that actually matters.
                 </p>
               </div>
-              <button 
+              <button
                 onClick={() => window.location.href = '/partnerships'}
-                className="luxe-button-navy"
-                style={{ width: 'fit-content' }}
+                style={{
+                  width: 'fit-content',
+                  padding: '12px 28px',
+                  backgroundColor: '#002147',
+                  color: '#C5A059',
+                  border: '2px solid #002147',
+                  borderRadius: '4px',
+                  fontSize: '12px',
+                  fontWeight: '700',
+                  letterSpacing: '1.5px',
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                }}
               >
-                Partner with Us
+                Explore Sponsorship & Partnership Opportunities
               </button>
             </div>
 
           </div>
         </section>
+
       </div>
 
-      {/* SHOPPING BAG SIDEBAR OVERLAY LAYER */}
+      {/* SHOPPING CART SIDEBAR */}
       {isCartOpen && (
-        <div 
+        <div
           style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0, 33, 71, 0.4)', backdropFilter: 'blur(4px)', zIndex: 2000, display: 'flex', justifyContent: 'flex-end' }}
           onClick={() => setIsCartOpen(false)}
         >
-          <div 
+          <div
             style={{ width: '100%', maxWidth: '420px', height: '100%', backgroundColor: '#fff', boxShadow: '-10px 0 35px rgba(0,0,0,0.15)', display: 'flex', flexDirection: 'column', padding: '30px' }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -392,7 +409,6 @@ const Events = () => {
               <h3 className="playfair" style={{ color: '#002147', margin: 0, fontSize: '22px' }}>Your Pass Selections</h3>
               <button onClick={() => setIsCartOpen(false)} style={{ background: 'none', border: 'none', fontSize: '18px', cursor: 'pointer', color: '#777' }}>✕</button>
             </div>
-
             <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '15px' }}>
               {cart.length === 0 ? (
                 <div style={{ textAlign: 'center', color: '#777', padding: '40px 0' }}>
@@ -401,7 +417,7 @@ const Events = () => {
               ) : (
                 cart.map((item) => (
                   <div key={item.ticketTypeId} style={{ border: '1px solid #e2e8f0', padding: '12px', borderRadius: '8px', position: 'relative', background: '#fcfcfc' }}>
-                    <button 
+                    <button
                       onClick={() => handleRemoveFromCart(item.ticketTypeId)}
                       style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#cc0000', cursor: 'pointer', fontSize: '12px' }}
                     >
@@ -417,7 +433,6 @@ const Events = () => {
                 ))
               )}
             </div>
-
             {cart.length > 0 && (
               <div style={{ borderTop: '1px solid #eee', paddingTop: '20px', marginTop: '20px' }}>
                 {currentDiscountLabel && (
@@ -425,12 +440,10 @@ const Events = () => {
                     🎉 {currentDiscountLabel}
                   </div>
                 )}
-                
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '16px', fontWeight: 'bold', color: '#002147', marginBottom: '20px' }}>
                   <span>Subtotal:</span>
                   <span>${cartSubtotal.toFixed(2)}</span>
                 </div>
-
                 <button
                   onClick={handleCartStripeCheckout}
                   disabled={checkoutLoading}
@@ -446,26 +459,27 @@ const Events = () => {
 
       {/* DETAILS MODAL */}
       {selectedModalEvent && (
-        <div 
+        <div
           style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0, 33, 71, 0.8)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}
           onClick={() => setSelectedModalEvent(null)}
         >
-          <div 
+          <div
             style={{ backgroundColor: '#fff', width: '100%', maxWidth: '750px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 25px 50px rgba(0,0,0,0.3)', position: 'relative', display: 'flex', flexDirection: 'column', maxHeight: '92vh' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <button 
+            <button
               onClick={() => setSelectedModalEvent(null)}
               style={{ position: 'absolute', top: '15px', right: '15px', background: '#fff', border: 'none', width: '36px', height: '36px', borderRadius: '50%', fontSize: '14px', fontWeight: 'bold', color: '#002147', cursor: 'pointer', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}
             >
               ✕
             </button>
 
-            <div style={{ width: '100%', height: '240px', overflow: 'hidden', position: 'relative', backgroundColor: '#002147' }}>
-              <img 
-                src={selectedModalEvent.resolvedImage || selectedModalEvent.coverImage} 
-                alt={selectedModalEvent.resolvedTitle} 
-                style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+            {/* Modal Image — no background, cover fill */}
+            <div style={{ width: '100%', height: '240px', overflow: 'hidden', position: 'relative' }}>
+              <img
+                src={selectedModalEvent.resolvedImage || selectedModalEvent.coverImage}
+                alt={selectedModalEvent.resolvedTitle}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
               />
               <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(0,33,71,0.95))', padding: '20px' }}>
                 <span style={{ color: '#C5A059', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '1px', fontWeight: 'bold' }}>
@@ -476,13 +490,13 @@ const Events = () => {
             </div>
 
             <div style={{ padding: '25px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '24px' }}>
-              
+
               {/* LOCATION */}
               {selectedModalEvent.location && (selectedModalEvent.location.name || selectedModalEvent.location.address) && (
                 <div>
                   <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Location</h3>
                   <div style={{ fontSize: '14px', color: '#333', background: '#fbf8f3', padding: '14px 16px', borderRadius: '8px', borderLeft: '4px solid #C5A059', lineHeight: '1.5' }}>
-                    {selectedModalEvent.location.name && <strong>{selectedModalEvent.location.name}<br /></strong>}
+                    {selectedModalEvent.location.name    && <strong>{selectedModalEvent.location.name}<br /></strong>}
                     {selectedModalEvent.location.address && <>{selectedModalEvent.location.address}<br /></>}
                     {selectedModalEvent.location.city}{selectedModalEvent.location.state && `, ${selectedModalEvent.location.state}`}
                   </div>
@@ -490,14 +504,17 @@ const Events = () => {
               )}
 
               {/* AGENDA */}
-              {selectedModalEvent.agenda && selectedModalEvent.agenda.length > 0 && (
+              {selectedModalEvent.agenda?.length > 0 && (
                 <div>
                   <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Schedule</h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13.5px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13.5px' }}>
                     {selectedModalEvent.agenda.map((item, idx) => (
-                      <div key={idx} style={{ display: 'flex', gap: '15px' }}>
-                        <strong style={{ color: '#C5A059', minWidth: '70px' }}>{item.time}</strong>
-                        <span style={{ color: '#444' }}>{item.description}</span>
+                      <div key={idx} style={{ display: 'flex', gap: '15px', alignItems: 'flex-start' }}>
+                        <strong style={{ color: '#C5A059', minWidth: '70px', flexShrink: 0 }}>{item.time}</strong>
+                        <div>
+                          {item.title       && <div style={{ fontWeight: '700', color: '#002147', marginBottom: '2px' }}>{item.title}</div>}
+                          {item.description && <div style={{ color: '#444', lineHeight: '1.5' }}>{item.description}</div>}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -507,13 +524,12 @@ const Events = () => {
               {/* OVERVIEW */}
               <div>
                 <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Event Overview</h3>
-                <div 
+                <div
                   style={{ fontSize: '14px', lineHeight: '1.6', color: '#444', maxHeight: isExpandedOverview ? 'none' : '160px', overflow: 'hidden', position: 'relative' }}
                   dangerouslySetInnerHTML={{ __html: selectedModalEvent.resolvedDescription || selectedModalEvent.description || "No overview available." }}
                 />
-                
                 {(selectedModalEvent.resolvedDescription || selectedModalEvent.description) && (
-                  <button 
+                  <button
                     onClick={() => setIsExpandedOverview(!isExpandedOverview)}
                     style={{ background: 'none', border: 'none', color: '#C5A059', fontWeight: '700', fontSize: '13px', cursor: 'pointer', padding: '6px 0', display: 'block', marginTop: '6px' }}
                   >
@@ -523,7 +539,7 @@ const Events = () => {
               </div>
 
               {/* FAQS */}
-              {selectedModalEvent.faqs && selectedModalEvent.faqs.length > 0 && (
+              {selectedModalEvent.faqs?.length > 0 && (
                 <div>
                   <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Frequently Asked Questions</h3>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '13.5px' }}>
@@ -537,38 +553,35 @@ const Events = () => {
                 </div>
               )}
 
-              {/* TERMS */}
+              {/* POLICIES & TERMS */}
               <div>
                 <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Policies & Terms</h3>
-                <div style={{ fontSize: '13px', lineHeight: '1.6', color: '#666', background: '#fff5f5', padding: '14px', borderRadius: '8px', border: '1px solid #fed7d7', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ fontSize: '13px', lineHeight: '1.6', color: '#555', background: '#fafafa', padding: '14px', borderRadius: '8px', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   <div>
-                    <strong>Refund Policy:</strong> All sales are final. Admission passes are entirely non-refundable.
+                    <strong style={{ color: '#002147' }}>Refund Policy:</strong> All sales are final. Admission passes are entirely non-refundable. Pass entries may be transferred to another individual up to 24 hours prior to the event start time.
                   </div>
-                  <div style={{ color: '#555', fontWeight: '600', borderTop: '1px dashed #fecaca', paddingTop: '8px', marginTop: '4px', fontSize: '12px' }}>
-                    By purchasing a ticket and attending this event, guests acknowledge and accept that Grown Folks Collective and its affiliated organizers shall not be held liable for any personal injury, loss, or damages incurred during the event. Attendance is at the guest's own risk.
+                  <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '10px', fontSize: '12px', color: '#666' }}>
+                    <strong style={{ color: '#002147' }}>Limitation of Liability:</strong> By purchasing a ticket and attending this event, guests acknowledge and accept that The Grown Folks Collective and its affiliated organizers shall not be held liable for any personal injury, loss, theft, or damages incurred during or in connection with the event. Attendance is voluntary and at the guest's own risk.
                   </div>
                 </div>
               </div>
 
             </div>
 
-            {/* PURCHASING STRIP FOOTER */}
+            {/* TICKET FOOTER */}
             <div style={{ padding: '20px 25px', borderTop: '1px solid #eee', background: '#fafafa' }}>
               <h4 style={{ textTransform: 'uppercase', fontSize: '11px', letterSpacing: '1px', color: '#777', marginBottom: '10px', fontWeight: 'bold' }}>
                 Select Ticket Tier
               </h4>
-              
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 {(selectedModalEvent.availableTiers || []).map((tier, index) => {
                   const finalPrice = parseCleanPrice(tier);
-
                   return (
                     <div key={tier._id || index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#fff', padding: '10px 14px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                       <div>
                         <div style={{ fontWeight: '700', color: '#002147', fontSize: '13.5px' }}>{tier.name}</div>
                         <div style={{ color: '#C5A059', fontWeight: 'bold', fontSize: '13.5px' }}>${finalPrice.toFixed(2)}</div>
                       </div>
-
                       <button
                         onClick={() => {
                           handleAddToCart(selectedModalEvent, tier);
@@ -587,6 +600,7 @@ const Events = () => {
           </div>
         </div>
       )}
+
     </div>
   );
 };
