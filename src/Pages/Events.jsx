@@ -19,7 +19,7 @@ const EventbriteCardContent = ({ eventbriteId, fallbackImage, fallbackTitle, chi
       .catch((err) => console.error("Error loading Eventbrite asset package:", err));
   }, [eventbriteId]);
 
-  const displayImage = externalData?.image || fallbackImage || "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800";
+  const displayImage = externalData?.image || fallbackImage || "https://media.cnn.com/api/v1/images/stellar/prod/230725152449-01-group-friend-vacation-tips-top.jpg?c=16x9&q=h_653,w_1160,c_fill/f_avif";
   const displayTitle = externalData?.title || fallbackTitle;
 
   return (
