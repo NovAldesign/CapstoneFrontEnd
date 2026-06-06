@@ -332,14 +332,14 @@ const Events = () => {
               <div>
                 <h3 className="playfair" style={{ color: '#002147', fontSize: '22px', marginBottom: '10px' }}>Join The Collective</h3>
                 <p style={{ color: '#555', fontSize: '14px', lineHeight: '1.6', marginBottom: '20px' }}>
-                  Secure exclusive baseline access to our curated Atlanta professional community lounge. Unlock priority invitations, preferred ticket tier adjustments, and community frameworks centering around tax-advantaged business strategy travel and shared growth.
+                  Become part of a dedicated effort to end the modern epidemic of social isolation. By joining our curated professional community lounge in Atlanta, you unlock access to deep-level conversations, persistent real-world connections, and premium shared environments designed intentionally to help you find true belonging among peers.
                 </p>
               </div>
               <button 
                 onClick={() => window.location.href = '/membership'}
                 style={{ backgroundColor: '#C5A059', color: '#002147', border: 'none', padding: '12px 20px', fontSize: '13px', fontWeight: '700', borderRadius: '6px', cursor: 'pointer', width: 'fit-content' }}
               >
-                Join the Collective to Save
+                Join The Collective
               </button>
             </div>
 
@@ -348,7 +348,7 @@ const Events = () => {
               <div>
                 <h3 className="playfair" style={{ color: '#002147', fontSize: '22px', marginBottom: '10px' }}>Explore Partnership Opportunities</h3>
                 <p style={{ color: '#555', fontSize: '14px', lineHeight: '1.6', marginBottom: '20px' }}>
-                  Align your brand with forward-thinking innovators. We collaborate with companies and local ventures to build corporate alignment, activate bespoke spaces, and facilitate sustainable employee morale partnerships across the ecosystem.
+                  Align your brand with forward-thinking innovators to help fight social isolation. We collaborate with companies and local ventures to activate bespoke spaces, sponsor events, and facilitate sustainable employee morale partnerships. Click below to see what to expect on the next page and start your collaboration application.
                 </p>
               </div>
               <button 
