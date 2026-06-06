@@ -138,10 +138,11 @@ const Events = () => {
     .filter((e) => e && new Date(e.date) >= now && e.status?.toLowerCase() === "published")
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
+  // Updated Discount Calculations (5% and 10%)
   const uniqueEventIdsInCart = [...new Set(cart.map(item => item.eventId))];
   let currentDiscountLabel = "";
-  if (uniqueEventIdsInCart.length === 2) currentDiscountLabel = "10% Multi-Event Discount Applied!";
-  if (uniqueEventIdsInCart.length >= 3) currentDiscountLabel = "15% Mega-Bundle Discount Applied!";
+  if (uniqueEventIdsInCart.length === 2) currentDiscountLabel = "5% Multi-Event Discount Applied!";
+  if (uniqueEventIdsInCart.length >= 3) currentDiscountLabel = "10% Mega-Bundle Discount Applied!";
 
   const cartTotalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartSubtotal = cart.reduce((sum, item) => sum + ((item.priceInCents * item.quantity) / 100), 0);
@@ -195,7 +196,7 @@ const Events = () => {
             
             <div className="family-image-wrapper">
               <img 
-                src="https://media.cnn.com/api/v1/images/stellar/prod/230725152449-01-group-friend-vacation-tips-top.jpg?c=16x9&q=h_653,w_1160,c_fill/f_avif" 
+                src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800" 
                 alt="Grown Folks Collective Connection" 
                 style={{ width: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 15px 35px rgba(0,0,0,0.08)' }} 
               />
@@ -240,6 +241,18 @@ const Events = () => {
             <span className="gold-label">Upcoming</span>
             <h2 className="playfair section-title-navy">The Next Chapter</h2>
             <div className="gold-spacer-small"></div>
+          </div>
+
+          {/* MULTI-EVENT DISCOUNT EXPLANATORY BANNER */}
+          <div style={{ maxWidth: '600px', margin: '0 auto 30px auto', background: '#fbf8f3', border: '1px solid #eef2f6', borderLeft: '4px solid #C5A059', borderRadius: '4px', padding: '16px 20px', textAlign: 'center' }}>
+            <p style={{ margin: 0, color: '#002147', fontSize: '14px', lineHeight: '1.6', fontWeight: '500' }}>
+              <strong>Breathe deeper, connect longer.</strong> Planning to join us for multiple experiences? 
+              Your rewards accumulate automatically at checkout:
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '10px', fontSize: '13px', fontWeight: 'bold', flexWrap: 'wrap' }}>
+              <span style={{ color: '#C5A059' }}>🎟️ Select 2 Different Events = Get 5% Off Everything</span>
+              <span style={{ color: '#002147' }}>🔥 Select 3+ Different Events = Get 10% Off Everything</span>
+            </div>
           </div>
 
           {upcomingEvents.length === 0 ? (
@@ -337,7 +350,8 @@ const Events = () => {
               </div>
               <button 
                 onClick={() => window.location.href = '/membership'}
-                style={{ backgroundColor: '#C5A059', color: '#002147', border: 'none', padding: '12px 20px', fontSize: '13px', fontWeight: '700', borderRadius: '6px', cursor: 'pointer', width: 'fit-content' }}
+                className="luxe-button-gold"
+                style={{ width: 'fit-content' }}
               >
                 Join The Collective
               </button>
@@ -353,7 +367,8 @@ const Events = () => {
               </div>
               <button 
                 onClick={() => window.location.href = '/partnerships'}
-                style={{ backgroundColor: '#002147', color: '#fff', border: 'none', padding: '12px 20px', fontSize: '13px', fontWeight: '700', borderRadius: '6px', cursor: 'pointer', width: 'fit-content' }}
+                className="luxe-button-navy"
+                style={{ width: 'fit-content' }}
               >
                 Partner with Us
               </button>
