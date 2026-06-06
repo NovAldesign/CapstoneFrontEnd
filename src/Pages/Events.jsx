@@ -19,7 +19,7 @@ const EventbriteCardContent = ({ eventbriteId, fallbackImage, fallbackTitle, chi
       .catch((err) => console.error("Error loading Eventbrite asset package:", err));
   }, [eventbriteId]);
 
-  const displayImage = externalData?.image || fallbackImage || "https://media.cnn.com/api/v1/images/stellar/prod/230725152449-01-group-friend-vacation-tips-top.jpg?c=16x9&q=h_653,w_1160,c_fill/f_avif";
+  const displayImage = externalData?.image || fallbackImage || "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800";
   const displayTitle = externalData?.title || fallbackTitle;
 
   return (
@@ -125,11 +125,19 @@ const Events = () => {
 
   const uniqueEventIdsInCart = [...new Set(cart.map(item => item.eventId))];
   let currentDiscountLabel = "";
-  if (uniqueEventIdsInCart.length === 2) currentDiscountLabel = "5% Multi-Event Discount Applied!";
-  if (uniqueEventIdsInCart.length >= 3)  currentDiscountLabel = "10% Mega-Bundle Discount Applied!";
+  let currentDiscountMultiplier = 1.0;
+  if (uniqueEventIdsInCart.length === 2) {
+    currentDiscountLabel = "5% Multi-Event Discount Applied!";
+    currentDiscountMultiplier = 0.95;
+  }
+  if (uniqueEventIdsInCart.length >= 3) {
+    currentDiscountLabel = "10% Mega-Bundle Discount Applied!";
+    currentDiscountMultiplier = 0.90;
+  }
 
   const cartTotalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartSubtotal   = cart.reduce((sum, item) => sum + ((item.priceInCents * item.quantity) / 100), 0);
+  const cartTotal      = cartSubtotal * currentDiscountMultiplier;
 
   if (loading) {
     return (
@@ -178,13 +186,13 @@ const Events = () => {
           <div className="family-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '50px', alignItems: 'center' }}>
             <div className="family-image-wrapper">
               <img
-                src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800"
+                src="https://media.cnn.com/api/v1/images/stellar/prod/230725152449-01-group-friend-vacation-tips-top.jpg?c=16x9&q=h_653,w_1160,c_fill/f_avif"
                 alt="Grown Folks Collective Connection"
                 style={{ width: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 15px 35px rgba(0,0,0,0.08)' }}
               />
             </div>
             <div className="family-text-content">
-              <h2 className="playfair" style={{ color: '#002147', fontSize: '38px', margin: '0 0 20px 0', fontWeight: 'normal' }}>Connection.</h2>
+              <h2 className="playfair" style={{ color: '#002147', fontSize: '38px', margin: '0 0 20px 0', fontWeight: 'normal' }}>Building Genuine Connections.</h2>
               <p className="narrative-lead" style={{ color: '#C5A059', fontSize: '18px', lineHeight: '1.6', fontWeight: '500', marginBottom: '20px' }}>
                 Whether you are leading a firm, scaling a startup, or mastering a craft — the view at the top can be isolating.
               </p>
@@ -228,8 +236,8 @@ const Events = () => {
               <strong>Breathe deeper, connect longer.</strong> Planning to join us for multiple experiences? Your rewards accumulate automatically at checkout:
             </p>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '10px', fontSize: '13px', fontWeight: 'bold', flexWrap: 'wrap' }}>
-              <span style={{ color: '#C5A059' }}>🎟️ Select 2 Different Events = Get 5% Off Everything</span>
-              <span style={{ color: '#002147' }}>🔥 Select 3+ Different Events = Get 10% Off Everything</span>
+              <span style={{ color: '#C5A059' }}>Select 2 Different Events — Get 5% Off Everything</span>
+              <span style={{ color: '#002147' }}>Select 3+ Different Events — Get 10% Off Everything</span>
             </div>
           </div>
 
@@ -307,15 +315,8 @@ const Events = () => {
           )}
         </section>
 
-        {/* ============================================================ */}
-        {/* PARTNERSHIP & MEMBERSHIP SECTION — Gold background, navy text */}
-        {/* ============================================================ */}
-        <section style={{
-          backgroundColor: '#C5A059',
-          borderRadius: '16px',
-          padding: '60px 50px',
-          margin: '60px 0 20px 0',
-        }}>
+        {/* PARTNERSHIP & MEMBERSHIP SECTION */}
+        <section style={{ backgroundColor: '#C5A059', borderRadius: '16px', padding: '60px 50px', margin: '60px 0 20px 0' }}>
           <div style={{ textAlign: 'center', marginBottom: '45px' }}>
             <span style={{ textTransform: 'uppercase', fontSize: '11px', letterSpacing: '2px', fontWeight: '700', color: '#002147', opacity: 0.7 }}>
               Get Involved
@@ -329,67 +330,35 @@ const Events = () => {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
-
-            {/* Membership Card */}
             <div style={{ backgroundColor: 'rgba(0, 33, 71, 0.08)', border: '1px solid rgba(0,33,71,0.15)', borderRadius: '12px', padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
-                <h3 className="playfair" style={{ color: '#002147', fontSize: '22px', marginBottom: '12px' }}>
-                  Join The Collective
-                </h3>
+                <h3 className="playfair" style={{ color: '#002147', fontSize: '22px', marginBottom: '12px' }}>Join The Collective</h3>
                 <p style={{ color: '#002147', fontSize: '14px', lineHeight: '1.7', marginBottom: '24px', opacity: 0.85 }}>
                   Studies show that loneliness among high-achieving adults is at an all-time high — and professional success doesn't make it easier. The Grown Folks Collective exists to change that. Join a curated community of Atlanta professionals who gather intentionally, connect authentically, and leave every experience feeling genuinely seen. This isn't networking. This is belonging.
                 </p>
               </div>
               <button
                 onClick={() => window.location.href = '/membership'}
-                style={{
-                  width: 'fit-content',
-                  padding: '12px 28px',
-                  backgroundColor: '#002147',
-                  color: '#C5A059',
-                  border: '2px solid #002147',
-                  borderRadius: '4px',
-                  fontSize: '12px',
-                  fontWeight: '700',
-                  letterSpacing: '1.5px',
-                  textTransform: 'uppercase',
-                  cursor: 'pointer',
-                }}
+                style={{ width: 'fit-content', padding: '12px 28px', backgroundColor: '#002147', color: '#C5A059', border: '2px solid #002147', borderRadius: '4px', fontSize: '12px', fontWeight: '700', letterSpacing: '1.5px', textTransform: 'uppercase', cursor: 'pointer' }}
               >
                 Join The Collective
               </button>
             </div>
 
-            {/* Partnership Card */}
             <div style={{ backgroundColor: 'rgba(0, 33, 71, 0.08)', border: '1px solid rgba(0,33,71,0.15)', borderRadius: '12px', padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
-                <h3 className="playfair" style={{ color: '#002147', fontSize: '22px', marginBottom: '12px' }}>
-                  Partner With Us
-                </h3>
+                <h3 className="playfair" style={{ color: '#002147', fontSize: '22px', marginBottom: '12px' }}>Partner With Us</h3>
                 <p style={{ color: '#002147', fontSize: '14px', lineHeight: '1.7', marginBottom: '24px', opacity: 0.85 }}>
                   We partner with brands, venues, and organizations that share our commitment to real human connection. Whether you're looking to co-host an experience, sponsor an event, or place your brand in front of a room full of engaged Atlanta professionals — we want to hear from you. Let's build something that actually matters.
                 </p>
               </div>
               <button
                 onClick={() => window.location.href = '/partnerships'}
-                style={{
-                  width: 'fit-content',
-                  padding: '12px 28px',
-                  backgroundColor: '#002147',
-                  color: '#C5A059',
-                  border: '2px solid #002147',
-                  borderRadius: '4px',
-                  fontSize: '12px',
-                  fontWeight: '700',
-                  letterSpacing: '1.5px',
-                  textTransform: 'uppercase',
-                  cursor: 'pointer',
-                }}
+                style={{ width: 'fit-content', padding: '12px 28px', backgroundColor: '#002147', color: '#C5A059', border: '2px solid #002147', borderRadius: '4px', fontSize: '12px', fontWeight: '700', letterSpacing: '1.5px', textTransform: 'uppercase', cursor: 'pointer' }}
               >
                 Explore Sponsorship & Partnership Opportunities
               </button>
             </div>
-
           </div>
         </section>
 
@@ -409,6 +378,7 @@ const Events = () => {
               <h3 className="playfair" style={{ color: '#002147', margin: 0, fontSize: '22px' }}>Your Pass Selections</h3>
               <button onClick={() => setIsCartOpen(false)} style={{ background: 'none', border: 'none', fontSize: '18px', cursor: 'pointer', color: '#777' }}>✕</button>
             </div>
+
             <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '15px' }}>
               {cart.length === 0 ? (
                 <div style={{ textAlign: 'center', color: '#777', padding: '40px 0' }}>
@@ -433,16 +403,27 @@ const Events = () => {
                 ))
               )}
             </div>
+
             {cart.length > 0 && (
               <div style={{ borderTop: '1px solid #eee', paddingTop: '20px', marginTop: '20px' }}>
                 {currentDiscountLabel && (
-                  <div style={{ background: '#e6fffa', color: '#006652', padding: '8px 12px', borderRadius: '6px', fontSize: '12px', fontWeight: '700', marginBottom: '12px', textAlign: 'center', border: '1px solid #b2f5ea' }}>
-                    🎉 {currentDiscountLabel}
+                  <div style={{ background: '#f0faf7', color: '#006652', padding: '8px 12px', borderRadius: '6px', fontSize: '12px', fontWeight: '700', marginBottom: '12px', textAlign: 'center', border: '1px solid #b2f5ea' }}>
+                    {currentDiscountLabel}
                   </div>
                 )}
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '16px', fontWeight: 'bold', color: '#002147', marginBottom: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: '#777', marginBottom: '6px' }}>
                   <span>Subtotal:</span>
                   <span>${cartSubtotal.toFixed(2)}</span>
+                </div>
+                {currentDiscountMultiplier < 1.0 && (
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#006652', fontWeight: '600', marginBottom: '6px' }}>
+                    <span>Discount ({currentDiscountMultiplier === 0.95 ? '5%' : '10%'}):</span>
+                    <span>- ${(cartSubtotal - cartTotal).toFixed(2)}</span>
+                  </div>
+                )}
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '16px', fontWeight: 'bold', color: '#002147', marginBottom: '20px', borderTop: '1px solid #eee', paddingTop: '10px', marginTop: '6px' }}>
+                  <span>Total:</span>
+                  <span>${cartTotal.toFixed(2)}</span>
                 </div>
                 <button
                   onClick={handleCartStripeCheckout}
@@ -474,7 +455,6 @@ const Events = () => {
               ✕
             </button>
 
-            {/* Modal Image — no background, cover fill */}
             <div style={{ width: '100%', height: '240px', overflow: 'hidden', position: 'relative' }}>
               <img
                 src={selectedModalEvent.resolvedImage || selectedModalEvent.coverImage}
@@ -491,7 +471,6 @@ const Events = () => {
 
             <div style={{ padding: '25px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
-              {/* LOCATION */}
               {selectedModalEvent.location && (selectedModalEvent.location.name || selectedModalEvent.location.address) && (
                 <div>
                   <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Location</h3>
@@ -503,7 +482,6 @@ const Events = () => {
                 </div>
               )}
 
-              {/* AGENDA */}
               {selectedModalEvent.agenda?.length > 0 && (
                 <div>
                   <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Schedule</h3>
@@ -521,7 +499,6 @@ const Events = () => {
                 </div>
               )}
 
-              {/* OVERVIEW */}
               <div>
                 <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Event Overview</h3>
                 <div
@@ -538,7 +515,6 @@ const Events = () => {
                 )}
               </div>
 
-              {/* FAQS */}
               {selectedModalEvent.faqs?.length > 0 && (
                 <div>
                   <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Frequently Asked Questions</h3>
@@ -553,7 +529,6 @@ const Events = () => {
                 </div>
               )}
 
-              {/* POLICIES & TERMS */}
               <div>
                 <h3 className="playfair" style={{ color: '#002147', fontSize: '18px', margin: '0 0 8px 0', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Policies & Terms</h3>
                 <div style={{ fontSize: '13px', lineHeight: '1.6', color: '#555', background: '#fafafa', padding: '14px', borderRadius: '8px', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -568,7 +543,6 @@ const Events = () => {
 
             </div>
 
-            {/* TICKET FOOTER */}
             <div style={{ padding: '20px 25px', borderTop: '1px solid #eee', background: '#fafafa' }}>
               <h4 style={{ textTransform: 'uppercase', fontSize: '11px', letterSpacing: '1px', color: '#777', marginBottom: '10px', fontWeight: 'bold' }}>
                 Select Ticket Tier
