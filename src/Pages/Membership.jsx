@@ -29,7 +29,7 @@ const TIERS = [
     featured: true,
     features: [
       'Everything in Social Pass',
-      'Bring a guest to any event free — every single month',
+      'Bring 2 guest to our monthly game night free — every single month',
       '48-hr priority booking — first access before anyone else',
       'One free Wind Down Wednesday or Cookout ticket per quarter',
       '50% off the GFC Wooden Box at month 3',
