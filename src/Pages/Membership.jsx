@@ -29,9 +29,10 @@ const TIERS = [
     featured: true,
     features: [
       'Everything in Social Pass',
-      'Bring 2 guest to our game nights free — every single month',
+      'Bring 2 guest to our game nights free — every single month — that\'s $40 back immediately',
       '48-hr priority booking — first access before anyone else',
       'One free Intentional Conversations Over Mocktails or Cookout ticket per quarter',
+      '$15 off every Intentional Conversations Over Mocktails and Cookout ticket',
       'Month 3 Reward: Receive both GFC card decks (Playing Cards & Conversation Cards), Add-on Opportunity: Upgrade to an engraved wooden box for 50% OFF',
       'Quarterly gift from Grown Folks Collective valued at $30',
       'Founding Member rate and status locked in for life',
