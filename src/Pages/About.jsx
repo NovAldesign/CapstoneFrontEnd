@@ -484,7 +484,7 @@ const About = () => {
                 <dd className="about-stat-desc">Documented every event night</dd>
               </div>
               <div className="about-stat" role="group" aria-label="Community Members">
-                <dt className="about-stat-number">1,800+</dt>
+                <dt className="about-stat-number">1,900+</dt>
                 <dd className="about-stat-label">Community Members</dd>
                 <dd className="about-stat-desc">Across all platforms</dd>
               </div>
@@ -493,18 +493,18 @@ const About = () => {
             {/* Platform stats — also use <dl> for semantic key-value pairs */}
             <dl className="about-platform-row">
               <div className="about-platform">
-                <dt className="about-platform-num">1,540+</dt>
+                <dt className="about-platform-num">1,600+</dt>
                 <dd className="about-platform-name">TikTok Followers</dd>
               </div>
               {/* Decorative dividers must be hidden from AT */}
               <div className="about-platform-divider" aria-hidden="true"></div>
               <div className="about-platform">
-                <dt className="about-platform-num">122+</dt>
+                <dt className="about-platform-num">130+</dt>
                 <dd className="about-platform-name">Meetup Members</dd>
               </div>
               <div className="about-platform-divider" aria-hidden="true"></div>
               <div className="about-platform">
-                <dt className="about-platform-num">150</dt>
+                <dt className="about-platform-num">160</dt>
                 <dd className="about-platform-name">Email Subscribers</dd>
               </div>
               <div className="about-platform-divider" aria-hidden="true"></div>
