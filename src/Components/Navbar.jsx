@@ -49,32 +49,26 @@ const Navbar = () => {
         )} */}
 
         {/* Mobile-only auth */}
-        <li className="nav-mobile-auth">
-          {user ? (
+        {user && (
+          <li className="nav-mobile-auth">
             <button
               onClick={() => { handleLogout(); closeMenu(); }}
               className="logout-btn-styled"
             >
               Logout ({user.name.split(" ")[0]})
             </button>
-          ) : (
-            <NavLink to="/login" className={navClass} onClick={closeMenu}>
-              Login
-            </NavLink>
-          )}
-        </li>
+          </li>
+        )}
       </ul>
 
-      {/* Desktop auth
-      <div className="nav-right-section">
-        {user ? (
+      {/* Desktop auth */}
+      {user && (
+        <div className="nav-right-section">
           <button onClick={handleLogout} className="logout-btn-styled">
             LOGOUT ({user.name.split(" ")[0]})
           </button>
-        ) : (
-          <NavLink to="/login" className={navClass}>Login</NavLink>
-        )}
-      </div> */}
+        </div>
+      )}
 
       {/* Hamburger */}
       <button
