@@ -177,7 +177,7 @@ const Home = () => {
         </div>
         <div className="platform-block">
           <p className="rating-platform-name">Meetup Verified</p>
-          <div className="rating-number">4.0</div>
+          <div className="rating-number">4.5</div>
           <div className="testimonial-stars large" aria-label="4 out of 5">★★★★☆</div>
           <p className="rating-label">Average event rating</p>
         </div>
