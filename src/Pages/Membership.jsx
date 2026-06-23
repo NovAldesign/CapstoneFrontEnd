@@ -15,7 +15,7 @@ const TIERS = [
     features: [
       'Your Game Night ticket covered every month — that\'s $20 back immediately',
       'Priority access 24 hrs before the public — you never miss out',
-      '$10 off every Wind Down Wednesday and Cookout ticket',
+      '$10 off every Intentional Conversations Over Mocktails and Cookout ticket',
       'Private member community — connections that extend beyond the events',
       'Month 3 Reward: Receive one GFC card deck (Playing Cards or Conversation Cards), Add-on Opportunity: Upgrade to an engraved wooden box for 25% OFF',
     ],
