@@ -5,14 +5,14 @@ const CartDrawer = ({ isOpen, onClose }) => {
   const { cartItems, subtotalInCents, discountInCents, totalInCents, discountRate, updateQuantity, removeFromCart } = useCart();
   const [loading, setLoading] = useState(false);
   
-  // Local state to capture user inputs directly in the drawer panel
+  // Local state to capture user input parameters directly inside the sliding panel
   const [emailInput, setEmailInput] = useState('');
   const [nameInput, setNameInput] = useState('');
 
   const handleCheckout = async () => {
     if (cartItems.length === 0) return;
     
-    // Validation check: Required to verify active subscription statuses
+    // Validation check: Required to verify active member subscription profiles
     if (!emailInput.trim()) {
       alert('Please enter your email address to check for membership perks and process your tickets.');
       return;
@@ -24,7 +24,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
       const baseUrl = import.meta.env.VITE_API_URL || 'https://railway.app';
       const targetUrl = `${baseUrl}/api/checkout/create-intent`;
       
-      // Grab the primary item from the array to validate its membership perks
+      // Grab the primary item from the array to pass over to the subscription matcher
       const primaryItem = cartItems[0]; 
       const buyerEmail = emailInput.trim().toLowerCase();
       const buyerName = nameInput.trim() || 'GFC Valued Guest';
@@ -45,15 +45,15 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
       const data = await response.json();
 
-      if (data.clientSecret) {
-        // Safe route delivery straight to your payment elements handling screen
-        window.location.href = `/payment-checkout?secret=${data.clientSecret}&order=${data.orderId}`;
+      if (data.url) {
+        // Dynamic redirect straight to secure Stripe Checkout hosted screen
+        window.location.href = data.url; 
       } else {
         alert(data.error || 'Checkout initialization failed.');
       }
     } catch (err) {
       console.error("Stripe payment initialization error:", err);
-      alert('Something went wrong initializing your checkout wrapper session.');
+      alert('Something went wrong launching your checkout session.');
     } finally {
       setLoading(false);
     }
@@ -92,7 +92,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                 <div style={{ color: '#C5A059', fontSize: '13px', marginBottom: '10px' }}>{item.ticketTypeName}</div>
                 
                 {/* Stepper controls adjusting ticket selection counters */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifycontent: 'space-between', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ddd', borderRadius: '4px', overflow: 'hidden' }}>
                     <button onClick={() => updateQuantity(item.eventId, item.ticketTypeId, item.quantity - 1)} style={{ padding: '4px 10px', background: '#f5f5f5', border: 'none', cursor: 'pointer' }}>-</button>
                     <span style={{ padding: '0 12px', fontSize: '14px', fontWeight: '600' }}>{item.quantity}</span>
@@ -151,7 +151,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
             </div>
             
             <p style={{ fontSize: '10px', color: '#888', fontStyle: 'italic', textAlign: 'center', marginTop: '12px', marginBottom: 0 }}>
-              * Membership status will be validated on the next payment processing view screen.
+              * Membership verification will be processed instantly when redirected to Stripe.
             </p>
 
             <button 
