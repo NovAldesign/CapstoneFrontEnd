@@ -4,56 +4,47 @@ import { useCart } from '../Context/CartContext.jsx';
 const CartDrawer = ({ isOpen, onClose }) => {
   const { cartItems, subtotalInCents, discountInCents, totalInCents, discountRate, updateQuantity, removeFromCart } = useCart();
   const [loading, setLoading] = useState(false);
-
-  // 1. Get the current user email from local storage or context if they are logged in
-  const getCustomerEmail = () => {
-    // If you store user data in localStorage after login, grab it here
-    const savedUser = localStorage.getItem('user'); 
-    if (savedUser) {
-      try {
-        const parsed = JSON.parse(savedUser);
-        if (parsed.email) return parsed.email;
-      } catch (e) {
-        console.error("Error reading logged-in user email:", e);
-      }
-    }
-    // Default fallback if a guest is checking out
-    return 'guest@example.com'; 
-  };
+  
+  // New local state to capture customer details directly in the drawer
+  const [emailInput, setEmailInput] = useState('');
+  const [nameInput, setNameInput] = useState('');
 
   const handleCheckout = async () => {
     if (cartItems.length === 0) return;
+    
+    // Validation check: Ensure they provide an email so Stripe can scan for memberships
+    if (!emailInput.trim()) {
+      alert('Please enter your email address to check for membership perks and process your tickets.');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const baseUrl = import.meta.env.VITE_API_URL || 'https://capstonebackend-production-87ed.up.railway.app';
-      
-      // Target the exact single-intent backend endpoint we built for your member discounts
+      const baseUrl = import.meta.env.VITE_API_URL || 'https://railway.app';
       const targetUrl = `${baseUrl}/api/checkout/create-intent`;
       
       // Pull the primary ticket item currently selected in the cart drawer
-      const activeItem = cartItems[0];
-      const buyerEmail = getCustomerEmail();
+      const activeItem = cartItems[0]; 
 
       const response = await fetch(targetUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           eventId: activeItem.eventId,
-          eventName: activeItem.eventName,      // <--- PASSED SAFELY HERE FOR STRIPE LOOKUPS
+          eventName: activeItem.eventName,      
           ticketType: activeItem.ticketTypeName,
           quantity: activeItem.quantity,
-          buyerName: 'GFC Valued Guest',         // Fallback placeholder (or pass logged-in name)
-          buyerEmail: buyerEmail,                // Verified email used to check Stripe Subscriptions
-          unitPrice: activeItem.priceInCents / 100 // Convert cents back to basic dollar value (e.g. 35)
+          buyerName: nameInput.trim() || 'GFC Valued Guest',         
+          buyerEmail: emailInput.trim().toLowerCase(), // Sent to backend to verify Stripe subscription
+          unitPrice: activeItem.priceInCents / 100 
         })
       });
 
       const data = await response.json();
 
-      // Route the secret to your frontend Stripe elements modal container or payment page
       if (data.clientSecret) {
-        // Redirects to your custom payment element page passing the checkout configuration tokens
+        // Redirects to your custom payment processing template page
         window.location.href = `/payment-checkout?secret=${data.clientSecret}&order=${data.orderId}`;
       } else {
         alert(data.error || 'Checkout initialization failed.');
@@ -69,13 +60,10 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 1000, display: 'flex' }}>
-      {/* Dark Overlay background shadow dismisses the drawer when clicked */}
       <div onClick={onClose} style={{ width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.4)', backdropFilter: 'blur(2px)', transition: 'opacity 0.3s' }} />
 
-      {/* Sliding Main Panel Area */}
       <div style={{ position: 'absolute', right: 0, top: 0, width: '100%', maxWidth: '450px', height: '100%', backgroundColor: '#fff', boxShadow: '-4px 0 25px rgba(0,0,0,0.15)', display: 'flex', flexDirection: 'column', padding: '30px' }}>
         
-        {/* Drawer Header Layout */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f0f0f0', paddingBottom: '20px', marginBottom: '20px' }}>
           <h2 style={{ fontFamily: 'Playfair Display, serif', color: '#002147', margin: 0, fontSize: '24px' }}>Your Connection Pass</h2>
           <button onClick={onClose} style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#999' }}>&times;</button>
@@ -97,7 +85,6 @@ const CartDrawer = ({ isOpen, onClose }) => {
                 </div>
                 <div style={{ color: '#C5A059', fontSize: '13px', marginBottom: '10px' }}>{item.ticketTypeName}</div>
                 
-                {/* Quantity adjustments row selectors */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ddd', borderRadius: '4px', overflow: 'hidden' }}>
                     <button onClick={() => updateQuantity(item.eventId, item.ticketTypeId, item.quantity - 1)} style={{ padding: '4px 10px', background: '#f5f5f5', border: 'none', cursor: 'pointer' }}>-</button>
@@ -111,9 +98,36 @@ const CartDrawer = ({ isOpen, onClose }) => {
           )}
         </div>
 
-        {/* Summary calculations and dynamic Discount displays */}
+        {/* Guest Customer Information Form Block */}
         {cartItems.length > 0 && (
-          <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: '20px' }}>
+          <div style={{ borderTop: '1px solid #f0f0f0', paddingBottom: '15px', paddingTop: '15px' }}>
+            <h4 style={{ fontFamily: 'Playfair Display, serif', color: '#002147', margin: '0 0 10px 0', fontSize: '15px' }}>
+              Subscriber & Attendee Validation
+            </h4>
+            <p style={{ fontSize: '11px', color: '#666', marginTop: 0, marginBottom: '10px' }}>
+              Members: Enter your exact subscription email address to auto-apply your free passes and tier discounts.
+            </p>
+            <input 
+              type="text" 
+              placeholder="Your Full Name" 
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
+              style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ddd', borderRadius: '4px', fontSize: '13px', boxSizing: 'border-box' }}
+            />
+            <input 
+              type="email" 
+              placeholder="Email Address (Required)" 
+              value={emailInput}
+              onChange={(e) => setEmailInput(e.target.value)}
+              required
+              style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '4px', fontSize: '13px', boxSizing: 'border-box' }}
+            />
+          </div>
+        )}
+
+        {/* Summary calculations and dynamic displays */}
+        {cartItems.length > 0 && (
+          <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: '15px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', color: '#666', marginBottom: '8px', fontSize: '14px' }}>
               <span>Subtotal</span>
               <span>${(subtotalInCents / 100).toFixed(2)}</span>
@@ -129,14 +143,18 @@ const CartDrawer = ({ isOpen, onClose }) => {
               <span>${(totalInCents / 100).toFixed(2)}</span>
             </div>
             
+            <p style={{ fontSize: '10px', color: '#888', fontStyle: 'italic', textAlign: 'center', marginTop: '10px', marginBottom: 0 }}>
+              * Final discounts are validated and shown on the next payment screen.
+            </p>
+
             <button 
               onClick={handleCheckout} 
               disabled={loading} 
-              style={{ width: '100%', marginTop: '20px', backgroundColor: '#002147', color: '#fff', padding: '14px', border: 'none', borderRadius: '4px', fontWeight: 'bold', fontSize: '15px', cursor: loading ? 'not-allowed' : 'pointer', transition: 'background 0.2s' }}
+              style={{ width: '100%', marginTop: '12px', backgroundColor: '#002147', color: '#fff', padding: '14px', border: 'none', borderRadius: '4px', fontWeight: 'bold', fontSize: '15px', cursor: loading ? 'not-allowed' : 'pointer', transition: 'background 0.2s' }}
               onMouseEnter={(e) => !loading && (e.target.style.backgroundColor = '#C5A059')}
               onMouseLeave={(e) => !loading && (e.target.style.backgroundColor = '#002147')}
             >
-              {loading ? 'Processing Member Perks...' : 'Checkout & Claim Tickets'}
+              {loading ? 'Verifying Member Profile...' : 'Continue to Payment'}
             </button>
           </div>
         )}
