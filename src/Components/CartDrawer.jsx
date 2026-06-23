@@ -5,14 +5,14 @@ const CartDrawer = ({ isOpen, onClose }) => {
   const { cartItems, subtotalInCents, discountInCents, totalInCents, discountRate, updateQuantity, removeFromCart } = useCart();
   const [loading, setLoading] = useState(false);
   
-  // New local state to capture customer details directly in the drawer
+  // Local state to capture user inputs directly in the drawer panel
   const [emailInput, setEmailInput] = useState('');
   const [nameInput, setNameInput] = useState('');
 
   const handleCheckout = async () => {
     if (cartItems.length === 0) return;
     
-    // Validation check: Ensure they provide an email so Stripe can scan for memberships
+    // Validation check: Required to verify active subscription statuses
     if (!emailInput.trim()) {
       alert('Please enter your email address to check for membership perks and process your tickets.');
       return;
@@ -24,33 +24,36 @@ const CartDrawer = ({ isOpen, onClose }) => {
       const baseUrl = import.meta.env.VITE_API_URL || 'https://railway.app';
       const targetUrl = `${baseUrl}/api/checkout/create-intent`;
       
-      // Pull the primary ticket item currently selected in the cart drawer
-      const activeItem = cartItems[0]; 
+      // Grab the primary item from the array to validate its membership perks
+      const primaryItem = cartItems[0]; 
+      const buyerEmail = emailInput.trim().toLowerCase();
+      const buyerName = nameInput.trim() || 'GFC Valued Guest';
 
       const response = await fetch(targetUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          eventId: activeItem.eventId,
-          eventName: activeItem.eventName,      
-          ticketType: activeItem.ticketTypeName,
-          quantity: activeItem.quantity,
-          buyerName: nameInput.trim() || 'GFC Valued Guest',         
-          buyerEmail: emailInput.trim().toLowerCase(), // Sent to backend to verify Stripe subscription
-          unitPrice: activeItem.priceInCents / 100 
+          eventId: primaryItem.eventId,
+          eventName: primaryItem.eventName,      // Passed cleanly to your backend string match scanner
+          ticketType: primaryItem.ticketTypeName,
+          quantity: primaryItem.quantity,
+          buyerName: buyerName,         
+          buyerEmail: buyerEmail,                // Checks Stripe subscription history
+          unitPrice: primaryItem.priceInCents / 100 
         })
       });
 
       const data = await response.json();
 
       if (data.clientSecret) {
-        // Redirects to your custom payment processing template page
+        // Safe route delivery straight to your payment elements handling screen
         window.location.href = `/payment-checkout?secret=${data.clientSecret}&order=${data.orderId}`;
       } else {
         alert(data.error || 'Checkout initialization failed.');
       }
     } catch (err) {
-      console.error("Stripe payment intent creation error:", err);
+      console.error("Stripe payment initialization error:", err);
+      alert('Something went wrong initializing your checkout wrapper session.');
     } finally {
       setLoading(false);
     }
@@ -60,16 +63,19 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 1000, display: 'flex' }}>
+      {/* Dark Backdrop dismisses when clicked */}
       <div onClick={onClose} style={{ width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.4)', backdropFilter: 'blur(2px)', transition: 'opacity 0.3s' }} />
 
-      <div style={{ position: 'absolute', right: 0, top: 0, width: '100%', maxWidth: '450px', height: '100%', backgroundColor: '#fff', boxShadow: '-4px 0 25px rgba(0,0,0,0.15)', display: 'flex', flexDirection: 'column', padding: '30px' }}>
+      {/* Main Sliding Drawer Panel */}
+      <div style={{ position: 'absolute', right: 0, top: 0, width: '100%', maxWidth: '450px', height: '100%', backgroundColor: '#fff', boxShadow: '-4px 0 25px rgba(0,0,0,0.15)', display: 'flex', flexDirection: 'column', padding: '30px', boxSizing: 'border-box' }}>
         
+        {/* Header Options Layout */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f0f0f0', paddingBottom: '20px', marginBottom: '20px' }}>
           <h2 style={{ fontFamily: 'Playfair Display, serif', color: '#002147', margin: 0, fontSize: '24px' }}>Your Connection Pass</h2>
           <button onClick={onClose} style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#999' }}>&times;</button>
         </div>
 
-        {/* Dynamic Ticket Mapping Container */}
+        {/* Scrollable Ticket List Area Container */}
         <div style={{ flexGrow: 1, overflowY: 'auto', marginBottom: '20px' }}>
           {cartItems.length === 0 ? (
             <div style={{ textAlign: 'center', color: '#777', marginTop: '40px' }}>
@@ -85,6 +91,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                 </div>
                 <div style={{ color: '#C5A059', fontSize: '13px', marginBottom: '10px' }}>{item.ticketTypeName}</div>
                 
+                {/* Stepper controls adjusting ticket selection counters */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ddd', borderRadius: '4px', overflow: 'hidden' }}>
                     <button onClick={() => updateQuantity(item.eventId, item.ticketTypeId, item.quantity - 1)} style={{ padding: '4px 10px', background: '#f5f5f5', border: 'none', cursor: 'pointer' }}>-</button>
@@ -98,14 +105,14 @@ const CartDrawer = ({ isOpen, onClose }) => {
           )}
         </div>
 
-        {/* Guest Customer Information Form Block */}
+        {/* Validation Fields Card Wrapper layout */}
         {cartItems.length > 0 && (
           <div style={{ borderTop: '1px solid #f0f0f0', paddingBottom: '15px', paddingTop: '15px' }}>
-            <h4 style={{ fontFamily: 'Playfair Display, serif', color: '#002147', margin: '0 0 10px 0', fontSize: '15px' }}>
-              Subscriber & Attendee Validation
+            <h4 style={{ fontFamily: 'Playfair Display, serif', color: '#002147', margin: '0 0 8px 0', fontSize: '15px' }}>
+              Subscriber & Attendee Verification
             </h4>
-            <p style={{ fontSize: '11px', color: '#666', marginTop: 0, marginBottom: '10px' }}>
-              Members: Enter your exact subscription email address to auto-apply your free passes and tier discounts.
+            <p style={{ fontSize: '12px', color: '#666', marginTop: 0, marginBottom: '12px', lineHeight: '1.4' }}>
+              Members: Enter your active subscription billing email address below to unlock your free passes and exclusive tier discounts.
             </p>
             <input 
               type="text" 
@@ -125,7 +132,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
           </div>
         )}
 
-        {/* Summary calculations and dynamic displays */}
+        {/* Calculations Footer panel displays */}
         {cartItems.length > 0 && (
           <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: '15px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', color: '#666', marginBottom: '8px', fontSize: '14px' }}>
@@ -143,8 +150,8 @@ const CartDrawer = ({ isOpen, onClose }) => {
               <span>${(totalInCents / 100).toFixed(2)}</span>
             </div>
             
-            <p style={{ fontSize: '10px', color: '#888', fontStyle: 'italic', textAlign: 'center', marginTop: '10px', marginBottom: 0 }}>
-              * Final discounts are validated and shown on the next payment screen.
+            <p style={{ fontSize: '10px', color: '#888', fontStyle: 'italic', textAlign: 'center', marginTop: '12px', marginBottom: 0 }}>
+              * Membership status will be validated on the next payment processing view screen.
             </p>
 
             <button 
