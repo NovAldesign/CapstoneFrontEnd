@@ -21,7 +21,8 @@ const CartDrawer = ({ isOpen, onClose }) => {
     setLoading(true);
 
     try {
-      const baseUrl = import.meta.env.VITE_API_URL || 'https://railway.app';
+      // FIXED: Pointing exactly to your unique Railway app network link
+      const baseUrl = import.meta.env.VITE_API_URL || 'https://capstonebackend-production-87ed.up.railway.app';
       const targetUrl = `${baseUrl}/api/checkout/create-intent`;
       
       // Grab the primary item from the array to pass over to the subscription matcher
@@ -92,7 +93,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                 <div style={{ color: '#C5A059', fontSize: '13px', marginBottom: '10px' }}>{item.ticketTypeName}</div>
                 
                 {/* Stepper controls adjusting ticket selection counters */}
-                <div style={{ display: 'flex', alignItems: 'center', justifycontent: 'space-between', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ddd', borderRadius: '4px', overflow: 'hidden' }}>
                     <button onClick={() => updateQuantity(item.eventId, item.ticketTypeId, item.quantity - 1)} style={{ padding: '4px 10px', background: '#f5f5f5', border: 'none', cursor: 'pointer' }}>-</button>
                     <span style={{ padding: '0 12px', fontSize: '14px', fontWeight: '600' }}>{item.quantity}</span>
