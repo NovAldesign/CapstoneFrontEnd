@@ -13,7 +13,7 @@ const TIERS = [
     badge: null,
     featured: false,
     features: [
-      'Your Game Night ticket covered every month — that\'s $20 back immediately',
+      'Your Game Night ticket covered every month — that\'s $35 back immediately',
       'Priority access 24 hrs before the public — you never miss out',
       '$10 off every Intentional Conversations Over Mocktails and Cookout ticket',
       'Private member community — connections that extend beyond the events',
@@ -29,7 +29,7 @@ const TIERS = [
     featured: true,
     features: [
       'Everything in Social Pass',
-      'Bring 2 guest to our game nights free — every single month — that\'s $40 back immediately',
+      'Bring 2 guest to our game night free — every single month — that\'s $70 back immediately',
       '48-hr priority booking — first access before anyone else',
       'One free Intentional Conversations Over Mocktails or Cookout ticket per quarter',
       '$15 off every Intentional Conversations Over Mocktails and Cookout ticket',
