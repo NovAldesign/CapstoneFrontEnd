@@ -14,6 +14,7 @@
   min-height: 100vh;
   font-family: 'Montserrat', sans-serif;
   overflow-x: hidden; /* Prevent horizontal wobble */
+} cleavage-plane reset */
 }
 
 /* 1. LUXE HERO HEADER */
@@ -185,6 +186,13 @@
   width: 100%;
 }
 
+/* Force inner item images to stay responsive within the flex cards */
+.event-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .event-info {
   padding: clamp(25px, 5vw, 40px);
   flex-grow: 1;
@@ -221,17 +229,68 @@
   gap: 30px;
 }
 
-/* RESPONSIVE OVERRIDES */
+/* =============================================
+   RESPONSIVE OVERRIDES (Mobile Optimized)
+   ============================================= */
 @media (max-width: 1024px) {
-  .family-grid { grid-template-columns: 1fr; gap: 40px; }
-  .family-hero-img { height: 400px; box-shadow: 15px 15px 0px var(--cream); }
+  .family-grid { 
+    grid-template-columns: 1fr; 
+    gap: 40px; 
+  }
+  .family-hero-img { 
+    height: 400px; 
+    box-shadow: 15px 15px 0px var(--cream); 
+  }
+}
+
+@media (max-width: 768px) {
+  .page-hero-visual {
+    height: 60vh; /* Smooth, concrete viewport layout balance for phone displays */
+  }
+  
+  /* Retain editorial alignment balance without causing centered eye strain over paragraph text */
+  .family-content {
+    text-align: left;
+  }
+  
+  .family-content .lead-text {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .family-values {
+    grid-template-columns: 1fr 1fr; /* Prevents values from compressing into tall thin columns */
+    gap: 16px;
+  }
 }
 
 @media (max-width: 480px) {
-  .main-content-padding { padding: 60px 5%; }
-  .event-img-wrapper { height: 200px; }
-  .section-title-navy { text-align: center; }
-  .gold-label { display: block; text-align: center; }
+  .main-content-padding { 
+    padding: 50px 4%; /* Added broader viewport width tolerances */
+  }
+  
+  .family-narrative-section {
+    padding: 50px 0;
+  }
+  
+  .family-hero-img {
+    height: 280px;
+    /* Softened extreme block-shadow offsets to stop viewport bleeding */
+    box-shadow: 10px 10px 0px var(--cream); 
+  }
+  
+  .event-img-wrapper { 
+    height: 210px; 
+  }
+  
+  .section-title-navy { 
+    text-align: center; 
+  }
+  
+  .gold-label { 
+    display: block; 
+    text-align: center; 
+  }
 }
 
 @keyframes fadeInUp {
