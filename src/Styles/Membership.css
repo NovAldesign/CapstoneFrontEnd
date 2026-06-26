@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@300;400;600;700&display=swap');
 
 /* =============================================
-   MEMBERSHIP PAGE — COMPLETE CSS v7
+   MEMBERSHIP PAGE — COMPLETE CSS v7 (Optimized)
    ============================================= */
 
 .membership-page {
@@ -561,90 +561,8 @@
 }
 
 /* =============================================
-   RESPONSIVE — 1024px
+   SUCCESS & CANCELLED SCREENS
    ============================================= */
-@media (max-width: 1024px) {
-  .membership-page .hero-dark-overlay-right {
-    padding-right: 5%;
-    padding-left: 5%;
-  }
-
-  .membership-page .hero-content-right {
-    max-width: 100%;
-    text-align: right;
-  }
-
-  .membership-page .form-row {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .membership-page .tier-cards {
-    grid-template-columns: 1fr;
-    max-width: 440px;
-  }
-}
-
-/* =============================================
-   RESPONSIVE — 768px
-   ============================================= */
-@media (max-width: 768px) {
-  .membership-page .membership-hero {
-    background-attachment: scroll;
-    min-height: 100svh;
-  }
-
-  .membership-page .hero-dark-overlay-right {
-    padding-right: 6%;
-    padding-left: 6%;
-  }
-
-  .membership-page .luxe-title {
-    font-size: clamp(2.5rem, 12vw, 4rem);
-  }
-
-  .membership-page .narrative-body,
-  .membership-page .narrative-impact {
-    font-size: 1rem;
-  }
-
-  .membership-page .applicant-container {
-    margin: -40px auto 0;
-    padding: 50px 6%;
-  }
-
-  .section-header-font {
-    font-size: 2.2rem;
-  }
-
-  .membership-page .tier-selector-section {
-    padding: 60px 5%;
-  }
-}
-
-/* =============================================
-   RESPONSIVE — 480px
-   ============================================= */
-@media (max-width: 480px) {
-  .membership-page .applicant-container {
-    padding: 40px 5%;
-  }
-
-  .section-header-font {
-    font-size: 1.8rem;
-  }
-
-  .membership-page .gold-submit-btn {
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    padding: 18px;
-  }
-}
-/* =============================================
-   MEMBERSHIP SUCCESS & CANCELLED SCREENS
-   Add these to the bottom of Membership.css
-   ============================================= */
-
 .membership-page .ms-screen {
   min-height: 100vh;
   background-color: #002147;
@@ -760,4 +678,118 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-top: 20px;
+}
+
+/* =============================================
+   RESPONSIVE BREAKPOINTS (Optimized)
+   ============================================= */
+
+/* ── Tablet Optimization ── */
+@media (max-width: 1024px) {
+  .membership-page .hero-dark-overlay-right {
+    padding-right: 5%;
+    padding-left: 5%;
+  }
+
+  .membership-page .hero-content-right {
+    max-width: 100%;
+    margin-right: 0; 
+    text-align: center;
+  }
+
+  .membership-page .location-tag,
+  .membership-page .luxe-title,
+  .membership-page .narrative-lead,
+  .membership-page .narrative-body,
+  .membership-page .narrative-impact {
+    text-align: center;
+  }
+
+  .membership-page .gold-spacer-bar {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .membership-page .form-row {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .membership-page .tier-cards {
+    grid-template-columns: 1fr;
+    max-width: 440px;
+  }
+}
+
+/* ── Mobile Layout Optimization ── */
+@media (max-width: 768px) {
+  .membership-page .membership-hero {
+    background-attachment: scroll; /* Fixes layout rendering jitter on iOS mobile engines */
+    min-height: 100svh;
+  }
+
+  .membership-page .hero-dark-overlay-right {
+    padding-right: 6%;
+    padding-left: 6%;
+  }
+
+  .membership-page .luxe-title {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .membership-page .narrative-body,
+  .membership-page .narrative-impact {
+    font-size: 1rem;
+  }
+
+  .membership-page .applicant-container {
+    margin: -40px auto 0;
+    padding: 50px 6%;
+  }
+
+  .section-header-font {
+    font-size: 2.2rem;
+  }
+
+  .membership-page .tier-selector-section {
+    padding: 60px 5%;
+  }
+
+  .membership-page .tier-card {
+    padding: 38px 24px;
+  }
+}
+
+/* ── Micro-Viewport Optimization ── */
+@media (max-width: 480px) {
+  .membership-page .applicant-container {
+    padding: 40px 5%;
+  }
+
+  .section-header-font {
+    font-size: 1.8rem;
+  }
+
+  .membership-page .gold-submit-btn {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    padding: 18px;
+  }
+
+  /* Swaps condensed flex layout to a clean stacked panel to keep inline dynamic data scannable */
+  .membership-page .selected-tier-display {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px;
+  }
+
+  .membership-page .selected-tier-display .tier-change-link {
+    align-self: flex-start;
+    padding: 0;
+  }
+
+  .membership-page .ms-inner {
+    padding: 0 8px;
+  }
 }
