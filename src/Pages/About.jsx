@@ -469,7 +469,7 @@ const About = () => {
                 screen readers announce stats cohesively */}
             <dl className="about-stats-grid">
               <div className="about-stat" role="group" aria-label="Events Hosted">
-                <dt className="about-stat-number">7</dt>
+                <dt className="about-stat-number">10</dt>
                 <dd className="about-stat-label">Events Hosted</dd>
                 <dd className="about-stat-desc">Since January 2026</dd>
               </div>
@@ -484,7 +484,7 @@ const About = () => {
                 <dd className="about-stat-desc">Documented every event night</dd>
               </div>
               <div className="about-stat" role="group" aria-label="Community Members">
-                <dt className="about-stat-number">1,900+</dt>
+                <dt className="about-stat-number">2,000+</dt>
                 <dd className="about-stat-label">Community Members</dd>
                 <dd className="about-stat-desc">Across all platforms</dd>
               </div>
@@ -493,18 +493,18 @@ const About = () => {
             {/* Platform stats — also use <dl> for semantic key-value pairs */}
             <dl className="about-platform-row">
               <div className="about-platform">
-                <dt className="about-platform-num">1,600+</dt>
+                <dt className="about-platform-num">1,667+</dt>
                 <dd className="about-platform-name">TikTok Followers</dd>
               </div>
               {/* Decorative dividers must be hidden from AT */}
               <div className="about-platform-divider" aria-hidden="true"></div>
               <div className="about-platform">
-                <dt className="about-platform-num">130+</dt>
+                <dt className="about-platform-num">142+</dt>
                 <dd className="about-platform-name">Meetup Members</dd>
               </div>
               <div className="about-platform-divider" aria-hidden="true"></div>
               <div className="about-platform">
-                <dt className="about-platform-num">160</dt>
+                <dt className="about-platform-num">179</dt>
                 <dd className="about-platform-name">Email Subscribers</dd>
               </div>
               <div className="about-platform-divider" aria-hidden="true"></div>
