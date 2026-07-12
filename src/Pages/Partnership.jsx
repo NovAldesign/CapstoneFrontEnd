@@ -173,7 +173,7 @@ const Partnership = () => {
             <p>Alcohol & Smoke-free environment</p>
           </div>
           <div className="stat-card">
-            <h4 className="playfair">2,000+</h4>
+            <h4 className="playfair">2,150+</h4>
             <p>Community in Atlanta</p>
           </div>
         </div>
