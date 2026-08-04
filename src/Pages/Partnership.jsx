@@ -49,9 +49,9 @@ const tiers = [
 ];
 
 const eventOptions = [
-  "Intentional Conversations Over Dinner / Mocktails",
+  "The Exchange - Interactive Social Experience",
   "Golf Simulations / Bowling",
-  "R&B Bingo",
+  "Karaoke Bingo",
   "Game Nights / Spades Tournament",
   "Group Travel / Retreats",
   "Cookout / Field Day",
