@@ -1,11 +1,11 @@
 /* src/Styles/BlogPost.css */
 
-/* Page Background - Warm Parchment Off-White */
+/* Page Background - Warm Off-White / Parchment */
 .editorial-page {
   background-color: #f7f4ee;
   color: #1a2332;
   min-height: 100vh;
-  padding: 40px 20px 100px;
+  padding: 60px 20px 100px;
   font-family: Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
@@ -17,7 +17,7 @@
   min-height: 80vh;
 }
 
-/* Gathering Table Header */
+/* Header Section */
 .gathering-header {
   max-width: 760px;
   margin: 0 auto 40px;
@@ -55,7 +55,7 @@
 }
 
 .header-divider {
-  width: 60px;
+  width: 80px;
   height: 3px;
   background-color: #d4af37;
   border: none;
@@ -109,11 +109,12 @@
   margin: 0 0 28px 0;
 }
 
-/* Hero Image */
+/* Hero Image - Sharp Rectangular Border */
 .hero-image-wrap {
   margin-bottom: 36px;
-  border-radius: 8px;
+  border-radius: 0px; /* Square edges matching homepage */
   overflow: hidden;
+  border: 1px solid #cbd5e0;
 }
 
 .editorial-hero-image {
@@ -123,7 +124,7 @@
   display: block;
 }
 
-/* Body Content Typography */
+/* Body Content */
 .editorial-body-content {
   font-size: 1.15rem;
   line-height: 1.8;
@@ -142,14 +143,16 @@
   line-height: 1.3;
 }
 
-/* Author Signoff */
+/* Author Signoff - Square Avatar & Border */
 .author-signoff {
   display: flex;
   align-items: center;
   gap: 16px;
   margin: 48px 0 40px;
-  padding-top: 24px;
-  border-top: 1px solid #e2e8f0;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 0px; /* Square */
+  background-color: #ffffff;
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 0.95rem;
   color: #4a5568;
@@ -158,9 +161,9 @@
 .signoff-avatar {
   width: 40px;
   height: 40px;
-  background-color: #c85a32;
+  background-color: #0b1c3d;
   color: #ffffff;
-  border-radius: 50%;
+  border-radius: 0px; /* Square */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,44 +171,49 @@
   font-size: 1.1rem;
 }
 
-/* Event & Partnership CTA Card */
+/* Event & Partnership CTA Card - Navy Square Box */
 .editorial-cta-card {
-  background-color: #eee9df;
-  border-radius: 10px;
-  padding: 32px;
+  background-color: #0b1c3d; /* Dark Navy matching site footer/hero */
+  color: #ffffff;
+  border-radius: 0px; /* Square edges */
+  padding: 36px;
   text-align: center;
   margin-bottom: 48px;
+  border-left: 4px solid #d4af37; /* Brand Gold accent line */
 }
 
 .editorial-cta-card h3 {
-  font-size: 1.4rem;
-  color: #0b1c3d;
-  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin: 0 0 10px 0;
 }
 
 .editorial-cta-card p {
   font-family: system-ui, -apple-system, sans-serif;
-  color: #4a5568;
+  color: #e2e8f0;
   font-size: 0.95rem;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .cta-actions {
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: 16px;
   flex-wrap: wrap;
 }
 
+/* Sharp Rectangular Brand Buttons */
 .btn-primary {
   background-color: #c85a32;
   color: #ffffff;
-  padding: 12px 20px;
-  border-radius: 6px;
+  padding: 12px 24px;
+  border-radius: 0px; /* Sharp Square */
   text-decoration: none;
   font-family: system-ui, -apple-system, sans-serif;
   font-weight: 600;
   font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   transition: background-color 0.2s;
 }
 
@@ -214,24 +222,28 @@
 }
 
 .btn-secondary {
-  background-color: #0b1c3d;
+  background-color: transparent;
   color: #ffffff;
-  padding: 12px 20px;
-  border-radius: 6px;
+  border: 1px solid #ffffff;
+  padding: 12px 24px;
+  border-radius: 0px; /* Sharp Square */
   text-decoration: none;
   font-family: system-ui, -apple-system, sans-serif;
   font-weight: 600;
   font-size: 0.9rem;
-  transition: background-color 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .btn-secondary:hover {
-  background-color: #162d5a;
+  background-color: #ffffff;
+  color: #0b1c3d;
 }
 
-/* Newsletter Subscription Section */
+/* Newsletter Subscription - Sharp Box Layout */
 .newsletter-section {
-  border-top: 2px solid #e2e8f0;
+  border-top: 2px solid #0b1c3d;
   padding-top: 40px;
 }
 
@@ -250,33 +262,38 @@
 
 .newsletter-form {
   display: flex;
-  gap: 10px;
+  gap: 0px; /* Flush square input and button */
   margin-bottom: 12px;
 }
 
 .newsletter-input {
   flex: 1;
-  padding: 12px 16px;
-  border: 1px solid #cbd5e0;
-  border-radius: 6px;
+  padding: 14px 16px;
+  border: 1px solid #0b1c3d;
+  border-radius: 0px; /* Sharp Square */
   font-size: 0.95rem;
   background-color: #ffffff;
+  outline: none;
 }
 
 .newsletter-btn {
   background-color: #0b1c3d;
   color: #ffffff;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
+  border: 1px solid #0b1c3d;
+  padding: 14px 28px;
+  border-radius: 0px; /* Sharp Square */
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   font-family: system-ui, -apple-system, sans-serif;
+  transition: background-color 0.2s;
 }
 
 .newsletter-btn:hover {
-  background-color: #162d5a;
+  background-color: #c85a32;
+  border-color: #c85a32;
 }
 
 .newsletter-note {
@@ -287,10 +304,11 @@
 }
 
 .subscribe-success {
-  background-color: #d4edda;
-  color: #155724;
-  padding: 14px;
-  border-radius: 6px;
+  background-color: #0b1c3d;
+  color: #ffffff;
+  padding: 16px;
+  border-radius: 0px;
+  border-left: 4px solid #d4af37;
   font-family: system-ui, -apple-system, sans-serif;
   font-weight: 600;
 }
