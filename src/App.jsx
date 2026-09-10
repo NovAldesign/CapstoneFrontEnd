@@ -10,7 +10,7 @@ import ProtectedRoute from "./Components/ProtectedRoute.jsx";
 import Home from "./Pages/Home.jsx";
 import Events from "./Pages/Events.jsx";
 import Blog from "./Pages/Blog.jsx";
-import BlogPost from './Pages/BlogPost';
+import BlogPost from "./Pages/BlogPost.jsx";
 import Membership from "./Pages/Membership.jsx";
 import Partnerships from "./Pages/Partnership.jsx";
 import About from "./Pages/About.jsx";
@@ -31,24 +31,20 @@ function App() {
 
       <main className="main-content">
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<Events />} />
           <Route path="/membership" element={<Membership />} />
           <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<BlogPost />} /> {/* Add dynamic route */}
-      
-      {/* Fallback 404 Route */}
-      <Route path="*" element={<NotFound />} />
-          
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/membership/success" element={<MembershipSuccess />} />
-          
           <Route path="/partnerships" element={<Partnerships />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/events/success" element={<SuccessPage />} />
 
+          {/* Protected Routes */}
           <Route
             path="/admin/dashboard"
             element={
@@ -58,6 +54,7 @@ function App() {
             }
           />
 
+          {/* Single Catch-All 404 Route (MUST BE LAST) */}
           <Route
             path="*"
             element={
