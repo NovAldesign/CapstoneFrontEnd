@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import '../Styles/BlogPost.css';
 
 // Checks your actual Railway environment variable names (VITE_API_URL and VITE_BACKEND_URL)
 const API_BASE = 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import '../Styles/BlogPost.css';
 
 const API_BASE = 
   import.meta.env.VITE_API_URL || 
