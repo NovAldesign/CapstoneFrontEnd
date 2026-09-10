@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const BlogList = () => {
+const Blog = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -45,4 +45,4 @@ const BlogList = () => {
   );
 };
 
-export default BlogList;
+export default Blog;
