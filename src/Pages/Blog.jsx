@@ -1,14 +1,21 @@
+// src/Pages/Blog.jsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
+// DYNAMIC API URL RESOLUTION:
+// 1. Uses VITE_API_BASE_URL if set in environment.
+// 2. If running locally on localhost/127.0.0.1, defaults to http://localhost:3000.
+// 3. When live on Railway/Production, evaluates to "" so fetch uses relative paths ("/api/articles").
+const API_BASE = 
+  import.meta.env.VITE_API_BASE_URL || 
+  (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
+    ? "http://localhost:3000" 
+    : "");
 
 const Blog = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Dynamic API URL detection:
-  // Uses VITE_API_BASE_URL if configured, otherwise falls back to local Express port 3000
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
   useEffect(() => {
     fetch(`${API_BASE}/api/articles`)
@@ -27,7 +34,7 @@ const Blog = () => {
         setError(err.message);
         setLoading(false);
       });
-  }, [API_BASE]);
+  }, []);
 
   if (loading) return <div className="blog-loading">Loading posts...</div>;
   if (error) return <div className="blog-error">Unable to load articles: {error}</div>;
