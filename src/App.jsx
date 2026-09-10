@@ -10,7 +10,7 @@ import ProtectedRoute from "./Components/ProtectedRoute.jsx";
 import Home from "./Pages/Home.jsx";
 import Events from "./Pages/Events.jsx";
 import Travel from "./Pages/Travel.jsx";
-import Blog from './pages/Blog.jsx';
+import Blog from "./Pages/Blog.jsx";
 import Membership from "./Pages/Membership.jsx";
 import Partnerships from "./Pages/Partnership.jsx";
 import About from "./Pages/About.jsx";
