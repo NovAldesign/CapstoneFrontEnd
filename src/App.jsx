@@ -10,6 +10,7 @@ import ProtectedRoute from "./Components/ProtectedRoute.jsx";
 import Home from "./Pages/Home.jsx";
 import Events from "./Pages/Events.jsx";
 import Travel from "./Pages/Travel.jsx";
+import Blog from './pages/Blog';
 import Membership from "./Pages/Membership.jsx";
 import Partnerships from "./Pages/Partnership.jsx";
 import About from "./Pages/About.jsx";
@@ -35,6 +36,7 @@ function App() {
           <Route path="/events" element={<Events />} />
           <Route path="/travel" element={<Travel />} />
           <Route path="/membership" element={<Membership />} />
+          <Route path="/blog" element={<Blog />} />
           
           {/* Maps Stripe's success redirect cleanly to your membership success page */}
           <Route path="/membership/success" element={<MembershipSuccess />} />
