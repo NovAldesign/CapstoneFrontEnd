@@ -1,16 +1,12 @@
-// src/Pages/Blog.jsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-// DYNAMIC API URL RESOLUTION:
-// 1. Uses VITE_API_BASE_URL if set in environment.
-// 2. If running locally on localhost/127.0.0.1, defaults to http://localhost:3000.
-// 3. When live on Railway/Production, evaluates to "" so fetch uses relative paths ("/api/articles").
+// Checks your actual Railway environment variable names (VITE_API_URL and VITE_BACKEND_URL)
 const API_BASE = 
+  import.meta.env.VITE_API_URL || 
+  import.meta.env.VITE_BACKEND_URL || 
   import.meta.env.VITE_API_BASE_URL || 
-  (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
-    ? "http://localhost:3000" 
-    : "");
+  "http://localhost:3000";
 
 const Blog = () => {
   const [articles, setArticles] = useState([]);
