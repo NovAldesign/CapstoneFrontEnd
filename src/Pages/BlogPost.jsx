@@ -12,7 +12,6 @@ const BlogPost = () => {
   const { slug } = useParams();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch(`${API_BASE}/api/articles/${slug}`)
@@ -26,41 +25,37 @@ const BlogPost = () => {
       })
       .catch((err) => {
         console.error("Error fetching article:", err);
-        setError(err.message);
         setLoading(false);
       });
   }, [slug]);
 
-  if (loading) return <div className="blog-loading">Loading article...</div>;
-  if (error || !article) {
-    return (
-      <div className="blog-error">
-        <h2>Article Not Found</h2>
-        <p>We couldn't find the requested article.</p>
-        <Link to="/blog">← Back to Blog</Link>
-      </div>
-    );
-  }
+  if (loading) return <div className="blog-post-page" style={{ padding: "80px 6vw", color: "#fff" }}>Loading article...</div>;
+  if (!article) return <div className="blog-post-page" style={{ padding: "80px 6vw", color: "#fff" }}>Article not found.</div>;
 
   return (
-    <div className="blog-post-container">
-      <Link to="/blog" className="back-link">← Back to Articles</Link>
-      
-      <h1>{article.title}</h1>
-      <p className="date">
-        {article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : ''}
-      </p>
+    <div className="blog-post-page">
+      <div className="article-container">
+        <Link to="/blog" className="back-link">← Back to Articles</Link>
 
-      {article.imageUrl && (
-        <img 
-          src={article.imageUrl} 
-          alt={article.title} 
-          className="blog-post-image"
+        <h1 className="article-title">{article.title}</h1>
+        
+        <p className="article-meta">
+          {article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : '9/9/2026'}
+        </p>
+
+        {article.imageUrl && (
+          <img 
+            src={article.imageUrl} 
+            alt={article.title} 
+            className="article-hero-image"
+          />
+        )}
+
+        {/* Dangerously set HTML parses the raw <p> and <h3> tags */}
+        <div 
+          className="editorial-content"
+          dangerouslySetInnerHTML={{ __html: article.content }} 
         />
-      )}
-
-      <div className="blog-post-content">
-        {article.content || article.body || article.excerpt}
       </div>
     </div>
   );
