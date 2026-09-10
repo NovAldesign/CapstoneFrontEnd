@@ -34,7 +34,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/travel" element={<Travel />} />
+          {/* <Route path="/travel" element={<Travel />} /> */}
           <Route path="/membership" element={<Membership />} />
           <Route path="/blog" element={<Blog />} />
           
@@ -44,7 +44,7 @@ function App() {
           <Route path="/partnerships" element={<Partnerships />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
+          {/* <Route path="/login" element={<Login />} /> */}
           
           {/* UPDATED: Dynamic parameter route catches cryptographic tokens out of reset urls */}
           <Route path="/reset-password/:token" element={<ResetPassword />} />
