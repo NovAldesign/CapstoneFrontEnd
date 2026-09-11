@@ -73,7 +73,7 @@ const BlogPost = () => {
 
   const displayImageUrl = article.imageUrl || CLOUDINARY_HERO_IMAGE;
   const imageAltText = article.imageAlt || "Grown Folks Collective members and attendees gathered together at Aromas Tea Bar for game night.";
-  const imageCaptionText = article.imageCaption || "GFC members and attendees sharing laughs during game night at Aromas Tea Bar.";
+  const imageCaptionText = article.imageCaption || "GFC members and attendees gathering for a group picture at game night at Aromas Tea Bar.";
 
   return (
     <div className="editorial-page">
@@ -91,7 +91,7 @@ const BlogPost = () => {
             <span className="publish-date">{formattedDate}</span>
           </div>
 
-          {/* Protected High-Res Hero Image & Accessible Caption */}
+          {/* Protected High-Res Hero Image & Caption */}
           <figure className="hero-image-wrap">
             <img 
               src={displayImageUrl} 
