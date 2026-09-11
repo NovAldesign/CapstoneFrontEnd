@@ -9,7 +9,6 @@ const API_BASE =
   "http://localhost:3000";
 
 const CLOUDINARY_HERO_IMAGE = "https://res.cloudinary.com/vyarbhlp/image/upload/v1789087406/grown-folks-collective-group-photo-navygold.jpg";
-
 const BlogPost = () => {
   const { slug } = useParams();
   const [article, setArticle] = useState(null);
