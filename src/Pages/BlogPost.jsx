@@ -9,6 +9,7 @@ const API_BASE =
   "http://localhost:3000";
 
 const CLOUDINARY_HERO_IMAGE = "https://res.cloudinary.com/vyarbhlp/image/upload/v1789087406/grown-folks-collective-group-photo-navygold.jpg";
+
 const BlogPost = () => {
   const { slug } = useParams();
   const [article, setArticle] = useState(null);
@@ -70,7 +71,8 @@ const BlogPost = () => {
 
   const authorDisplay = "Vaughn W.";
 
-  const displayImageUrl = article.imageUrl || CLOUDINARY_HERO_IMAGE;
+  // FORCED FIX: Direct override to guarantee your new Cloudinary photo loads
+  const displayImageUrl = CLOUDINARY_HERO_IMAGE;
   const imageAltText = article.imageAlt || "Grown Folks Collective members and attendees gathered together at Aromas Tea Bar for game night.";
   const imageCaptionText = article.imageCaption || "GFC members and attendees gathering for a group picture at game night at Aromas Tea Bar.";
 
