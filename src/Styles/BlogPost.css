@@ -17,7 +17,7 @@
 }
 
 .editorial-nav-bar {
-  max-width: 760px;
+  max-width: 800px;
   margin: 0 auto 20px;
 }
 
@@ -34,9 +34,9 @@
   text-decoration: underline;
 }
 
-/* Single Centered Column */
+/* Single Centered Column Layout */
 .editorial-container {
-  max-width: 760px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -101,96 +101,64 @@
   line-height: 1.3;
 }
 
-/* Centered Gold CTA Banner */
+/* Redesigned Premium Navy Banner */
 .editorial-cta-card {
-  background-color: #C5A059;
-  color: #0b1c3d;
-  padding: 40px 32px;
+  background-color: #0b1c3d; /* Solid Navy */
+  color: #ffffff;
+  padding: 48px 36px;
   text-align: center;
-  margin: 56px 0 48px;
-  border-left: 6px solid #0b1c3d;
+  margin: 60px 0 52px;
+  border-top: 5px solid #C5A059; /* Elegant Gold Header Bar */
   font-family: Georgia, serif;
+  box-shadow: 0 4px 12px rgba(11, 28, 61, 0.08);
 }
 
 .editorial-cta-card h3 {
-  font-size: 1.8rem;
-  color: #0b1c3d;
+  font-size: 2rem;
+  color: #ffffff;
   margin: 0 0 12px 0;
   font-weight: 700;
+  letter-spacing: -0.3px;
 }
 
 .editorial-cta-card p {
-  color: #0b1c3d;
+  color: #e2e8f0;
   font-size: 1.05rem;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 
+/* Action Buttons Container - Single Line Alignment */
 .cta-actions {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
+  gap: 16px;
+  flex-wrap: nowrap;
 }
 
-.btn-cta-navy {
-  background-color: #0b1c3d;
-  color: #ffffff;
-  padding: 12px 22px;
-  text-decoration: none;
-  font-family: Georgia, serif;
-  font-weight: 700;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: background-color 0.2s, color 0.2s;
-  border: 2px solid #0b1c3d;
-}
-
-.btn-cta-navy:hover {
+/* Unified Button Styling */
+.btn-cta-unified {
   background-color: #ffffff;
   color: #0b1c3d;
-}
-
-.btn-cta-white {
-  background-color: #ffffff;
-  color: #0b1c3d;
-  padding: 12px 22px;
+  border: 2px solid #ffffff;
+  padding: 14px 24px;
   text-decoration: none;
   font-family: Georgia, serif;
   font-weight: 700;
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  transition: background-color 0.2s, color 0.2s;
-  border: 2px solid #0b1c3d;
+  white-space: nowrap;
+  transition: all 0.2s ease-in-out;
 }
 
-.btn-cta-white:hover {
-  background-color: #0b1c3d;
-  color: #ffffff;
-}
-
-.btn-cta-outline {
-  background-color: transparent;
+.btn-cta-unified:hover {
+  background-color: #C5A059;
+  border-color: #C5A059;
   color: #0b1c3d;
-  border: 2px solid #0b1c3d;
-  padding: 12px 22px;
-  text-decoration: none;
-  font-family: Georgia, serif;
-  font-weight: 700;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: background-color 0.2s, color 0.2s;
 }
 
-.btn-cta-outline:hover {
-  background-color: #0b1c3d;
-  color: #ffffff;
-}
-
-/* Centered Newsletter Section */
+/* Newsletter Section */
 .newsletter-section {
   border-top: 2px solid #0b1c3d;
   padding-top: 48px;
@@ -261,4 +229,16 @@
   font-weight: 600;
   max-width: 500px;
   margin: 0 auto;
+}
+
+/* Responsive Wrap for Smaller Screens */
+@media (max-width: 768px) {
+  .cta-actions {
+    flex-wrap: wrap;
+  }
+  
+  .btn-cta-unified {
+    width: 100%;
+    text-align: center;
+  }
 }
