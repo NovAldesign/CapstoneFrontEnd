@@ -69,6 +69,10 @@ const BlogPost = () => {
 
   const authorDisplay = "Vaughn W.";
 
+  // Custom accessibility alt text and caption fallback for Game Night
+  const imageAltText = article.imageAlt || "Grown Folks Collective members and attendees gathered together at Aromas Tea Bar for game night.";
+  const imageCaptionText = article.imageCaption || "GFC members and attendees sharing laughs during game night at Aromas Tea Bar.";
+
   return (
     <div className="editorial-page">
       <div className="editorial-nav-bar">
@@ -85,15 +89,18 @@ const BlogPost = () => {
             <span className="publish-date">{formattedDate}</span>
           </div>
 
-          {/* Hero Image */}
+          {/* Hero Image & Accessible Caption */}
           {article.imageUrl && (
-            <div className="hero-image-wrap">
+            <figure className="hero-image-wrap">
               <img 
                 src={article.imageUrl} 
-                alt={article.title} 
+                alt={imageAltText} 
                 className="editorial-hero-image"
               />
-            </div>
+              <figcaption className="editorial-hero-caption">
+                {imageCaptionText}
+              </figcaption>
+            </figure>
           )}
 
           {/* Article Body Content */}
@@ -102,7 +109,7 @@ const BlogPost = () => {
             dangerouslySetInnerHTML={{ __html: article.content }} 
           />
 
-          {/* Full-Width Navy Banner with Gold Accent Header */}
+          {/* Full-Width Navy Banner */}
           <div className="editorial-cta-card">
             <h3>Pull Up a Chair</h3>
             <p>Ready to connect in person, join our community, or collaborate with us?</p>
