@@ -85,16 +85,12 @@
   object-fit: cover;
   border-radius: 4px;
 
-  /* Prevent image dragging, highlighting, and saving */
-  -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
-  user-drag: none;
-  user-select: none;
+/*/* Prevent image highlighting, selection, and dragging */
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
+  pointer-events: none; /* Disables clicking, holding, and dragging out of browser */
 }
 
 .editorial-hero-caption {
