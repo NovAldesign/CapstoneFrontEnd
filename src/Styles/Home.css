@@ -540,6 +540,7 @@
 }
 
 .signature {
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   text-transform: uppercase;
   letter-spacing: 4px;
   font-weight: 700;
