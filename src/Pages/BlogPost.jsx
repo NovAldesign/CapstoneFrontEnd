@@ -14,8 +14,15 @@ const BlogPost = () => {
   const { slug } = useParams();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Subscription Form State
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
+  const [smsOptIn, setSmsOptIn] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [formError, setFormError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     fetch(`${API_BASE}/api/articles/${slug}`)
@@ -35,20 +42,43 @@ const BlogPost = () => {
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
-    if (!email) return;
+    setFormError('');
 
-    try {
-      await fetch(`${API_BASE}/api/subscribers`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-    } catch (err) {
-      console.log("Newsletter submission received locally:", email);
+    if (smsOptIn && !phoneNumber.trim()) {
+      setFormError('Please enter a phone number to receive text event updates.');
+      return;
     }
 
-    setSubscribed(true);
-    setEmail('');
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(`${API_BASE}/api/subscribers`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName,
+          email,
+          smsOptIn,
+          phoneNumber: smsOptIn ? phoneNumber : ''
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to subscribe');
+      }
+
+      setSubscribed(true);
+      setFullName('');
+      setEmail('');
+      setPhoneNumber('');
+      setSmsOptIn(false);
+    } catch (err) {
+      setFormError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (loading) return <div className="editorial-page-loading">Loading article...</div>;
@@ -70,8 +100,6 @@ const BlogPost = () => {
     : 'September 9, 2026';
 
   const authorDisplay = "Vaughn W.";
-
-  // FORCED FIX: Direct override to guarantee your new Cloudinary photo loads
   const displayImageUrl = CLOUDINARY_HERO_IMAGE;
   const imageAltText = article.imageAlt || "Grown Folks Collective members and attendees gathered together at Aromas Tea Bar for game night.";
   const imageCaptionText = article.imageCaption || "GFC members and attendees gathering for a group picture at game night at Aromas Tea Bar.";
@@ -123,7 +151,7 @@ const BlogPost = () => {
             </div>
           </div>
 
-          {/* Centered Newsletter Signup */}
+          {/* Expanded Newsletter & SMS Signup */}
           <section className="newsletter-section">
             <h3>Get the next post in your inbox</h3>
             <p>New stories on connection, community, and belonging — plus a heads-up before events sell out.</p>
@@ -133,16 +161,59 @@ const BlogPost = () => {
                 Thanks for joining! Welcome to the table.
               </div>
             ) : (
-              <form onSubmit={handleSubscribe} className="newsletter-form">
-                <input 
-                  type="email" 
-                  placeholder="you@email.com" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required 
-                  className="newsletter-input"
-                />
-                <button type="submit" className="newsletter-btn">Join the table</button>
+              <form onSubmit={handleSubscribe} className="newsletter-form-expanded">
+                {formError && <div className="newsletter-error">{formError}</div>}
+
+                <div className="form-group">
+                  <input 
+                    type="text" 
+                    placeholder="Full Name" 
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    required 
+                    className="newsletter-input"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <input 
+                    type="email" 
+                    placeholder="you@email.com" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required 
+                    className="newsletter-input"
+                  />
+                </div>
+
+                <div className="form-group checkbox-group">
+                  <label className="checkbox-label">
+                    <input 
+                      type="checkbox" 
+                      checked={smsOptIn}
+                      onChange={(e) => setSmsOptIn(e.target.checked)}
+                      className="sms-checkbox"
+                    />
+                    <span>Receive event text message notifications</span>
+                  </label>
+                </div>
+
+                {smsOptIn && (
+                  <div className="form-group">
+                    <input 
+                      type="tel" 
+                      placeholder="Phone Number (e.g. 512-555-0654)" 
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      required={smsOptIn}
+                      className="newsletter-input"
+                    />
+                  </div>
+                )}
+
+                <button type="submit" className="newsletter-btn" disabled={isSubmitting}>
+                  {isSubmitting ? 'Joining...' : 'Join the table'}
+                </button>
               </form>
             )}
             <span className="newsletter-note">No spam. Just the table talk and the next invite.</span>
