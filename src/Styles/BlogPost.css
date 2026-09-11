@@ -66,17 +66,15 @@
 
 .publish-date {
   color: #718096;
-/* Hero Image Box - Crisp & Sharp Display */
 }
 
+/* Hero Image & Accessible Caption Styling */
 .hero-image-wrap {
-  margin-bottom: 36px;
-  background-color: #f7f4ee;
-  overflow: hidden;
+  margin: 0 0 36px 0;
+  background-color: transparent;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  max-height: 500px; /* Prevents massive vertical stretching */
 }
 
 .editorial-hero-image {
@@ -86,9 +84,19 @@
   height: auto;
   display: block;
   object-fit: contain;
-  /* Hardware-accelerated image scaling */
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
+}
+
+.editorial-hero-caption {
+  margin-top: 12px;
+  font-family: Georgia, serif;
+  font-size: 0.88rem;
+  font-style: italic;
+  color: #718096;
+  text-align: center;
+  line-height: 1.4;
+  max-width: 90%;
 }
 
 .editorial-body-content {
@@ -111,12 +119,12 @@
 
 /* Redesigned Premium Navy Banner */
 .editorial-cta-card {
-  background-color: #0b1c3d; /* Solid Navy */
+  background-color: #0b1c3d;
   color: #ffffff;
   padding: 48px 36px;
   text-align: center;
   margin: 60px 0 52px;
-  border-top: 5px solid #C5A059; /* Elegant Gold Header Bar */
+  border-top: 5px solid #C5A059;
   font-family: Georgia, serif;
   box-shadow: 0 4px 12px rgba(11, 28, 61, 0.08);
 }
