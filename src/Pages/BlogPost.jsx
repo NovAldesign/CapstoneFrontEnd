@@ -74,7 +74,7 @@ const BlogPost = () => {
   // Use article.imageUrl from DB, or fallback to your new Cloudinary high-res image
   const displayImageUrl = article.imageUrl || CLOUDINARY_HERO_IMAGE;
   const imageAltText = article.imageAlt || "Grown Folks Collective members and attendees gathered together at Aromas Tea Bar for game night.";
-  const imageCaptionText = article.imageCaption || "GFC members and attendees sharing laughs during game night at Aromas Tea Bar.";
+  const imageCaptionText = article.imageCaption || "GFC members and attendees group photo during game night at Aromas Tea Bar.";
 
   return (
     <div className="editorial-page">
