@@ -68,24 +68,33 @@
   color: #718096;
 }
 
-/* Hero Image & Accessible Caption Styling */
+/* Hero Image Box & Protection */
 .hero-image-wrap {
   margin: 0 0 36px 0;
-  background-color: transparent;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .editorial-hero-image {
-  max-width: 100%;
-  max-height: 500px;
-  width: auto;
+  width: 100%;
   height: auto;
+  max-height: 520px;
   display: block;
-  object-fit: contain;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
+  object-fit: cover;
+  border-radius: 4px;
+
+  /* Prevent image dragging, highlighting, and saving */
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .editorial-hero-caption {
