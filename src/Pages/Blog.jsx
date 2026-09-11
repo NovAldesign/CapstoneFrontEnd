@@ -14,11 +14,6 @@ const Blog = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Quick subscribe state for the top header CTA
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   useEffect(() => {
     fetch(`${API_BASE}/api/articles`)
       .then((res) => {
@@ -35,29 +30,6 @@ const Blog = () => {
       });
   }, []);
 
-  const handleQuickSubscribe = async (e) => {
-    e.preventDefault();
-    if (!email) return;
-
-    setIsSubmitting(true);
-    try {
-      const res = await fetch(`${API_BASE}/api/subscribers`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fullName: 'Blog Reader', email, smsOptIn: false }),
-      });
-
-      if (res.ok) {
-        setSubscribed(true);
-        setEmail('');
-      }
-    } catch (err) {
-      console.error("Subscription error:", err);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <div className="blog-index-page">
       <div className="blog-main-wrapper">
@@ -70,34 +42,15 @@ const Blog = () => {
           <div className="blog-header-divider"></div>
         </header>
 
-        {/* Top Call to Action Box */}
+        {/* Clean Banner CTA */}
         <section className="blog-top-cta">
           <div className="blog-cta-content">
             <h3>Pull Up a Chair at the Table</h3>
-            <p>Get notified when new stories drop and get early access to upcoming events before they sell out.</p>
+            <p>Ready to experience the connection in person? Check out where we’re gathering next.</p>
           </div>
-          <div className="blog-cta-action">
-            {subscribed ? (
-              <div className="blog-cta-success">You're on the list! Welcome.</div>
-            ) : (
-              <form onSubmit={handleQuickSubscribe} className="blog-cta-form">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required 
-                  className="blog-cta-input"
-                />
-                <button type="submit" className="blog-cta-btn" disabled={isSubmitting}>
-                  {isSubmitting ? 'Joining...' : 'Subscribe'}
-                </button>
-              </form>
-            )}
-            <div className="blog-cta-sublinks">
-              <Link to="/events" className="blog-cta-link">View Upcoming Events →</Link>
-            </div>
-          </div>
+          <Link to="/events" className="blog-cta-btn">
+            View Upcoming Events →
+          </Link>
         </section>
 
         {/* Articles Grid / Hero Layout */}
