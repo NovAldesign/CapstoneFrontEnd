@@ -85,7 +85,7 @@ const BlogPost = () => {
             <span className="publish-date">{formattedDate}</span>
           </div>
 
-          {/* Crisp Hero Image */}
+          {/* Hero Image */}
           {article.imageUrl && (
             <div className="hero-image-wrap">
               <img 
@@ -102,14 +102,14 @@ const BlogPost = () => {
             dangerouslySetInnerHTML={{ __html: article.content }} 
           />
 
-          {/* Centered Gold CTA Banner */}
+          {/* Full-Width Navy Banner with Gold Accent Header */}
           <div className="editorial-cta-card">
             <h3>Pull Up a Chair</h3>
             <p>Ready to connect in person, join our community, or collaborate with us?</p>
             <div className="cta-actions">
-              <Link to="/events" className="btn-cta-navy">See Upcoming Events</Link>
-              <Link to="/membership" className="btn-cta-white">Join Our Membership</Link>
-              <Link to="/partnerships" className="btn-cta-outline">Partner With Us</Link>
+              <Link to="/events" className="btn-cta-unified">Upcoming Events</Link>
+              <Link to="/membership" className="btn-cta-unified">Join Membership</Link>
+              <Link to="/partnerships" className="btn-cta-unified">Partner With Us</Link>
             </div>
           </div>
 
