@@ -14,6 +14,11 @@ const Blog = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Quick subscribe state for the top header CTA
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   useEffect(() => {
     fetch(`${API_BASE}/api/articles`)
       .then((res) => {
@@ -30,72 +35,124 @@ const Blog = () => {
       });
   }, []);
 
+  const handleQuickSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/subscribers`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fullName: 'Blog Reader', email, smsOptIn: false }),
+      });
+
+      if (res.ok) {
+        setSubscribed(true);
+        setEmail('');
+      }
+    } catch (err) {
+      console.error("Subscription error:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="blog-index-page">
-      {/* Brand Header Section */}
-      <header className="blog-header">
-        <div className="blog-header-container">
+      <div className="blog-main-wrapper">
+        {/* Left-Justified Header */}
+        <header className="blog-header">
           <h1 className="blog-main-title">The Gathering Table</h1>
           <p className="blog-subtitle">
             Notes on ending social isolation, one game night at a time — from the people building real community for grown folks in Atlanta.
           </p>
           <div className="blog-header-divider"></div>
-        </div>
-      </header>
+        </header>
 
-      {/* Articles Container */}
-      <main className="blog-container">
-        {loading ? (
-          <div className="blog-loading">Loading stories...</div>
-        ) : articles.length === 0 ? (
-          <div className="blog-empty">
-            <h3>No articles published yet.</h3>
-            <p>Check back soon for new stories from the table.</p>
+        {/* Top Call to Action Box */}
+        <section className="blog-top-cta">
+          <div className="blog-cta-content">
+            <h3>Pull Up a Chair at the Table</h3>
+            <p>Get notified when new stories drop and get early access to upcoming events before they sell out.</p>
           </div>
-        ) : (
-          <div className="blog-grid">
-            {articles.map((article, index) => {
-              const formattedDate = article.publishedAt
-                ? new Date(article.publishedAt).toLocaleDateString('en-US', {
-                    month: 'numeric',
-                    day: 'numeric',
-                    year: 'numeric'
-                  })
-                : '9/9/2026';
+          <div className="blog-cta-action">
+            {subscribed ? (
+              <div className="blog-cta-success">You're on the list! Welcome.</div>
+            ) : (
+              <form onSubmit={handleQuickSubscribe} className="blog-cta-form">
+                <input 
+                  type="email" 
+                  placeholder="Enter your email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required 
+                  className="blog-cta-input"
+                />
+                <button type="submit" className="blog-cta-btn" disabled={isSubmitting}>
+                  {isSubmitting ? 'Joining...' : 'Subscribe'}
+                </button>
+              </form>
+            )}
+            <div className="blog-cta-sublinks">
+              <Link to="/events" className="blog-cta-link">View Upcoming Events →</Link>
+            </div>
+          </div>
+        </section>
 
-              // Strip HTML tags for clean snippet preview
-              const cleanSnippet = article.excerpt || article.content?.replace(/<[^>]+>/g, '').substring(0, 160) + '...';
+        {/* Articles Grid / Hero Layout */}
+        <main className="blog-container">
+          {loading ? (
+            <div className="blog-loading">Loading stories...</div>
+          ) : articles.length === 0 ? (
+            <div className="blog-empty">
+              <h3>No articles published yet.</h3>
+              <p>Check back soon for new stories from the table.</p>
+            </div>
+          ) : (
+            <div className="blog-grid">
+              {articles.map((article, index) => {
+                const formattedDate = article.publishedAt
+                  ? new Date(article.publishedAt).toLocaleDateString('en-US', {
+                      month: 'numeric',
+                      day: 'numeric',
+                      year: 'numeric'
+                    })
+                  : '9/9/2026';
 
-              return (
-                <article 
-                  key={article._id || article.slug || index} 
-                  className={`blog-card ${index === 0 ? 'featured-card' : ''}`}
-                >
-                  <Link to={`/blog/${article.slug}`} className="blog-card-image-link">
-                    <img 
-                      src={article.featuredImage || FALLBACK_IMAGE} 
-                      alt={article.title} 
-                      className="blog-card-image"
-                      onContextMenu={(e) => e.preventDefault()}
-                      onDragStart={(e) => e.preventDefault()}
-                    />
-                  </Link>
-                  <div className="blog-card-content">
-                    <span className="blog-card-date">{formattedDate}</span>
-                    <h2 className="blog-card-title">
-                      <Link to={`/blog/${article.slug}`}>{article.title}</Link>
-                    </h2>
-                    <p className="blog-card-excerpt">{cleanSnippet}</p>
-                    <Link to={`/blog/${article.slug}`} className="read-full-link">
-                      Read Full Article →
+                const cleanSnippet = article.excerpt || article.content?.replace(/<[^>]+>/g, '').substring(0, 160) + '...';
+
+                return (
+                  <article 
+                    key={article._id || article.slug || index} 
+                    className={`blog-card ${index === 0 ? 'featured-card' : ''}`}
+                  >
+                    <Link to={`/blog/${article.slug}`} className="blog-card-image-link">
+                      <img 
+                        src={article.featuredImage || FALLBACK_IMAGE} 
+                        alt={article.title} 
+                        className="blog-card-image"
+                        onContextMenu={(e) => e.preventDefault()}
+                        onDragStart={(e) => e.preventDefault()}
+                      />
                     </Link>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
-      </main>
+                    <div className="blog-card-content">
+                      <span className="blog-card-date">{formattedDate}</span>
+                      <h2 className="blog-card-title">
+                        <Link to={`/blog/${article.slug}`}>{article.title}</Link>
+                      </h2>
+                      <p className="blog-card-excerpt">{cleanSnippet}</p>
+                      <Link to={`/blog/${article.slug}`} className="read-full-link">
+                        Read Full Article →
+                      </Link>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </main>
+      </div>
     </div>
   );
 };
