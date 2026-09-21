@@ -261,13 +261,14 @@
 
 /* Ensure list padding aligns nicely with standard paragraph margins */
 .blog-content ul {
-  padding-left: 1.5rem; /* Or 24px */
+  padding-left: 1.25rem; /* Indents the entire list so bullets align with paragraph text */
   margin-top: 1rem;
   margin-bottom: 1.5rem;
-  list-style-position: inside; /* Keeps bullets aligned cleanly inside the text block */
+  list-style-position: outside; /* Places bullet markers in the margin for proper hanging indentation */
 }
 
 .blog-content li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   line-height: 1.6;
+  padding-left: 0.25rem; /* Gives breathing room between bullet dot and text */
 }
