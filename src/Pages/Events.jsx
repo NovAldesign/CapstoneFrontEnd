@@ -239,6 +239,15 @@ const Events = () => {
           <span className="gfc-bundle-fine">Multiple tickets to the same event count as one event.</span>
         </div>
 
+        {/* GROUP BOOKINGS BANNER */}
+        <Link to="/celebrate" className="gfc-group-banner">
+          <span>
+            <strong>Celebrating something? Bring your crew.</strong>{" "}
+            Group pricing for 10+, reserved tables, and custom touches.
+          </span>
+          <span className="gfc-group-banner-cta">Plan a group outing →</span>
+        </Link>
+
         {/* RESULTS */}
         {loading ? (
           <div className="gfc-grid" aria-busy="true" aria-label="Loading events">
