@@ -362,3 +362,12 @@
 @media (prefers-reduced-motion: reduce) {
   .gfc-card, .gfc-card-media img, .gfc-skeleton { transition: none; animation: none; }
 }
+/* ── DISCOUNT WORDING + BAG NUDGE ── */
+.gfc-bundle-fine { display: block; margin-top: 6px; font-size: 12.5px; color: var(--gfc-muted); }
+.gfc-bag-nudge {
+  display: flex; flex-direction: column; gap: 4px;
+  background: var(--gfc-gold-soft); border: 1px dashed var(--gfc-gold); border-radius: 6px;
+  padding: 10px 12px; margin-bottom: 12px; font-size: 13px; color: var(--gfc-navy); font-weight: 600;
+}
+.gfc-bag-nudge a { color: var(--gfc-gold); font-weight: 700; text-decoration: none; font-size: 12.5px; }
+.gfc-bag-nudge a:hover { text-decoration: underline; }
