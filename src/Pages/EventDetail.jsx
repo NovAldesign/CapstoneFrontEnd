@@ -109,7 +109,7 @@ const EventDetail = () => {
     .sort((a, b) => parseCleanPrice(a) - parseCleanPrice(b));
   const metaDescription = truncate(
     event.plainDescription ||
-      `${event.title} with the Grown Folks Collective, ${formatEventDate(event.date)} in Atlanta.`,
+      `${event.title} with Grown Folks Collective, ${formatEventDate(event.date)} in Atlanta.`,
     155
   );
 

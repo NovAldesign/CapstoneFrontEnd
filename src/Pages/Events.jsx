@@ -323,7 +323,7 @@ const Events = () => {
               <h3 className="playfair">Join The Collective</h3>
               <p>
                 Loneliness among adults is at an all-time high, and busy lives make it harder to fix.
-                The Grown Folks Collective exists to change that. Members get priority access, member
+                Grown Folks Collective exists to change that. Members get priority access, member
                 pricing, and a circle of Atlanta grown folks who keep showing up for each other.
               </p>
               <Link to="/membership" className="gfc-btn-gold-outline">Join The Collective</Link>
