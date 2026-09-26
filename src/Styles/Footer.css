@@ -1,200 +1,223 @@
-/* =============================================
-   MAIN FOOTER CONTENT
-   ============================================= */
-.footer-inner {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
-  gap: 40px;
-  align-items: start;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 34px 10% 26px;
-}
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900&family=Montserrat:wght@300;400;600;700&display=swap');
 
 /* =============================================
-   TAGLINE BLOCK
+   GFC FOOTER
    ============================================= */
-.footer-wordmark {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
-  font-weight: 900;
-  color: #C5A059;
-  letter-spacing: 0.12em;
-  margin-bottom: 8px;
+
+.gfc-footer {
+  background: #002147;
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
 }
 
-.footer-tagline {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  font-style: italic;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.5;
-  margin: 0 0 8px;
-}
-
-.footer-location {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: rgba(255, 255, 255, 0.35);
-  font-weight: 600;
-  margin: 0;
+/* Gold top rule */
+.footer-rule {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #C5A059 30%, #C5A059 70%, transparent);
 }
 
 /* =============================================
-   BLOCK LABEL
+   BACK TO TOP BUTTON
+   Fixed position, fades in after scrolling 400px
    ============================================= */
-.footer-block-label {
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  font-weight: 700;
-  color: #C5A059;
-  margin-bottom: 12px;
-}
-
-/* =============================================
-   CONTACT BLOCK
-   ============================================= */
-.footer-contact-block {
-  display: flex;
-  flex-direction: column;
-}
-
-.footer-contact-link {
-  display: block;
-  font-size: 0.88rem;
-  color: rgba(255, 255, 255, 0.65);
-  text-decoration: none;
-  font-weight: 300;
-  line-height: 1.5;
-  margin-bottom: 6px;
-  transition: color 0.2s;
-}
-
-.footer-contact-link:hover {
-  color: #C5A059;
-}
-
-/* =============================================
-   SOCIAL BLOCK
-   ============================================= */
-.footer-social-block {
-  padding-top: 0;
-}
-
-.footer-socials {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 8px;
-}
-
-.footer-social-icon {
+.footer-back-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  background: #C5A059;
+  color: #002147;
+  border: none;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid rgba(197, 160, 89, 0.25);
-  color: rgba(255, 255, 255, 0.55);
-  transition: all 0.25s ease;
-  text-decoration: none;
-  flex-shrink: 0;
+  z-index: 400;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease;
+  pointer-events: none;
 }
 
-.footer-social-icon svg {
-  width: 17px;
-  height: 17px;
+.footer-back-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
-.footer-social-icon:hover {
-  border-color: #C5A059;
-  color: #C5A059;
-  background: rgba(197, 160, 89, 0.08);
-  transform: translateY(-2px);
+.footer-back-top:hover {
+  background: #FFFFFF;
+}
+
+.footer-back-top svg {
+  width: 18px;
+  height: 18px;
 }
 
 /* =============================================
-   BOTTOM BAR
+   NEWSLETTER SIGNUP (cream band)
    ============================================= */
-.footer-bottom {
-  display: flex;
-  justify-content: space-between;
+.footer-signup {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 48px;
   align-items: center;
-  padding: 14px 10%;
-  border-top: 1px solid rgba(197, 160, 89, 0.12);
-  max-width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 10%;
+  background: #F5EFE3;
+  /* stretch the cream color edge to edge */
+  box-shadow: 0 0 0 100vmax #F5EFE3;
+  clip-path: inset(0 -100vmax);
 }
 
-.footer-bottom span {
-  font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.3);
+.footer-signup .footer-block-label {
+  color: #9A7630;
+  margin-bottom: 10px;
+}
+
+.footer-signup-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #002147;
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+
+.footer-signup-sub {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: rgba(0, 33, 71, 0.7);
   font-weight: 400;
+  margin: 0;
+}
+
+.footer-signup-fields {
+  display: flex;
+  gap: 10px;
+}
+
+.footer-signup-fields input,
+.footer-signup-phone input {
+  flex: 1;
+  min-width: 0;
+  padding: 13px 16px;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 33, 71, 0.2);
+  color: #002147;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  border-radius: 0;
+  transition: border-color 0.2s;
+}
+
+.footer-signup-fields input::placeholder,
+.footer-signup-phone input::placeholder {
+  color: rgba(0, 33, 71, 0.45);
+}
+
+.footer-signup-fields input:focus,
+.footer-signup-phone input:focus {
+  border-color: #002147;
+}
+
+.footer-signup-fields button {
+  background: #002147;
+  color: #FFFFFF;
+  border: none;
+  padding: 0 24px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+
+.footer-signup-fields button:hover:not(:disabled) {
+  background: #C5A059;
+  color: #002147;
+}
+
+.footer-signup-fields button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.footer-signup-sms {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+.footer-signup-sms input {
+  accent-color: #002147;
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.footer-signup-sms span {
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: rgba(0, 33, 71, 0.65);
+}
+
+.footer-signup-phone {
+  display: flex;
+  margin-top: 10px;
+  max-width: 280px;
+}
+
+.footer-signup-error {
+  color: #B3261E;
+  font-size: 0.8rem;
+  margin: 10px 0 0;
+}
+
+.footer-signup-note {
+  font-size: 0.7rem;
+  color: rgba(0, 33, 71, 0.5);
+  margin: 8px 0 0;
   letter-spacing: 0.04em;
 }
 
-.footer-bottom-right {
-  font-style: italic;
+.footer-signup-success {
+  border: 1px solid rgba(0, 33, 71, 0.2);
+  background: #FFFFFF;
+  padding: 20px 24px;
 }
 
-/* =============================================
-   RESPONSIVE - 900px
-   ============================================= */
-@media (max-width: 900px) {
-  .footer-signup {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    padding: 36px 6%;
-  }
+.footer-signup-success-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: #002147;
+  margin-bottom: 6px;
 }
 
-/* =============================================
-   RESPONSIVE - 768px
-   ============================================= */
-@media (max-width: 768px) {
-  .footer-inner {
-    grid-template-columns: 1fr;
-    gap: 22px;
-    padding: 28px 6% 22px;
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-    gap: 4px;
-    text-align: center;
-    padding: 14px 6%;
-  }
-
-  .footer-back-top {
-    bottom: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-  }
+.footer-signup-success p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(0, 33, 71, 0.7);
 }
 
-/* =============================================
-   RESPONSIVE - 480px
-   ============================================= */
-@media (max-width: 480px) {
-  .footer-socials {
-    gap: 8px;
-  }
-
-  .footer-social-icon {
-    width: 36px;
-    height: 36px;
-  }
-
-  .footer-signup-fields {
-    flex-direction: column;
-  }
-
-  .footer-signup-fields button {
-    padding: 14px;
-  }
-
-  .footer-signup-phone {
-    max-width: none;
-  }
+.gfc-footer .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
