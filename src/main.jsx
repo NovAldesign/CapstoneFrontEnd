@@ -1,18 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async"; // Import the provider
-import { CartProvider } from "./Context/CartContext.jsx"; // 1. Added our brand new Cart Context
+import { HelmetProvider } from "react-helmet-async";
 import App from "./App.jsx";
 import "./Styles/Index.css";
 
+// The bag (CartProvider) is set up once, inside App.jsx
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <HelmetProvider> {/* Wrap the app to enable dynamic meta tags */}
+    <HelmetProvider>
       <BrowserRouter>
-        <CartProvider> {/* 2. Wrapped App so every page can see the bundle cart */}
-          <App />
-        </CartProvider>
+        <App />
       </BrowserRouter>
     </HelmetProvider>
   </React.StrictMode>,
