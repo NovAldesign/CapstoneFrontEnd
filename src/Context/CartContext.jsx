@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { BACKEND_URL, parseCleanPrice, formatMoney } from "../Services/eventUtils";
 import "../Styles/EventListing.css";
 
@@ -24,7 +25,7 @@ const loadSaved = () => {
   }
 };
 
-// Bundle discount — MUST match the backend checkout route
+// Bundle discount — based on DIFFERENT events. MUST match the backend checkout route.
 const getDiscount = (uniqueEventCount) => {
   if (uniqueEventCount >= 3) return { rate: 0.10, label: "10% Mega-Bundle Discount Applied!" };
   if (uniqueEventCount === 2) return { rate: 0.05, label: "5% Multi-Event Discount Applied!" };
@@ -75,7 +76,10 @@ export const CartProvider = ({ children }) => {
     setIsCartOpen(true);
   };
 
-  // Set an exact quantity (0 or less removes it) — same as your original
+  const removeFromCart = (eventId, ticketTypeId) =>
+    setCartItems((prev) => prev.filter((i) => !(i.eventId === eventId && i.ticketTypeId === ticketTypeId)));
+
+  // Set an exact quantity (0 or less removes it)
   const updateQuantity = (eventId, ticketTypeId, newQty) => {
     if (newQty <= 0) {
       removeFromCart(eventId, ticketTypeId);
@@ -90,12 +94,13 @@ export const CartProvider = ({ children }) => {
     );
   };
 
-  const removeFromCart = (eventId, ticketTypeId) =>
-    setCartItems((prev) => prev.filter((i) => !(i.eventId === eventId && i.ticketTypeId === ticketTypeId)));
+  // Stable function so the Success page doesn't clear the bag in a loop
+  const clearCart = useCallback(
+    () => setCartItems((prev) => (prev.length ? [] : prev)),
+    []
+  );
 
-  const clearCart = () => setCartItems([]);
-
-  // Totals (in cents, like your original, plus dollar versions for the drawer)
+  // Totals (in cents)
   const totals = useMemo(() => {
     const uniqueEventCount = new Set(cartItems.map((i) => i.eventId)).size;
     const { rate, label } = getDiscount(uniqueEventCount);
@@ -173,8 +178,16 @@ const CartDrawer = () => {
   const {
     cartItems, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart,
     checkout, checkoutLoading, itemCount, subtotalInCents, discountInCents,
-    totalInCents, discountRate, discountLabel,
+    totalInCents, discountRate, discountLabel, uniqueEventCount,
   } = useCart();
+
+  // Nudge toward the next discount level (based on DIFFERENT events)
+  const nudge =
+    uniqueEventCount === 1
+      ? "Add a different event and save 5% on your whole order."
+      : uniqueEventCount === 2
+        ? "Add one more different event and save 10% on your whole order."
+        : null;
 
   useEffect(() => {
     if (!isCartOpen) return;
@@ -253,6 +266,14 @@ const CartDrawer = () => {
 
             {cartItems.length > 0 && (
               <div className="gfc-drawer-foot">
+                {nudge && (
+                  <div className="gfc-bag-nudge">
+                    <span>{nudge}</span>
+                    <Link to="/events" onClick={() => setIsCartOpen(false)}>
+                      Browse events →
+                    </Link>
+                  </div>
+                )}
                 {discountLabel && <div className="gfc-discount-note">{discountLabel}</div>}
                 <div className="gfc-total-row muted">
                   <span>Subtotal</span>
