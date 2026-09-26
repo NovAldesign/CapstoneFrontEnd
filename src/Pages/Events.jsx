@@ -229,13 +229,14 @@ const Events = () => {
           </div>
         )}
 
-        {/* DISCOUNT BANNER */}
+             {/* DISCOUNT BANNER */}
         <div className="gfc-bundle-banner">
-          <strong>Coming to more than one?</strong> Savings add up automatically at checkout:
+          <strong>Book more than one event and save.</strong> Your discount is applied automatically at checkout:
           <span className="gfc-bundle-tiers">
-            <span>2 events · 5% off</span>
-            <span>3+ events · 10% off</span>
+            <span>2 different events · 5% off</span>
+            <span>3+ different events · 10% off</span>
           </span>
+          <span className="gfc-bundle-fine">Multiple tickets to the same event count as one event.</span>
         </div>
 
         {/* RESULTS */}
