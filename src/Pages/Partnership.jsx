@@ -50,11 +50,12 @@ const tiers = [
 
 const eventOptions = [
   "The Exchange - Interactive Social Experience",
-  "Golf Simulations / Bowling",
-  "Karaoke Bingo",
+  "Intentional Conversations Over Mocktails",
   "Game Nights / Spades Tournament",
-  "Group Travel / Retreats",
+  "Karaoke Bingo",
+  "Golf Simulations / Bowling",
   "Cookout / Field Day",
+  "Group Travel / Retreats",
 ];
 
 const defaultForm = {
@@ -94,7 +95,7 @@ const Partnership = () => {
     setFormData((prev) => ({ ...prev, tierRequested: tierLabel }));
     document
       .getElementById("partner-form")
-      .scrollIntoView({ behavior: "smooth" });
+      ?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleSubmit = async (e) => {
@@ -132,6 +133,10 @@ const Partnership = () => {
     <div className="partnership-page">
       <Helmet>
         <title>Partner With Us | Grown Folks Collective</title>
+        <meta
+          name="description"
+          content="Sponsor or co-host an event with Grown Folks Collective, Atlanta's alcohol-free social community for adults 30+. Partnerships start at $150 per event."
+        />
       </Helmet>
 
       {/* HERO & NARRATIVE */}
@@ -145,14 +150,14 @@ const Partnership = () => {
           </h1>
           <div className="gold-spacer-bar"></div>
           <p className="narrative-lead">
-            We bring together adults 35+ who are intentional about how they
-            spend their time, energy, and money.
+            We bring together Atlanta adults 30+ who are intentional about how
+            they spend their time, energy, and money.
           </p>
           <p className="narrative-body">
             Partner with us for a single event to see the alignment firsthand,
-            and let's build from there. Our curated environment removes
-            traditional corporate noise, letting your brand make lasting,
-            high-level connections.
+            and let's build from there. Our alcohol-free, low-key rooms are
+            built for real conversation, so your brand connects with engaged
+            guests who are present, relaxed, and actually paying attention.
           </p>
         </div>
       </header>
@@ -161,12 +166,12 @@ const Partnership = () => {
       <section className="impact-stats-section">
         <div className="stats-grid">
           <div className="stat-card">
-            <h4 className="playfair">35+</h4>
+            <h4 className="playfair">30+</h4>
             <p>Core demographic age</p>
           </div>
           <div className="stat-card">
-            <h4 className="playfair">$80K+</h4>
-            <p>Avg. household income</p>
+            <h4 className="playfair">250%+</h4>
+            <p>Venue sales lift on event nights</p>
           </div>
           <div className="stat-card">
             <h4 className="playfair">100%</h4>
@@ -244,9 +249,9 @@ const Partnership = () => {
         </div>
       </section>
 
-      {/* FORM SECTION - OPTION 3: INVERTED NAVY CAP STYLE */}
-      <section 
-        className="proposal-container" 
+      {/* FORM SECTION */}
+      <section
+        className="proposal-container"
         id="partner-form"
         style={{
           border: "1px solid #e2e2e2",
@@ -255,14 +260,14 @@ const Partnership = () => {
           background: "#ffffff",
           maxWidth: "950px",
           margin: "80px auto",
-          padding: 0 // Removes standard outer padding so the header card fits perfectly edge-to-edge
+          padding: 0,
         }}
       >
         {/* Dark Luxe Header Cap */}
-        <div style={{ 
-          backgroundColor: "var(--navy)", 
-          padding: "50px 30px", 
-          textAlign: "center" 
+        <div style={{
+          backgroundColor: "var(--navy)",
+          padding: "50px 30px",
+          textAlign: "center"
         }}>
           <span className="form-intro" style={{ color: "var(--gold)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
             Get Started
@@ -303,7 +308,7 @@ const Partnership = () => {
                   value={formData.contactPerson}
                   onChange={handleChange}
                   required
-                  placeholder="First &amp; Last"
+                  placeholder="First & Last"
                 />
               </div>
             </div>
@@ -353,7 +358,7 @@ const Partnership = () => {
               </select>
             </div>
 
-            {/* Clean, Uniform Grid Blocks */}
+            {/* Sponsorship Opportunities */}
             <div className="input-group">
               <label
                 style={{
@@ -377,7 +382,7 @@ const Partnership = () => {
                 }}
               >
                 {eventOptions.map((event) => {
-                  const inputId = `event-${event.replace(/\s+/g, "-").toLowerCase()}`;
+                  const inputId = `event-${event.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`;
                   return (
                     <div
                       key={event}
@@ -462,7 +467,7 @@ const Partnership = () => {
                 id="details"
                 name="details"
                 value={formData.details}
-                placeholder="Tell us about your brand positioning, what target products you want to feature during this event..."
+                placeholder="Tell us about your brand, your timeline, and what products you'd like to feature..."
                 onChange={handleChange}
                 rows={5}
               />
@@ -470,6 +475,7 @@ const Partnership = () => {
 
             {feedback && (
               <div
+                role="alert"
                 style={{
                   padding: "15px",
                   textAlign: "center",
