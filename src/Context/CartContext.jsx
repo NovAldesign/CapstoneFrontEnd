@@ -6,6 +6,7 @@ import "../Styles/EventListing.css";
 const CartContext = createContext(null);
 
 const STORAGE_KEY = "gfc_event_cart";
+const CODE_KEY = "gfc_ticket_code";
 const MAX_AGE_MS = 24 * 60 * 60 * 1000; // saved bags expire after 24 hours
 
 // Read the saved bag once, before the first render (no race with saving)
@@ -25,6 +26,25 @@ const loadSaved = () => {
   }
 };
 
+// Ticket code from a share link (?code=JASMINE) or saved from a past visit
+const loadCode = () => {
+  try {
+    const fromLink = new URLSearchParams(window.location.search).get("code");
+    if (fromLink) return fromLink.trim().toUpperCase().replace(/\s+/g, "");
+    return localStorage.getItem(CODE_KEY) || "";
+  } catch {
+    return "";
+  }
+};
+
+// Price of one ticket after a code. MUST match utilities/promoCodes.js on the backend.
+const applyCode = (info, cents) => {
+  if (!info) return cents;
+  if (info.type === "percent") return Math.max(0, Math.round(cents * (1 - info.value / 100)));
+  if (info.type === "amount") return Math.max(0, cents - Math.round(info.value * 100));
+  return cents;
+};
+
 // Bundle discount — based on DIFFERENT events. MUST match the backend checkout route.
 const getDiscount = (uniqueEventCount) => {
   if (uniqueEventCount >= 3) return { rate: 0.10, label: "10% Mega-Bundle Discount Applied!" };
@@ -36,6 +56,61 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(loadSaved);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [promoCode, setPromoCode] = useState(loadCode);
+  const [promoInfo, setPromoInfo] = useState(null);
+  const [promoError, setPromoError] = useState("");
+  const [promoChecking, setPromoChecking] = useState(false);
+
+  // Remember the code for this visitor
+  useEffect(() => {
+    try {
+      if (promoCode) localStorage.setItem(CODE_KEY, promoCode);
+      else localStorage.removeItem(CODE_KEY);
+    } catch {
+      /* storage unavailable */
+    }
+  }, [promoCode]);
+
+  // Check the code against the events in the bag
+  const eventIdsKey = [...new Set(cartItems.map((i) => i.eventId))].sort().join(",");
+  useEffect(() => {
+    if (!promoCode) {
+      setPromoInfo(null);
+      setPromoError("");
+      return;
+    }
+    let active = true;
+    setPromoChecking(true);
+    fetch(`${BACKEND_URL}/api/promo-codes/validate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: promoCode, eventIds: eventIdsKey ? eventIdsKey.split(",") : [] }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!active) return;
+        if (data.valid) {
+          setPromoInfo(data);
+          setPromoError("");
+        } else {
+          setPromoInfo(null);
+          setPromoError(data.error || "That code isn't valid.");
+        }
+      })
+      .catch(() => {
+        if (!active) return;
+        setPromoInfo(null);
+        setPromoError("Couldn't check that code. Please try again.");
+      })
+      .finally(() => active && setPromoChecking(false));
+    return () => {
+      active = false;
+    };
+  }, [promoCode, eventIdsKey]);
+
+  const applyPromoCode = (code) =>
+    setPromoCode(String(code || "").trim().toUpperCase().replace(/\s+/g, ""));
+  const removePromoCode = () => setPromoCode("");
 
   // Save the bag whenever it changes
   useEffect(() => {
@@ -100,23 +175,36 @@ export const CartProvider = ({ children }) => {
     []
   );
 
-  // Totals (in cents)
+  // Which bag items the code works for
+  const codeEligible = (item) =>
+    Boolean(promoInfo) &&
+    (promoInfo.appliesToAllEvents || (promoInfo.eligibleEventIds || []).includes(item.eventId));
+  const promoApplies = Boolean(promoInfo) && cartItems.some(codeEligible);
+
+  // Totals (in cents). Code discount first, then the bundle discount (same as the backend).
   const totals = useMemo(() => {
     const uniqueEventCount = new Set(cartItems.map((i) => i.eventId)).size;
     const { rate, label } = getDiscount(uniqueEventCount);
     const subtotalInCents = cartItems.reduce((sum, i) => sum + i.priceInCents * i.quantity, 0);
-    const discountInCents = Math.round(subtotalInCents * rate);
-    const totalInCents = subtotalInCents - discountInCents;
+    const afterCodeInCents = cartItems.reduce(
+      (sum, i) => sum + (codeEligible(i) ? applyCode(promoInfo, i.priceInCents) : i.priceInCents) * i.quantity,
+      0
+    );
+    const codeSavingsInCents = subtotalInCents - afterCodeInCents;
+    const discountInCents = Math.round(afterCodeInCents * rate);
+    const totalInCents = afterCodeInCents - discountInCents;
     return {
       uniqueEventCount,
       discountRate: rate,
       discountLabel: label,
       subtotalInCents,
+      codeSavingsInCents,
       discountInCents,
       totalInCents,
       itemCount: cartItems.reduce((sum, i) => sum + i.quantity, 0),
     };
-  }, [cartItems]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartItems, promoInfo]);
 
   // Send the bag to Stripe (backend re-checks every price and ticket)
   const checkout = async () => {
@@ -126,7 +214,11 @@ export const CartProvider = ({ children }) => {
       const res = await fetch(`${BACKEND_URL}/api/events/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ customerEmail: undefined, cartItems }),
+        body: JSON.stringify({
+          customerEmail: undefined,
+          cartItems,
+          promoCode: promoApplies ? promoInfo.code : undefined,
+        }),
       });
       const data = await res.json();
       if (data.url) {
@@ -153,6 +245,13 @@ export const CartProvider = ({ children }) => {
     setIsCartOpen,
     checkout,
     checkoutLoading,
+    promoCode,
+    promoInfo,
+    promoError,
+    promoChecking,
+    promoApplies,
+    applyPromoCode,
+    removePromoCode,
     ...totals,
   };
 
@@ -179,7 +278,11 @@ const CartDrawer = () => {
     cartItems, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart,
     checkout, checkoutLoading, itemCount, subtotalInCents, discountInCents,
     totalInCents, discountRate, discountLabel, uniqueEventCount,
+    promoCode, promoInfo, promoError, promoChecking, promoApplies,
+    applyPromoCode, removePromoCode, codeSavingsInCents,
   } = useCart();
+  const [codeInput, setCodeInput] = useState("");
+  const [showCodeBox, setShowCodeBox] = useState(false);
 
   // Nudge toward the next discount level (based on DIFFERENT events)
   const nudge =
@@ -275,10 +378,61 @@ const CartDrawer = () => {
                   </div>
                 )}
                 {discountLabel && <div className="gfc-discount-note">{discountLabel}</div>}
+
+                {/* Ticket code */}
+                <div className="gfc-code">
+                  {promoCode ? (
+                    <div className="gfc-code-applied" aria-live="polite">
+                      <span>
+                        {promoChecking
+                          ? `Checking ${promoCode}…`
+                          : promoApplies
+                            ? `✓ ${promoCode}: ${promoInfo.description}`
+                            : promoInfo
+                              ? `${promoCode} doesn't apply to the events in your bag`
+                              : promoError || `Code ${promoCode}`}
+                      </span>
+                      <button type="button" className="gfc-link-btn" onClick={removePromoCode}>
+                        Remove
+                      </button>
+                    </div>
+                  ) : showCodeBox ? (
+                    <form
+                      className="gfc-code-form"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        if (codeInput.trim()) applyPromoCode(codeInput);
+                        setCodeInput("");
+                      }}
+                    >
+                      <label htmlFor="gfc-code-input" className="sr-only">Ticket code</label>
+                      <input
+                        id="gfc-code-input"
+                        type="text"
+                        placeholder="Enter code"
+                        autoComplete="off"
+                        value={codeInput}
+                        onChange={(e) => setCodeInput(e.target.value)}
+                      />
+                      <button type="submit" className="gfc-code-apply">Apply</button>
+                    </form>
+                  ) : (
+                    <button type="button" className="gfc-link-btn" onClick={() => setShowCodeBox(true)}>
+                      Have a code?
+                    </button>
+                  )}
+                </div>
+
                 <div className="gfc-total-row muted">
                   <span>Subtotal</span>
                   <span>${(subtotalInCents / 100).toFixed(2)}</span>
                 </div>
+                {promoApplies && codeSavingsInCents > 0 && (
+                  <div className="gfc-total-row savings">
+                    <span>Code {promoCode}</span>
+                    <span>− ${(codeSavingsInCents / 100).toFixed(2)}</span>
+                  </div>
+                )}
                 {discountRate > 0 && (
                   <div className="gfc-total-row savings">
                     <span>Discount ({Math.round(discountRate * 100)}%)</span>
