@@ -210,6 +210,9 @@ const Contact = () => {
               <Link to="/membership" className="contact-hero-link secondary">
                 Join the Collective
               </Link>
+             <Link to="/celebrate" className="contact-hero-link secondary">
+                Plan a Group Outing
+              </Link>
             </nav>
           </div>
 
@@ -289,6 +292,13 @@ const Contact = () => {
                 >
                   hello@grownfolkscollective.com
                 </a>
+              </p>
+                            <p className="contact-form-subhead">
+                Bringing a group or celebrating a birthday at a GFC event?{' '}
+                <Link to="/celebrate" className="contact-inline-link">
+                  Use our group request form
+                </Link>
+                .
               </p>
             </header>
 
