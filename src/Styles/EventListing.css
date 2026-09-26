@@ -390,3 +390,23 @@
 @media (max-width: 640px) {
   .gfc-group-banner { flex-direction: column; align-items: flex-start; gap: 8px; }
 }
+
+
+/* ── TICKET CODE BOX (bag) ── */
+.gfc-code { margin: 4px 0 12px; font-size: 13px; }
+.gfc-code-form { display: flex; gap: 8px; }
+.gfc-code-form input {
+  flex: 1; min-width: 0; padding: 9px 12px; border: 1px solid #d9d2c3; border-radius: 4px;
+  font-size: 14px; text-transform: uppercase; color: var(--gfc-navy);
+}
+.gfc-code-form input:focus { outline: 2px solid var(--gfc-gold); outline-offset: 1px; }
+.gfc-code-apply {
+  background: var(--gfc-navy); color: #fff; border: none; border-radius: 4px;
+  padding: 0 16px; font-weight: 700; font-size: 12px; letter-spacing: 0.08em; cursor: pointer;
+}
+.gfc-code-apply:hover { background: var(--gfc-gold); color: var(--gfc-navy); }
+.gfc-code-applied {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: var(--gfc-gold-soft); border-radius: 4px; padding: 8px 12px;
+  color: var(--gfc-navy); font-weight: 600;
+}
