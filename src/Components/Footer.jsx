@@ -119,7 +119,7 @@ const Footer = () => {
             one event at a time.
           </p>
           <p className="footer-location">
-            Decatur, GA &nbsp;·&nbsp; Serving Metro Atlanta
+            Serving Metro Atlanta
           </p>
         </div>
 
