@@ -1,0 +1,142 @@
+/* =============================================
+   PERFORM WITH US PAGE
+   Builds on Contact.css + GroupBooking.css
+   ============================================= */
+
+.perform-info {
+  background: #FAF7F0;
+  padding: 70px 10% 20px;
+}
+
+.perform-info-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.perform-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem;
+  color: #002147;
+  margin: 0 0 22px;
+}
+
+.perform-steps {
+  list-style: none;
+  counter-reset: step;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 0;
+  margin: 0 0 56px;
+}
+
+.perform-steps li {
+  counter-increment: step;
+  background: #FFFFFF;
+  border-top: 3px solid #C5A059;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.perform-steps li::before {
+  content: counter(step);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: #C5A059;
+  line-height: 1;
+}
+
+.perform-steps strong {
+  color: #002147;
+  font-size: 1.05rem;
+}
+
+.perform-steps span {
+  color: #555;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.perform-faqs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.perform-faq {
+  background: #FFFFFF;
+  border: 1px solid #ECE4D3;
+  padding: 16px 20px;
+}
+
+.perform-faq summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: #002147;
+}
+
+.perform-faq p {
+  margin: 10px 0 0;
+  color: #555;
+  line-height: 1.7;
+}
+
+.perform-note {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0 0 14px;
+}
+
+.perform-headshot {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.perform-headshot img,
+.perform-headshot-empty {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid #C5A059;
+}
+
+.perform-headshot-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F5EFE3;
+  font-size: 2rem;
+}
+
+.perform-consent {
+  margin-top: 6px;
+  padding-top: 14px;
+  border-top: 1px solid #ECE4D3;
+}
+
+.perform-date {
+  margin: 12px 0 0;
+  color: #002147;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .perform-info {
+    padding: 48px 6% 10px;
+  }
+
+  .perform-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .perform-headshot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
