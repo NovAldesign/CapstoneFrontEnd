@@ -99,9 +99,12 @@ const Navbar = () => {
   const user = loginService.getCurrentUser();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Safe first name — won't crash if the name is missing
+  const firstName = (user?.name || "").trim().split(" ")[0] || "Account";
+
   const handleLogout = () => {
     loginService.logout();
-    navigate("/login");
+    navigate("/"); // there's no /login page, so send them home
   };
 
   const closeMenu = () => setMenuOpen(false);
@@ -126,7 +129,7 @@ const Navbar = () => {
         <li><NavLink to="/blog" className={navClass} onClick={closeMenu}>Blog</NavLink></li>
         {/* <li><NavLink to="/travel" className={navClass} onClick={closeMenu}>Travel</NavLink></li> */}
         {/* <li><NavLink to="/ic-dinners" className={navClass} onClick={closeMenu}>IC Dinners</NavLink></li>*/}
-        <li><NavLink to="/membership" className={navClass} onClick={closeMenu}>Membership</NavLink></li> 
+        <li><NavLink to="/membership" className={navClass} onClick={closeMenu}>Membership</NavLink></li>
         <li><NavLink to="/partnerships" className={navClass} onClick={closeMenu}>Partnerships</NavLink></li>
         <li><NavLink to="/about" className={navClass} onClick={closeMenu}>About Us</NavLink></li>
         <li><NavLink to="/contact" className={navClass} onClick={closeMenu}>Contact Us</NavLink></li>
@@ -146,7 +149,7 @@ const Navbar = () => {
               onClick={() => { handleLogout(); closeMenu(); }}
               className="logout-btn-styled"
             >
-              Logout ({user.name.split(" ")[0]})
+              Logout ({firstName})
             </button>
           </li>
         )}
@@ -156,7 +159,7 @@ const Navbar = () => {
       {user && (
         <div className="nav-right-section">
           <button onClick={handleLogout} className="logout-btn-styled">
-            LOGOUT ({user.name.split(" ")[0]})
+            LOGOUT ({firstName})
           </button>
         </div>
       )}
