@@ -23,6 +23,7 @@ import ResetPassword from "./Pages/ResetPassword.jsx";
 import AdminDashboard from "./Pages/AdminDashboard.jsx";
 import SuccessPage from "./Pages/SuccessPage.jsx";
 import MembershipSuccess from "./Pages/MembershipSuccess.jsx";
+import GroupBooking from "./Pages/GroupBooking.jsx";
 
 // --- Styles ---
 import "./Styles/App.css";
@@ -43,11 +44,14 @@ function App() {
             <Route path="/events/:slug" element={<EventDetail />} />
             <Route path="/membership" element={<Membership />} />
             <Route path="/membership/success" element={<MembershipSuccess />} />
+            <Route path="/celebrate" element={<GroupBooking />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/partnerships" element={<Partnerships />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+           <Route path="/celebrate" element={<GroupBooking />} />
+
             <Route path="/reset-password/:token" element={<ResetPassword />} />
 
             {/* Protected Routes */}

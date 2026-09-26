@@ -17,6 +17,7 @@ export default defineConfig({
         '/partnerships',
         '/about',
         '/contact',
+        '/celebrate'
         // Add these back once they have routes in App.jsx:
         // '/travel',
         // '/ic-dinners',

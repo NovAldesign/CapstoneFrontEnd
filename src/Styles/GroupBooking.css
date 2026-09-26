@@ -1,0 +1,89 @@
+/* =============================================
+   GROUP BOOKING PAGE
+   Builds on Contact.css (same hero + form look)
+   ============================================= */
+
+.group-perks {
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  padding: 28px 30px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.group-perks-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+.group-perks-list li {
+  position: relative;
+  padding: 10px 0 10px 26px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  border-bottom: 1px solid rgba(197, 160, 89, 0.12);
+}
+
+.group-perks-list li:last-child {
+  border-bottom: none;
+}
+
+.group-perks-list li::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  color: #C5A059;
+  font-size: 0.8rem;
+}
+
+/* Checkboxes */
+.group-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 4px 0 24px;
+}
+
+.group-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #002147;
+  line-height: 1.5;
+}
+
+.group-check input {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  flex-shrink: 0;
+  accent-color: #002147;
+  cursor: pointer;
+}
+
+/* Success state */
+.group-success {
+  text-align: center;
+  padding: 20px 0 40px;
+}
+
+.group-success .contact-form-subhead {
+  max-width: 520px;
+  margin: 0 auto 30px;
+}
+
+.group-success-btn {
+  display: inline-block;
+  width: auto;
+  padding: 18px 36px;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .group-perks {
+    padding: 22px 20px;
+  }
+}
