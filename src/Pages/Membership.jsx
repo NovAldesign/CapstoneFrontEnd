@@ -8,42 +8,71 @@ const TIERS = [
   {
     id: 'Social',
     name: 'Social Pass',
-    price: '$39',
+    price: '$39.99',
     note: '/month',
     badge: null,
     featured: false,
+    tagline: 'Pays for itself every month.',
     features: [
-      'Your Game Night ticket covered every month — that\'s $35 back immediately',
-      'Priority access 24 hrs before the public — you never miss out',
-      '$10 off every Intentional Conversations Over Mocktails',
-      'Private member community — connections that extend beyond the events',
-      'Month 3 Reward: Receive one GFC card deck (Playing Cards or Conversation Cards), Add-on Opportunity: Upgrade to an engraved wooden box for 25% OFF',
+      '$40 in event credit every month — use it at any GFC event (unused credit rolls over 1 month)',
+      '$5 off every GFC ticket',
+      '10% off food events like our Cookout, Friendsgiving, and holiday dinners',
+      '48-hour early access to tickets + priority waitlist for sold-out events',
+      'Early doors member mixer at every event',
+      'Private member group chat',
+      'Birthday bonus: $25 extra event credit in your birthday month',
+      '10% off AMC Performance Company shows',
+      'Your own referral code — friends save $10, and 4 referrals earn you a free month',
     ],
   },
   {
     id: 'Founding',
     name: 'Founding Member',
-    price: '$69',
-    note: '/month · First 40 only',
+    price: '$69.99',
+    note: '/month · First 40 only · Locked for life',
     badge: 'Founding Member',
     featured: true,
+    tagline: 'For the ones who were here first.',
     features: [
-      'Everything in Social Pass',
-      'Bring 2 guest to our game night free — every single month — that\'s $70 back immediately',
-      '48-hr priority booking — first access before anyone else',
-      'One free Intentional Conversations Over Mocktails',
-      '$15 off every Intentional Conversations Over Mocktails',
-      'Month 3 Reward: Receive both GFC card decks (Playing Cards & Conversation Cards), Add-on Opportunity: Upgrade to an engraved wooden box for 50% OFF',
-      'Quarterly gift from Grown Folks Collective valued at $30',
-      'Founding Member rate and status locked in for life',
+      'Everything in Social Pass, plus:',
+      '$70 in event credit every month (unused credit rolls over 1 month)',
+      '$7 off every GFC ticket',
+      '15% off food events like our Cookout, Friendsgiving, and holiday dinners',
+      '72-hour early access to tickets + first dibs on group travel',
+      'Guest pass: bring a friend free once every quarter',
+      'Birthday bonus: $25 extra event credit + your guest gets in free',
+      'Referrals: just 3 friends earn you a free month',
+      'Founding Member badge at every event',
+      'Your name on the Founders Wall',
+      'Founders Circle: a say in new events and travel destinations',
+      'Your Founding rate is locked in for life',
     ],
   },
 ];
 
 const TIER_PRICES = {
-  Social: '$39/mo',
-  Founding: '$69/mo',
+  Social: '$39.99/mo',
+  Founding: '$69.99/mo',
 };
+
+const HOW_IT_WORKS = [
+  {
+    title: 'Your membership pays for itself',
+    body: 'Every month, your membership fee comes back to you as event credit. Use it on any GFC event, and if you miss a month, your credit rolls over to the next one.',
+  },
+  {
+    title: 'Member pricing on everything',
+    body: 'Every ticket you buy is discounted, including tickets for friends you bring along. Food events like our Cookout, Friendsgiving, and holiday dinners get a percentage off instead.',
+  },
+  {
+    title: 'First in line, every time',
+    body: 'Members get tickets before the public and priority on the waitlist when events sell out. Founding Members get first dibs on group travel too.',
+  },
+  {
+    title: 'Bring your people',
+    body: 'Share your personal referral code. Your friends save $10 on their first GFC event, and once enough of them come out, your next month is on us.',
+  },
+];
 
 const Membership = () => {
   const navigate = useNavigate();
@@ -121,7 +150,7 @@ const Membership = () => {
     }, 150);
   };
 
-  // Helper to scroll smoothly directly to the card selector section instead of top of page
+  // Scroll smoothly to the tier cards
   const scrollToTierSelector = () => {
     const selectorSection = document.querySelector('.tier-selector-section');
     if (selectorSection) {
@@ -134,7 +163,7 @@ const Membership = () => {
     setIsSubmitting(true);
     setFeedback(null);
 
-    // ── CLIENT-SIDE VALIDATION SAFETY OVERRIDE ──
+    // ── CLIENT-SIDE VALIDATION ──
     if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.dob) {
       setFeedback({
         type: 'error',
@@ -143,9 +172,8 @@ const Membership = () => {
       setIsSubmitting(false);
       return;
     }
-   
+
     try {
-      // Explicitly layout the submission model structure
       const submissionData = {
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
@@ -161,39 +189,32 @@ const Membership = () => {
 
       localStorage.setItem('gfc_form_cache', JSON.stringify(submissionData));
 
-      console.log("🚀 Sending data to backend via membershipService...");
       const response = await membershipService.createMembership(submissionData);
-      
-      // 🔍 DEBUG LOG: Inspect this in the browser dev tools to see what the service returns!
-      console.log("📥 Full Backend Response Object Received:", response);
-   
-      // ⚡️ UNIVERSAL PROPERTY EXTRACTOR: Resolves 'url' across direct returns or nested data wrappers
-      const targetUrl = 
-        response?.url || 
-        response?.data?.url || 
+
+      // Resolves 'url' across direct returns or nested data wrappers
+      const targetUrl =
+        response?.url ||
+        response?.data?.url ||
         response?.data?.data?.url;
 
       if (targetUrl) {
-        console.log("✈️ Redirecting user to Stripe Checkout Portal:", targetUrl);
         window.location.href = targetUrl;
         return;
-      } else {
-        console.warn("⚠️ Form saved successfully, but no redirect URL was found in the object wrapper.");
       }
-   
+
       localStorage.removeItem('gfc_form_cache');
       setFeedback({
         type: 'success',
         message: 'Application received. Your journey with the Collective begins now.',
       });
       setTimeout(() => navigate('/'), 2800);
-   
+
     } catch (err) {
       console.error('Submission Error:', err.response?.data);
       const errorMsg =
         err.response?.data?.error ||
         'Submission error. Please check your details and try again.';
-      
+
       setFeedback({ type: 'error', message: errorMsg });
     } finally {
       setIsSubmitting(false);
@@ -202,34 +223,65 @@ const Membership = () => {
 
   const selectedTier = TIERS.find(t => t.id === formData.tier);
 
+  const toggleStyle = (tierId) => ({
+    flex: 1,
+    padding: '12px',
+    fontFamily: 'inherit',
+    fontSize: '0.9rem',
+    fontWeight: '600',
+    letterSpacing: '1px',
+    textTransform: 'uppercase',
+    cursor: 'pointer',
+    border: formData.tier === tierId ? '2px solid #C5A059' : '1px solid #ddd',
+    backgroundColor: formData.tier === tierId ? '#002147' : '#fff',
+    color: formData.tier === tierId ? '#fff' : '#002147',
+    transition: 'all 0.2s ease',
+  });
+
   return (
     <div className="membership-page">
       <Helmet>
         <title>Join the Collective | Grown Folks Collective Membership</title>
         <meta
           name="description"
-          content="Become a member of the Grown Folks Collective. Choose your membership tier to access exclusive events, intentional dinners, and a community dedicated to ending social isolation."
+          content="Become a Grown Folks Collective member. Your monthly fee comes back as event credit, plus member pricing, early access, and perks for Atlanta adults 30+."
         />
       </Helmet>
 
       {/* ── HERO ── */}
       <header className="membership-hero">
         <div className="hero-content-right">
-          <span className="location-tag">A Life of Joy &amp; Adventure</span>
+          <span className="location-tag">Atlanta · 30+</span>
           <h1 className="luxe-title">The Collective</h1>
           <div className="gold-spacer-bar"></div>
           <div className="mission-narrative">
-            <p className="narrative-lead">Success shouldn't be a solo journey.</p>
+            <p className="narrative-lead">Grown life is better with your people.</p>
             <p className="narrative-body">
-              The <strong>Grown Folks Collective</strong> is centered around
-              authentic connection and ending social isolation.
+              Membership in the <strong>Grown Folks Collective</strong> turns
+              every month into something to look forward to: game nights, good
+              food, real conversation, and a circle that keeps showing up.
             </p>
             <p className="narrative-impact">
-              Join a collective where excellence meets genuine connection.
+              Your membership pays for itself. Every dollar comes back as event credit.
             </p>
           </div>
         </div>
       </header>
+
+      {/* ── HOW IT WORKS ── */}
+      <section className="member-how-section" aria-labelledby="how-heading">
+        <span className="tier-eyebrow">Why Members Love It</span>
+        <h2 id="how-heading" className="playfair tier-heading">How Membership Works</h2>
+        <div className="member-how-grid">
+          {HOW_IT_WORKS.map((item, i) => (
+            <div key={item.title} className="member-how-card">
+              <span className="member-how-num" aria-hidden="true">0{i + 1}</span>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* ── TIER SELECTOR ── */}
       <section className="tier-selector-section">
@@ -266,6 +318,7 @@ const Membership = () => {
               <div className="tier-name">{tier.name}</div>
               <div className="tier-price">{tier.price}</div>
               <div className="tier-price-note">{tier.note}</div>
+              <p className="tier-tagline">{tier.tagline}</p>
               <div className="tier-divider"></div>
               <ul className="tier-features">
                 {tier.features.map((f, i) => (
@@ -279,15 +332,48 @@ const Membership = () => {
         <div className="founding-note">
           <p>
             <strong>Founding Member offer:</strong> Only 40 spots available.
-            Once filled, this tier closes permanently. Members lock in their rate for life.
+            Once filled, this tier closes permanently. Founding Members keep
+            their rate for life.
           </p>
         </div>
+      </section>
+
+      {/* ── PARTNER PERK ── */}
+      <section className="member-partner-section" aria-labelledby="partner-heading">
+        <span className="tier-eyebrow">Member Partner Perk</span>
+        <h2 id="partner-heading" className="playfair member-partner-title">
+          🎭 10% Off AMC Performance Company Shows
+        </h2>
+        <p className="member-partner-body">
+          All members save 10% on every AMC Performance Company production in
+          Atlanta: plays, musicals, and tribute shows. Your discount code is
+          shared in the private member group chat.
+        </p>
+      </section>
+
+      {/* ── FINE PRINT ── */}
+      <section className="member-fineprint" aria-labelledby="fineprint-heading">
+        <h2 id="fineprint-heading" className="member-fineprint-title">Good to Know</h2>
+        <ul>
+          <li>
+            Event credit, guest passes, and birthday credit can be used at any GFC
+            event except food-inclusive events (such as our Cookout, Friendsgiving,
+            and holiday dinners). Members still receive their member discount on
+            food-inclusive events.
+          </li>
+          <li>Unused monthly event credit rolls over for one month, then expires.</li>
+          <li>
+            Referral credit counts when a friend who is new to GFC buys a ticket to
+            their first event using your code.
+          </li>
+          <li>Memberships renew monthly. Cancel anytime before your next billing date.</li>
+        </ul>
       </section>
 
       {/* ── FORM ── */}
       <section className="form-section">
         <div className="applicant-container">
-          <h2 className="section-header-font">Request Membership</h2>
+          <h2 className="section-header-font">Become a Member</h2>
           <p className="form-intro-font">Let's start the conversation.</p>
 
           {/* Selected tier display */}
@@ -310,52 +396,26 @@ const Membership = () => {
 
           <form onSubmit={handleSubmit} className="luxe-form" noValidate>
 
-            {/* Inline Tier Selector Switch Button Row */}
+            {/* Tier toggle */}
             <div className="form-row">
               <div className="input-group">
-                <label className="label-font">Membership Level</label>
+                <span className="label-font">Membership Level</span>
                 <div className="tier-toggle-container" style={{ display: 'flex', gap: '10px', marginTop: '5px' }}>
                   <button
                     type="button"
-                    className={`toggle-btn ${formData.tier === 'Social' ? 'active-toggle' : 'inactive-toggle'}`}
+                    aria-pressed={formData.tier === 'Social'}
                     onClick={() => setFormData(prev => ({ ...prev, tier: 'Social' }))}
-                    style={{
-                      flex: 1,
-                      padding: '12px',
-                      fontFamily: 'inherit',
-                      fontSize: '0.9rem',
-                      fontWeight: '600',
-                      letterSpacing: '1px',
-                      textTransform: 'uppercase',
-                      cursor: 'pointer',
-                      border: formData.tier === 'Social' ? '2px solid #C5A059' : '1px solid #ddd',
-                      backgroundColor: formData.tier === 'Social' ? '#002147' : '#fff',
-                      color: formData.tier === 'Social' ? '#fff' : '#002147',
-                      transition: 'all 0.2s ease'
-                    }}
+                    style={toggleStyle('Social')}
                   >
-                    Social Pass ($39/mo)
+                    Social Pass ($39.99/mo)
                   </button>
                   <button
                     type="button"
-                    className={`toggle-btn ${formData.tier === 'Founding' ? 'active-toggle' : 'inactive-toggle'}`}
+                    aria-pressed={formData.tier === 'Founding'}
                     onClick={() => setFormData(prev => ({ ...prev, tier: 'Founding' }))}
-                    style={{
-                      flex: 1,
-                      padding: '12px',
-                      fontFamily: 'inherit',
-                      fontSize: '0.9rem',
-                      fontWeight: '600',
-                      letterSpacing: '1px',
-                      textTransform: 'uppercase',
-                      cursor: 'pointer',
-                      border: formData.tier === 'Founding' ? '2px solid #C5A059' : '1px solid #ddd',
-                      backgroundColor: formData.tier === 'Founding' ? '#002147' : '#fff',
-                      color: formData.tier === 'Founding' ? '#fff' : '#002147',
-                      transition: 'all 0.2s ease'
-                    }}
+                    style={toggleStyle('Founding')}
                   >
-                    Founding Member ($69/mo)
+                    Founding Member ($69.99/mo)
                   </button>
                 </div>
               </div>
@@ -402,7 +462,9 @@ const Membership = () => {
 
             <div className="form-row">
               <div className="input-group">
-                <label className="label-font" htmlFor="dob">Date of Birth</label>
+                <label className="label-font" htmlFor="dob">
+                  Date of Birth <span style={{ textTransform: 'none', fontWeight: 400 }}>(for your birthday bonus)</span>
+                </label>
                 <input
                   id="dob" type="date" name="dob"
                   value={formData.dob} onChange={handleChange}
@@ -416,23 +478,26 @@ const Membership = () => {
 
             <div className="form-row">
               <div className="input-group">
-                <label className="label-font" htmlFor="primaryInterest">Primary Interest</label>
+                <label className="label-font" htmlFor="primaryInterest">What are you most excited about?</label>
                 <select
                   id="primaryInterest"
                   name="connectionGoals.primaryInterest"
                   value={formData.connectionGoals.primaryInterest}
                   onChange={handleChange}
                 >
-                  <option value="Meet New People">Meet New People</option>
-                  <option value="Play / Games">Play / Games</option>
-                  <option value="Local Events">Local Events</option>
+                  <option value="Meet New People">Meeting new people</option>
+                  <option value="Play / Games">Game nights &amp; friendly competition</option>
+                  <option value="Conversations">Real conversations</option>
+                  <option value="Food Events">Dinners, cookouts &amp; food events</option>
+                  <option value="Travel">Group travel</option>
+                  <option value="Local Events">Trying new things around Atlanta</option>
                 </select>
               </div>
             </div>
 
             <div className="input-group">
               <label className="label-font" htmlFor="isolationBarrier">
-                What is your biggest barrier to social connection lately?
+                What's kept you from getting out and connecting lately?
               </label>
               <textarea
                 id="isolationBarrier"
@@ -440,7 +505,7 @@ const Membership = () => {
                 className="luxe-textarea"
                 value={formData.connectionGoals.isolationBarrier}
                 onChange={handleChange}
-                placeholder="Share your story..."
+                placeholder="Share as much or as little as you like..."
               />
             </div>
 
@@ -456,8 +521,8 @@ const Membership = () => {
               disabled={isSubmitting}
             >
               {isSubmitting
-                ? 'Processing Application...'
-                : 'Apply to the Collective'}
+                ? 'Processing...'
+                : `Join as ${selectedTier?.name || 'a Member'}`}
             </button>
 
           </form>
