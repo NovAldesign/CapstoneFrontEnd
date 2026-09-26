@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@300;400;600;700&display=swap');
 
 /* =============================================
-   MEMBERSHIP PAGE — COMPLETE CSS v7 (Optimized)
+   MEMBERSHIP PAGE — COMPLETE CSS v8
    ============================================= */
 
 .membership-page {
@@ -26,12 +26,6 @@
   position: relative;
   display: flex;
   align-items: center;
-}
-
-.membership-page .hero-dark-overlay-right {
-  width: 100%;
-  padding-right: 10%;
-  padding-left: 5%;
 }
 
 .membership-page .hero-content-right {
@@ -86,12 +80,13 @@
   text-align: right;
 }
 
+/* Matches the hero text on the other pages */
 .membership-page .narrative-body,
 .membership-page .narrative-impact {
-  font-family: 'Montserrat', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 1.15rem;
   line-height: 1.6;
-  font-weight: 300;
+  font-weight: 400;
   color: rgba(255, 255, 255, 0.88);
   margin-bottom: 16px;
   text-align: right;
@@ -99,7 +94,7 @@
 
 .membership-page .narrative-body strong,
 .membership-page .narrative-impact strong {
-  font-weight: 600;
+  font-weight: 700;
   color: rgba(255, 255, 255, 0.88);
 }
 
@@ -242,6 +237,14 @@
   margin-bottom: 26px;
 }
 
+.membership-page .tier-tagline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: #C5A059;
+  font-size: 1rem;
+  margin: 10px 0 0;
+}
+
 .membership-page .tier-divider {
   width: 36px;
   height: 1px;
@@ -295,6 +298,116 @@
 
 .membership-page .founding-note strong {
   color: #C5A059;
+}
+
+/* =============================================
+   HOW MEMBERSHIP WORKS
+   ============================================= */
+.membership-page .member-how-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 20px 20px;
+  text-align: center;
+}
+
+.membership-page .member-how-section .tier-heading {
+  color: #002147;
+}
+
+.membership-page .member-how-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 22px;
+  margin-top: 36px;
+  text-align: left;
+}
+
+.membership-page .member-how-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-top: 3px solid #C5A059;
+  border-radius: 6px;
+  padding: 26px 22px;
+}
+
+.membership-page .member-how-num {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: #C5A059;
+  margin-bottom: 8px;
+}
+
+.membership-page .member-how-card h3 {
+  font-family: 'Playfair Display', serif;
+  color: #002147;
+  font-size: 1.15rem;
+  margin: 0 0 10px;
+}
+
+.membership-page .member-how-card p {
+  color: #555;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* =============================================
+   PARTNER PERK + FINE PRINT
+   ============================================= */
+.membership-page .member-partner-section {
+  max-width: 800px;
+  margin: 20px auto 0;
+  padding: 40px 30px;
+  background: #002147;
+  border-radius: 8px;
+  text-align: center;
+  color: #fff;
+}
+
+.membership-page .member-partner-section .tier-eyebrow {
+  color: #C5A059;
+}
+
+.membership-page .member-partner-title {
+  color: #fff;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  margin: 10px 0 14px;
+  font-weight: 400;
+}
+
+.membership-page .member-partner-body {
+  color: #ccd6f0;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.membership-page .member-fineprint {
+  max-width: 800px;
+  margin: 40px auto 0;
+  padding: 0 20px;
+}
+
+.membership-page .member-fineprint-title {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #002147;
+  margin: 0 0 12px;
+}
+
+.membership-page .member-fineprint ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.membership-page .member-fineprint li {
+  margin-bottom: 6px;
 }
 
 /* =============================================
@@ -681,19 +794,16 @@
 }
 
 /* =============================================
-   RESPONSIVE BREAKPOINTS (Optimized)
+   RESPONSIVE BREAKPOINTS
    ============================================= */
 
-/* ── Tablet Optimization ── */
+/* ── Tablet ── */
 @media (max-width: 1024px) {
-  .membership-page .hero-dark-overlay-right {
-    padding-right: 5%;
-    padding-left: 5%;
-  }
-
   .membership-page .hero-content-right {
     max-width: 100%;
-    margin-right: 0; 
+    margin-right: 0;
+    padding: 0 20px;
+    box-sizing: border-box;
     text-align: center;
   }
 
@@ -721,25 +831,29 @@
   }
 }
 
-/* ── Mobile Layout Optimization ── */
+/* ── Phone ── */
 @media (max-width: 768px) {
   .membership-page .membership-hero {
-    background-attachment: scroll; /* Fixes layout rendering jitter on iOS mobile engines */
+    background-attachment: scroll; /* Fixes iOS rendering jitter */
     min-height: 100svh;
   }
 
-  .membership-page .hero-dark-overlay-right {
-    padding-right: 6%;
-    padding-left: 6%;
+  /* Hero sizes match the Home page */
+  .membership-page .luxe-title {
+    font-size: 39px;
+    line-height: 0.95;
   }
 
-  .membership-page .luxe-title {
-    font-size: clamp(2.5rem, 12vw, 4rem);
+  .membership-page .narrative-lead {
+    font-size: 17px;
+    margin-bottom: 14px;
   }
 
   .membership-page .narrative-body,
   .membership-page .narrative-impact {
-    font-size: 1rem;
+    font-size: 15.6px;
+    line-height: 1.4;
+    margin-bottom: 12px;
   }
 
   .membership-page .applicant-container {
@@ -760,7 +874,18 @@
   }
 }
 
-/* ── Micro-Viewport Optimization ── */
+@media (max-width: 600px) {
+  .membership-page .member-how-section {
+    padding-top: 50px;
+  }
+
+  .membership-page .member-partner-section {
+    margin: 20px 16px 0;
+    padding: 30px 20px;
+  }
+}
+
+/* ── Small phones ── */
 @media (max-width: 480px) {
   .membership-page .applicant-container {
     padding: 40px 5%;
@@ -776,7 +901,6 @@
     padding: 18px;
   }
 
-  /* Swaps condensed flex layout to a clean stacked panel to keep inline dynamic data scannable */
   .membership-page .selected-tier-display {
     flex-direction: column;
     align-items: flex-start;
@@ -792,106 +916,4 @@
   .membership-page .ms-inner {
     padding: 0 8px;
   }
-}
-
-/* ── NEW MEMBERSHIP SECTIONS (Sept 2026) ── */
-.membership-page .tier-tagline {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  color: #C5A059;
-  font-size: 1rem;
-  margin: 10px 0 0;
-}
-
-.membership-page .member-how-section {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 80px 20px 20px;
-  text-align: center;
-}
-.membership-page .member-how-section .tier-heading {
-  color: #002147;
-}
-.membership-page .member-how-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 22px;
-  margin-top: 36px;
-  text-align: left;
-}
-.membership-page .member-how-card {
-  background: #fff;
-  border: 1px solid #eee;
-  border-top: 3px solid #C5A059;
-  border-radius: 6px;
-  padding: 26px 22px;
-}
-.membership-page .member-how-num {
-  display: block;
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
-  color: #C5A059;
-  margin-bottom: 8px;
-}
-.membership-page .member-how-card h3 {
-  font-family: 'Playfair Display', serif;
-  color: #002147;
-  font-size: 1.15rem;
-  margin: 0 0 10px;
-}
-.membership-page .member-how-card p {
-  color: #555;
-  font-size: 0.92rem;
-  line-height: 1.65;
-  margin: 0;
-}
-
-.membership-page .member-partner-section {
-  max-width: 800px;
-  margin: 20px auto 0;
-  padding: 40px 30px;
-  background: #002147;
-  border-radius: 8px;
-  text-align: center;
-  color: #fff;
-}
-.membership-page .member-partner-section .tier-eyebrow { color: #C5A059; }
-.membership-page .member-partner-title {
-  color: #fff;
-  font-size: clamp(1.4rem, 3vw, 1.9rem);
-  margin: 10px 0 14px;
-  font-weight: 400;
-}
-.membership-page .member-partner-body {
-  color: #ccd6f0;
-  font-size: 0.98rem;
-  line-height: 1.7;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.membership-page .member-fineprint {
-  max-width: 800px;
-  margin: 40px auto 0;
-  padding: 0 20px;
-}
-.membership-page .member-fineprint-title {
-  font-size: 0.8rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #002147;
-  margin: 0 0 12px;
-}
-.membership-page .member-fineprint ul {
-  margin: 0;
-  padding-left: 18px;
-  color: #666;
-  font-size: 0.85rem;
-  line-height: 1.7;
-}
-.membership-page .member-fineprint li { margin-bottom: 6px; }
-
-@media (max-width: 600px) {
-  .membership-page .member-how-section { padding-top: 50px; }
-  .membership-page .member-partner-section { margin: 20px 16px 0; padding: 30px 20px; }
 }
