@@ -1,127 +1,281 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { BACKEND_URL, parseCleanPrice, formatMoney } from "../Services/eventUtils";
+import "../Styles/EventListing.css";
 
-const CartContext = createContext();
+const CartContext = createContext(null);
+
+const STORAGE_KEY = "gfc_event_cart";
+const MAX_AGE_MS = 24 * 60 * 60 * 1000; // saved bags expire after 24 hours
+
+// Read the saved bag once, before the first render (no race with saving)
+const loadSaved = () => {
+  try {
+    // Empty the bag after a successful purchase
+    if (window.location.pathname === "/events/success") return [];
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    const saved = JSON.parse(raw);
+    // Old format was a plain array with no timestamp — start fresh
+    if (!saved || !Array.isArray(saved.items)) return [];
+    if (Date.now() - (saved.savedAt || 0) > MAX_AGE_MS) return [];
+    return saved.items;
+  } catch {
+    return [];
+  }
+};
+
+// Bundle discount — MUST match the backend checkout route
+const getDiscount = (uniqueEventCount) => {
+  if (uniqueEventCount >= 3) return { rate: 0.10, label: "10% Mega-Bundle Discount Applied!" };
+  if (uniqueEventCount === 2) return { rate: 0.05, label: "5% Multi-Event Discount Applied!" };
+  return { rate: 0, label: "" };
+};
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(loadSaved);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
-  // 1. Load cart items from local storage when the page boots up
+  // Save the bag whenever it changes
   useEffect(() => {
-    const savedCart = localStorage.getItem('gfc_event_cart');
-    if (savedCart) {
-      try {
-        setCartItems(JSON.parse(savedCart));
-      } catch (e) {
-        console.error("Error reading cart from localStorage:", e);
-      }
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ savedAt: Date.now(), items: cartItems }));
+    } catch {
+      /* storage unavailable — bag still works in memory */
     }
-  }, []);
-
-  // 2. Save cart items to local storage whenever a user adds/removes something
-  useEffect(() => {
-    localStorage.setItem('gfc_event_cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // 3. Action: Add a ticket to the cart
+  // Add one ticket (never edits existing items in place)
   const addToCart = (event, ticketType) => {
-    setCartItems((prevItems) => {
-      // Check if this exact ticket tier for this specific event is already in the cart
-      const existingIndex = prevItems.findIndex(
-        (item) => item.eventId === event._id && item.ticketTypeId === ticketType._id
-      );
+    const eventId = String(event._id || event.eventbriteId);
+    const ticketTypeId = String(ticketType._id || ticketType.id || "standard-pass");
 
-      if (existingIndex > -1) {
-        const updated = [...prevItems];
-        updated[existingIndex].quantity += 1;
-        return updated;
+    setCartItems((prev) => {
+      const exists = prev.some((i) => i.eventId === eventId && i.ticketTypeId === ticketTypeId);
+      if (exists) {
+        return prev.map((i) =>
+          i.eventId === eventId && i.ticketTypeId === ticketTypeId
+            ? { ...i, quantity: Math.min(i.quantity + 1, 20) }
+            : i
+        );
       }
-
-      // If it's a new item, add it to the array matching our backend requirements
       return [
-        ...prevItems,
+        ...prev,
         {
-          eventId: event._id,
-          eventName: event.name,
-          ticketTypeId: ticketType._id,
+          eventId,
+          eventName: event.title || event.name,
+          ticketTypeId,
           ticketTypeName: ticketType.name,
-          priceInCents: ticketType.price, // Stored in cents (e.g. 3000 = $30.00)
+          // Database stores dollars (30 = $30.00) → convert to cents
+          priceInCents: Math.round(parseCleanPrice(ticketType) * 100),
           quantity: 1,
         },
       ];
     });
+    setIsCartOpen(true);
   };
 
-  // 4. Action: Change item quantities or remove them completely
+  // Set an exact quantity (0 or less removes it) — same as your original
   const updateQuantity = (eventId, ticketTypeId, newQty) => {
     if (newQty <= 0) {
-      setCartItems((prev) => prev.filter(item => !(item.eventId === eventId && item.ticketTypeId === ticketTypeId)));
+      removeFromCart(eventId, ticketTypeId);
       return;
     }
     setCartItems((prev) =>
-      prev.map((item) =>
-        item.eventId === eventId && item.ticketTypeId === ticketTypeId
-          ? { ...item, quantity: newQty }
-          : item
+      prev.map((i) =>
+        i.eventId === eventId && i.ticketTypeId === ticketTypeId
+          ? { ...i, quantity: Math.min(newQty, 20) }
+          : i
       )
     );
   };
 
-  const removeFromCart = (eventId, ticketTypeId) => {
-    setCartItems((prev) => prev.filter(item => !(item.eventId === eventId && item.ticketTypeId === ticketTypeId)));
-  };
+  const removeFromCart = (eventId, ticketTypeId) =>
+    setCartItems((prev) => prev.filter((i) => !(i.eventId === eventId && i.ticketTypeId === ticketTypeId)));
 
   const clearCart = () => setCartItems([]);
 
-  // 5. MATH LOGIC: Count how many UNIQUE events are in the cart to calculate bundle scales
-  const uniqueEventCount = [...new Set(cartItems.map((item) => item.eventId))].length;
+  // Totals (in cents, like your original, plus dollar versions for the drawer)
+  const totals = useMemo(() => {
+    const uniqueEventCount = new Set(cartItems.map((i) => i.eventId)).size;
+    const { rate, label } = getDiscount(uniqueEventCount);
+    const subtotalInCents = cartItems.reduce((sum, i) => sum + i.priceInCents * i.quantity, 0);
+    const discountInCents = Math.round(subtotalInCents * rate);
+    const totalInCents = subtotalInCents - discountInCents;
+    return {
+      uniqueEventCount,
+      discountRate: rate,
+      discountLabel: label,
+      subtotalInCents,
+      discountInCents,
+      totalInCents,
+      itemCount: cartItems.reduce((sum, i) => sum + i.quantity, 0),
+    };
+  }, [cartItems]);
 
-  let discountRate = 0;       // For UI display (0.10 = 10%)
-  let discountMultiplier = 1.0;
+  // Send the bag to Stripe (backend re-checks every price and ticket)
+  const checkout = async () => {
+    if (!cartItems.length) return;
+    setCheckoutLoading(true);
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/events/checkout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ customerEmail: undefined, cartItems }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.error || "Failed to initialize checkout gateway.");
+      }
+    } catch (err) {
+      console.error("Stripe Checkout Error:", err);
+      alert("Could not establish communication with checkout servers.");
+    } finally {
+      setCheckoutLoading(false);
+    }
+  };
 
-  if (uniqueEventCount === 2) {
-    discountRate = 0.10;
-  } else if (uniqueEventCount >= 3) {
-    discountRate = 0.15; // Max 15% discount cap
-  }
-
-  // Calculate Subtotal before discounts
-  const subtotalInCents = cartItems.reduce(
-    (sum, item) => sum + item.priceInCents * item.quantity,
-    0
-  );
-
-  // Calculate how much money is saved
-  const discountInCents = Math.round(subtotalInCents * discountRate);
-  
-  // Final total after bundle deduction
-  const totalInCents = subtotalInCents - discountInCents;
+  const value = {
+    cartItems,
+    cart: cartItems, // alias used by the new Events pages
+    addToCart,
+    updateQuantity,
+    removeFromCart,
+    clearCart,
+    isCartOpen,
+    setIsCartOpen,
+    checkout,
+    checkoutLoading,
+    ...totals,
+  };
 
   return (
-    <CartContext.Provider
-      value={{
-        cartItems,
-        uniqueEventCount,
-        discountRate,
-        subtotalInCents,
-        discountInCents,
-        totalInCents,
-        addToCart,
-        updateQuantity,
-        removeFromCart,
-        clearCart,
-      }}
-    >
+    <CartContext.Provider value={value}>
       {children}
+      <CartDrawer />
     </CartContext.Provider>
   );
 };
 
-// Custom hook to quickly tap into the cart anywhere on the site
+// Custom hook to use the cart anywhere on the site
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error('useCart must be used within a CartProvider element.');
+    throw new Error("useCart must be used within a CartProvider element.");
   }
   return context;
 };
 
+// ── FLOATING BAG BUTTON + SIDE DRAWER ────────────────────────
+const CartDrawer = () => {
+  const {
+    cartItems, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart,
+    checkout, checkoutLoading, itemCount, subtotalInCents, discountInCents,
+    totalInCents, discountRate, discountLabel,
+  } = useCart();
+
+  useEffect(() => {
+    if (!isCartOpen) return;
+    const onKey = (e) => e.key === "Escape" && setIsCartOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isCartOpen, setIsCartOpen]);
+
+  return (
+    <>
+      {cartItems.length > 0 && !isCartOpen && (
+        <button
+          className="gfc-bag-fab"
+          onClick={() => setIsCartOpen(true)}
+          aria-label={`Open your bag, ${itemCount} ticket${itemCount === 1 ? "" : "s"}`}
+        >
+          <span aria-hidden="true">👜</span>
+          <span className="gfc-bag-fab-count">{itemCount}</span>
+        </button>
+      )}
+
+      {isCartOpen && (
+        <div className="gfc-drawer-overlay" onClick={() => setIsCartOpen(false)}>
+          <aside
+            className="gfc-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="gfc-drawer-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="gfc-drawer-head">
+              <h3 id="gfc-drawer-title" className="playfair">Your Bag</h3>
+              <button className="gfc-icon-btn" onClick={() => setIsCartOpen(false)} aria-label="Close bag">
+                ✕
+              </button>
+            </div>
+
+            <div className="gfc-drawer-body">
+              {cartItems.length === 0 ? (
+                <p className="gfc-drawer-empty">Your bag is empty.</p>
+              ) : (
+                cartItems.map((item) => (
+                  <div key={`${item.eventId}-${item.ticketTypeId}`} className="gfc-bag-item">
+                    <div className="gfc-bag-item-name">{item.eventName}</div>
+                    <div className="gfc-bag-item-tier">{item.ticketTypeName}</div>
+                    <div className="gfc-bag-item-row">
+                      <div className="gfc-qty" role="group" aria-label={`Quantity for ${item.ticketTypeName}`}>
+                        <button
+                          onClick={() => updateQuantity(item.eventId, item.ticketTypeId, item.quantity - 1)}
+                          aria-label="Remove one"
+                        >
+                          −
+                        </button>
+                        <span>{item.quantity}</span>
+                        <button
+                          onClick={() => updateQuantity(item.eventId, item.ticketTypeId, item.quantity + 1)}
+                          aria-label="Add one"
+                        >
+                          +
+                        </button>
+                      </div>
+                      <span className="gfc-bag-item-price">
+                        {formatMoney((item.priceInCents * item.quantity) / 100)}
+                      </span>
+                    </div>
+                    <button
+                      className="gfc-link-btn danger"
+                      onClick={() => removeFromCart(item.eventId, item.ticketTypeId)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {cartItems.length > 0 && (
+              <div className="gfc-drawer-foot">
+                {discountLabel && <div className="gfc-discount-note">{discountLabel}</div>}
+                <div className="gfc-total-row muted">
+                  <span>Subtotal</span>
+                  <span>${(subtotalInCents / 100).toFixed(2)}</span>
+                </div>
+                {discountRate > 0 && (
+                  <div className="gfc-total-row savings">
+                    <span>Discount ({Math.round(discountRate * 100)}%)</span>
+                    <span>− ${(discountInCents / 100).toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="gfc-total-row grand">
+                  <span>Total</span>
+                  <span>${(totalInCents / 100).toFixed(2)}</span>
+                </div>
+                <button className="gfc-btn-primary full" onClick={checkout} disabled={checkoutLoading}>
+                  {checkoutLoading ? "Connecting to Stripe..." : "Proceed to Secure Checkout"}
+                </button>
+              </div>
+            )}
+          </aside>
+        </div>
+      )}
+    </>
+  );
+};
