@@ -19,10 +19,13 @@ const OCCASIONS = [
 const PERKS = [
   'Group pricing for 10 or more',
   'Tables reserved so your crew sits together',
-  'Bring your own cake',
-  'Custom touches, like your favorite songs on the Karaoke Bingo cards',
-  'Mocktail specials for your group',
+  'Bring a cake to celebrate (venue permitting)',
+  'Karaoke Bingo categories picked for your group',
+  'Special moments and add-ons, like birthday shout-outs',
 ];
+
+// Occasions where we ask who is being celebrated
+const HONOR_OCCASIONS = ['Birthday', 'Anniversary'];
 
 const EMPTY_FORM = {
   firstName: '',
@@ -32,9 +35,12 @@ const EMPTY_FORM = {
   occasion: '',
   eventId: '',
   groupSize: '',
+  isGuestOfHonor: false,
+  guestOfHonor: '',
   songRequests: '',
   bringingCake: false,
-  wantsMocktails: false,
+  wantsSpecialMoment: false,
+  isSurprise: false,
   notes: '',
 };
 
@@ -105,12 +111,18 @@ const GroupBooking = () => {
     const { name, value, type, checked } = e.target;
     let next = type === 'checkbox' ? checked : value;
     if (name === 'phone') next = formatPhone(value);
-    setFormData((prev) => ({ ...prev, [name]: next }));
+    setFormData((prev) => {
+      const updated = { ...prev, [name]: next };
+      // You can't surprise yourself
+      if (name === 'isGuestOfHonor' && checked) updated.isSurprise = false;
+      return updated;
+    });
     if (feedback) setFeedback(null);
   };
 
   const selectedEvent = events.find((e) => String(e._id) === formData.eventId);
   const isKaraoke = /karaoke/i.test(selectedEvent?.title || '');
+  const askHonor = HONOR_OCCASIONS.includes(formData.occasion) || formData.isSurprise;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -152,7 +164,7 @@ const GroupBooking = () => {
         <title>Celebrate With Us | Grown Folks Collective</title>
         <meta
           name="description"
-          content="Bring your crew to a Grown Folks Collective event. Birthdays, reunions, and nights out for Atlanta's 30+ crowd, with group pricing and reserved tables."
+          content="Celebrate with Grown Folks Collective. Bring your crew to Karaoke Bingo, game nights, cookouts, and more, with group pricing, reserved tables, and special moments."
         />
       </Helmet>
 
@@ -164,8 +176,10 @@ const GroupBooking = () => {
             <h1 className="contact-hero-title">Bring Your Crew</h1>
             <div className="contact-gold-spacer" aria-hidden="true"></div>
             <p className="contact-hero-lead">
-              Birthdays, reunions, or just a night out with your people. Pick a
-              GFC event, tell us about your group, and we'll handle the rest.
+              Birthdays, anniversaries, reunions, or just a night out with your
+              people. Celebrate with us at Karaoke Bingo, game nights, cookouts,
+              and more. Tell us about your group and we'll help create a moment
+              to remember.
             </p>
           </div>
 
@@ -334,11 +348,43 @@ const GroupBooking = () => {
                       </select>
                     </div>
 
+                    {askHonor && (
+                      <div className="group-honor">
+                        <p className="contact-label">Who are we celebrating?</p>
+                        <label className="group-check">
+                          <input
+                            type="checkbox"
+                            name="isGuestOfHonor"
+                            checked={formData.isGuestOfHonor}
+                            onChange={handleChange}
+                          />
+                          <span>I'm the guest of honor 🎉</span>
+                        </label>
+                        {!formData.isGuestOfHonor && (
+                          <div className="contact-input-group">
+                            <label className="contact-label" htmlFor="gb-honor">
+                              Guest of honor's name{' '}
+                              <span className="contact-label-optional">(Optional)</span>
+                            </label>
+                            <input
+                              id="gb-honor"
+                              name="guestOfHonor"
+                              type="text"
+                              maxLength={120}
+                              placeholder="e.g. Tasha, turning 40!"
+                              value={formData.guestOfHonor}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    )}
+
                     <div className="contact-input-group">
                       <label className="contact-label" htmlFor="gb-songs">
                         {isKaraoke
-                          ? 'Favorite songs for your bingo cards'
-                          : 'Favorite songs or special touches'}{' '}
+                          ? 'Favorite music categories for your bingo cards'
+                          : 'Special moments or add-ons you have in mind'}{' '}
                         <span className="contact-label-optional">(Optional)</span>
                       </label>
                       <textarea
@@ -347,7 +393,11 @@ const GroupBooking = () => {
                         className="contact-textarea"
                         rows="3"
                         maxLength={1500}
-                        placeholder="e.g. Before I Let Go, Maze · Weak, SWV · anything Jodeci"
+                        placeholder={
+                          isKaraoke
+                            ? 'e.g. 90s R&B, Slow Jams, Throwback Hip-Hop, Neo-Soul'
+                            : 'e.g. a birthday shout-out, a toast, decorations'
+                        }
                         value={formData.songRequests}
                         onChange={handleChange}
                       />
@@ -366,12 +416,23 @@ const GroupBooking = () => {
                       <label className="group-check">
                         <input
                           type="checkbox"
-                          name="wantsMocktails"
-                          checked={formData.wantsMocktails}
+                          name="wantsSpecialMoment"
+                          checked={formData.wantsSpecialMoment}
                           onChange={handleChange}
                         />
-                        <span>We're interested in a mocktail special for the group 🍹</span>
+                        <span>We'd love help planning a special moment ✨</span>
                       </label>
+                      {!formData.isGuestOfHonor && (
+                        <label className="group-check">
+                          <input
+                            type="checkbox"
+                            name="isSurprise"
+                            checked={formData.isSurprise}
+                            onChange={handleChange}
+                          />
+                          <span>It's a surprise! Please keep it hush 🤫</span>
+                        </label>
+                      )}
                     </div>
 
                     <div className="contact-input-group">
