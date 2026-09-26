@@ -51,13 +51,16 @@ const formatPhone = (value) => {
   return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
 };
 
+// Events are saved with either a "name" or a "title"
+const eventName = (event) => event?.title || event?.name || '';
+
 const eventLabel = (event) => {
   const date = new Date(event.date).toLocaleDateString('en-US', {
     weekday: 'short',
     month: 'short',
     day: 'numeric',
   });
-  return `${date} · ${event.title}`;
+  return `${date} · ${eventName(event)}`;
 };
 
 const GroupBooking = () => {
@@ -77,8 +80,7 @@ const GroupBooking = () => {
       .then((data) => {
         if (!active) return;
         const upcoming = (Array.isArray(data) ? data : [])
-          .filter((e) => e && e.title && e.status?.toLowerCase() === 'published')
-          .filter((e) => isUpcoming(e))
+          .filter((e) => e && eventName(e) && e.status?.toLowerCase() === 'published')          .filter((e) => isUpcoming(e))
           .sort((a, b) => new Date(a.date) - new Date(b.date));
         setEvents(upcoming);
 
@@ -87,8 +89,7 @@ const GroupBooking = () => {
           ? upcoming.find(
               (e) =>
                 String(e._id) === wanted ||
-                e.title.toLowerCase().includes(wanted)
-            )
+                eventName(e).toLowerCase().includes(wanted)            )
           : null;
         const occasion = searchParams.get('occasion') || '';
         setFormData((prev) => ({
@@ -121,7 +122,7 @@ const GroupBooking = () => {
   };
 
   const selectedEvent = events.find((e) => String(e._id) === formData.eventId);
-  const isKaraoke = /karaoke/i.test(selectedEvent?.title || '');
+  const isKaraoke = /karaoke/i.test(eventName(selectedEvent));
   const askHonor = HONOR_OCCASIONS.includes(formData.occasion) || formData.isSurprise;
 
   const handleSubmit = async (e) => {
