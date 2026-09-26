@@ -50,7 +50,7 @@ function App() {
             <Route path="/partnerships" element={<Partnerships />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-           <Route path="/celebrate" element={<GroupBooking />} />
+          
 
             <Route path="/reset-password/:token" element={<ResetPassword />} />
 
