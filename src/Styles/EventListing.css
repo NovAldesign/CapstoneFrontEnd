@@ -371,3 +371,22 @@
 }
 .gfc-bag-nudge a { color: var(--gfc-gold); font-weight: 700; text-decoration: none; font-size: 12.5px; }
 .gfc-bag-nudge a:hover { text-decoration: underline; }
+
+
+/* ── GROUP BOOKINGS BANNER ── */
+.gfc-group-banner {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  background: var(--gfc-navy); color: #fff; border-radius: 4px;
+  padding: 14px 18px; margin: -12px 0 26px; font-size: 14px; line-height: 1.5;
+  text-decoration: none; transition: background 0.2s;
+}
+.gfc-group-banner strong { color: var(--gfc-gold); }
+.gfc-group-banner-cta {
+  flex-shrink: 0; font-weight: 700; font-size: 12px;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--gfc-gold);
+}
+.gfc-group-banner:hover { background: #0a2d5a; }
+.gfc-group-banner:hover .gfc-group-banner-cta { text-decoration: underline; }
+@media (max-width: 640px) {
+  .gfc-group-banner { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
