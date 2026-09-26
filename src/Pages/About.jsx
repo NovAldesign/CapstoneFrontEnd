@@ -364,7 +364,7 @@ const About = () => {
             Noted here as a reminder — can't set it in Helmet on some setups. */}
         <meta
           name="description"
-          content="Discover the story of Grown Folks Collective. Built in Atlanta for accomplished individuals, we provide a third space to end social isolation and find joy through genuine, alcohol-free connection."
+          content="Discover the story of Grown Folks Collective. Built in Atlanta for adults 30+, we're a third space to end social isolation and bring more fun and joy into your life through genuine, alcohol-free connection."
         />
       </Helmet>
  
@@ -388,8 +388,8 @@ const About = () => {
               WCAG 1.3.1 – Info and Relationships (Level A)                */}
           <div className="about-gold-spacer" aria-hidden="true"></div>
           <p className="about-hero-subhead">
-            GFC exists because Atlanta's accomplished professionals, entrepreneurs, & executives deserved better
-            than a bar and more than an empty apartment on a Saturday night.
+            GFC exists because Atlanta's grown folks deserved better than a bar
+            and more than an empty apartment on a Saturday night.
           </p>
         </div>
       </header>
@@ -406,13 +406,11 @@ const About = () => {
               <div className="about-story-img-wrapper">
                 {/* ─── ADA FIX #8: Meaningful alt text ───────────────────
                     WCAG 1.1.1 – Non-text Content (Level A)
-                    Previous alt was generic. Describe what's actually in  
-                    the image so screen-reader users get equivalent info.   
-                    Also: the URL had a malformed query string               
-                    (...899.png?resize=...ssl=1auto=format...) — fixed below */}
+                    Describe what's actually in the image so screen-reader
+                    users get equivalent info. */}
                 <img
                   src="https://i0.wp.com/www.reemployability.com/wp-content/uploads/2023/04/Untitled-design-2023-04-13T151843.899.png?resize=1080%2C675&ssl=1&auto=format&fit=crop&q=80&w=800"
-                  alt="A group of professionals gathered around a table engaged in lively conversation at a Grown Folks Collective event"
+                  alt="A group of friends gathered around a table engaged in lively conversation at a Grown Folks Collective event"
                   className="about-story-img"
                   /* ─── ADA FIX #9: Add width/height to prevent layout shift (CLS) */
                   width="800"
@@ -436,7 +434,7 @@ const About = () => {
               <div className="about-gold-rule" aria-hidden="true"></div>
  
               <p className="about-body-large">
-                There's a specific kind of loneliness that belongs to successful people. You've built the career. You've built the life. But somewhere along the way, the friendships got harder to maintain and the social calendar got thinner.
+                There's a specific kind of loneliness that comes with grown life. You've built a life you're proud of. But somewhere along the way, the friendships got harder to keep up, the fun got harder to find, and the social calendar got thinner.
               </p>
               <p className="about-body">
                 The options that used to work — the bars, the lounges, the loud rooms full of strangers — stopped feeling right.
@@ -448,7 +446,7 @@ const About = () => {
                 We didn't start with a business plan. We started with a game night in a small Decatur restaurant and 36 people who showed up because they were tired of sitting at home. It sold out. Then we did it again. Sold out again.
               </p>
               <p className="about-body">
-                Through word of mouth and absolute necessity, we built a community of over 1,600 people — with zero advertising, zero paid promotion, and zero compromise on our values. Our guests drive from Monroe, Smyrna, Fayetteville, Lawrenceville, and Douglasville to be in our room on a Saturday night. Not because there's nothing else to do. Because this is the only room built for them.
+                Through word of mouth and absolute necessity, we built a community of over 1,600 people — with zero advertising, zero paid promotion, and zero compromise on our values. Our guests drive from Monroe, Smyrna, Fayetteville, Lawrenceville, and Douglasville to be in our room on a Saturday night. Not because there's nothing else to do. Because this is the room built for them.
               </p>
             </div>
           </div>
@@ -469,12 +467,12 @@ const About = () => {
                 screen readers announce stats cohesively */}
             <dl className="about-stats-grid">
               <div className="about-stat" role="group" aria-label="Events Hosted">
-                <dt className="about-stat-number">14</dt>
+                <dt className="about-stat-number">21</dt>
                 <dd className="about-stat-label">Events Hosted</dd>
                 <dd className="about-stat-desc">Since January 2026</dd>
               </div>
               <div className="about-stat" role="group" aria-label="Sold Out Events">
-                <dt className="about-stat-number">3</dt>
+                <dt className="about-stat-number">5</dt>
                 <dd className="about-stat-label">Sold-Out Events</dd>
                 <dd className="about-stat-desc">Highly Demanded</dd>
               </div>
@@ -484,7 +482,7 @@ const About = () => {
                 <dd className="about-stat-desc">Documented every event night</dd>
               </div>
               <div className="about-stat" role="group" aria-label="Community Members">
-                <dt className="about-stat-number">2,270+</dt>
+                <dt className="about-stat-number">2,370+</dt>
                 <dd className="about-stat-label">Community Members</dd>
                 <dd className="about-stat-desc">Across all platforms</dd>
               </div>
@@ -499,12 +497,12 @@ const About = () => {
               {/* Decorative dividers must be hidden from AT */}
               <div className="about-platform-divider" aria-hidden="true"></div>
               <div className="about-platform">
-                <dt className="about-platform-num">169+</dt>
+                <dt className="about-platform-num">199+</dt>
                 <dd className="about-platform-name">Meetup Members</dd>
               </div>
               <div className="about-platform-divider" aria-hidden="true"></div>
               <div className="about-platform">
-                <dt className="about-platform-num">209</dt>
+                <dt className="about-platform-num">259</dt>
                 <dd className="about-platform-name">Email Subscribers</dd>
               </div>
               <div className="about-platform-divider" aria-hidden="true"></div>
@@ -545,16 +543,16 @@ const About = () => {
               </article>
               <article className="about-value-card">
                 <div className="about-value-number" aria-hidden="true">03</div>
-                <h3 className="about-value-title">Excellence</h3>
+                <h3 className="about-value-title">Joy</h3>
                 <p className="about-value-body">
-                  We are not a meetup. We are not a mixer. We are a premium experience for adults who have earned the right to expect more — and we deliver it every time.
+                  We're not a mixer and we're not a party. We're a place to laugh, play, compete, and leave lighter than you came. Fun isn't extra here. It's why we gather.
                 </p>
               </article>
               <article className="about-value-card">
                 <div className="about-value-number" aria-hidden="true">04</div>
                 <h3 className="about-value-title">Community</h3>
                 <p className="about-value-body">
-                  We are building something that outlasts any single event. GFC is a network of accomplished Atlanta professionals who choose each other — and keep choosing each other.
+                  We are building something that outlasts any single event. GFC is a circle of Atlanta grown folks who choose each other — and keep choosing each other.
                 </p>
               </article>
             </div>
@@ -576,9 +574,9 @@ const About = () => {
                   Just ensure CSS doesn't remove list markers without also
                   adding role="list" (Safari VoiceOver bug fix):            */}
               <ul className="about-who-list" role="list">
-                <li>You're 35 or older</li>
-                <li>You're an entrepreneur, executive, or professional</li>
-                <li>You earn $80K or more and you've outgrown the nightlife scene</li>
+                <li>You're 30 or older</li>
+                <li>You want more fun and joy in your everyday life</li>
+                <li>You've outgrown the nightlife scene and want something real</li>
                 <li>You want to meet people who match your energy — not just your zip code</li>
                 <li>You're done sitting at home on Saturday nights</li>
               </ul>
@@ -593,11 +591,10 @@ const About = () => {
             </div>
  
             <div className="about-who-image">
-              {/* ─── ADA FIX #16: Meaningful alt text for second image ──────
-                  Previous alt "GFC community members" is too vague.        */}
+              {/* ─── ADA FIX #16: Meaningful alt text for second image ────── */}
               <img
                 src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=800"
-                alt="Smiling professionals enjoying conversation at a Grown Folks Collective gathering"
+                alt="Smiling adults enjoying conversation at a Grown Folks Collective gathering"
                 className="about-who-img"
                 width="800"
                 height="600"
@@ -649,7 +646,7 @@ const About = () => {
               This Is Your Seat at the Table.
             </h2>
             <p className="about-bottom-body">
-              Join the collective that's building real community in Atlanta — one intentional Saturday night at a time.
+              Join the collective that's bringing fun, joy, and real community to Atlanta — one Saturday night at a time.
             </p>
             <div className="about-cta-row">
               {/* ─── ADA FIX #20: Buttons need focus styles & descriptive text
