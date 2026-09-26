@@ -87,3 +87,23 @@
     padding: 22px 20px;
   }
 }
+
+
+/* Guest of honor block */
+.group-honor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 0 24px;
+  padding: 18px 20px;
+  background: #FAF6EE;
+  border-left: 3px solid #C5A059;
+}
+
+.group-honor .contact-label {
+  margin: 0;
+}
+
+.group-honor .contact-input-group {
+  margin-bottom: 0;
+}
