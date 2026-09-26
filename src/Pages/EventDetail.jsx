@@ -288,8 +288,9 @@ const EventDetail = () => {
             </ul>
           )}
 
-          <p className="gfc-ticket-perk">
-            Going to more than one event? Get 5% off 2 events or 10% off 3+ at checkout.
+           <p className="gfc-ticket-perk">
+            Book 2 different events and save 5%, or 3+ different events and save 10%.{" "}
+            <Link to="/events">Browse events</Link>
           </p>
           <p className="gfc-ticket-perk">
             Members get priority access and member pricing. <Link to="/membership">Learn more</Link>
