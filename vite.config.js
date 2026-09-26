@@ -1,24 +1,26 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import Sitemap from 'vite-plugin-sitemap' // 1. Import the sitemap plugin
+import Sitemap from 'vite-plugin-sitemap'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
-    // 2. Configure the automatic sitemap generation
-    Sitemap({ 
-      hostname: 'https://www.grownfolkscollective.com', // Replace with your actual live domain
+    // Automatic sitemap generation
+    // Note: the home page "/" is added automatically — don't list it here
+    Sitemap({
+      hostname: 'https://www.grownfolkscollective.com',
       dynamicRoutes: [
-        '/',
         '/events',
-        '/travel',
-        '/ic-dinners',
         '/membership',
+        '/blog',
         '/partnerships',
-        '/about', 
-        '/contact'
-      ]
+        '/about',
+        '/contact',
+        // Add these back once they have routes in App.jsx:
+        // '/travel',
+        // '/ic-dinners',
+      ],
     }),
   ],
   server: {
