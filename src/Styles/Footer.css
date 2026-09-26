@@ -221,3 +221,204 @@
   white-space: nowrap;
   border: 0;
 }
+
+/* =============================================
+   MAIN FOOTER CONTENT
+   ============================================= */
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 34px 10% 26px;
+}
+
+/* =============================================
+   TAGLINE BLOCK
+   ============================================= */
+.footer-wordmark {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #C5A059;
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+}
+
+.footer-tagline {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+
+.footer-location {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* =============================================
+   BLOCK LABEL
+   ============================================= */
+.footer-block-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-weight: 700;
+  color: #C5A059;
+  margin-bottom: 12px;
+}
+
+/* =============================================
+   CONTACT BLOCK
+   ============================================= */
+.footer-contact-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-contact-link {
+  display: block;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  font-weight: 300;
+  line-height: 1.5;
+  margin-bottom: 6px;
+  transition: color 0.2s;
+}
+
+.footer-contact-link:hover {
+  color: #C5A059;
+}
+
+/* =============================================
+   SOCIAL BLOCK
+   ============================================= */
+.footer-social-block {
+  padding-top: 0;
+}
+
+.footer-socials {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+.footer-social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(197, 160, 89, 0.25);
+  color: rgba(255, 255, 255, 0.55);
+  transition: all 0.25s ease;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.footer-social-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.footer-social-icon:hover {
+  border-color: #C5A059;
+  color: #C5A059;
+  background: rgba(197, 160, 89, 0.08);
+  transform: translateY(-2px);
+}
+
+/* =============================================
+   BOTTOM BAR
+   ============================================= */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 10%;
+  border-top: 1px solid rgba(197, 160, 89, 0.12);
+  max-width: 100%;
+}
+
+.footer-bottom span {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.footer-bottom-right {
+  font-style: italic;
+}
+
+/* =============================================
+   RESPONSIVE - 900px
+   ============================================= */
+@media (max-width: 900px) {
+  .footer-signup {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 36px 6%;
+  }
+}
+
+/* =============================================
+   RESPONSIVE - 768px
+   ============================================= */
+@media (max-width: 768px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 28px 6% 22px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+    padding: 14px 6%;
+  }
+
+  .footer-back-top {
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* =============================================
+   RESPONSIVE - 480px
+   ============================================= */
+@media (max-width: 480px) {
+  .footer-socials {
+    gap: 8px;
+  }
+
+  .footer-social-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .footer-signup-fields {
+    flex-direction: column;
+  }
+
+  .footer-signup-fields button {
+    padding: 14px;
+  }
+
+  .footer-signup-phone {
+    max-width: none;
+  }
+}
