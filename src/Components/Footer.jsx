@@ -1,4 +1,69 @@
 // One social icon link
+import React, { useState, useEffect } from 'react';
+import '../Styles/Footer.css';
+import FooterSignupSection from './FooterSignup';
+
+const SOCIALS = [
+  {
+    label: 'Instagram',
+    url: 'https://instagram.com/grownfolkscollective',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    label: 'TikTok',
+    url: 'https://tiktok.com/@grownfolkscollective',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 12a4 4 0 1 0 4 4V3c1 3 3 5 6 5" />
+      </svg>
+    ),
+  },
+  {
+    label: 'Facebook',
+    url: 'https://facebook.com/grownfolkscollectiveatl',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+      </svg>
+    ),
+  },
+  {
+    label: 'Threads',
+    url: 'https://threads.net/@grownfolkscollective',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.9 7.9" />
+      </svg>
+    ),
+  },
+  {
+    label: 'YouTube',
+    url: 'https://www.youtube.com/@grownfolkscollective',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="5" width="20" height="14" rx="4" />
+        <path d="M10 9l5 3-5 3z" fill="currentColor" />
+      </svg>
+    ),
+  },
+  {
+    label: 'LinkedIn',
+    url: 'https://linkedin.com/company/grownfolkscollective',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" />
+        <circle cx="4" cy="4" r="2" />
+      </svg>
+    ),
+  },
+];
 const SocialLink = ({ social }) => {
   const linkProps = {
     href: social.url,
