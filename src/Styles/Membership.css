@@ -793,3 +793,105 @@
     padding: 0 8px;
   }
 }
+
+/* ── NEW MEMBERSHIP SECTIONS (Sept 2026) ── */
+.membership-page .tier-tagline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: #C5A059;
+  font-size: 1rem;
+  margin: 10px 0 0;
+}
+
+.membership-page .member-how-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 20px 20px;
+  text-align: center;
+}
+.membership-page .member-how-section .tier-heading {
+  color: #002147;
+}
+.membership-page .member-how-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 22px;
+  margin-top: 36px;
+  text-align: left;
+}
+.membership-page .member-how-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-top: 3px solid #C5A059;
+  border-radius: 6px;
+  padding: 26px 22px;
+}
+.membership-page .member-how-num {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: #C5A059;
+  margin-bottom: 8px;
+}
+.membership-page .member-how-card h3 {
+  font-family: 'Playfair Display', serif;
+  color: #002147;
+  font-size: 1.15rem;
+  margin: 0 0 10px;
+}
+.membership-page .member-how-card p {
+  color: #555;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.membership-page .member-partner-section {
+  max-width: 800px;
+  margin: 20px auto 0;
+  padding: 40px 30px;
+  background: #002147;
+  border-radius: 8px;
+  text-align: center;
+  color: #fff;
+}
+.membership-page .member-partner-section .tier-eyebrow { color: #C5A059; }
+.membership-page .member-partner-title {
+  color: #fff;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  margin: 10px 0 14px;
+  font-weight: 400;
+}
+.membership-page .member-partner-body {
+  color: #ccd6f0;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.membership-page .member-fineprint {
+  max-width: 800px;
+  margin: 40px auto 0;
+  padding: 0 20px;
+}
+.membership-page .member-fineprint-title {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #002147;
+  margin: 0 0 12px;
+}
+.membership-page .member-fineprint ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+.membership-page .member-fineprint li { margin-bottom: 6px; }
+
+@media (max-width: 600px) {
+  .membership-page .member-how-section { padding-top: 50px; }
+  .membership-page .member-partner-section { margin: 20px 16px 0; padding: 30px 20px; }
+}
