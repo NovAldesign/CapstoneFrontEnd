@@ -56,33 +56,41 @@
 }
 
 /* =============================================
-   NEWSLETTER SIGNUP
+   NEWSLETTER SIGNUP (cream band)
    ============================================= */
 .footer-signup {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 50px;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 48px;
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 54px 10% 50px;
-  border-bottom: 1px solid rgba(197, 160, 89, 0.12);
+  padding: 40px 10%;
+  background: #F5EFE3;
+  /* stretch the cream color edge to edge */
+  box-shadow: 0 0 0 100vmax #F5EFE3;
+  clip-path: inset(0 -100vmax);
+}
+
+.footer-signup .footer-block-label {
+  color: #9A7630;
+  margin-bottom: 10px;
 }
 
 .footer-signup-title {
   font-family: 'Playfair Display', serif;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #002147;
   line-height: 1.2;
-  margin: 0 0 10px;
+  margin: 0 0 8px;
 }
 
 .footer-signup-sub {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.6);
-  font-weight: 300;
+  color: rgba(0, 33, 71, 0.7);
+  font-weight: 400;
   margin: 0;
 }
 
@@ -95,31 +103,30 @@
 .footer-signup-phone input {
   flex: 1;
   min-width: 0;
-  padding: 14px 16px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(197, 160, 89, 0.3);
-  color: #FFFFFF;
+  padding: 13px 16px;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 33, 71, 0.2);
+  color: #002147;
   font-family: 'Montserrat', sans-serif;
   font-size: 0.88rem;
   outline: none;
   border-radius: 0;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.2s;
 }
 
 .footer-signup-fields input::placeholder,
 .footer-signup-phone input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(0, 33, 71, 0.45);
 }
 
 .footer-signup-fields input:focus,
 .footer-signup-phone input:focus {
-  border-color: #C5A059;
-  background: rgba(255, 255, 255, 0.1);
+  border-color: #002147;
 }
 
 .footer-signup-fields button {
-  background: #C5A059;
-  color: #002147;
+  background: #002147;
+  color: #FFFFFF;
   border: none;
   padding: 0 24px;
   font-family: 'Montserrat', sans-serif;
@@ -133,7 +140,8 @@
 }
 
 .footer-signup-fields button:hover:not(:disabled) {
-  background: #FFFFFF;
+  background: #C5A059;
+  color: #002147;
 }
 
 .footer-signup-fields button:disabled {
@@ -145,12 +153,12 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  margin-top: 14px;
+  margin-top: 12px;
   cursor: pointer;
 }
 
 .footer-signup-sms input {
-  accent-color: #C5A059;
+  accent-color: #002147;
   width: 16px;
   height: 16px;
   margin: 2px 0 0;
@@ -159,9 +167,9 @@
 }
 
 .footer-signup-sms span {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(0, 33, 71, 0.65);
 }
 
 .footer-signup-phone {
@@ -171,34 +179,35 @@
 }
 
 .footer-signup-error {
-  color: #F4A6A6;
+  color: #B3261E;
   font-size: 0.8rem;
   margin: 10px 0 0;
 }
 
 .footer-signup-note {
   font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.35);
-  margin: 10px 0 0;
+  color: rgba(0, 33, 71, 0.5);
+  margin: 8px 0 0;
   letter-spacing: 0.04em;
 }
 
 .footer-signup-success {
-  border: 1px solid rgba(197, 160, 89, 0.4);
-  padding: 22px 24px;
+  border: 1px solid rgba(0, 33, 71, 0.2);
+  background: #FFFFFF;
+  padding: 20px 24px;
 }
 
 .footer-signup-success-title {
   font-family: 'Playfair Display', serif;
   font-size: 1.2rem;
-  color: #C5A059;
+  color: #002147;
   margin-bottom: 6px;
 }
 
 .footer-signup-success p {
   margin: 0;
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(0, 33, 71, 0.7);
 }
 
 .gfc-footer .sr-only {
@@ -357,8 +366,8 @@
 @media (max-width: 900px) {
   .footer-signup {
     grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 44px 6% 40px;
+    gap: 20px;
+    padding: 36px 6%;
   }
 }
 
