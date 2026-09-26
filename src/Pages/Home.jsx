@@ -1,31 +1,32 @@
 import React from "react";
 import "../Styles/Home.css";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async"; 
-
+import { Helmet } from "react-helmet-async";
+ 
 const Home = () => {
   return (
     <main className="home-wrapper" id="main-content">
       {/* Meta Data for SEO */}
       <Helmet>
-        <title>Grown Folks Collective | Your Third Space</title>
-        <meta 
-          name="description" 
-          content="End social isolation and find your joy. Grown Folks Collective is your third space for building genuine connections and meaningful community experiences." 
+        <title>Grown Folks Collective | Atlanta's 30+ Social Community</title>
+        <meta
+          name="description"
+          content="Grown Folks Collective is Atlanta's third space for adults 30+ who want more fun and joy in their lives. Game nights, dinners, and group travel built for genuine connection."
         />
       </Helmet>
-
+ 
       {/* 1. HERO */}
       {/* Changed to <section> with an aria-label because <header> is usually for site-wide nav */}
       <section className="home-hero-visual" aria-label="Welcome Hero">
         <div className="hero-dark-overlay">
           <div className="hero-content-luxe">
-            <span className="location-tag-gold">Atlanta & Beyond</span>
+            <span className="location-tag-gold">Atlanta & Beyond · 30+</span>
             <h1 className="playfair luxe-title-white">The Antidote.</h1>
             <div className="gold-spacer-v2" aria-hidden="true"></div>
             <p className="narrative-lead-white">
-              Success shouldn't be a solo journey. Join a collective where
-              excellence meets genuine connection.
+              Grown life shouldn't be a solo journey. Join Atlanta's 30+
+              collective for good times, real connection, and a few more
+              sparks of joy in your life.
             </p>
             {/* Added more descriptive text for screen readers using an aria-label */}
             <Link
@@ -38,7 +39,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-
+ 
       {/* 2. ISOLATION STATS */}
       <section className="isolation-stats-gold" aria-labelledby="stats-heading">
         <div className="stats-container">
@@ -80,7 +81,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-
+ 
       {/* 3. STORY SECTION */}
       <section className="story-section">
         {/* Connection block */}
@@ -88,16 +89,17 @@ const Home = () => {
           <div className="story-image">
             <img
               src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80&w=800"
-              alt="A group of entrepreneurs engaging in meaningful conversation at a networking event"
+              alt="A group of friends sharing a relaxed conversation around a table"
             />
           </div>
           <div className="story-text">
             <span className="gold-label">The Connection</span>
             <h2 className="playfair">No Small Talk</h2>
             <p>
-              Our alcohol-free environments facilitate the conversations that
-              matter. We value every interaction and are here to serve you as
-              you transition from isolated to integrated.
+              Our alcohol-free gatherings make room for the conversations that
+              matter. No posturing, no pressure, and no "So, what do you do?"
+              Just grown folks showing up as themselves and moving from isolated
+              to integrated.
             </p>
             <Link
               to="/membership"
@@ -108,21 +110,22 @@ const Home = () => {
             </Link>
           </div>
         </div>
-
+ 
         {/* Travel block */}
         <div className="story-block reverse">
           <div className="story-image">
             <img
               src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&q=80&w=800"
-              alt="Sophisticated travel accessories including a map and camera on a wooden desk"
+              alt="Travel accessories including a map and camera on a wooden desk"
             />
           </div>
           <div className="story-text">
             <span className="gold-label">The Experience</span>
             <h2 className="playfair">Travel for the Soul</h2>
             <p>
-              Travel is for fun and seeing the world. We curate journeys where
-              the destination is just the backdrop for building lifelong bonds.
+              From weekend getaways to international trips, we see the world
+              together. The destination is the backdrop. The bonds you build
+              are the real souvenir.
             </p>
             <Link
               to="/travel"
@@ -134,62 +137,62 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-     {/* 4. SOCIAL PROOF */}
-<section className="testimonials-section" aria-labelledby="testimonials-heading">
-  <div className="testimonials-container">
-    <span className="gold-label">Real Voices</span>
-    <h2 id="testimonials-heading" className="playfair testimonials-title">
-      Don't Take Our Word for It
-    </h2>
-    <div className="gold-spacer-v2" aria-hidden="true"></div>
-
-    <div className="testimonials-grid">
-      {/* Featured member review */}
-      <article className="testimonial-card testimonial-card-featured">
-        <div className="testimonial-quote-mark" aria-hidden="true">"</div>
-        <blockquote className="testimonial-text">
-          Game night with Vaughn and the Grown Folks Collective was exactly what
-          grown folks game night should be. The theme set the tone right out the
-          gate. The vibe was cool but competitive — friendly on the surface,
-          serious once the games started. The karaoke heads were in their bag.
-          The spades table was a whole different arena: heavy trash talk, laughs,
-          side-eyes, and strategy.
-          <br /><br />
-          What stood out most was the people. Everybody was down to earth,
-          welcoming, and real. No weird energy. No posturing. Just good folks
-          showing up as themselves.
-          <br /><br />
-          It didn't just feel like a game night — it felt like home. I'd run it
-          back without hesitation.
-        </blockquote>
-        <div className="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div>
-        <cite className="testimonial-reviewer">— Lee · Game Night Attendee</cite>
-      </article>
-
-      {/* Platform ratings */}
-      <div className="testimonial-card testimonial-rating-card" aria-label="Platform ratings">
-        <div className="platform-block">
-          <p className="rating-platform-name">Eventbrite Verified</p>
-          <div className="rating-number">4.8</div>
-          <div className="testimonial-stars large" aria-label="4.8 out of 5">★★★★★</div>
-          <p className="rating-label">Average event rating</p>
+ 
+      {/* 4. SOCIAL PROOF */}
+      <section className="testimonials-section" aria-labelledby="testimonials-heading">
+        <div className="testimonials-container">
+          <span className="gold-label">Real Voices</span>
+          <h2 id="testimonials-heading" className="playfair testimonials-title">
+            Don't Take Our Word for It
+          </h2>
+          <div className="gold-spacer-v2" aria-hidden="true"></div>
+ 
+          <div className="testimonials-grid">
+            {/* Featured member review */}
+            <article className="testimonial-card testimonial-card-featured">
+              <div className="testimonial-quote-mark" aria-hidden="true">"</div>
+              <blockquote className="testimonial-text">
+                Game night with Vaughn and the Grown Folks Collective was exactly what
+                grown folks game night should be. The theme set the tone right out the
+                gate. The vibe was cool but competitive — friendly on the surface,
+                serious once the games started. The karaoke heads were in their bag.
+                The spades table was a whole different arena: heavy trash talk, laughs,
+                side-eyes, and strategy.
+                <br /><br />
+                What stood out most was the people. Everybody was down to earth,
+                welcoming, and real. No weird energy. No posturing. Just good folks
+                showing up as themselves.
+                <br /><br />
+                It didn't just feel like a game night — it felt like home. I'd run it
+                back without hesitation.
+              </blockquote>
+              <div className="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <cite className="testimonial-reviewer">— Lee · Game Night Attendee</cite>
+            </article>
+ 
+            {/* Platform ratings */}
+            <div className="testimonial-card testimonial-rating-card" aria-label="Platform ratings">
+              <div className="platform-block">
+                <p className="rating-platform-name">Eventbrite Verified</p>
+                <div className="rating-number">4.8</div>
+                <div className="testimonial-stars large" aria-label="4.8 out of 5">★★★★★</div>
+                <p className="rating-label">Average event rating</p>
+              </div>
+              <div className="platform-block">
+                <p className="rating-platform-name">Meetup Verified</p>
+                <div className="rating-number">4.8</div>
+                <div className="testimonial-stars large" aria-label="4.8 out of 5">★★★★★</div>
+                <p className="rating-label">Average event rating</p>
+              </div>
+            </div>  {/* ← closes testimonial-rating-card */}
+          </div>  {/* ← closes testimonials-grid */}
+ 
+          <p className="testimonials-cta-text">
+            Attend an event and write the next chapter
+          </p>
         </div>
-        <div className="platform-block">
-          <p className="rating-platform-name">Meetup Verified</p>
-          <div className="rating-number">4.8</div>
-          <div className="testimonial-stars large" aria-label="4 out of 5">★★★★☆</div>
-          <p className="rating-label">Average event rating</p>
-        </div>
-      </div>  {/* ← closes testimonial-rating-card */}
-    </div>  {/* ← closes testimonials-grid */}
-
-    <p className="testimonials-cta-text">
-      Attend an event and write the next chapter
-    </p>
-  </div>  
-</section>
-
+      </section>
+ 
       {/* 5. PARTNERSHIP */}
       <section
         className="partnership-editorial-section"
@@ -197,23 +200,23 @@ const Home = () => {
       >
         <div className="editorial-frame">
           <div className="editorial-content">
-            <span className="editorial-label">Strategic Growth</span>
+            <span className="editorial-label">Community Partners</span>
             <h2 id="partnership-heading" className="playfair editorial-title">
               Align with the Collective
             </h2>
             <div className="editorial-divider" aria-hidden="true"></div>
             <p className="editorial-body">
-              We invite Atlanta's distinguished brands and luxury service
-              providers to invest in the infrastructure of social wellness. Your
-              partnership powers the sanctuaries where connection thrives.
+              We invite Atlanta's brands, venues, and local businesses to invest
+              in social wellness. Your partnership helps power the spaces where
+              grown folks connect, recharge, and find their people.
             </p>
             <Link to="/partnerships" className="gold-editorial-btn">
-              Explore Strategic Opportunities
+              Explore Partnership Opportunities
             </Link>
           </div>
         </div>
       </section>
-
+ 
       {/* 6. HOST NOTE */}
       <section className="host-note-visual" aria-label="Founder's Note">
         <div className="host-overlay-container">
@@ -236,5 +239,6 @@ const Home = () => {
     </main>
   );
 };
-
+ 
 export default Home;
+ 
