@@ -135,6 +135,10 @@ const Footer = () => {
                     <a href="/celebrate" className="footer-contact-link">
             Group &amp; Birthday Bookings
           </a>
+
+          <a href="/perform" className="footer-contact-link">
+            Perform With Us
+          </a>
         </div>
 
         {/* Social */}
