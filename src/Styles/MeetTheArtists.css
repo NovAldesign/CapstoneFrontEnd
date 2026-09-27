@@ -1,0 +1,74 @@
+/* ── MEET THE ARTISTS (event page) ── */
+.gfc-artists {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.gfc-artist {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  background: #FAF7F0;
+  border-left: 3px solid #C5A059;
+  padding: 18px;
+}
+
+.gfc-artist-photo {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid #C5A059;
+}
+
+.gfc-artist-photo-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F5EFE3;
+  font-size: 2rem;
+}
+
+.gfc-artist-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  color: #002147;
+  margin: 0 0 2px;
+}
+
+.gfc-artist-meta {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #9A7630;
+}
+
+.gfc-artist-bio {
+  margin: 0 0 10px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: #444;
+}
+
+.gfc-artist-links {
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.gfc-artist-links a {
+  color: #002147;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid #C5A059;
+}
+
+@media (max-width: 480px) {
+  .gfc-artist {
+    flex-direction: column;
+  }
+}
