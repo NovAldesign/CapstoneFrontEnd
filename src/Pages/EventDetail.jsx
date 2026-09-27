@@ -23,6 +23,7 @@ import {
 import { useCart } from "../Context/CartContext";
 import PriceTag from "../Components/PriceTag";
 import "../Styles/EventListing.css";
+import MeetTheArtists from "../Components/MeetTheArtists";
 
 // Google Calendar link (dates in UTC, e.g. 20261024T220000Z)
 const calendarUrl = (event) => {
@@ -219,6 +220,8 @@ const EventDetail = () => {
               <p>More details coming soon.</p>
             )}
           </section>
+
+          <MeetTheArtists eventId={event._id} />
 
           {event.faqs?.length > 0 && (
             <section className="gfc-detail-section">
