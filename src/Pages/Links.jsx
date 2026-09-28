@@ -10,15 +10,13 @@ import "../Styles/Links.css";
 // Use a different ?src= on each platform (ig, tiktok, threads, fb, yt, li, x, lemon8)
 // so site analytics show which platform sent each visitor.
 
+// Community spaces: shown as full-size buttons right under the events.
+const COMMUNITY = [
+  { label: "Join the Facebook group (Atlanta Grown Folks 30+)", url: "https://www.facebook.com/groups/grownfolksatl" },
+  { label: "Join our Discord", url: "https://discord.gg/yZG48Q4tgJ" },
+];
+
 const SOCIALS = [
-  {
-  title: "Join the Facebook Group",
-  url: "https://www.facebook.com/groups/grownfolksatl",
-},
-{
-  title: "Join our Discord",
-  url: "https://discord.gg/yZG48Q4tgJ",
-},
   { label: "Instagram", url: "https://instagram.com/grownfolkscollective" },
   { label: "TikTok", url: "https://tiktok.com/@grownfolkscollective" },
   { label: "Threads", url: "https://threads.net/@grownfolkscollective" },
@@ -112,6 +110,9 @@ const Links = () => {
       </section>
 
       <nav className="links-buttons" aria-label="More from GFC">
+        {COMMUNITY.map((c) => (
+          <a key={c.url} className="links-btn" href={c.url} target="_blank" rel="noreferrer">{c.label}</a>
+        ))}
         {BUTTONS.map((b) => (
           <Link key={b.to} className="links-btn" to={withSrc(b.to)}>{b.label}</Link>
         ))}
