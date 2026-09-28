@@ -142,7 +142,7 @@ const EventDetail = () => {
         </div>
       </header>
 
-      <main id="main-content" className="gfc-detail-grid">
+      <div className="gfc-detail-grid">
         {/* LEFT: DETAILS */}
         <div className="gfc-detail-content">
           {past && (
@@ -159,12 +159,15 @@ const EventDetail = () => {
                 <br />
                 {formatEventTime(event.date)}
                 {event.endDate && ` – ${formatEventTime(event.endDate)}`}
+                {!past && (
+                  <>
+                    <br />
+                    <a href={calendarUrl(event)} target="_blank" rel="noopener noreferrer" className="gfc-fact-link">
+                      Add to calendar
+                    </a>
+                  </>
+                )}
               </dd>
-              {!past && (
-                <a href={calendarUrl(event)} target="_blank" rel="noopener noreferrer" className="gfc-fact-link">
-                  Add to calendar
-                </a>
-              )}
             </div>
             {(loc.name || loc.address) && (
               <div>
@@ -173,12 +176,15 @@ const EventDetail = () => {
                   {loc.name && <strong>{loc.name}</strong>}
                   {loc.address && <><br />{loc.address}</>}
                   {(loc.city || loc.state) && <><br />{[loc.city, loc.state].filter(Boolean).join(", ")}</>}
+                  {directions && (
+                    <>
+                      <br />
+                      <a href={directions} target="_blank" rel="noopener noreferrer" className="gfc-fact-link">
+                        Get directions
+                      </a>
+                    </>
+                  )}
                 </dd>
-                {directions && (
-                  <a href={directions} target="_blank" rel="noopener noreferrer" className="gfc-fact-link">
-                    Get directions
-                  </a>
-                )}
               </div>
             )}
             <div>
@@ -303,7 +309,7 @@ const EventDetail = () => {
             {copied ? "Link copied!" : "Share this event"}
           </button>
         </aside>
-      </main>
+      </div>
 
       {/* MORE EVENTS */}
       {moreEvents.length > 0 && (
