@@ -131,22 +131,22 @@
 //                 Use <dl> (description list) for key-value stat pairs so
 //                 screen readers announce "4: Events Hosted, Since January 2025" */}
 //             <dl className="about-stats-grid">
-//               <div className="about-stat" role="group" aria-label="Events Hosted">
+//               <div className="about-stat">
 //                 <dt className="about-stat-number">4</dt>
 //                 <dd className="about-stat-label">Events Hosted</dd>
 //                 <dd className="about-stat-desc">Since January 2026</dd>
 //               </div>
-//               <div className="about-stat" role="group" aria-label="Sold Out Events">
+//               <div className="about-stat">
 //                 <dt className="about-stat-number">3</dt>
 //                 <dd className="about-stat-label">Sold Out</dd>
 //                 <dd className="about-stat-desc">Of our first five events</dd>
 //               </div>
-//               <div className="about-stat" role="group" aria-label="Venue Sales Lift">
+//               <div className="about-stat">
 //                 <dt className="about-stat-number">250%+</dt>
 //                 <dd className="about-stat-label">Venue Sales Lift</dd>
 //                 <dd className="about-stat-desc">Documented every event night</dd>
 //               </div>
-//               <div className="about-stat" role="group" aria-label="Community Members">
+//               <div className="about-stat">
 //                 <dt className="about-stat-number">1200+</dt>
 //                 <dd className="about-stat-label">Community Members</dd>
 //                 <dd className="about-stat-desc">Across all platforms</dd>
@@ -160,18 +160,15 @@
 //                 <dd className="about-platform-name">TikTok Followers</dd>
 //               </div>
 //               {/* Decorative dividers must be hidden from AT */}
-//               <div className="about-platform-divider" aria-hidden="true"></div>
-//               <div className="about-platform">
+// //               <div className="about-platform">
 //                 <dt className="about-platform-num">100+</dt>
 //                 <dd className="about-platform-name">Meetup Members</dd>
 //               </div>
-//               <div className="about-platform-divider" aria-hidden="true"></div>
-//               <div className="about-platform">
+// //               <div className="about-platform">
 //                 <dt className="about-platform-num">100</dt>
 //                 <dd className="about-platform-name">Email Subscribers</dd>
 //               </div>
-//               <div className="about-platform-divider" aria-hidden="true"></div>
-//               <div className="about-platform">
+// //               <div className="about-platform">
 //                 <dt className="about-platform-num">35</dt>
 //                 <dd className="about-platform-name">Guests Per Event — Always</dd>
 //               </div>
@@ -346,14 +343,6 @@ const About = () => {
   return (
     <div className="about-page">
  
-      {/* ─── ADA FIX #1: Skip Navigation Link ───────────────────────────────
-          WCAG 2.4.1 – Bypass Blocks (Level A)
-          Screen-reader & keyboard users must be able to skip repeated nav.
-          Add matching CSS: .skip-link { position:absolute; top:-100%; left:0; }
-                            .skip-link:focus { top:0; z-index:9999; } */}
-      <a href="#main-content" className="skip-link">
-        Skip to main content
-      </a>
  
       {/* Meta Data for SEO */}
       <Helmet>
@@ -371,7 +360,7 @@ const About = () => {
       {/* HERO */}
       {/* ─── ADA FIX #3: <header> landmark is correct here, but it must wrap  
           a <main> landmark below for proper document structure.             */}
-      <header className="about-hero" role="banner">
+      <header className="about-hero">
         <div className="about-hero-inner">
           {/* ─── ADA FIX #4: Decorative spans should not be in headings ───
               The eyebrow text is fine as-is but needs visible focus styles
@@ -397,7 +386,7 @@ const About = () => {
       {/* ─── ADA FIX #7: Wrap all page content in <main> ─────────────────
           WCAG 1.3.6 / 2.4.1 – Landmark regions (Level AA)
           Screen readers navigate by landmarks; <main> is required.        */}
-      <main id="main-content">
+      <div>
  
         {/* THE STORY */}
         <section className="about-story-section" aria-labelledby="story-heading">
@@ -466,22 +455,22 @@ const About = () => {
                 Use <dl> (description list) for key-value stat pairs so
                 screen readers announce stats cohesively */}
             <dl className="about-stats-grid">
-              <div className="about-stat" role="group" aria-label="Events Hosted">
+              <div className="about-stat">
                 <dt className="about-stat-number">21</dt>
                 <dd className="about-stat-label">Events Hosted</dd>
                 <dd className="about-stat-desc">Since January 2026</dd>
               </div>
-              <div className="about-stat" role="group" aria-label="Sold Out Events">
+              <div className="about-stat">
                 <dt className="about-stat-number">5</dt>
                 <dd className="about-stat-label">Sold-Out Events</dd>
                 <dd className="about-stat-desc">Highly Demanded</dd>
               </div>
-              <div className="about-stat" role="group" aria-label="Venue Sales Lift">
+              <div className="about-stat">
                 <dt className="about-stat-number">250%+</dt>
                 <dd className="about-stat-label">Venue Sales Lift</dd>
                 <dd className="about-stat-desc">Documented every event night</dd>
               </div>
-              <div className="about-stat" role="group" aria-label="Community Members">
+              <div className="about-stat">
                 <dt className="about-stat-number">2,370+</dt>
                 <dd className="about-stat-label">Community Members</dd>
                 <dd className="about-stat-desc">Across all platforms</dd>
@@ -494,18 +483,14 @@ const About = () => {
                 <dt className="about-platform-num">1,722+</dt>
                 <dd className="about-platform-name">TikTok Followers</dd>
               </div>
-              {/* Decorative dividers must be hidden from AT */}
-              <div className="about-platform-divider" aria-hidden="true"></div>
               <div className="about-platform">
                 <dt className="about-platform-num">199+</dt>
                 <dd className="about-platform-name">Meetup Members</dd>
               </div>
-              <div className="about-platform-divider" aria-hidden="true"></div>
               <div className="about-platform">
                 <dt className="about-platform-num">259</dt>
                 <dd className="about-platform-name">Email Subscribers</dd>
               </div>
-              <div className="about-platform-divider" aria-hidden="true"></div>
               <div className="about-platform">
                 <dt className="about-platform-num">35–40</dt>
                 <dd className="about-platform-name">Guests Per Event</dd>
@@ -663,7 +648,7 @@ const About = () => {
           </div>
         </section>
  
-      </main>{/* end #main-content */}
+      </div>{/* end page content */}
     </div>
   );
 };
