@@ -166,19 +166,19 @@ const Partnership = () => {
       <section className="impact-stats-section">
         <div className="stats-grid">
           <div className="stat-card">
-            <h4 className="playfair">30+</h4>
+            <p className="playfair stat-number">30+</p>
             <p>Core demographic age</p>
           </div>
           <div className="stat-card">
-            <h4 className="playfair">250%+</h4>
+            <p className="playfair stat-number">250%+</p>
             <p>Venue sales lift on event nights</p>
           </div>
           <div className="stat-card">
-            <h4 className="playfair">100%</h4>
+            <p className="playfair stat-number">100%</p>
             <p>Alcohol & Smoke-free environment</p>
           </div>
           <div className="stat-card">
-            <h4 className="playfair">2,270+</h4>
+            <p className="playfair stat-number">2,270+</p>
             <p>Community in Atlanta</p>
           </div>
         </div>
@@ -498,6 +498,7 @@ const Partnership = () => {
             >
               {isSubmitting ? "Sending..." : "Send Partnership Inquiry"}
             </button>
+            <p className="form-privacy-note">By submitting, you agree to our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms</a>.</p>
           </form>
         </div>
       </section>
