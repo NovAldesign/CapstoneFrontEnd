@@ -134,6 +134,7 @@
   box-shadow: 0 4px 12px rgba(11, 28, 61, 0.08);
 }
 
+.editorial-cta-card h2,
 .editorial-cta-card h3 {
   font-size: 2rem;
   color: #ffffff;
