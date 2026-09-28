@@ -72,6 +72,16 @@
   margin-bottom: 20px;
 }
 
+.hero-slogan {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.3rem, 3.2vw, 2rem);
+  color: var(--gold);
+  margin: -8px 0 22px;
+  text-shadow: 1px 1px 10px rgba(0,0,0,0.4);
+}
+.hero-slogan sup { font-size: 0.45em; font-style: normal; margin-left: 2px; }
+
 .luxe-title-white {
   font-size: clamp(3.5rem, 10vw, 7.5rem);
   line-height: 0.85;
