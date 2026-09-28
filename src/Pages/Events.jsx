@@ -170,7 +170,7 @@ const Events = () => {
       </header>
 
       {/* EVENTS */}
-      <main id="main-content" className="gfc-events-main">
+      <div className="gfc-events-main">
         <div className="gfc-section-head">
           <span className="gold-label">Upcoming</span>
           <h2 className="playfair section-title-navy">Find Your Next Night Out</h2>
@@ -284,7 +284,7 @@ const Events = () => {
             </div>
           </>
         )}
-      </main>
+      </div>
 
       {/* ABOUT THE EXPERIENCE */}
       <section className="gfc-story">
