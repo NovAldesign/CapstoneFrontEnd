@@ -1,6 +1,7 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { BACKEND_URL, parseCleanPrice, formatMoney } from "../Services/eventUtils";
+import { LEGAL } from "../content/legalContent.js";
 import "../Styles/EventListing.css";
 
 const CartContext = createContext(null);
@@ -207,8 +208,12 @@ export const CartProvider = ({ children }) => {
   }, [cartItems, promoInfo]);
 
   // Send the bag to Stripe (backend re-checks every price and ticket)
-  const checkout = async () => {
+  const checkout = async ({ agreedToTerms = false } = {}) => {
     if (!cartItems.length) return;
+    if (!agreedToTerms) {
+      alert("Please agree to the Terms, Refund Policy, and Participation Waiver first.");
+      return;
+    }
     setCheckoutLoading(true);
     try {
       const res = await fetch(`${BACKEND_URL}/api/events/checkout`, {
@@ -218,6 +223,8 @@ export const CartProvider = ({ children }) => {
           customerEmail: undefined,
           cartItems,
           promoCode: promoApplies ? promoInfo.code : undefined,
+          agreedToTerms: true,
+          termsVersion: LEGAL.waiverVersion,
         }),
       });
       const data = await res.json();
@@ -283,6 +290,8 @@ const CartDrawer = () => {
   } = useCart();
   const [codeInput, setCodeInput] = useState("");
   const [showCodeBox, setShowCodeBox] = useState(false);
+  const [agreed, setAgreed] = useState(false);
+  const closeBtnRef = useRef(null);
 
   // Nudge toward the next discount level (based on DIFFERENT events)
   const nudge =
@@ -292,11 +301,18 @@ const CartDrawer = () => {
         ? "Add one more different event and save 10% on your whole order."
         : null;
 
+  // Keyboard: focus moves into the bag when it opens, Esc closes it,
+  // and focus goes back to where you were when it closes
   useEffect(() => {
     if (!isCartOpen) return;
+    const previous = document.activeElement;
+    closeBtnRef.current?.focus();
     const onKey = (e) => e.key === "Escape" && setIsCartOpen(false);
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      if (previous && typeof previous.focus === "function" && document.contains(previous)) previous.focus();
+    };
   }, [isCartOpen, setIsCartOpen]);
 
   return (
@@ -323,7 +339,7 @@ const CartDrawer = () => {
           >
             <div className="gfc-drawer-head">
               <h3 id="gfc-drawer-title" className="playfair">Your Bag</h3>
-              <button className="gfc-icon-btn" onClick={() => setIsCartOpen(false)} aria-label="Close bag">
+              <button ref={closeBtnRef} className="gfc-icon-btn" onClick={() => setIsCartOpen(false)} aria-label="Close bag">
                 ✕
               </button>
             </div>
@@ -443,9 +459,34 @@ const CartDrawer = () => {
                   <span>Total</span>
                   <span>${(totalInCents / 100).toFixed(2)}</span>
                 </div>
-                <button className="gfc-btn-primary full" onClick={checkout} disabled={checkoutLoading}>
+                <label className="gfc-agree">
+                  <input
+                    type="checkbox"
+                    checked={agreed}
+                    onChange={(e) => setAgreed(e.target.checked)}
+                  />
+                  <span>
+                    I agree to the{" "}
+                    <a href="/terms" target="_blank" rel="noopener noreferrer">Terms</a>,{" "}
+                    <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>, and{" "}
+                    <a href="/waiver" target="_blank" rel="noopener noreferrer">Participation Waiver</a>{" "}
+                    for myself and any guests I'm buying tickets for.
+                  </span>
+                </label>
+                <button
+                  className="gfc-btn-primary full"
+                  onClick={() => checkout({ agreedToTerms: agreed })}
+                  disabled={checkoutLoading || !agreed}
+                  aria-describedby={!agreed ? "gfc-agree-hint" : undefined}
+                >
                   {checkoutLoading ? "Connecting to Stripe..." : "Proceed to Secure Checkout"}
                 </button>
+                {!agreed && (
+                  <p id="gfc-agree-hint" className="gfc-agree-hint">Check the box above to continue.</p>
+                )}
+                <p className="gfc-agree-hint">
+                  Need an accommodation? <a href="/accessibility" target="_blank" rel="noopener noreferrer">Let us know</a>.
+                </p>
               </div>
             )}
           </aside>
