@@ -417,6 +417,12 @@
   background: var(--gfc-gold-soft); border-radius: 4px; padding: 8px 12px;
   color: var(--gfc-navy); font-weight: 600;
 }
+.gfc-code-email { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.gfc-code-email label { font-size: 12.5px; font-weight: 600; color: var(--gfc-navy); }
+.gfc-code-email input {
+  padding: 9px 12px; border: 1px solid #d9d2c3; border-radius: 4px; font-size: 14px; color: var(--gfc-navy);
+}
+.gfc-code-email input:focus { outline: 2px solid var(--gfc-gold); outline-offset: 1px; }
 /* ── Checkout agreement (bag) ── */
 .gfc-agree {
   display: flex;
