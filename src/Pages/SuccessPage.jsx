@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useCart } from '../Context/CartContext.jsx';
 
 const SuccessPage = () => {
@@ -15,6 +16,10 @@ const SuccessPage = () => {
       className="success-page-container"
       style={{ maxWidth: '600px', margin: '80px auto', padding: '40px 20px', textAlign: 'center' }}
     >
+      <Helmet>
+        <title>You're In! | Grown Folks Collective</title>
+        <meta name="robots" content="noindex" />
+      </Helmet>
       <div style={{ fontSize: '60px', color: '#C5A059', marginBottom: '20px' }}>✓</div>
 
       <h1 className="playfair" style={{ fontSize: '36px', color: '#002147', marginBottom: '15px' }}>
@@ -37,12 +42,12 @@ const SuccessPage = () => {
           textAlign: 'left',
         }}
       >
-        <h3 style={{ margin: '0 0 10px 0', color: '#002147', fontSize: '18px' }}>✨ What's Next</h3>
+        <h2 style={{ margin: '0 0 10px 0', color: '#002147', fontSize: '18px' }}>✨ What's Next</h2>
         <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '14px', color: '#666', lineHeight: '1.8' }}>
           <li>Add the event to your calendar from your ticket email.</li>
           <li>At check-in, just give your name or show your ticket email.</li>
           <li>
-            Celebrating something? <Link to="/celebrate" style={{ color: '#9A7630', fontWeight: 600 }}>Bring your crew</Link>.
+            Celebrating something? <Link to="/celebrate" style={{ color: '#7A5A1E', fontWeight: 600 }}>Bring your crew</Link>.
           </li>
         </ul>
       </div>
