@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import '../Styles/Blog.css';
 
 const API_BASE = 
@@ -32,6 +33,10 @@ const Blog = () => {
 
   return (
     <div className="blog-index-page">
+      <Helmet>
+        <title>The Gathering Table Blog | Grown Folks Collective</title>
+        <meta name="description" content="Stories and notes on ending social isolation, one game night at a time, from Grown Folks Collective, Atlanta's social club for adults 30+." />
+      </Helmet>
       <div className="blog-main-wrapper">
         {/* Left-Justified Header */}
         <header className="blog-header">
@@ -45,7 +50,7 @@ const Blog = () => {
         {/* Clean Banner CTA */}
         <section className="blog-top-cta">
           <div className="blog-cta-content">
-            <h3>Pull Up a Chair at the Table</h3>
+            <h2>Pull Up a Chair at the Table</h2>
             <p>Ready to experience the connection in person? Check out where we’re gathering next.</p>
           </div>
           <Link to="/events" className="blog-cta-btn">
@@ -54,7 +59,7 @@ const Blog = () => {
         </section>
 
         {/* Articles Grid / Hero Layout */}
-        <main className="blog-container">
+        <div className="blog-container">
           {loading ? (
             <div className="blog-loading">Loading stories...</div>
           ) : articles.length === 0 ? (
@@ -104,7 +109,7 @@ const Blog = () => {
               })}
             </div>
           )}
-        </main>
+        </div>
       </div>
     </div>
   );
