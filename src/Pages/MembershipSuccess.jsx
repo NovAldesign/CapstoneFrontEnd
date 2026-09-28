@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import '../Styles/Membership.css';
 
 const MembershipSuccess = () => {
@@ -24,6 +25,10 @@ const MembershipSuccess = () => {
 
   return (
     <div className="membership-page">
+      <Helmet>
+        <title>Welcome to the Collective | Grown Folks Collective</title>
+        <meta name="robots" content="noindex" />
+      </Helmet>
       <div className="ms-screen">
         <div className="ms-inner">
 
