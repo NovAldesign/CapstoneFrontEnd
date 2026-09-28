@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async";
  
 const Home = () => {
   return (
-    <main className="home-wrapper" id="main-content">
+    <div className="home-wrapper">
       {/* Meta Data for SEO */}
       <Helmet>
         <title>Grown Folks Collective | Atlanta's 30+ Social Community</title>
@@ -236,7 +236,7 @@ const Home = () => {
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 };
  
