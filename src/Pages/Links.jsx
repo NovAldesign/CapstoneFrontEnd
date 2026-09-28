@@ -74,7 +74,7 @@ const Links = () => {
       <header className="links-head">
         <img src={logo} alt="Grown Folks Collective logo" className="links-logo" width="84" height="84" />
         <h1 className="playfair">Grown Folks Collective</h1>
-        <p>Atlanta's alcohol-free social club for grown folks 30+. Come solo, leave with friends.</p>
+        <p>Atlanta's alcohol-free social club for grown folks 30+. Come solo. Leave with friends.™</p>
       </header>
 
       <section className="links-events" aria-labelledby="links-next">
