@@ -247,6 +247,15 @@
   margin-bottom: 8px;
 }
 
+.footer-slogan {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: #C5A059;
+  margin: 0 0 10px;
+}
+.footer-slogan sup { font-size: 0.5em; font-style: normal; margin-left: 2px; }
+
 .footer-tagline {
   font-family: 'Playfair Display', serif;
   font-size: 1rem;
