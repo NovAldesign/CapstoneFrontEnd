@@ -115,6 +115,7 @@ const Footer = () => {
         {/* Tagline */}
         <div className="footer-tagline-block">
           <div className="footer-wordmark">GFC</div>
+          <p className="footer-slogan">Come solo. Leave with friends.<sup>™</sup></p>
           <p className="footer-tagline">
             Ending the social isolation epidemic —<br />
             one event at a time.
