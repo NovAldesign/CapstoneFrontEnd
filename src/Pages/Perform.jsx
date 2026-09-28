@@ -6,6 +6,7 @@ import { BACKEND_URL, isUpcoming } from '../Services/eventUtils';
 import '../Styles/Contact.css';
 import '../Styles/GroupBooking.css';
 import '../Styles/Perform.css';
+import { PERFORMER_AGREEMENT_VERSION } from '../content/legalContent.js';
 
 // Keep in sync with ARTIST_TERMS in the backend (routes/artistRoutes.js)
 const TERMS = [
@@ -15,6 +16,7 @@ const TERMS = [
   'Bring all my own equipment (mic, amp, instrument, cables).',
   'Arrive 1 hour before doors for setup and sound check.',
   'Tag @grownfolkscollective when I promote the show.',
+  'Follow the Performer Agreement, Code of Conduct, and Participation Waiver, including the showcase rules and release.',
 ];
 
 const PERKS = [
@@ -196,6 +198,7 @@ const Perform = () => {
           performanceLinks: links,
           eventName: chosen ? eventLabel(chosen) : 'Any upcoming showcase',
           termsAccepted: true,
+          agreementVersion: PERFORMER_AGREEMENT_VERSION,
         }),
       });
       const result = await res.json().catch(() => ({}));
@@ -245,7 +248,7 @@ const Perform = () => {
         </div>
       </header>
 
-      <main id="main-content">
+      <div>
         {submitted ? (
           <section className="contact-form-section">
             <div className="contact-form-container group-success" role="status">
@@ -446,7 +449,11 @@ const Perform = () => {
                   {/* Agreement */}
                   <fieldset className="contact-fieldset">
                     <legend className="contact-form-divider">Artist Agreement</legend>
-                    <p className="perform-note">If booked, I agree to: <span className="contact-required">*</span></p>
+                    <p className="perform-note">
+                      Grown Folks Collective is a social club offering you a stage to showcase your talent.
+                      Please read the <a href="/performer-agreement" target="_blank" rel="noopener noreferrer">Performer Agreement</a>.
+                      If booked, I agree to: <span className="contact-required">*</span>
+                    </p>
                     <div className="group-checks">
                       {TERMS.map((t, i) => (
                         <label key={t} className="group-check">
@@ -482,12 +489,13 @@ const Perform = () => {
                   <button type="submit" className="contact-submit-btn" disabled={submitting || uploading}>
                     {submitting ? 'Sending…' : 'Submit My Application'}
                   </button>
+                  <p className="form-privacy-note">By submitting, you agree to our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms</a>.</p>
                 </form>
               </div>
             </section>
           </>
         )}
-      </main>
+      </div>
     </div>
   );
 };
