@@ -102,13 +102,16 @@
 }
 .gfc-card:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(0, 33, 71, 0.13); }
 .gfc-card.is-sold-out .gfc-card-media img { filter: grayscale(0.6); }
+.gfc-card.is-sold-out .gfc-card-media .gfc-card-category { display: none; }
 
-.gfc-card-media { position: relative; display: block; height: 220px; overflow: hidden; }
+.gfc-card-media { position: relative; display: block; aspect-ratio: 2 / 1; overflow: hidden; }
+/* event graphics already show the date and logo, so keep the image clear */
+.gfc-card-media .gfc-date-block { display: none; }
 .gfc-card-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
 .gfc-card:hover .gfc-card-media img { transform: scale(1.04); }
 
 .gfc-card-category {
-  position: absolute; top: 14px; left: 14px; background: rgba(0, 33, 71, 0.88); color: var(--gfc-gold);
+  position: absolute; bottom: 12px; right: 12px; background: rgba(0, 33, 71, 0.88); color: var(--gfc-gold);
   padding: 5px 11px; border-radius: 999px; font-size: 11px; font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase;
 }
@@ -204,14 +207,16 @@
 .gfc-detail-missing { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .gfc-detail-missing h1 { color: var(--gfc-navy); }
 
-.gfc-detail-hero { position: relative; height: 440px; overflow: hidden; background: var(--gfc-navy); }
-.gfc-detail-hero > img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.gfc-detail-hero-overlay {
-  position: absolute; inset: 0; display: flex; align-items: flex-end;
-  background: linear-gradient(to bottom, rgba(0,33,71,0.15) 0%, rgba(0,33,71,0.92) 100%);
+.gfc-detail-hero { background: var(--gfc-navy); padding: 36px 0 44px; }
+.gfc-detail-hero-inner {
+  max-width: 1180px; margin: 0 auto; padding: 0 20px; color: #fff;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 44px; align-items: center;
 }
-.gfc-detail-hero-inner { max-width: 1180px; width: 100%; margin: 0 auto; padding: 0 20px 40px; color: #fff; }
-.gfc-detail-hero h1 { font-size: clamp(30px, 5vw, 48px); margin: 0 0 10px; color: #fff; font-weight: 400; line-height: 1.15; }
+.gfc-detail-hero-img {
+  width: 100%; aspect-ratio: 2 / 1; object-fit: cover; display: block;
+  border-radius: 10px; box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+}
+.gfc-detail-hero h1 { font-size: clamp(28px, 3.6vw, 42px); margin: 0 0 10px; color: #fff; font-weight: 400; line-height: 1.15; }
 .gfc-detail-hero p { margin: 0; font-size: 16px; color: #e6e9f2; }
 .gfc-back-link { display: inline-block; color: var(--gfc-gold); text-decoration: none; font-size: 13px; font-weight: 700; margin-bottom: 16px; }
 
@@ -342,6 +347,8 @@
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .gfc-detail-grid { grid-template-columns: 1fr; gap: 30px; }
+  .gfc-detail-hero-inner { grid-template-columns: 1fr; gap: 22px; }
+  .gfc-detail-hero-img { order: -1; }
   .gfc-ticket-panel { position: static; }
   .gfc-story-grid, .gfc-involved-grid { grid-template-columns: 1fr; }
 }
@@ -355,7 +362,7 @@
   .gfc-chip { flex-shrink: 0; }
   .gfc-bundle-tiers { display: flex; margin: 6px 0 0; }
   .gfc-story-values { grid-template-columns: 1fr; }
-  .gfc-detail-hero { height: 340px; }
+  .gfc-detail-hero { padding: 20px 0 32px; }
   .gfc-card-foot { flex-wrap: wrap; }
   .gfc-bag-fab { bottom: 20px; right: 20px; }
 }
