@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import '../Styles/Membership.css';
 import membershipService from '../Services/membershipService';
+import { LEGAL } from '../content/legalContent.js';
 
 const TIERS = [
   {
@@ -94,6 +95,7 @@ const Membership = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState(null);
+  const [agreeRenew, setAgreeRenew] = useState(false);
 
   // ── STRIPE CANCELLATION RESTORE SYSTEM ──
   useEffect(() => {
@@ -174,6 +176,14 @@ const Membership = () => {
       setIsSubmitting(false);
       return;
     }
+    if (!agreeRenew) {
+      setFeedback({
+        type: 'error',
+        message: 'Please check the box to agree to the monthly renewal, Terms, and Participation Waiver.',
+      });
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const submissionData = {
@@ -186,7 +196,9 @@ const Membership = () => {
         connectionGoals: {
           primaryInterest: formData.connectionGoals.primaryInterest,
           isolationBarrier: formData.connectionGoals.isolationBarrier,
-        }
+        },
+        agreedToAutoRenew: true,
+        termsVersion: LEGAL.waiverVersion,
       };
 
       localStorage.setItem('gfc_form_cache', JSON.stringify(submissionData));
@@ -368,7 +380,7 @@ const Membership = () => {
             Referral credit counts when a friend who is new to GFC buys a ticket to
             their first event using your code.
           </li>
-          <li>Memberships renew monthly. Cancel anytime before your next billing date.</li>
+          <li>Memberships renew automatically every month. Cancel anytime before your next billing date by emailing community@grownfolkscollective.com.</li>
         </ul>
       </section>
 
@@ -516,6 +528,22 @@ const Membership = () => {
                 {feedback.message}
               </div>
             )}
+
+            <label className="member-agree">
+              <input
+                type="checkbox"
+                checked={agreeRenew}
+                onChange={(e) => setAgreeRenew(e.target.checked)}
+              />
+              <span>
+                I understand my {selectedTier?.name || 'membership'} renews automatically at{' '}
+                <strong>{selectedTier?.price || ''}/month</strong> until I cancel, and I can cancel
+                anytime before my next billing date by emailing {LEGAL.email}. I agree to the{' '}
+                <a href="/terms" target="_blank" rel="noopener noreferrer">Terms</a>,{' '}
+                <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>, and{' '}
+                <a href="/waiver" target="_blank" rel="noopener noreferrer">Participation Waiver</a>.
+              </span>
+            </label>
 
             <button
               type="submit"
