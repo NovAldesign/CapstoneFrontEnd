@@ -11,6 +11,14 @@ import "../Styles/Links.css";
 // so site analytics show which platform sent each visitor.
 
 const SOCIALS = [
+  {
+  title: "Join the Facebook Group",
+  url: "https://www.facebook.com/groups/grownfolksatl",
+},
+{
+  title: "Join our Discord",
+  url: "https://discord.gg/yZG48Q4tgJ",
+},
   { label: "Instagram", url: "https://instagram.com/grownfolkscollective" },
   { label: "TikTok", url: "https://tiktok.com/@grownfolkscollective" },
   { label: "Threads", url: "https://threads.net/@grownfolkscollective" },
