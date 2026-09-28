@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import '../Styles/Footer.css';
 import FooterSignupSection from './FooterSignup';
+import { LEGAL_PAGES, LEGAL_FOOTER_LINKS } from '../content/legalContent.js';
 
 const SOCIALS = [
   {
@@ -154,6 +155,12 @@ const Footer = () => {
       </div>
 
       {/* Copyright */}
+      <nav className="footer-legal" aria-label="Policies">
+        {LEGAL_FOOTER_LINKS.map((l) => (
+          <a key={l.key} href={LEGAL_PAGES[l.key].path}>{l.label}</a>
+        ))}
+      </nav>
+
       <div className="footer-bottom">
         <span>
           &copy; {new Date().getFullYear()} Grown Folks Collective. All rights reserved.
