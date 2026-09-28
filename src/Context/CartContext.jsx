@@ -61,6 +61,7 @@ export const CartProvider = ({ children }) => {
   const [promoInfo, setPromoInfo] = useState(null);
   const [promoError, setPromoError] = useState("");
   const [promoChecking, setPromoChecking] = useState(false);
+  const [codeEmail, setCodeEmail] = useState(""); // needed for first-visit codes like ACE5
 
   // Remember the code for this visitor
   useEffect(() => {
@@ -187,10 +188,17 @@ export const CartProvider = ({ children }) => {
     const uniqueEventCount = new Set(cartItems.map((i) => i.eventId)).size;
     const { rate, label } = getDiscount(uniqueEventCount);
     const subtotalInCents = cartItems.reduce((sum, i) => sum + i.priceInCents * i.quantity, 0);
-    const afterCodeInCents = cartItems.reduce(
-      (sum, i) => sum + (codeEligible(i) ? applyCode(promoInfo, i.priceInCents) : i.priceInCents) * i.quantity,
-      0
-    );
+    let afterCodeInCents;
+    if (promoInfo?.oncePerOrder) {
+      // code comes off ONE ticket (the first one it works for)
+      const first = cartItems.find(codeEligible);
+      afterCodeInCents = subtotalInCents - (first ? first.priceInCents - applyCode(promoInfo, first.priceInCents) : 0);
+    } else {
+      afterCodeInCents = cartItems.reduce(
+        (sum, i) => sum + (codeEligible(i) ? applyCode(promoInfo, i.priceInCents) : i.priceInCents) * i.quantity,
+        0
+      );
+    }
     const codeSavingsInCents = subtotalInCents - afterCodeInCents;
     const discountInCents = Math.round(afterCodeInCents * rate);
     const totalInCents = afterCodeInCents - discountInCents;
@@ -214,13 +222,18 @@ export const CartProvider = ({ children }) => {
       alert("Please agree to the Terms, Refund Policy, and Participation Waiver first.");
       return;
     }
+    const needsEmail = promoApplies && promoInfo?.firstTimeOnly;
+    if (needsEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(codeEmail.trim())) {
+      alert(`Enter your email in the bag to use ${promoInfo.code}.`);
+      return;
+    }
     setCheckoutLoading(true);
     try {
       const res = await fetch(`${BACKEND_URL}/api/events/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customerEmail: undefined,
+          customerEmail: needsEmail ? codeEmail.trim() : undefined,
           cartItems,
           promoCode: promoApplies ? promoInfo.code : undefined,
           agreedToTerms: true,
@@ -254,6 +267,8 @@ export const CartProvider = ({ children }) => {
     checkoutLoading,
     promoCode,
     promoInfo,
+    codeEmail,
+    setCodeEmail,
     promoError,
     promoChecking,
     promoApplies,
@@ -287,6 +302,7 @@ const CartDrawer = () => {
     totalInCents, discountRate, discountLabel, uniqueEventCount,
     promoCode, promoInfo, promoError, promoChecking, promoApplies,
     applyPromoCode, removePromoCode, codeSavingsInCents,
+    codeEmail, setCodeEmail,
   } = useCart();
   const [codeInput, setCodeInput] = useState("");
   const [showCodeBox, setShowCodeBox] = useState(false);
@@ -412,7 +428,21 @@ const CartDrawer = () => {
                         Remove
                       </button>
                     </div>
-                  ) : showCodeBox ? (
+                  ) : null}
+                  {promoCode && promoApplies && promoInfo?.firstTimeOnly && (
+                    <div className="gfc-code-email">
+                      <label htmlFor="gfc-code-email">Your email (this code is for first-time guests)</label>
+                      <input
+                        id="gfc-code-email"
+                        type="email"
+                        autoComplete="email"
+                        placeholder="you@email.com"
+                        value={codeEmail}
+                        onChange={(e) => setCodeEmail(e.target.value)}
+                      />
+                    </div>
+                  )}
+                  {promoCode ? null : showCodeBox ? (
                     <form
                       className="gfc-code-form"
                       onSubmit={(e) => {
