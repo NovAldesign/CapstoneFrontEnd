@@ -22,7 +22,7 @@ const Home = () => {
           <div className="hero-content-luxe">
             <span className="location-tag-gold">Atlanta & Beyond · 30+</span>
             <h1 className="playfair luxe-title-white">The Antidote.</h1>
-            <p className="hero-slogan">Come solo. Leave with friends.<sup>™</sup></p>
+            <p className="hero-slogan">Where grown folks come out to play.<sup>™</sup></p>
             <div className="gold-spacer-v2" aria-hidden="true"></div>
             <p className="narrative-lead-white">
               Grown life shouldn't be a solo journey. Join Atlanta's 30+
