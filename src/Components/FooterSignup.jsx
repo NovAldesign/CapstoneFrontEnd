@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { BACKEND_URL } from '../Services/eventUtils';
-
-const SMS_CONSENT_TEXT =
-  'Yes, text me about upcoming GFC events and early access. Up to 4 msgs/month. Msg & data rates may apply. Reply STOP to opt out.';
+import { SMS_CONSENT_TEXT, SMS_CONSENT_VERSION } from '../content/legalContent.js';
 
 // ── Newsletter signup (saves to /api/subscribers) ──
 const FooterSignup = () => {
@@ -36,6 +34,9 @@ const FooterSignup = () => {
           email: email.trim(),
           smsOptIn,
           phoneNumber: smsOptIn ? phoneNumber.trim() : '',
+          smsConsentText: smsOptIn ? SMS_CONSENT_TEXT : '',
+          smsConsentVersion: smsOptIn ? SMS_CONSENT_VERSION : '',
+          source: 'footer',
         }),
       });
       const result = await response.json().catch(() => ({}));
@@ -116,7 +117,10 @@ const FooterSignup = () => {
       )}
 
       {error && <p className="footer-signup-error" role="alert">{error}</p>}
-      <p className="footer-signup-note">No spam. Unsubscribe anytime.</p>
+      <p className="footer-signup-note">
+        No spam. Unsubscribe anytime. By joining, you agree to our{' '}
+        <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms</a>.
+      </p>
     </form>
   );
 };
