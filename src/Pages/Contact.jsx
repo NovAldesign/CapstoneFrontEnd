@@ -179,7 +179,6 @@ const Contact = () => {
   return (
     <div className="contact-page">
 
-      <a href="#main-content" className="skip-link">Skip to main content</a>
 
       <Helmet>
         <title>Contact Us | Grown Folks Collective</title>
@@ -190,7 +189,7 @@ const Contact = () => {
       </Helmet>
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <header className="contact-hero" role="banner">
+      <header className="contact-hero">
         <div className="contact-hero-inner">
 
           {/* LEFT col */}
@@ -271,7 +270,7 @@ const Contact = () => {
       </header>
 
       {/* ── MAIN ─────────────────────────────────────────────────────────── */}
-      <main id="main-content">
+      <div>
         <section
           className="contact-form-section"
           aria-labelledby="contact-form-heading"
@@ -560,11 +559,12 @@ const Contact = () => {
                   : 'Send Message'
                 }
               </button>
+              <p className="form-privacy-note">By submitting, you agree to our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms</a>.</p>
 
             </form>
           </div>
         </section>
-      </main>
+      </div>
 
     </div>
   );
