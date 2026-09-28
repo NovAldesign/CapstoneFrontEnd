@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { SMS_CONSENT_TEXT, SMS_CONSENT_VERSION } from '../content/legalContent.js';
 import '../Styles/BlogPost.css';
 
 const API_BASE = 
@@ -59,7 +61,10 @@ const BlogPost = () => {
           fullName,
           email,
           smsOptIn,
-          phoneNumber: smsOptIn ? phoneNumber : ''
+          phoneNumber: smsOptIn ? phoneNumber : '',
+          smsConsentText: smsOptIn ? SMS_CONSENT_TEXT : '',
+          smsConsentVersion: smsOptIn ? SMS_CONSENT_VERSION : '',
+          source: `blog:${slug}`
         }),
       });
 
@@ -106,11 +111,14 @@ const BlogPost = () => {
 
   return (
     <div className="editorial-page">
+      <Helmet>
+        <title>{`${article.title} | Grown Folks Collective`}</title>
+      </Helmet>
       <div className="editorial-nav-bar">
         <Link to="/blog" className="editorial-back">← Back to Articles</Link>
       </div>
 
-      <main className="editorial-container">
+      <div className="editorial-container">
         <article>
           <h1 className="editorial-article-title">{article.title}</h1>
 
@@ -142,7 +150,7 @@ const BlogPost = () => {
 
           {/* Full-Width Navy Banner */}
           <div className="editorial-cta-card">
-            <h3>Pull Up a Chair</h3>
+            <h2>Pull Up a Chair</h2>
             <p>Ready to connect in person, join our community, or collaborate with us?</p>
             <div className="cta-actions">
               <Link to="/events" className="btn-cta-unified">Upcoming Events</Link>
@@ -168,6 +176,8 @@ const BlogPost = () => {
                   <input 
                     type="text" 
                     placeholder="Full Name" 
+                    aria-label="Full name"
+                    autoComplete="name"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     required 
@@ -179,6 +189,8 @@ const BlogPost = () => {
                   <input 
                     type="email" 
                     placeholder="you@email.com" 
+                    aria-label="Email address"
+                    autoComplete="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required 
@@ -194,7 +206,7 @@ const BlogPost = () => {
                       onChange={(e) => setSmsOptIn(e.target.checked)}
                       className="sms-checkbox"
                     />
-                    <span>Receive event text message notifications</span>
+                    <span>{SMS_CONSENT_TEXT}</span>
                   </label>
                 </div>
 
@@ -203,6 +215,8 @@ const BlogPost = () => {
                     <input 
                       type="tel" 
                       placeholder="Phone Number (e.g. 512-555-0654)" 
+                      aria-label="Phone number"
+                      autoComplete="tel"
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                       required={smsOptIn}
@@ -216,10 +230,13 @@ const BlogPost = () => {
                 </button>
               </form>
             )}
-            <span className="newsletter-note">No spam. Just the table talk and the next invite.</span>
+            <span className="newsletter-note">
+              No spam. Just the table talk and the next invite. By joining, you agree to our{' '}
+              <Link to="/privacy">Privacy Policy</Link> and <Link to="/terms">Terms</Link>.
+            </span>
           </section>
         </article>
-      </main>
+      </div>
     </div>
   );
 };
