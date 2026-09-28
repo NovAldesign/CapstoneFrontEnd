@@ -222,3 +222,113 @@ img {
     padding: 12px;
   }
 }
+/* ==========================================================================
+   ACCESSIBILITY LAYER (added Sept 2026)
+   WCAG 2.1 AA: text contrast, visible keyboard focus, skip link.
+   Keep this block at the END of Index.css so it wins over page styles.
+   ========================================================================== */
+:root {
+  --gold-text: #7A5A1E;   /* Gold for SMALL text on white/cream (5.5:1+). Keep --gold for navy backgrounds, big headings, lines */
+  --muted-on-navy: #A3B1C2; /* Soft gray text on navy (7.4:1) */
+}
+
+/* Skip link: hidden until a keyboard user presses Tab */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 12px;
+  z-index: 10000;
+  background: var(--navy);
+  color: #FFFFFF;
+  padding: 12px 18px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid var(--gold);
+}
+.skip-link:focus { top: 12px; }
+#main-content:focus { outline: none; }
+
+/* One clear focus ring everywhere: gold outline + navy inner ring (visible on light AND navy) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible,
+[role="button"]:focus-visible {
+  outline: 3px solid var(--gold) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 2px var(--navy) !important;
+}
+
+/* Small gold text on light backgrounds -> darker text gold */
+.gold-label,
+.gfc-bundle-tiers span:first-child,
+.gfc-date-month,
+.gfc-card-when,
+.gfc-facts dt,
+.gfc-tier-price,
+.gfc-ticket-perk a,
+.membership-page .member-how-section > .tier-eyebrow,
+.membership-page .form-intro-font,
+.contact-form-eyebrow,
+.tier-showcase > .location-tag,
+.tier-label,
+.about-story-text-col > .about-section-label,
+.about-values-inner > .about-section-label,
+.footer-signup-text > .footer-block-label {
+  color: var(--gold-text) !important;
+}
+.gfc-tier:not(.status-available) .gfc-tier-price { color: #666666 !important; }
+
+/* Big decorative numbers (large text needs 3:1) */
+.membership-page .member-how-num { color: var(--gold-text) !important; }
+.about-value-number { color: #A8863F !important; }
+
+/* Gray text */
+.gfc-price-was,
+.gfc-price-line s { color: #666666 !important; }
+.footer-signup-note { color: #55606E !important; }
+
+/* Soft text on navy / dark backgrounds */
+.footer-location,
+.footer-bottom,
+.footer-bottom span,
+.footer-bottom-right,
+.testimonials-cta-text,
+.membership-page .tier-price-note,
+.membership-page .tier-display-label,
+.membership-page .ms-countdown {
+  color: var(--muted-on-navy) !important;
+}
+.rating-platform-name { color: var(--gold) !important; }
+.testimonials-container > .gold-label { color: var(--gold) !important; } /* this one sits on navy */
+
+/* Bag */
+.gfc-bag-item-price,
+.gfc-bag-nudge a,
+.gfc-link-btn:not(.danger) { color: var(--gold-text) !important; }
+.gfc-total-row.muted { color: #666666 !important; }
+
+/* Artist form agreement link */
+.perform-note a { color: var(--gold-text) !important; font-weight: 700; text-decoration: underline; }
+
+/* Blog post */
+.editorial-back { color: var(--gold-text) !important; }
+.publish-date,
+.editorial-hero-caption { color: #55606E !important; }
+
+/* Small "By submitting, you agree…" line under forms */
+.form-privacy-note {
+  margin: 12px 0 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #55606E;
+  text-align: center;
+}
+.form-privacy-note a {
+  color: #7A5A1E;
+  font-weight: 600;
+  text-decoration: underline;
+}
