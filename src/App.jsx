@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 // --- Components ---
 import Navbar from "./Components/Navbar.jsx";
@@ -25,18 +25,25 @@ import SuccessPage from "./Pages/SuccessPage.jsx";
 import MembershipSuccess from "./Pages/MembershipSuccess.jsx";
 import GroupBooking from "./Pages/GroupBooking.jsx";
 import Perform from "./Pages/Perform.jsx";
+import Legal from "./Pages/Legal.jsx";
+import Links from "./Pages/Links.jsx";
 
 // --- Styles ---
 import "./Styles/App.css";
 import "./Styles/Index.css";
 
 function App() {
+  // The link-in-bio page shows without the top navigation
+  const { pathname } = useLocation();
+  const isLinks = pathname === "/links";
+
   return (
     <CartProvider>
       <div className="App-wrapper">
-        <Navbar />
+        <a href="#main-content" className="skip-link">Skip to main content</a>
+        {!isLinks && <Navbar />}
 
-        <main className="main-content">
+        <main className="main-content" id="main-content" tabIndex={-1}>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
@@ -52,6 +59,17 @@ function App() {
             <Route path="/partnerships" element={<Partnerships />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/links" element={<Links />} />
+
+            {/* Policies */}
+            <Route path="/privacy" element={<Legal page="privacy" />} />
+            <Route path="/terms" element={<Legal page="terms" />} />
+            <Route path="/waiver" element={<Legal page="waiver" />} />
+            <Route path="/refund-policy" element={<Legal page="refunds" />} />
+            <Route path="/code-of-conduct" element={<Legal page="conduct" />} />
+            <Route path="/photo-policy" element={<Legal page="photos" />} />
+            <Route path="/accessibility" element={<Legal page="accessibility" />} />
+            <Route path="/performer-agreement" element={<Legal page="performer" />} />
           
 
             <Route path="/reset-password/:token" element={<ResetPassword />} />
