@@ -18,7 +18,15 @@ export default defineConfig({
         '/about',
         '/contact',
         '/celebrate',
-        '/perform'
+        '/perform',
+        '/privacy',
+        '/terms',
+        '/waiver',
+        '/refund-policy',
+        '/code-of-conduct',
+        '/photo-policy',
+        '/accessibility',
+        '/performer-agreement'
         // Add these back once they have routes in App.jsx:
         // '/travel',
         // '/ic-dinners',
