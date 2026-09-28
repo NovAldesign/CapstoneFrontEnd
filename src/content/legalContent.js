@@ -140,7 +140,7 @@ export const LEGAL_PAGES = {
       {
         h: "Who can attend",
         p: [
-          "GFC events are for adults. Some events are for guests 30+ or 35+, as listed on the event page. We may ask for ID at the door.",
+                  "GFC events are for adults 30 and older. We may ask for ID at the door.",
         ],
       },
       {
