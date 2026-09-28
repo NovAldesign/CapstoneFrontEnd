@@ -24,7 +24,7 @@ const MemberProfile = () => {
         </p>
       </header>
 
-      <main className="profile-grid">
+      <div className="profile-grid">
         {/* Profile Card */}
         <section className="profile-card">
           <div className="tier-badge">{profileData.tier} Status</div>
@@ -87,7 +87,7 @@ const MemberProfile = () => {
             </p>
           )}
         </section>
-      </main>
+      </div>
     </div>
   );
 };
