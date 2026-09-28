@@ -126,11 +126,10 @@ const EventDetail = () => {
         <meta property="og:type" content="event" />
       </Helmet>
 
-      {/* HERO */}
+         {/* HERO: event graphic shown whole (it already has the title, date and logo) */}
       <header className="gfc-detail-hero">
-        <img src={event.image} alt="" />
-        <div className="gfc-detail-hero-overlay">
-          <div className="gfc-detail-hero-inner">
+        <div className="gfc-detail-hero-inner">
+          <div className="gfc-detail-hero-text">
             <Link to="/events" className="gfc-back-link">← All events</Link>
             <span className="gfc-card-category static">{category.label}</span>
             <h1 className="playfair">{event.title}</h1>
@@ -139,6 +138,7 @@ const EventDetail = () => {
               {loc.city && ` · ${loc.city}`}
             </p>
           </div>
+          {event.image && <img src={event.image} alt="" className="gfc-detail-hero-img" />}
         </div>
       </header>
 
