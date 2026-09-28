@@ -422,3 +422,42 @@
     max-width: none;
   }
 }
+/* =============================================
+   POLICY LINKS ROW
+   ============================================= */
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 18px;
+  padding: 14px 10% 4px;
+  border-top: 1px solid rgba(197, 160, 89, 0.12);
+}
+
+.footer-legal a {
+  display: inline-block;
+  padding: 4px 2px;
+  font-size: 0.75rem;
+  color: #A3B1C2;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+}
+
+.footer-legal a:hover {
+  color: #C5A059;
+  text-decoration: underline;
+}
+
+.footer-legal + .footer-bottom {
+  border-top: none;
+}
+
+@media (max-width: 768px) {
+  .footer-legal { padding: 14px 6% 4px; }
+}
+
+.footer-signup-note a {
+  color: #7A5A1E;
+  text-decoration: underline;
+  font-weight: 600;
+}
