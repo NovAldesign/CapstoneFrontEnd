@@ -195,7 +195,7 @@ const GroupBooking = () => {
         </div>
       </header>
 
-      <main id="main-content">
+      <div>
         <section className="contact-form-section" aria-labelledby="group-form-heading">
           <div className="contact-form-container">
             {submitted ? (
@@ -477,12 +477,13 @@ const GroupBooking = () => {
                   >
                     {isSubmitting ? 'Sending…' : 'Send My Group Request'}
                   </button>
+                  <p className="form-privacy-note">By submitting, you agree to our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms</a>.</p>
                 </form>
               </>
             )}
           </div>
         </section>
-      </main>
+      </div>
     </div>
   );
 };
