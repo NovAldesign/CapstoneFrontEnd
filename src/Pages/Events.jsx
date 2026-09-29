@@ -20,6 +20,114 @@ import PriceTag from "../Components/PriceTag";
 import "../Styles/Events.css";
 import "../Styles/EventListing.css";
 
+// ── FAQS: one tab per event series + general (also given to Google as FAQ data) ──
+const FAQ_TABS = [
+  { id: "general", label: "General", faqs: [
+    { q: "Who are GFC events for?", a: "Grown folks 30 and up. We may ask for ID at the door." },
+    { q: "Can I come by myself?", a: "Yes. Come solo, as a couple, or with friends and coworkers. Solo folks never stay solo for long." },
+    { q: "Is alcohol served?", a: "No. Every GFC event is alcohol-free. Venues offer mocktails, tea and coffee to buy." },
+    { q: "Any ticket deals?", a: "Early Bird tickets are our best price (6 per event, ending 14 days before). New here? Code ACE5 takes $5 off your first event. Book 2 events and save 5%, 3 or more and save 10%." },
+    { q: "Refunds and transfers?", a: "Tickets are final, but you can transfer yours up to 24 hours before by emailing community@grownfolkscollective.com. If we cancel, you get a full refund." },
+  ]},
+  { id: "games", label: "Game Nights", faqs: [
+    { q: "I've never played spades. Can I come?", a: "Absolutely. Beginners are welcome and we'll teach you." },
+    { q: "What games do you play?", a: "Spades, dominoes, Uno, Taboo, Mad Gab, chess and more." },
+    { q: "Do I need a partner?", a: "No. Tables rotate, so you'll play with new people all night." },
+  ]},
+  { id: "karaoke", label: "Karaoke Bingo", faqs: [
+    { q: "Do I have to sing?", a: "Never. Sing from your seat, take the mic, or just mark your card." },
+    { q: "How does it work?", a: "Your bingo card is full of songs from the night's theme. When one plays, mark it. Get a bingo, win a prize." },
+  ]},
+  { id: "acoustic", label: "Acoustic & Infused", faqs: [
+    { q: "Who's performing?", a: "Atlanta R&B, neo-soul and acoustic artists, each with a 20-minute set. The lineup is on each event page." },
+    { q: "How do I support the artists?", a: "Buy your ticket through an artist's link and visit their merch table." },
+    { q: "Can I perform?", a: "Yes. Apply at grownfolkscollective.com/perform." },
+  ]},
+  { id: "dinners", label: "Holiday Tables", faqs: [
+    { q: "Is dinner included?", a: "Yes, dinner is included in your ticket." },
+    { q: "Can you handle dietary needs?", a: "Email community@grownfolkscollective.com at least 5 days before and we'll do our best." },
+    { q: "Why do sales close early?", a: "We plan the food around the headcount, so sales close 5 days before each dinner." },
+  ]},
+  { id: "reunion", label: "Family Reunion", faqs: [
+    { q: "Where is it?", a: "The location is emailed to ticket holders before the event." },
+    { q: "How do I enter the grill-off?", a: "Buy a Grill Master ticket. Setup, supplies and judging details come by email." },
+    { q: "What games will there be?", a: "Tabletop games, spades, dominoes, Jenga, kickball and more." },
+  ]},
+];
+
+const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_TABS.flatMap((t) => t.faqs).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+};
+
+// ── FAQ TABS + STAY CONNECTED ───────────────────────────────
+const EventFaqs = () => {
+  const [tab, setTab] = useState("general");
+  const active = FAQ_TABS.find((t) => t.id === tab) || FAQ_TABS[0];
+  const onKey = (e) => {
+    const i = FAQ_TABS.findIndex((t) => t.id === tab);
+    const next = e.key === "ArrowRight" ? i + 1 : e.key === "ArrowLeft" ? i - 1 : null;
+    if (next === null) return;
+    const t = FAQ_TABS.at((next + FAQ_TABS.length) % FAQ_TABS.length);
+    setTab(t.id);
+    document.getElementById(`faq-tab-${t.id}`)?.focus();
+  };
+  return (
+    <section className="gfc-events-faq" aria-labelledby="events-faq-title">
+      <div className="gfc-events-faq-inner">
+        <h2 id="events-faq-title" className="playfair">Questions? We've Got You.</h2>
+        <div className="gfc-faq-tabs" role="tablist" aria-label="FAQ topics" onKeyDown={onKey}>
+          {FAQ_TABS.map((t) => (
+            <button
+              key={t.id}
+              id={`faq-tab-${t.id}`}
+              type="button"
+              role="tab"
+              aria-selected={t.id === tab}
+              aria-controls="faq-panel"
+              tabIndex={t.id === tab ? 0 : -1}
+              className={`gfc-faq-tab ${t.id === tab ? "is-active" : ""}`}
+              onClick={() => setTab(t.id)}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+        <div
+          id="faq-panel"
+          role="tabpanel"
+          aria-labelledby={`faq-tab-${active.id}`}
+          className="gfc-faq-panel"
+        >
+          {active.faqs.map((f) => (
+            <details key={f.q} className="gfc-faq">
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
+        </div>
+
+        <div className="gfc-connect">
+          <div>
+            <h3 className="playfair">Stay connected between events</h3>
+            <p>Join the conversation, find a spades partner, and hear about new events first.</p>
+          </div>
+          <div className="gfc-connect-links">
+            <a href="https://discord.gg/yZG48Q4tgJ" target="_blank" rel="noopener noreferrer" className="gfc-connect-btn discord">Join our Discord</a>
+            <a href="https://www.facebook.com/groups/grownfolksatl" target="_blank" rel="noopener noreferrer" className="gfc-connect-btn facebook">Join the Facebook group</a>
+          </div>
+        </div>
+        <p className="gfc-events-faq-more">
+          Still have a question? Email <a href="mailto:community@grownfolkscollective.com">community@grownfolkscollective.com</a>
+        </p>
+      </div>
+    </section>
+  );
+};
+
+
+
 // Lowest price someone can actually buy right now (for "sort by price")
 const lowestAvailablePrice = (event) => {
   const prices = event.tiers
@@ -151,6 +259,7 @@ const Events = () => {
           name="description"
           content="Upcoming game nights, dinners, conversations, and travel for Atlanta adults 30+. Alcohol-free, low-key, and built for real connection and a little more joy."
         />
+        <script type="application/ld+json">{JSON.stringify(FAQ_SCHEMA)}</script>
       </Helmet>
 
       {/* HERO */}
@@ -286,32 +395,8 @@ const Events = () => {
         )}
       </div>
 
-      {/* ABOUT THE EXPERIENCE
-      <section className="gfc-story">
-        <div className="gfc-story-grid">
-          <img
-            src="https://media.cnn.com/api/v1/images/stellar/prod/230725152449-01-group-friend-vacation-tips-top.jpg?c=16x9&q=h_653,w_1160,c_fill/f_avif"
-            alt="A group of friends laughing together outdoors"
-            loading="lazy"
-          />
-          <div>
-            <h2 className="playfair">More Fun. Real Connection.</h2>
-            <p className="gfc-story-lead">
-              Grown life gets busy, and fun is usually the first thing to slip off the calendar.
-            </p>
-            <p>
-              The <strong>Grown Folks Collective</strong> brings Atlanta adults 30+ together for game
-              nights, good food, real conversation, and shared adventure. No networking, no pressure,
-              no "So, what do you do?" Just good people and a few more sparks of joy.
-            </p>
-            <div className="gfc-story-values">
-              <div><strong>Alcohol-Free</strong><span>Clear heads, real conversation.</span></div>
-              <div><strong>Human First</strong><span>People, not job titles.</span></div>
-              <div><strong>Pure Joy</strong><span>Laugh, play, and leave lighter.</span></div>
-            </div>
-          </div>
-        </div>
-      </section> */}
+      {/* FAQS */}
+      <EventFaqs />
 
       {/* GET INVOLVED */}
       <section className="gfc-involved">
