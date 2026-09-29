@@ -222,7 +222,7 @@ export const CartProvider = ({ children }) => {
       alert("Please agree to the Terms, Refund Policy, and Participation Waiver first.");
       return;
     }
-    const needsEmail = promoApplies && promoInfo?.firstTimeOnly;
+    const needsEmail = promoApplies && (promoInfo?.needsEmail || promoInfo?.firstTimeOnly);
     if (needsEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(codeEmail.trim())) {
       alert(`Enter your email in the bag to use ${promoInfo.code}.`);
       return;
@@ -429,9 +429,9 @@ const CartDrawer = () => {
                       </button>
                     </div>
                   ) : null}
-                  {promoCode && promoApplies && promoInfo?.firstTimeOnly && (
+                  {promoCode && promoApplies && (promoInfo?.needsEmail || promoInfo?.firstTimeOnly) && (
                     <div className="gfc-code-email">
-                      <label htmlFor="gfc-code-email">Your email (this code is for first-time guests)</label>
+                      <label htmlFor="gfc-code-email">{promoInfo?.firstTimeOnly ? "Your email (this code is for first-time guests)" : "Your email (we'll send your ticket here)"}</label>
                       <input
                         id="gfc-code-email"
                         type="email"
