@@ -286,7 +286,7 @@ const Events = () => {
         )}
       </div>
 
-      {/* ABOUT THE EXPERIENCE */}
+      {/* ABOUT THE EXPERIENCE
       <section className="gfc-story">
         <div className="gfc-story-grid">
           <img
@@ -311,7 +311,7 @@ const Events = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* GET INVOLVED */}
       <section className="gfc-involved">
