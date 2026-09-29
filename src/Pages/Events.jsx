@@ -26,7 +26,8 @@ const FAQ_TABS = [
     { q: "Who are GFC events for?", a: "Grown folks 30 and up. We may ask for ID at the door." },
     { q: "Can I come by myself?", a: "Yes. Come solo, as a couple, or with friends and coworkers. Solo folks never stay solo for long." },
     { q: "Is alcohol served?", a: "No. Every GFC event is alcohol-free. Venues offer mocktails, tea and coffee to buy." },
-    { q: "Any ticket deals?", a: "Early Bird tickets are our best price (6 per event, ending 14 days before). New here? Code ACE5 takes $5 off your first event. Book 2 events and save 5%, 3 or more and save 10%." },
+    { q: "Any ticket deals?", a: "Early Bird tickets are our best price (6 per event, ending 14 days before). Book 2 different events in one order and save 5%, or 3 or more and save 10%." },
+    { q: "Is there parking?", a: "Yes, and it's free at our venues, including Aromas Tea Bar at The Koncept House and Mint Coffeehouse." },
     { q: "Refunds and transfers?", a: "Tickets are final, but you can transfer yours up to 24 hours before by emailing community@grownfolkscollective.com. If we cancel, you get a full refund." },
   ]},
   { id: "games", label: "Game Nights", faqs: [
