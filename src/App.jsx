@@ -27,6 +27,7 @@ import GroupBooking from "./Pages/GroupBooking.jsx";
 import Perform from "./Pages/Perform.jsx";
 import Legal from "./Pages/Legal.jsx";
 import Links from "./Pages/Links.jsx";
+import Go from "./Pages/Go.jsx";
 
 // --- Styles ---
 import "./Styles/App.css";
@@ -60,6 +61,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/links" element={<Links />} />
+            <Route path="/go/:code" element={<Go />} />
 
             {/* Policies */}
             <Route path="/privacy" element={<Legal page="privacy" />} />
