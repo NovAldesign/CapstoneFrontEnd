@@ -124,21 +124,48 @@ const Perform = () => {
 
   const toggleTerm = (i) => setAgreed((prev) => prev.map((v, idx) => (idx === i ? !v : v)));
 
+  // Big phone photos (or HEIC) get resized to a JPEG in the browser first
+  const shrinkPhoto = (file) =>
+    new Promise((resolve) => {
+      const small = file.size <= 4 * 1024 * 1024 && /^image\/(jpeg|png)$/.test(file.type);
+      if (small) return resolve(file);
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, 1600 / Math.max(img.width, img.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(url);
+        canvas.toBlob(
+          (blob) => resolve(blob ? new File([blob], 'headshot.jpg', { type: 'image/jpeg' }) : file),
+          'image/jpeg',
+          0.85
+        );
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        resolve(file); // the browser can't read it; try the original
+      };
+      img.src = url;
+    });
+
   // Upload the headshot straight to Cloudinary
   const handleHeadshot = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (!file.type.startsWith('image/')) {
+    const picked = e.target.files?.[0];
+    if (!picked) return;
+    if (!picked.type.startsWith('image/') && !/\.(heic|heif)$/i.test(picked.name)) {
       setError('Please choose an image file (JPG or PNG).');
-      return;
-    }
-    if (file.size > 10 * 1024 * 1024) {
-      setError('Please choose a photo under 10 MB.');
       return;
     }
     setUploading(true);
     setError('');
     try {
+      const file = await shrinkPhoto(picked);
+      if (file.size > 10 * 1024 * 1024) {
+        throw new Error('That photo is too large. Please choose one under 10 MB, or take a screenshot of it and upload that.');
+      }
       const sig = await fetch(`${BACKEND_URL}/api/artists/upload-signature`).then((r) => r.json());
       if (!sig.signature) throw new Error(sig.error || 'Photo uploads are unavailable right now.');
       const data = new FormData();
@@ -152,10 +179,11 @@ const Perform = () => {
         body: data,
       });
       const result = await res.json();
-      if (!result.secure_url) throw new Error('Upload failed. Please try another photo.');
+      if (!result.secure_url) throw new Error('Your photo didn\'t upload. Please try another photo (JPG or PNG).');
       setHeadshotUrl(result.secure_url);
     } catch (err) {
-      setError(err.message || 'Upload failed. Please try again.');
+      setHeadshotUrl('');
+      setError(err.message || 'Your photo didn\'t upload. Please try again.');
     } finally {
       setUploading(false);
     }
@@ -354,7 +382,7 @@ const Perform = () => {
                     </div>
 
                     <div className="contact-input-group">
-                      <label className="contact-label" htmlFor="pf-headshot">Headshot <span className="contact-label-optional">(JPG or PNG, under 10 MB)</span></label>
+                      <label className="contact-label" htmlFor="pf-headshot">Headshot <span className="contact-label-optional">(JPG or PNG)</span></label>
                       <div className="perform-headshot">
                         {headshotUrl ? (
                           <img src={headshotUrl} alt="Your headshot preview" />
