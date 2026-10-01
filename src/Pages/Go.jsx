@@ -30,6 +30,7 @@ const LINKS = {
   teambuilding: "/corporate-team-building-atlanta",
   holiday: "/office-holiday-party-atlanta",
   links: "/links",
+    review: "https://g.page/r/CeZCCIN0CITtEBM/review",
   discord: "https://discord.gg/yZG48Q4tgJ",
   fb: "https://www.facebook.com/groups/grownfolksatl",
 };
