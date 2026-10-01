@@ -15,7 +15,7 @@ const TIERS = [
     featured: false,
     tagline: 'Pays for itself every month.',
     features: [
-      '$40 in event credit every month — use it at any GFC event (unused credit rolls over 1 month)',
+      '$40 in event credit every month for Game Nights, Karaoke Bingo and Acoustic & Infused (unused credit rolls over 1 month)',
       '$5 off every GFC ticket',
       '10% off food events like our Cookout, Friendsgiving, and holiday dinners',
       '48-hour early access to tickets + priority waitlist for sold-out events',
@@ -35,7 +35,7 @@ const TIERS = [
     featured: true,
     tagline: 'For the ones who were here first.',
         features: [
-      '$70 in event credit every month — use it at any GFC event (unused credit rolls over 1 month)',
+      '$70 in event credit every month for Game Nights, Karaoke Bingo and Acoustic & Infused (unused credit rolls over 1 month)',
       '$7 off every GFC ticket',
       '15% off food events like our Cookout, Friendsgiving, and holiday dinners',
       '72-hour early access to tickets + first dibs on group travel',
@@ -61,7 +61,7 @@ const TIER_PRICES = {
 const HOW_IT_WORKS = [
   {
     title: 'Your membership pays for itself',
-    body: 'Every month, your membership fee comes back to you as event credit. Use it on any GFC event, and if you miss a month, your credit rolls over to the next one.',
+    body: 'Every month, your membership fee comes back to you as event credit. Use it on Game Nights, Karaoke Bingo and Acoustic & Infused, and if you miss a month, your credit rolls over to the next one. (Food events get a member discount instead.)',
   },
   {
     title: 'Member pricing on everything',
