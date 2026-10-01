@@ -30,6 +30,7 @@ import Links from "./Pages/Links.jsx";
 import Go from "./Pages/Go.jsx";
 import Host from "./Pages/Host.jsx";
 import HostLanding from "./Pages/HostLanding.jsx";
+import Login from "./Pages/Login.jsx";
 
 // --- Styles ---
 import "./Styles/App.css";
@@ -79,6 +80,7 @@ function App() {
             <Route path="/performer-agreement" element={<Legal page="performer" />} />
           
 
+            <Route path="/login" element={<Login />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
 
             {/* Protected Routes */}
