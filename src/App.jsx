@@ -29,6 +29,7 @@ import Legal from "./Pages/Legal.jsx";
 import Links from "./Pages/Links.jsx";
 import Go from "./Pages/Go.jsx";
 import Host from "./Pages/Host.jsx";
+import HostLanding from "./Pages/HostLanding.jsx";
 
 // --- Styles ---
 import "./Styles/App.css";
@@ -56,6 +57,8 @@ function App() {
             <Route path="/membership/success" element={<MembershipSuccess />} />
             <Route path="/celebrate" element={<GroupBooking />} />
             <Route path="/host" element={<Host />} />
+            <Route path="/corporate-team-building-atlanta" element={<HostLanding page="teamBuilding" />} />
+            <Route path="/office-holiday-party-atlanta" element={<HostLanding page="holiday" />} />
             <Route path="/perform" element={<Perform />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
