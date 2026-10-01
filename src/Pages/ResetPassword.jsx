@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { BACKEND_URL } from '../Services/eventUtils';
 
 const ResetPassword = () => {
   const { token } = useParams(); // Catches the token from /reset-password/:token
@@ -22,7 +23,7 @@ const ResetPassword = () => {
     setMessage('');
 
     try {
-      const response = await fetch(`/api/auth/reset-password/${token}`, {
+      const response = await fetch(`${BACKEND_URL}/api/auth/reset-password/${token}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password })
@@ -43,7 +44,10 @@ const ResetPassword = () => {
   return (
     <div style={{ maxWidth: '400px', margin: '100px auto', padding: '20px', textAlign: 'center' }}>
       <h2 className="playfair">Set New Password</h2>
-      <p style={{ color: '#666', fontSize: '14px' }}>Please choose a secure password for your administrative profile.</p>
+      <p style={{ color: '#555', fontSize: '14px' }}>
+        Use at least 8 characters with an uppercase letter, a lowercase letter, a number,
+        and one of these: @ $ ! % * ? &amp;
+      </p>
 
       {error && <p style={{ color: '#E05C5C', fontSize: '14px' }}>{error}</p>}
       {message && <p style={{ color: '#4CAF7D', fontSize: '14px' }}>{message}</p>}
