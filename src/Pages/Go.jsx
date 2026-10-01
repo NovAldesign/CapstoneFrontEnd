@@ -27,6 +27,8 @@ const LINKS = {
   join: "/membership",
   celebrate: "/celebrate",
   host: "/host",
+  teambuilding: "/corporate-team-building-atlanta",
+  holiday: "/office-holiday-party-atlanta",
   links: "/links",
   discord: "https://discord.gg/yZG48Q4tgJ",
   fb: "https://www.facebook.com/groups/grownfolksatl",
