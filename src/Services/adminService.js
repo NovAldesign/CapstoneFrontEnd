@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { BACKEND_URL } from './eventUtils';
 
-const API_URL = 'http://localhost:3000/api/membership'; 
+const API_URL = `${BACKEND_URL}/api/membership`;
 
 export const getAllMembership = async () => {
   const response = await axios.get(API_URL);
