@@ -31,6 +31,7 @@ import Go from "./Pages/Go.jsx";
 import Host from "./Pages/Host.jsx";
 import HostLanding from "./Pages/HostLanding.jsx";
 import Login from "./Pages/Login.jsx";
+import ForgotPassword from "./Pages/ForgotPassword.jsx";
 
 // --- Styles ---
 import "./Styles/App.css";
@@ -81,6 +82,7 @@ function App() {
           
 
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
 
             {/* Protected Routes */}
