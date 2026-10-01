@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BACKEND_URL } from "../Services/eventUtils";
 
-// Shown until you feature a review in the admin dashboard
-const FALLBACK = {
-  _id: "lee",
-  name: "Lee",
-  event: "Game Night Attendee",
-  rating: 5,
-  text:
-    "Game night with Vaughn and the Grown Folks Collective was exactly what grown folks game night should be. The theme set the tone right out the gate. The vibe was cool but competitive — friendly on the surface, serious once the games started. The karaoke heads were in their bag. The spades table was a whole different arena: heavy trash talk, laughs, side-eyes, and strategy.\n\nWhat stood out most was the people. Everybody was down to earth, welcoming, and real. No weird energy. No posturing. Just good folks showing up as themselves.\n\nIt didn't just feel like a game night — it felt like home. I'd run it back without hesitation.",
-};
-
 const SOURCE_LABEL = {
   google: "via Google",
   eventbrite: "via Eventbrite",
@@ -48,8 +38,8 @@ const HomeReviews = () => {
       .catch(() => setReviews([]));
   }, []);
 
-  const featured = reviews.find((r) => r.featured) || reviews[0] || FALLBACK;
-  const others = reviews.filter((r) => r._id !== featured._id).slice(0, 3);
+  const featured = reviews.find((r) => r.featured) || reviews[0] || null;
+  const others = reviews.filter((r) => r._id !== featured?._id).slice(0, 3);
 
   const update = (e) => {
     const { name, value, type, checked } = e.target;
@@ -87,13 +77,15 @@ const HomeReviews = () => {
         <div className="gold-spacer-v2" aria-hidden="true"></div>
 
         <div className="testimonials-grid">
-          {/* Featured review */}
+          {/* Featured review (set it in the admin dashboard, Reviews tab) */}
+          {featured && (
           <article className="testimonial-card testimonial-card-featured">
             <div className="testimonial-quote-mark" aria-hidden="true">"</div>
             <blockquote className="testimonial-text review-text">{featured.text}</blockquote>
             <Stars rating={featured.rating} />
             <cite className="testimonial-reviewer">— {byline(featured)}</cite>
           </article>
+          )}
 
           {/* Platform ratings */}
           <div className="testimonial-card testimonial-rating-card" aria-label="Platform ratings">
