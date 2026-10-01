@@ -19,6 +19,7 @@ export default defineConfig({
         '/contact',
         '/celebrate',
         '/perform',
+        '/host',
         '/privacy',
         '/terms',
         '/waiver',
