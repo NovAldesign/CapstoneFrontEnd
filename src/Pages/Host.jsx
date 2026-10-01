@@ -223,6 +223,7 @@ const Host = () => {
                 Book a Call
               </button>
               <a href="#packages" className="host-link">See packages &amp; pricing →</a>
+              <a href="tel:+14702567729" className="host-link">Call or text 470-256-7729</a>
             </div>
           </div>
 
@@ -403,6 +404,7 @@ const Host = () => {
                 </h2>
                 <p className="contact-form-subhead">
                   Takes about two minutes. We'll reach out within 1 business day.
+                  Prefer to talk? Call or text <a href="tel:+14702567729">470-256-7729</a>.
                 </p>
               </header>
 
