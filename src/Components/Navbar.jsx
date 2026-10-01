@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import loginService from "../Services/loginService";
@@ -12,6 +11,8 @@ const Navbar = () => {
 
   // Safe first name — won't crash if the name is missing
   const firstName = (user?.name || "").trim().split(" ")[0] || "Account";
+
+  const isAdmin = user?.role === "admin";
 
   const handleLogout = () => {
     loginService.logout();
@@ -45,17 +46,15 @@ const Navbar = () => {
         <li><NavLink to="/about" className={navClass} onClick={closeMenu}>About Us</NavLink></li>
         <li><NavLink to="/contact" className={navClass} onClick={closeMenu}>Contact Us</NavLink></li>
 
-        {/* {user && user.role === "admin" && (
-          <li>
-            <NavLink to="/admin/dashboard" className={navClass} onClick={closeMenu}>
-              Admin
-            </NavLink>
-          </li>
-        )} */}
 
         {/* Mobile-only auth */}
         {user && (
           <li className="nav-mobile-auth">
+            {isAdmin && (
+              <Link to="/admin/dashboard" className="nav-dashboard-btn" onClick={closeMenu}>
+                Dashboard
+              </Link>
+            )}
             <button
               onClick={() => { handleLogout(); closeMenu(); }}
               className="logout-btn-styled"
@@ -69,6 +68,11 @@ const Navbar = () => {
       {/* Desktop auth */}
       {user && (
         <div className="nav-right-section">
+          {isAdmin && (
+            <Link to="/admin/dashboard" className="nav-dashboard-btn">
+              Dashboard
+            </Link>
+          )}
           <button onClick={handleLogout} className="logout-btn-styled">
             LOGOUT ({firstName})
           </button>
