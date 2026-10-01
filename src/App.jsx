@@ -28,6 +28,7 @@ import Perform from "./Pages/Perform.jsx";
 import Legal from "./Pages/Legal.jsx";
 import Links from "./Pages/Links.jsx";
 import Go from "./Pages/Go.jsx";
+import Host from "./Pages/Host.jsx";
 
 // --- Styles ---
 import "./Styles/App.css";
@@ -54,6 +55,7 @@ function App() {
             <Route path="/membership" element={<Membership />} />
             <Route path="/membership/success" element={<MembershipSuccess />} />
             <Route path="/celebrate" element={<GroupBooking />} />
+            <Route path="/host" element={<Host />} />
             <Route path="/perform" element={<Perform />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />

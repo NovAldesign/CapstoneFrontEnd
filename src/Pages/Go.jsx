@@ -26,6 +26,7 @@ const LINKS = {
   perform: "/perform",
   join: "/membership",
   celebrate: "/celebrate",
+  host: "/host",
   links: "/links",
   discord: "https://discord.gg/yZG48Q4tgJ",
   fb: "https://www.facebook.com/groups/grownfolksatl",
