@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { BACKEND_URL } from './eventUtils';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API = BACKEND_URL;
 
 const loginService = {
   /**
