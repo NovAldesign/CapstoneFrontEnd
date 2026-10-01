@@ -134,8 +134,12 @@ const Footer = () => {
           <a href="tel:+12703808896" className="footer-contact-link">
             (270) 380-8896
           </a>
-                    <a href="/celebrate" className="footer-contact-link">
+          <a href="/celebrate" className="footer-contact-link">
             Group &amp; Birthday Bookings
+          </a>
+
+          <a href="/host" className="footer-contact-link">
+            Resident &amp; Corporate Events
           </a>
 
           <a href="/perform" className="footer-contact-link">
