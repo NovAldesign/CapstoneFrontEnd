@@ -427,3 +427,19 @@
 .status-pill.status-accepted  { background: #4CAF7D22; color: #4CAF7D; }
 .status-pill.status-pending   { background: #E8A83822; color: #E8A838; }
 .status-pill.status-waitlisted { background: #7B68EE22; color: #7B68EE; }
+/* Reviews tab (AdminReviews.jsx) */
+.reviews-admin-help { margin: 0 0 1.25rem; }
+.reviews-admin-form { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+.reviews-admin-form label { display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.8rem; color: var(--text-muted, #888); }
+.reviews-admin-form .checkbox-label { flex-direction: row; align-items: center; }
+.reviews-admin-row { display: grid; grid-template-columns: 2fr 2fr 1fr 1fr; gap: 1rem; }
+.reviews-admin-form textarea { resize: vertical; font: inherit; }
+.reviews-admin-form .gold-fill-btn { align-self: flex-start; }
+.reviews-admin-list { display: flex; flex-direction: column; gap: 1rem; }
+.reviews-admin-card { display: flex; flex-direction: column; gap: 0.5rem; }
+.reviews-admin-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.reviews-admin-stars { color: #C9A84C; letter-spacing: 1px; }
+.reviews-admin-text { white-space: pre-line; line-height: 1.6; margin: 0.25rem 0; }
+.reviews-admin-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.reviews-admin-actions button { width: auto; margin: 0; }
+@media (max-width: 760px) { .reviews-admin-row { grid-template-columns: 1fr 1fr; } }

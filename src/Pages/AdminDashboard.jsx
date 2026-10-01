@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { getAllMembership, deleteMembership, updateMembershipStatus } from '../Services/adminService';
 import { getAllEvents, createEvent, updateEvent, deleteEvent } from '../Services/eventService';
+import AdminReviews from "../Components/AdminReviews.jsx";
 import "../Styles/Admin.css";
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
@@ -310,6 +311,7 @@ const AdminDashboard = () => {
     { id: 'overview',      label: '📊 Overview' },
     { id: 'members',       label: '👥 Members' },
     { id: 'events',        label: '🎟 Events' },
+    { id: 'reviews',       label: '⭐ Reviews' },
     { id: 'create-event',  label: editingEvent ? '✏️ Edit Event' : '＋ New Event' },
   ];
 
@@ -337,6 +339,9 @@ const AdminDashboard = () => {
           </button>
         ))}
       </div>
+
+      {/* ── REVIEWS TAB ──────────────────────────────────────────────── */}
+      {activeTab === 'reviews' && <AdminReviews />}
 
       {/* ── OVERVIEW TAB ─────────────────────────────────────────────── */}
       {activeTab === 'overview' && (

@@ -2,6 +2,7 @@ import React from "react";
 import "../Styles/Home.css";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import HomeReviews from "../Components/HomeReviews.jsx";
  
 const Home = () => {
   return (
@@ -139,60 +140,8 @@ const Home = () => {
         </div>
       </section>
  
-      {/* 4. SOCIAL PROOF */}
-      <section className="testimonials-section" aria-labelledby="testimonials-heading">
-        <div className="testimonials-container">
-          <span className="gold-label">Real Voices</span>
-          <h2 id="testimonials-heading" className="playfair testimonials-title">
-            Don't Take Our Word for It
-          </h2>
-          <div className="gold-spacer-v2" aria-hidden="true"></div>
- 
-          <div className="testimonials-grid">
-            {/* Featured member review */}
-            <article className="testimonial-card testimonial-card-featured">
-              <div className="testimonial-quote-mark" aria-hidden="true">"</div>
-              <blockquote className="testimonial-text">
-                Game night with Vaughn and the Grown Folks Collective was exactly what
-                grown folks game night should be. The theme set the tone right out the
-                gate. The vibe was cool but competitive — friendly on the surface,
-                serious once the games started. The karaoke heads were in their bag.
-                The spades table was a whole different arena: heavy trash talk, laughs,
-                side-eyes, and strategy.
-                <br /><br />
-                What stood out most was the people. Everybody was down to earth,
-                welcoming, and real. No weird energy. No posturing. Just good folks
-                showing up as themselves.
-                <br /><br />
-                It didn't just feel like a game night — it felt like home. I'd run it
-                back without hesitation.
-              </blockquote>
-              <div className="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div>
-              <cite className="testimonial-reviewer">— Lee · Game Night Attendee</cite>
-            </article>
- 
-            {/* Platform ratings */}
-            <div className="testimonial-card testimonial-rating-card" aria-label="Platform ratings">
-              <div className="platform-block">
-                <p className="rating-platform-name">Eventbrite Verified</p>
-                <div className="rating-number">4.8</div>
-                <div className="testimonial-stars large" aria-label="4.8 out of 5">★★★★★</div>
-                <p className="rating-label">Average event rating</p>
-              </div>
-              <div className="platform-block">
-                <p className="rating-platform-name">Meetup Verified</p>
-                <div className="rating-number">4.8</div>
-                <div className="testimonial-stars large" aria-label="4.8 out of 5">★★★★★</div>
-                <p className="rating-label">Average event rating</p>
-              </div>
-            </div>  {/* ← closes testimonial-rating-card */}
-          </div>  {/* ← closes testimonials-grid */}
- 
-          <p className="testimonials-cta-text">
-            Attend an event and write the next chapter
-          </p>
-        </div>
-      </section>
+      {/* 4. SOCIAL PROOF (approved reviews from the admin dashboard) */}
+      <HomeReviews />
  
       {/* 5. PARTNERSHIP */}
       <section
