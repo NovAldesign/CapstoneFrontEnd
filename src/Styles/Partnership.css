@@ -349,3 +349,67 @@
     padding: 20px !important;
   }
 }
+/* =============================================
+   7. MEMBER PERKS (discount partners)
+   ============================================= */
+.perks-section {
+  background: #F4F1EA;
+  padding: 100px 20px;
+  border-top: 1px solid #ECE6D8;
+  border-bottom: 1px solid #ECE6D8;
+  scroll-margin-top: 80px;
+}
+.perks-inner { max-width: 950px; margin: 0 auto; text-align: center; }
+.perks-title { margin-bottom: 18px !important; }
+.perks-lead { max-width: 640px; margin: 0 auto 50px; color: #555; font-size: 1.05rem; line-height: 1.7; }
+.perks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  text-align: left;
+  margin-bottom: 44px;
+}
+.perks-card {
+  background: #FFFFFF;
+  border-top: 4px solid #C5A059;
+  padding: 34px 30px;
+  box-shadow: 0 15px 45px rgba(0, 33, 71, 0.04);
+}
+.perks-card h3 { color: #002147; font-size: 1.45rem; margin: 0 0 16px; }
+.perks-list, .perks-steps { margin: 0; padding-left: 20px; color: #444; line-height: 1.65; font-size: 0.95rem; }
+.perks-list li, .perks-steps li { padding: 5px 0; }
+.perks-list li::marker { color: #C5A059; }
+.perks-steps li::marker { color: #C5A059; font-weight: 700; }
+.perks-steps strong { color: #002147; }
+.perks-open-btn { max-width: 420px; margin: 0 auto !important; display: block; }
+.perks-form {
+  text-align: left;
+  background: #FFFFFF;
+  padding: 44px 50px;
+  box-shadow: 0 15px 45px rgba(0, 33, 71, 0.05);
+  gap: 34px !important;
+  margin-top: 0 !important;
+}
+.perks-fieldset { border: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 28px; }
+.perks-fieldset legend {
+  font-family: 'Playfair Display', serif;
+  color: #002147;
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 0 0 12px;
+  margin-bottom: 4px;
+  border-bottom: 2px solid #C5A059;
+  width: 100%;
+}
+.perks-agree { display: flex; gap: 12px; align-items: flex-start; font-size: 0.9rem; color: #444; line-height: 1.55; cursor: pointer; }
+.perks-agree input { accent-color: #C5A059; width: 18px; height: 18px; margin-top: 3px; flex-shrink: 0; }
+.perks-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.perks-error { color: #B3261E; background: #FDF2F2; border: 1px solid #E8B4B0; padding: 12px 14px; margin: 0; font-size: 0.9rem; }
+.perks-done { background: #FFFFFF; border: 1px solid #C5A059; padding: 36px 30px; max-width: 620px; margin: 0 auto; color: #444; line-height: 1.6; }
+.perks-done-title { color: #002147; font-size: 1.5rem; margin: 0 0 10px; }
+.perks-hero-link { color: #C5A059; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 850px) {
+  .perks-section { padding: 70px 16px; }
+  .perks-form { padding: 30px 20px; }
+}

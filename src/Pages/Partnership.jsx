@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import "../Styles/Partnership.css";
 import partnershipService from "../Services/partnershipService.js";
+import MemberPerksPartner from "../Components/MemberPerksPartner";
 
 const tiers = [
   {
@@ -135,7 +136,7 @@ const Partnership = () => {
         <title>Partner With Us | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="Sponsor or co-host an event with Grown Folks™ Collective, Atlanta's alcohol-free social community for adults 30+. Partnerships start at $150 per event."
+          content="Sponsor or co-host an event with Grown Folks™ Collective, Atlanta's alcohol-free social community for adults 30+, or offer our members a discount for free. Partnerships start at $150 per event."
         />
       </Helmet>
 
@@ -158,6 +159,9 @@ const Partnership = () => {
             and let's build from there. Our alcohol-free, low-key rooms are
             built for real conversation, so your brand connects with engaged
             guests who are present, relaxed, and actually paying attention.
+          </p>
+          <p className="narrative-body">
+            Own a local business? <a href="#member-perks" className="perks-hero-link">Offer our members a discount</a>. It's free to join.
           </p>
         </div>
       </header>
@@ -248,6 +252,9 @@ const Partnership = () => {
           ))}
         </div>
       </section>
+
+      {/* MEMBER PERKS (discount partners) */}
+      <MemberPerksPartner />
 
       {/* FORM SECTION */}
       <section
