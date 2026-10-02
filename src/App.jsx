@@ -17,6 +17,7 @@ import Blog from "./Pages/Blog.jsx";
 import BlogPost from "./Pages/BlogPost.jsx";
 import Membership from "./Pages/Membership.jsx";
 import Partnerships from "./Pages/Partnership.jsx";
+import MemberPerks from "./Pages/MemberPerks.jsx";
 import About from "./Pages/About.jsx";
 import Contact from "./Pages/Contact.jsx";
 import ResetPassword from "./Pages/ResetPassword.jsx";
@@ -71,6 +72,7 @@ function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/partnerships" element={<Partnerships />} />
+            <Route path="/partnerships/perks" element={<MemberPerks />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/links" element={<Links />} />

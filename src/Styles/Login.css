@@ -525,3 +525,20 @@
     padding: 16px;
   }
 }
+/* Staff / Admin access toggle (was unstyled) */
+.login-access-toggle { margin-top: -6px; }
+.login-access-toggle-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #8A8A8A;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.login-access-toggle-btn:hover,
+.login-access-toggle-btn:focus-visible { color: #C5A059; }

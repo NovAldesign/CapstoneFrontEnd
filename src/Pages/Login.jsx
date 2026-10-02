@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import loginService from '../Services/loginService';
 import "../Styles/Login.css";
 
@@ -46,32 +47,36 @@ const Login = () => {
 
   return (
     <div className="login-page">
+      <Helmet>
+        <title>Log In | Grown Folks™ Collective</title>
+        <meta name="robots" content="noindex" />
+      </Helmet>
 
       {/* Left panel — branding */}
       <div className="login-left">
         <div className="login-left-inner">
-          <span className="login-left-eyebrow">Atlanta & Beyond</span>
+          <span className="login-left-eyebrow">Atlanta · 30+ · Alcohol-Free</span>
           <h1 className="playfair login-left-title">
-            Grown Folks<br />Collective.
+            Grown Folks<span style={{ fontSize: '0.35em', verticalAlign: 'super', marginLeft: '2px' }}>™</span><br />Collective
           </h1>
           <div className="login-left-rule"></div>
           <p className="login-left-lead">
-            Where Atlanta's finest come to connect.
-            Excellence, intention, and genuine community — every Saturday night.
+            Where grown folks come out to play.™ Game nights, live music,
+            karaoke and good company for Atlanta adults 30+.
           </p>
 
           <div className="login-left-stats">
             <div className="login-stat">
-              <div className="login-stat-number">1,700+</div>
-              <div className="login-stat-label">Community members</div>
+              <div className="login-stat-number">2,270+</div>
+              <div className="login-stat-label">Community in Atlanta</div>
             </div>
             <div className="login-stat">
-              <div className="login-stat-number">250%+</div>
-              <div className="login-stat-label">Venue sales lift</div>
+              <div className="login-stat-number">30+</div>
+              <div className="login-stat-label">Grown folks only</div>
             </div>
             <div className="login-stat">
-              <div className="login-stat-number">40</div>
-              <div className="login-stat-label">Guests per event</div>
+              <div className="login-stat-number">100%</div>
+              <div className="login-stat-label">Alcohol-free</div>
             </div>
           </div>
         </div>
@@ -84,7 +89,7 @@ const Login = () => {
           <div className="login-header">
             <span className="login-card-eyebrow">Member Portal</span>
             <h2 className="playfair login-card-title">GFC Portal</h2>
-            <p className="login-card-sub">Reconnect with your community.</p>
+            <p className="login-card-sub">Welcome back.</p>
           </div>
 
           {error && (

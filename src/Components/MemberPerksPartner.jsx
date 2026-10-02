@@ -45,9 +45,9 @@ const OFFER_HINT = {
   other: "Describe the perk",
 };
 
-const MemberPerksPartner = () => {
+const MemberPerksPartner = ({ standalone = false }) => {
   const [params] = useSearchParams();
-  const [open, setOpen] = useState(params.get("perk") === "1");
+  const [open, setOpen] = useState(standalone || params.get("perk") === "1");
   const [form, setForm] = useState(EMPTY);
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
@@ -97,14 +97,18 @@ const MemberPerksPartner = () => {
   const today = new Date().toISOString().slice(0, 10);
 
   return (
-    <section className="perks-section" id="member-perks" aria-labelledby="perks-title">
+    <section className={`perks-section ${standalone ? "is-standalone" : ""}`} id="member-perks" aria-label="Member Perks">
       <div className="perks-inner">
-        <span className="location-tag">Free to Join</span>
-        <h2 id="perks-title" className="playfair section-title perks-title">Offer a Member Perk</h2>
-        <p className="perks-lead">
-          Give Grown Folks™ Collective members an exclusive discount and get your business in front of
-          Atlanta adults 30+ who love to support local. No fee, no contract.
-        </p>
+        {!standalone && (
+          <>
+            <span className="location-tag">Free to Join</span>
+            <h2 id="perks-title" className="playfair section-title perks-title">Offer a Member Perk</h2>
+            <p className="perks-lead">
+              Give Grown Folks™ Collective members an exclusive discount and get your business in front of
+              Atlanta adults 30+ who love to support local. No fee, no contract.
+            </p>
+          </>
+        )}
 
         <div className="perks-grid">
           <div className="perks-card">
@@ -140,7 +144,8 @@ const MemberPerksPartner = () => {
             Offer a Member Discount
           </button>
         ) : (
-          <form className="luxe-form perks-form" onSubmit={submit} noValidate>
+          <form className="luxe-form perks-form" id="perk-form" onSubmit={submit} noValidate>
+            {standalone && <h2 className="playfair perks-form-title">Tell us about your perk</h2>}
             <fieldset className="perks-fieldset">
               <legend>Your business</legend>
               <div className="form-row">
