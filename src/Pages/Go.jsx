@@ -29,6 +29,8 @@ const LINKS = {
   join: "/membership",
   celebrate: "/celebrate",
   host: "/host",
+  perks: "/partnerships/perks",
+  sponsor: "/partnerships",
   teambuilding: "/corporate-team-building-atlanta",
   holiday: "/office-holiday-party-atlanta",
   links: "/links",

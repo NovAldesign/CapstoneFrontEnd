@@ -229,3 +229,74 @@
     padding-top: 90px;
   }
 }
+/* --- PARTNERSHIPS DROPDOWN --- */
+.nav-dropdown { position: relative; }
+.nav-caret { font-size: 0.7em; margin-left: 2px; display: inline-block; transition: transform 0.2s ease; }
+.nav-submenu {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  min-width: 220px;
+  background: #002147;
+  border: 1px solid rgba(197, 160, 89, 0.45);
+  border-top: 2px solid #C5A059;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -6px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+  z-index: 1002;
+}
+/* invisible bridge so the menu doesn't close in the gap */
+.nav-submenu::before { content: ""; position: absolute; left: 0; right: 0; top: -10px; height: 10px; }
+.nav-dropdown:hover .nav-submenu,
+.nav-dropdown:focus-within .nav-submenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+.nav-dropdown:hover .nav-caret,
+.nav-dropdown:focus-within .nav-caret { transform: rotate(180deg); }
+.nav-sublink {
+  display: block;
+  padding: 11px 20px;
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.nav-sublink:hover,
+.nav-sublink:focus-visible { color: #C5A059; background: rgba(197, 160, 89, 0.08); }
+.nav-sublink.active { color: #C5A059; }
+
+@media (max-width: 1100px) {
+  /* In the drawer, show the two options under Partnerships */
+  .nav-caret { display: none; }
+  .nav-submenu,
+  .nav-dropdown:hover .nav-submenu,
+  .nav-dropdown:focus-within .nav-submenu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0 0 6px 16px;
+  }
+  .nav-submenu::before { display: none; }
+  .nav-sublink {
+    padding: 12px 0;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    border-bottom: 1px solid rgba(197, 160, 89, 0.08);
+  }
+}

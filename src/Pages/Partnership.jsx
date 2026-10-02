@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import "../Styles/Partnership.css";
 import partnershipService from "../Services/partnershipService.js";
-import MemberPerksPartner from "../Components/MemberPerksPartner";
 
 const tiers = [
   {
@@ -72,6 +72,8 @@ const defaultForm = {
 };
 
 const Partnership = () => {
+  const [params] = useSearchParams();
+  const [showForm, setShowForm] = useState(params.get("inquire") === "1");
   const [formData, setFormData] = useState(defaultForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState(null);
@@ -92,12 +94,15 @@ const Partnership = () => {
     }));
   };
 
-  const handleTierSelect = (tierLabel) => {
-    setFormData((prev) => ({ ...prev, tierRequested: tierLabel }));
-    document
-      .getElementById("partner-form")
-      ?.scrollIntoView({ behavior: "smooth" });
+  // The inquiry form stays hidden until someone picks a level (or asks to talk)
+  const openForm = (tierLabel = "") => {
+    if (tierLabel) setFormData((prev) => ({ ...prev, tierRequested: tierLabel }));
+    setShowForm(true);
+    setTimeout(() => {
+      document.getElementById("partner-form")?.scrollIntoView({ behavior: "smooth" });
+    }, 50);
   };
+  const handleTierSelect = (tierLabel) => openForm(tierLabel);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -160,9 +165,22 @@ const Partnership = () => {
             built for real conversation, so your brand connects with engaged
             guests who are present, relaxed, and actually paying attention.
           </p>
-          <p className="narrative-body">
-            Own a local business? <a href="#member-perks" className="perks-hero-link">Offer our members a discount</a>. It's free to join.
-          </p>
+
+          {/* Two paths: sponsors vs. local businesses */}
+          <div className="partner-paths">
+            <a href="#levels" className="partner-path">
+              <span className="partner-path-tag">For brands</span>
+              <span className="playfair partner-path-title">Sponsor an Event</span>
+              <span className="partner-path-text">Get your brand in the room with Atlanta's 30+ crowd. From $150 per event.</span>
+              <span className="partner-path-cta">See partnership levels ↓</span>
+            </a>
+            <Link to="/partnerships/perks" className="partner-path">
+              <span className="partner-path-tag">For local businesses</span>
+              <span className="playfair partner-path-title">Offer a Member Perk</span>
+              <span className="partner-path-text">Give our members a discount and bring new regulars through your door. Free to join.</span>
+              <span className="partner-path-cta">Offer a perk →</span>
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -189,7 +207,7 @@ const Partnership = () => {
       </section>
 
       {/* TIERS SHOWCASE */}
-      <section className="tier-showcase">
+      <section className="tier-showcase" id="levels">
         <span className="location-tag">Partnership Levels</span>
         <h2 className="playfair section-title">Find Your Level</h2>
 
@@ -253,10 +271,17 @@ const Partnership = () => {
         </div>
       </section>
 
-      {/* MEMBER PERKS (discount partners) */}
-      <MemberPerksPartner />
+      {!showForm && (
+        <p className="partner-talk">
+          Not sure which level fits?{" "}
+          <button type="button" className="partner-talk-btn" onClick={() => openForm("Not sure")}>
+            Let's talk →
+          </button>
+        </p>
+      )}
 
-      {/* FORM SECTION */}
+      {/* FORM SECTION: opens when someone picks a level */}
+      {showForm && (
       <section
         className="proposal-container"
         id="partner-form"
@@ -509,6 +534,7 @@ const Partnership = () => {
           </form>
         </div>
       </section>
+      )}
     </div>
   );
 };

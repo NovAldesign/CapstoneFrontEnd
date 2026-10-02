@@ -15,6 +15,7 @@ export default defineConfig({
         '/membership',
         '/blog',
         '/partnerships',
+        '/partnerships/perks',
         '/about',
         '/contact',
         '/celebrate',

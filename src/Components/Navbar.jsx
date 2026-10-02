@@ -42,7 +42,15 @@ const Navbar = () => {
         {/* <li><NavLink to="/travel" className={navClass} onClick={closeMenu}>Travel</NavLink></li> */}
         {/* <li><NavLink to="/ic-dinners" className={navClass} onClick={closeMenu}>IC Dinners</NavLink></li>*/}
         <li><NavLink to="/membership" className={navClass} onClick={closeMenu}>Membership</NavLink></li>
-        <li><NavLink to="/partnerships" className={navClass} onClick={closeMenu}>Partnerships</NavLink></li>
+        <li className="nav-dropdown">
+          <NavLink to="/partnerships" className={navClass} onClick={closeMenu} aria-haspopup="true">
+            Partnerships <span className="nav-caret" aria-hidden="true">▾</span>
+          </NavLink>
+          <ul className="nav-submenu" aria-label="Partnerships">
+            <li><NavLink to="/partnerships" end className="nav-sublink" onClick={closeMenu}>Sponsor an Event</NavLink></li>
+            <li><NavLink to="/partnerships/perks" className="nav-sublink" onClick={closeMenu}>Offer a Member Perk</NavLink></li>
+          </ul>
+        </li>
         <li><NavLink to="/about" className={navClass} onClick={closeMenu}>About Us</NavLink></li>
         <li><NavLink to="/contact" className={navClass} onClick={closeMenu}>Contact Us</NavLink></li>
 
