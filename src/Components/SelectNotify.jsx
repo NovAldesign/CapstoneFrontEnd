@@ -30,7 +30,7 @@ export const daysLeft = (iso) => {
   return Math.max(0, Math.ceil(ms / 86400000));
 };
 
-const EMPTY = { firstName: "", email: "", phone: "", gender: "", textOk: false, website: "" };
+const EMPTY = { firstName: "", email: "", phone: "", gender: "", textOk: false, newsletter: false, website: "" };
 
 // "Notify me when the doors open" form
 const SelectNotify = ({ compact = false }) => {
@@ -111,6 +111,10 @@ const SelectNotify = ({ compact = false }) => {
           <span>Text me when the doors open. Msg &amp; data rates may apply. Reply STOP to opt out.</span>
         </label>
       )}
+      <label className="select-notify-check">
+        <input type="checkbox" name="newsletter" checked={form.newsletter} onChange={update} />
+        <span>Also send me the Grown Folks™ Collective newsletter with upcoming events.</span>
+      </label>
       <input type="text" name="website" value={form.website} onChange={update} className="select-hp" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       {error && <p className="select-error" role="alert">{error}</p>}
       <button type="submit" className="select-btn" disabled={sending}>

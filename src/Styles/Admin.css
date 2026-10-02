@@ -445,7 +445,7 @@
 @media (max-width: 760px) { .reviews-admin-row { grid-template-columns: 1fr 1fr; } }
 
 /* GFC Select™ tab (AdminSelect.jsx) */
-.sel-adm-room { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-bottom: 1.25rem; }
+.sel-adm-room { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.25rem; }
 .sel-adm-stat { background: var(--card-bg, #111); border: 1px solid var(--border, #222); border-top: 3px solid #C9A84C; border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; gap: 0.35rem; }
 .sel-adm-stat-num { font-size: 1.6rem; font-weight: 700; color: var(--text, #fff); line-height: 1; }
 .sel-adm-stat-num small { font-size: 0.9rem; color: var(--text-muted, #888); font-weight: 500; }

@@ -80,6 +80,7 @@ const AdminSelectDoors = () => {
       men: list.filter((p) => p.gender === "man").length,
       women: list.filter((p) => p.gender === "woman").length,
       texts: list.filter((p) => p.textOk).length,
+      newsletter: list.filter((p) => p.newsletter).length,
     }),
     [list]
   );
@@ -145,8 +146,8 @@ const AdminSelectDoors = () => {
   };
 
   const exportCsv = () => {
-    const rows = [["First name", "Email", "Phone", "Man/Woman", "OK to text", "Joined"]].concat(
-      list.map((p) => [p.firstName, p.email, p.phone, p.gender, p.textOk ? "yes" : "", new Date(p.createdAt).toLocaleDateString()])
+    const rows = [["First name", "Email", "Phone", "Man/Woman", "OK to text", "Newsletter", "Joined"]].concat(
+      list.map((p) => [p.firstName, p.email, p.phone, p.gender, p.textOk ? "yes" : "", p.newsletter ? "yes" : "", new Date(p.createdAt).toLocaleDateString()])
     );
     const csv = rows.map((r) => r.map((c) => `"${String(c ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
     const a = document.createElement("a");
@@ -219,12 +220,13 @@ const AdminSelectDoors = () => {
           <div className="sel-adm-stat"><span className="sel-adm-stat-num">{counts.men}</span><span className="sel-adm-stat-label">Men</span></div>
           <div className="sel-adm-stat"><span className="sel-adm-stat-num">{counts.women}</span><span className="sel-adm-stat-label">Women</span></div>
           <div className="sel-adm-stat"><span className="sel-adm-stat-num">{counts.texts}</span><span className="sel-adm-stat-label">OK to text</span></div>
+          <div className="sel-adm-stat"><span className="sel-adm-stat-num">{counts.newsletter}</span><span className="sel-adm-stat-label">Joined newsletter</span></div>
         </div>
 
         {showList && (
           <table className="admin-table sel-adm-table">
             <thead>
-              <tr><th>Name</th><th>Email</th><th>Phone</th><th>Man/Woman</th><th>Joined</th></tr>
+              <tr><th>Name</th><th>Email</th><th>Phone</th><th>Man/Woman</th><th>Newsletter</th><th>Joined</th></tr>
             </thead>
             <tbody>
               {list.map((p) => (
@@ -233,6 +235,7 @@ const AdminSelectDoors = () => {
                   <td>{p.email}</td>
                   <td>{p.phone}{p.textOk ? " · text OK" : ""}</td>
                   <td>{p.gender || "—"}</td>
+                  <td>{p.newsletter ? "Yes" : "—"}</td>
                   <td>{new Date(p.createdAt).toLocaleDateString()}</td>
                 </tr>
               ))}
