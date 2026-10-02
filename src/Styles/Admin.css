@@ -443,3 +443,66 @@
 .reviews-admin-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
 .reviews-admin-actions button { width: auto; margin: 0; }
 @media (max-width: 760px) { .reviews-admin-row { grid-template-columns: 1fr 1fr; } }
+
+/* GFC Select™ tab (AdminSelect.jsx) */
+.sel-adm-room { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-bottom: 1.25rem; }
+.sel-adm-stat { background: var(--card-bg, #111); border: 1px solid var(--border, #222); border-top: 3px solid #C9A84C; border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; gap: 0.35rem; }
+.sel-adm-stat-num { font-size: 1.6rem; font-weight: 700; color: var(--text, #fff); line-height: 1; }
+.sel-adm-stat-num small { font-size: 0.9rem; color: var(--text-muted, #888); font-weight: 500; }
+.sel-adm-stat-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted, #888); }
+.sel-adm-filters { margin-bottom: 0.5rem; }
+.sel-adm-bulk { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; padding: 0.85rem 1rem; margin: 0.75rem 0; background: #1a1608; border: 1px solid #C9A84C; border-radius: 10px; color: var(--text, #fff); }
+.sel-adm-bulk button { width: auto; margin: 0; }
+.sel-adm-clear { background: none; border: 0; color: var(--text-muted, #aaa); text-decoration: underline; cursor: pointer; font: inherit; padding: 0.4rem; }
+.sel-adm-notice { color: #4CAF7D; margin: 0.5rem 0; }
+.sel-adm-composer { display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1.25rem; border: 1px solid #C9A84C; }
+.sel-adm-composer-title { margin: 0; color: var(--text, #fff); font-size: 1.05rem; }
+.sel-adm-composer code { color: #C9A84C; }
+.sel-adm-to { margin: 0; line-height: 1.6; }
+.sel-adm-label { display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.8rem; color: var(--text-muted, #888); }
+.sel-adm-message { resize: vertical; font: inherit; line-height: 1.6; }
+.sel-adm-preview { background: #F4F1EA; color: #0E2340; border: 1px solid #C9A84C; border-radius: 6px; padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.sel-adm-preview p { margin: 0; white-space: pre-line; line-height: 1.6; font-family: Georgia, serif; }
+.sel-adm-preview .sel-adm-detail-label { color: #8A6A2A; }
+.sel-adm-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.sel-adm-actions button { width: auto; margin: 0; }
+.sel-adm-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.sel-adm-checkall { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted, #888); padding: 0.25rem 0; }
+.sel-adm-card { padding: 0.75rem 1rem; }
+.sel-adm-card.is-checked { border-color: #C9A84C; }
+.sel-adm-row { display: flex; align-items: center; gap: 0.85rem; }
+.sel-adm-row input[type="checkbox"], .sel-adm-checkall input { width: 18px; height: 18px; accent-color: #C9A84C; flex-shrink: 0; }
+.sel-adm-name { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 0.15rem; background: none; border: 0; padding: 0.25rem 0; color: var(--text, #fff); font: inherit; text-align: left; cursor: pointer; min-height: 44px; justify-content: center; }
+.sel-adm-name:hover strong { color: #C9A84C; }
+.sel-adm-date { font-size: 0.75rem; text-align: right; min-width: 90px; }
+.sel-adm-body { border-top: 1px solid var(--border, #222); margin-top: 0.75rem; padding-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.sel-adm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.5rem 1.25rem; }
+.sel-adm-detail { display: flex; flex-direction: column; gap: 0.15rem; }
+.sel-adm-detail-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted, #888); }
+.sel-adm-detail-value { color: var(--text, #fff); line-height: 1.5; white-space: pre-line; }
+.sel-adm-sub { margin: 0.85rem 0 0.25rem; color: #C9A84C; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.sel-adm-bingo { margin: 0; padding-left: 1.1rem; line-height: 1.7; color: var(--text, #fff); }
+@media (max-width: 760px) {
+  .sel-adm-room { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sel-adm-date { display: none; }
+}
+/* Select tab: readable dark cards regardless of dashboard theme */
+.sel-adm .sel-adm-card,
+.sel-adm .sel-adm-composer { background: #12161f; color: #f4f1ea; border: 1px solid #2a3142; border-radius: 10px; }
+.sel-adm .sel-adm-card.is-checked,
+.sel-adm .sel-adm-composer { border-color: #C9A84C; }
+.sel-adm .td-muted,
+.sel-adm .sel-adm-detail-label,
+.sel-adm .sel-adm-label,
+.sel-adm .sel-adm-checkall { color: #b9c0d0; }
+.sel-adm .sel-adm-name,
+.sel-adm .sel-adm-detail-value,
+.sel-adm .sel-adm-bingo,
+.sel-adm .sel-adm-composer-title { color: #f4f1ea; }
+.sel-adm .sel-adm-body { border-top-color: #2a3142; }
+.sel-adm .sel-adm-preview { color: #0E2340; }
+.sel-adm .sel-adm-preview .sel-adm-detail-label { color: #8A6A2A; }
+.sel-adm .sel-adm-stat { background: #12161f; border-color: #2a3142; border-top-color: #C9A84C; }
+.sel-adm .sel-adm-stat-num { color: #f4f1ea; }
+.sel-adm .sel-adm-stat-label { color: #b9c0d0; }
+.sel-adm .sel-adm-checkall { color: #3A4A63; }
