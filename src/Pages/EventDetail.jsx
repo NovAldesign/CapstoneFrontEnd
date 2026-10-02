@@ -113,17 +113,73 @@ const EventDetail = () => {
       `${event.title} with Grown Folks™ Collective, ${formatEventDate(event.date)} in Atlanta.`,
     155
   );
+  const pageUrl = `https://www.grownfolkscollective.com${eventPath(event)}`;
+
+  // Event structured data, so Google can show this event in its events results
+  const AVAILABILITY = {
+    available: "https://schema.org/InStock",
+    "sold-out": "https://schema.org/SoldOut",
+    upcoming: "https://schema.org/PreOrder",
+    ended: "https://schema.org/SoldOut",
+  };
+  const publicTiers = visibleTiers.filter((t) => !/member/i.test(t.name || ""));
+  const eventSchema = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: event.title,
+    description: truncate(event.plainDescription || metaDescription, 500),
+    startDate: new Date(event.date).toISOString(),
+    ...(event.endDate && { endDate: new Date(event.endDate).toISOString() }),
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    ...(event.image && { image: [event.image] }),
+    url: pageUrl,
+    location: {
+      "@type": "Place",
+      name: loc.name || "Atlanta, GA",
+      address: {
+        "@type": "PostalAddress",
+        ...(loc.address && { streetAddress: loc.address }),
+        addressLocality: loc.city || "Atlanta",
+        addressRegion: loc.state || "GA",
+        ...(loc.zip && { postalCode: loc.zip }),
+        addressCountry: "US",
+      },
+    },
+    organizer: {
+      "@type": "Organization",
+      name: "Grown Folks Collective",
+      url: "https://www.grownfolkscollective.com",
+    },
+    ...(publicTiers.length > 0 && {
+      offers: publicTiers.map((t) => {
+        const start = t.salesStart || t.sales_start;
+        return {
+          "@type": "Offer",
+          name: t.name,
+          price: parseCleanPrice(t).toFixed(2),
+          priceCurrency: "USD",
+          availability: AVAILABILITY[getTierStatus(t)] || "https://schema.org/InStock",
+          url: pageUrl,
+          ...(start && { validFrom: new Date(start).toISOString() }),
+        };
+      }),
+    }),
+    typicalAgeRange: "30-",
+  };
 
   return (
     <div className="gfc-detail">
       <Helmet>
         <title>{`${event.title} | Grown Folks™ Collective`}</title>
         <meta name="description" content={metaDescription} />
-        <link rel="canonical" href={`https://www.grownfolkscollective.com${eventPath(event)}`} />
+        <link rel="canonical" href={pageUrl} />
         <meta property="og:title" content={event.title} />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:image" content={event.image} />
+        <meta property="og:url" content={pageUrl} />
         <meta property="og:type" content="event" />
+        <script type="application/ld+json">{JSON.stringify(eventSchema)}</script>
       </Helmet>
 
          {/* HERO: event graphic shown whole (it already has the title, date and logo) */}

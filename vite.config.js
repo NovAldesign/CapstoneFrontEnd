@@ -20,6 +20,8 @@ export default defineConfig({
         '/celebrate',
         '/perform',
         '/host',
+        '/select',
+        '/select/invitation',
         '/corporate-team-building-atlanta',
         '/office-holiday-party-atlanta',
         '/privacy',
