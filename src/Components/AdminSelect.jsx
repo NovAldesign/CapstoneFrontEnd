@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { BACKEND_URL } from "../Services/eventUtils";
+import AdminSelectDoors from "./AdminSelectDoors.jsx";
 
 // Admin: GFC Select™ applications — review, approve, and email in bulk.
 
@@ -76,6 +77,7 @@ const AdminSelect = () => {
   const [subject, setSubject] = useState(DEFAULT_SUBJECT);
   const [message, setMessage] = useState(DEFAULT_MESSAGE);
   const [notice, setNotice] = useState("");
+  const [view, setView] = useState("apps"); // "apps" | "doors"
 
   const load = async () => {
     setLoading(true);
@@ -194,11 +196,23 @@ const AdminSelect = () => {
   return (
     <div className="sel-adm">
       <div className="section-row">
-        <h3 className="section-heading">GFC Select™ applications</h3>
+        <h3 className="section-heading">GFC Select™</h3>
         <button type="button" className="export-btn" onClick={load} disabled={loading}>
           Refresh
         </button>
       </div>
+
+      <div className="table-toolbar">
+        <button type="button" className={`admin-tab ${view === "apps" ? "active" : ""}`} onClick={() => setView("apps")}>
+          Applications ({apps.length})
+        </button>
+        <button type="button" className={`admin-tab ${view === "doors" ? "active" : ""}`} onClick={() => setView("doors")}>
+          The doors &amp; notify list
+        </button>
+      </div>
+
+      {view === "doors" ? <AdminSelectDoors /> : (
+      <>
 
       {/* The room */}
       <div className="sel-adm-room">
@@ -430,6 +444,8 @@ const AdminSelect = () => {
             );
           })}
         </div>
+      )}
+      </>
       )}
     </div>
   );

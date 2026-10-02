@@ -506,3 +506,13 @@
 .sel-adm .sel-adm-stat-num { color: #f4f1ea; }
 .sel-adm .sel-adm-stat-label { color: #b9c0d0; }
 .sel-adm .sel-adm-checkall { color: #3A4A63; }
+/* Select tab: doors + notify list */
+.sel-adm-doors { display: flex; flex-direction: column; gap: 1rem; }
+.sel-adm-doors .sel-adm-card { display: flex; flex-direction: column; gap: 0.85rem; padding: 1.1rem 1.25rem; }
+.sel-adm-doors-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.85rem; }
+.sel-adm-doors input[type="datetime-local"] { color-scheme: dark; }
+.sel-adm-doors .sel-adm-room { margin-bottom: 0; }
+.sel-adm-table { color: #f4f1ea; }
+.sel-adm-table th { color: #b9c0d0; text-align: left; }
+@media (max-width: 900px) { .sel-adm-doors-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .sel-adm-doors-grid { grid-template-columns: 1fr; } }

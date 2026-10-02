@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { BACKEND_URL } from "../Services/eventUtils";
 import { SelectTopbar, SelectFooter } from "../Components/SelectFrame";
+import SelectNotify, { useSelectStatus, fmtDoorDate, daysLeft } from "../Components/SelectNotify";
 import "../Styles/Select.css";
 
 // Keep these lists in sync with the backend (routes/selectRoutes.js)
@@ -139,6 +140,9 @@ const FormStep = ({ index, title, done, optional, open, onToggle, onNext, nextLa
 };
 
 const SelectInvitation = () => {
+  const doors = useSelectStatus();
+  const doorsOpen = doors.state === "open";
+  const left = daysLeft(doors.closesAt);
   const [params] = useSearchParams();
   const [form, setForm] = useState(EMPTY);
   const [bingo, setBingo] = useState({}); // { prompt: answer }
@@ -388,19 +392,38 @@ const SelectInvitation = () => {
         <h2 id="select-gate-title" className="select-h2">Are you ready to enter the room?</h2>
         <p className="select-body">
           If you're single, 30 or older, done with the apps and ready to meet someone face to
-          face, then this room was made for you. Step inside and request your seat.
+          face, then this room was made for you.{doorsOpen ? " Step inside and request your seat." : ""}
         </p>
-        {!ready ? (
-          <button type="button" className="select-btn" onClick={enterRoom}>
-            I'm Ready. Enter the Room.
-          </button>
+        {doors.state === "loading" ? null : !doorsOpen ? (
+          <div className="select-gate-closed">
+            <p className="select-doors">
+              {doors.state === "closed"
+                ? "The doors are closed for this round."
+                : doors.opensAt
+                  ? <>The doors open <strong>{fmtDoorDate(doors.opensAt)}</strong>, for two weeks only.</>
+                  : "The doors open soon, for two weeks only."}
+              {" "}Join the list and you'll be the first to know.
+            </p>
+            <SelectNotify />
+          </div>
+        ) : !ready ? (
+          <>
+            {left !== null && (
+              <p className="select-doors select-doors-open">
+                The doors close in <strong>{left === 0 ? "less than a day" : `${left} ${left === 1 ? "day" : "days"}`}</strong>.
+              </p>
+            )}
+            <button type="button" className="select-btn" onClick={enterRoom}>
+              I'm Ready. Enter the Room.
+            </button>
+          </>
         ) : (
           <p className="select-gate-done">The door is open. Your request is below.</p>
         )}
       </section>
 
       {/* REQUEST FORM (opens after "I'm Ready") */}
-      {ready && (
+      {ready && doorsOpen && (
       <section id="select-request" className="select-section select-dark select-form-reveal" aria-labelledby="select-form-title" ref={formTopRef} tabIndex={-1}>
         <p className="select-kicker">Forty seats · By invitation only</p>
         <h2 id="select-form-title" className="select-h2">Request your seat</h2>
