@@ -162,10 +162,10 @@ const GroupBooking = () => {
   return (
     <div className="contact-page group-page">
       <Helmet>
-        <title>Celebrate With Us | Grown Folks Collective</title>
+        <title>Celebrate With Us | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="Celebrate with Grown Folks Collective. Bring your crew to Karaoke Bingo, game nights, cookouts, and more, with group pricing, reserved tables, and special moments."
+          content="Celebrate with Grown Folks™ Collective. Bring your crew to Karaoke Bingo, game nights, cookouts, and more, with group pricing, reserved tables, and special moments."
         />
       </Helmet>
 

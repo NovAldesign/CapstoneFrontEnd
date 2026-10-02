@@ -132,10 +132,10 @@ const Partnership = () => {
   return (
     <div className="partnership-page">
       <Helmet>
-        <title>Partner With Us | Grown Folks Collective</title>
+        <title>Partner With Us | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="Sponsor or co-host an event with Grown Folks Collective, Atlanta's alcohol-free social community for adults 30+. Partnerships start at $150 per event."
+          content="Sponsor or co-host an event with Grown Folks™ Collective, Atlanta's alcohol-free social community for adults 30+. Partnerships start at $150 per event."
         />
       </Helmet>
 

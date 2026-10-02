@@ -112,7 +112,7 @@ const BlogPost = () => {
   return (
     <div className="editorial-page">
       <Helmet>
-        <title>{`${article.title} | Grown Folks Collective`}</title>
+        <title>{`${article.title} | Grown Folks™ Collective`}</title>
       </Helmet>
       <div className="editorial-nav-bar">
         <Link to="/blog" className="editorial-back">← Back to Articles</Link>

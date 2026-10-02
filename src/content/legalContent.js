@@ -5,7 +5,7 @@
 // Update the settings below once, and every page uses them.
 // =======================================================
 export const LEGAL = {
-  brand: "Grown Folks Collective",
+  brand: "Grown Folks™ Collective",
   legalName: "Grown Folks Collective", // ← change to your registered name, e.g. "Grown Folks Collective LLC"
   effectiveDate: "October 1, 2026",
   email: "community@grownfolkscollective.com",
@@ -339,7 +339,7 @@ export const LEGAL_PAGES = {
         list: [
           "Ask before taking photos or videos of other guests, and respect anyone who says no.",
           "Don't share other guests' personal information without their permission.",
-          "Some events, like GFC Select, are camera-free. Follow the rules for each event.",
+          "Some events, like GFC Select™, are camera-free. Follow the rules for each event.",
         ],
       },
       {
@@ -383,7 +383,7 @@ export const LEGAL_PAGES = {
       {
         h: "Camera-free events",
         p: [
-          "Some events, like GFC Select, are camera-free. Guests' phone cameras are covered at check-in and no photos are taken or posted.",
+          "Some events, like GFC Select™, are camera-free. Guests' phone cameras are covered at check-in and no photos are taken or posted.",
         ],
       },
       {

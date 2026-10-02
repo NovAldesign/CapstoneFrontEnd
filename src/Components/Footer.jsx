@@ -168,7 +168,7 @@ const Footer = () => {
 
       <div className="footer-bottom">
         <span>
-          &copy; {new Date().getFullYear()} Grown Folks Collective. All rights reserved.
+          &copy; {new Date().getFullYear()} Grown Folks™ Collective. All rights reserved.
         </span>
         <span className="footer-bottom-right">
           Built with intention. Powered by community.

@@ -110,14 +110,14 @@ const EventDetail = () => {
     .sort((a, b) => parseCleanPrice(a) - parseCleanPrice(b));
   const metaDescription = truncate(
     event.plainDescription ||
-      `${event.title} with Grown Folks Collective, ${formatEventDate(event.date)} in Atlanta.`,
+      `${event.title} with Grown Folks™ Collective, ${formatEventDate(event.date)} in Atlanta.`,
     155
   );
 
   return (
     <div className="gfc-detail">
       <Helmet>
-        <title>{`${event.title} | Grown Folks Collective`}</title>
+        <title>{`${event.title} | Grown Folks™ Collective`}</title>
         <meta name="description" content={metaDescription} />
         <link rel="canonical" href={`https://www.grownfolkscollective.com${eventPath(event)}`} />
         <meta property="og:title" content={event.title} />

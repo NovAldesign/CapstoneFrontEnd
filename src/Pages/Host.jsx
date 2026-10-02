@@ -159,10 +159,10 @@ const Host = () => {
   return (
     <div className="contact-page group-page host-page">
       <Helmet>
-        <title>Resident &amp; Corporate Event Hosting in Atlanta | Play. Sip. Toast. | Grown Folks Collective</title>
+        <title>Resident &amp; Corporate Event Hosting in Atlanta | Play. Sip. Toast. | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="Play. Sip. Toast. Alcohol-free resident and corporate events in Atlanta, hosted by Grown Folks Collective: game nights, Spades tournaments and Karaoke Bingo with a signature mocktail bar and a toast to your community's wins."
+          content="Play. Sip. Toast. Alcohol-free resident and corporate events in Atlanta, hosted by Grown Folks™ Collective: game nights, Spades tournaments and Karaoke Bingo with a signature mocktail bar and a toast to your community's wins."
         />
       </Helmet>
 
@@ -326,7 +326,7 @@ const Host = () => {
 
       {/* ── WHY GFC ── */}
       <section className="host-section" aria-labelledby="host-why">
-        <span className="contact-form-eyebrow">Why Grown Folks Collective</span>
+        <span className="contact-form-eyebrow">Why Grown Folks™ Collective</span>
         <h2 className="host-h2" id="host-why">Atlanta's alcohol-free social club, now at your place.</h2>
         <div className="host-why">
           {WHY.map(([title, text]) => (

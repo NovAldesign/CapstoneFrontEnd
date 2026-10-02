@@ -346,14 +346,14 @@ const About = () => {
  
       {/* Meta Data for SEO */}
       <Helmet>
-        <title>About Us | Grown Folks Collective</title>
+        <title>About Us | Grown Folks™ Collective</title>
         {/* ─── ADA FIX #2: Language attribute ──────────────────────────────
             WCAG 3.1.1 – Language of Page (Level A)
             Set lang on <html> in your index.html / root: <html lang="en">
             Noted here as a reminder — can't set it in Helmet on some setups. */}
         <meta
           name="description"
-          content="Discover the story of Grown Folks Collective. Built in Atlanta for adults 30+, we're a third space to end social isolation and bring more fun and joy into your life through genuine, alcohol-free connection."
+          content="Discover the story of Grown Folks™ Collective. Built in Atlanta for adults 30+, we're a third space to end social isolation and bring more fun and joy into your life through genuine, alcohol-free connection."
         />
       </Helmet>
  
@@ -429,7 +429,7 @@ const About = () => {
                 The options that used to work — the bars, the lounges, the loud rooms full of strangers — stopped feeling right.
               </p>
               <p className="about-body">
-                Grown Folks Collective was founded in Atlanta in January 2026 to fill that gap.
+                Grown Folks™ Collective was founded in Atlanta in January 2026 to fill that gap.
               </p>
               <p className="about-body">
                 We didn't start with a business plan. We started with a game night in a small Decatur restaurant and 36 people who showed up because they were tired of sitting at home. It sold out. Then we did it again. Sold out again.
@@ -616,7 +616,7 @@ const About = () => {
                       This makes the attribution semantically correct.      */}
                   <cite>
                     <span className="about-founder-name">Vaughn</span>
-                    <span className="about-founder-title">Founder, Grown Folks Collective</span>
+                    <span className="about-founder-title">Founder, Grown Folks™ Collective</span>
                   </cite>
                 </figcaption>
               </figure>

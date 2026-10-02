@@ -255,10 +255,10 @@ const Membership = () => {
   return (
     <div className="membership-page">
       <Helmet>
-        <title>Join the Collective | Grown Folks Collective Membership</title>
+        <title>Join the Collective | Grown Folks™ Collective Membership</title>
         <meta
           name="description"
-          content="Become a Grown Folks Collective member. Your monthly fee comes back as event credit, plus member pricing, early access, and perks for Atlanta adults 30+."
+          content="Become a Grown Folks™ Collective member. Your monthly fee comes back as event credit, plus member pricing, early access, and perks for Atlanta adults 30+."
         />
       </Helmet>
 
@@ -271,7 +271,7 @@ const Membership = () => {
           <div className="mission-narrative">
             <p className="narrative-lead">Grown life is better with your people.</p>
             <p className="narrative-body">
-              Membership in the <strong>Grown Folks Collective</strong> turns
+              Membership in the <strong>Grown Folks™ Collective</strong> turns
               every month into something to look forward to: game nights, good
               food, real conversation, and a circle that keeps showing up.
             </p>

@@ -243,10 +243,10 @@ const Perform = () => {
   return (
     <div className="contact-page perform-page">
       <Helmet>
-        <title>Perform in Atlanta | Paid Live Music Showcase | Grown Folks Collective</title>
+        <title>Perform in Atlanta | Paid Live Music Showcase | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="Atlanta R&B, soul, and acoustic artists: apply to perform at a Grown Folks Collective live music showcase. Paid per ticket, keep 100% of merch and tips, and play for a room that came to listen."
+          content="Atlanta R&B, soul, and acoustic artists: apply to perform at a Grown Folks™ Collective live music showcase. Paid per ticket, keep 100% of merch and tips, and play for a room that came to listen."
         />
       </Helmet>
 
@@ -478,7 +478,7 @@ const Perform = () => {
                   <fieldset className="contact-fieldset">
                     <legend className="contact-form-divider">Artist Agreement</legend>
                     <p className="perform-note">
-                      Grown Folks Collective is a social club offering you a stage to showcase your talent.
+                      Grown Folks™ Collective is a social club offering you a stage to showcase your talent.
                       Please read the <a href="/performer-agreement" target="_blank" rel="noopener noreferrer">Performer Agreement</a>.
                       If booked, I agree to: <span className="contact-required">*</span>
                     </p>
@@ -493,7 +493,7 @@ const Perform = () => {
                     <div className="group-checks perform-consent">
                       <label className="group-check">
                         <input type="checkbox" name="featureConsent" checked={form.featureConsent} onChange={handleChange} />
-                        <span>Grown Folks Collective may feature my name, photo, bio, and music links on its website and social media.</span>
+                        <span>Grown Folks™ Collective may feature my name, photo, bio, and music links on its website and social media.</span>
                       </label>
                     </div>
                     <div className="contact-form-row">

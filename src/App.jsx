@@ -32,6 +32,8 @@ import Host from "./Pages/Host.jsx";
 import HostLanding from "./Pages/HostLanding.jsx";
 import Login from "./Pages/Login.jsx";
 import ForgotPassword from "./Pages/ForgotPassword.jsx";
+import Select from "./Pages/Select.jsx";
+import SelectInvitation from "./Pages/SelectInvitation.jsx";
 
 // --- Styles ---
 import "./Styles/App.css";
@@ -41,12 +43,14 @@ function App() {
   // The link-in-bio page shows without the top navigation
   const { pathname } = useLocation();
   const isLinks = pathname === "/links";
+  // GFC Select™ pages have their own quiet header and footer
+  const isSelect = pathname === "/select" || pathname.startsWith("/select/");
 
   return (
     <CartProvider>
       <div className="App-wrapper">
         <a href="#main-content" className="skip-link">Skip to main content</a>
-        {!isLinks && <Navbar />}
+        {!isLinks && !isSelect && <Navbar />}
 
         <main className="main-content" id="main-content" tabIndex={-1}>
           <Routes>
@@ -62,6 +66,8 @@ function App() {
             <Route path="/corporate-team-building-atlanta" element={<HostLanding page="teamBuilding" />} />
             <Route path="/office-holiday-party-atlanta" element={<HostLanding page="holiday" />} />
             <Route path="/perform" element={<Perform />} />
+            <Route path="/select" element={<Select />} />
+            <Route path="/select/invitation" element={<SelectInvitation />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/partnerships" element={<Partnerships />} />
@@ -107,7 +113,7 @@ function App() {
             />
           </Routes>
         </main>
-        <Footer />
+        {!isSelect && <Footer />}
       </div>
     </CartProvider>
   );

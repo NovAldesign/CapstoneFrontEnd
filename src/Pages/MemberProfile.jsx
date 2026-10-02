@@ -20,7 +20,7 @@ const MemberProfile = () => {
         <div className="passport-id">{profileData.socialPassportId}</div>
         <h1 className="playfair">Welcome, {user?.name}</h1>
         <p className="member-tagline">
-          Grown Folks Collective • {profileData.tier} Member
+          Grown Folks™ Collective • {profileData.tier} Member
         </p>
       </header>
 

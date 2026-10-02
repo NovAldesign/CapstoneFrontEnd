@@ -255,7 +255,7 @@ const Events = () => {
   return (
     <div className="events-page-wrapper">
       <Helmet>
-        <title>Events | Grown Folks Collective</title>
+        <title>Events | Grown Folks™ Collective</title>
         <meta
           name="description"
           content="Upcoming game nights, dinners, conversations, and travel for Atlanta adults 30+. Alcohol-free, low-key, and built for real connection and a little more joy."
@@ -409,7 +409,7 @@ const Events = () => {
               <h3 className="playfair">Join The Collective</h3>
               <p>
                 Loneliness among adults is at an all-time high, and busy lives make it harder to fix.
-                Grown Folks Collective exists to change that. Members get priority access, member
+                Grown Folks™ Collective exists to change that. Members get priority access, member
                 pricing, and a circle of Atlanta grown folks who keep showing up for each other.
               </p>
               <Link to="/membership" className="gfc-btn-gold-outline">Join The Collective</Link>

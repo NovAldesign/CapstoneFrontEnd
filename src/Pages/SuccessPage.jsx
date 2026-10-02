@@ -17,7 +17,7 @@ const SuccessPage = () => {
       style={{ maxWidth: '600px', margin: '80px auto', padding: '40px 20px', textAlign: 'center' }}
     >
       <Helmet>
-        <title>You're In! | Grown Folks Collective</title>
+        <title>You're In! | Grown Folks™ Collective</title>
         <meta name="robots" content="noindex" />
       </Helmet>
       <div style={{ fontSize: '60px', color: '#C5A059', marginBottom: '20px' }}>✓</div>

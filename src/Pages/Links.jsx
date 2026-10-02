@@ -66,14 +66,14 @@ const Links = () => {
   return (
     <div className="links-page">
       <Helmet>
-        <title>Grown Folks Collective | Links</title>
-        <meta name="description" content="Tickets, membership, and everything Grown Folks Collective: Atlanta's alcohol-free social club for grown folks 30+." />
+        <title>Grown Folks™ Collective | Links</title>
+        <meta name="description" content="Tickets, membership, and everything Grown Folks™ Collective: Atlanta's alcohol-free social club for grown folks 30+." />
         <meta name="robots" content="noindex" />
       </Helmet>
 
       <header className="links-head">
         <img src={logo} alt="Grown Folks Collective logo" className="links-logo" width="84" height="84" />
-        <h1 className="playfair">Grown Folks Collective</h1>
+        <h1 className="playfair">Grown Folks™ Collective</h1>
         <p>Atlanta's alcohol-free social club for 30+. Where grown folks come out to play.™</p>
       </header>
 

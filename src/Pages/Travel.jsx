@@ -134,10 +134,10 @@ const Travel = () => {
   return (
     <div className="travel-page">
       <Helmet>
-        <title>Group Travel | Grown Folks Collective</title>
+        <title>Group Travel | Grown Folks™ Collective</title>
         <meta 
           name="description" 
-          content="Experience curated, alcohol-free group travel with the Grown Folks Collective. Join us for Caribbean cruises, retreats, and international escapes." 
+          content="Experience curated, alcohol-free group travel with the Grown Folks™ Collective. Join us for Caribbean cruises, retreats, and international escapes." 
         />
       </Helmet>
 

@@ -320,7 +320,7 @@ const AdminDashboard = () => {
       <div className="admin-header-section">
         <div>
           <h1 className="playfair">Executive Dashboard</h1>
-          <p>Grown Folks Collective · Command Center</p>
+          <p>Grown Folks™ Collective · Command Center</p>
         </div>
         <div className="admin-header-meta">
           <span className="live-badge">● LIVE</span>

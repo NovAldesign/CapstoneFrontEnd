@@ -17,14 +17,14 @@ const PAGES = {
   teamBuilding: {
     path: '/corporate-team-building-atlanta',
     src: 'seo-teambuilding',
-    title: 'Alcohol-Free Corporate Team Building in Atlanta | Grown Folks Collective',
+    title: 'Alcohol-Free Corporate Team Building in Atlanta | Grown Folks™ Collective',
     description:
       'Hosted, alcohol-free team building in Atlanta: Spades tournaments, game nights, Karaoke Bingo and a live-action mystery, with a signature mocktail bar and a toast to your team. We come to you.',
     eyebrow: 'Corporate Team Building · Atlanta',
     h1: 'Alcohol-Free Team Building in Atlanta',
     lead:
       "Hosted game nights, Spades tournaments, Karaoke Bingo and a live-action mystery for your team, with a signature mocktail bar and a toast to your team's wins. Everyone's included, and nobody has to drink to have fun.",
-    whyTitle: 'Why teams choose Grown Folks Collective',
+    whyTitle: 'Why teams choose Grown Folks™ Collective',
     why: [
       ['Everyone plays', 'Games built so the quiet folks and the loud folks end up on the same team.'],
       ['Real connection', 'We mix departments on purpose. Coworkers leave knowing each other by name.'],
@@ -50,7 +50,7 @@ const PAGES = {
   holiday: {
     path: '/office-holiday-party-atlanta',
     src: 'seo-holiday',
-    title: 'Office Holiday Party Ideas in Atlanta: Hosted & Alcohol-Free | Grown Folks Collective',
+    title: 'Office Holiday Party Ideas in Atlanta: Hosted & Alcohol-Free | Grown Folks™ Collective',
     description:
       'Plan an office holiday party in Atlanta everyone will enjoy: hosted Spades, Karaoke Bingo, game nights or a live-action mystery, with a holiday mocktail bar and a toast to your team’s year.',
     eyebrow: 'Office Holiday Parties · Atlanta',
@@ -193,7 +193,7 @@ const HostLanding = ({ page }) => {
 
       {/* ── WHY ── */}
       <section className={`host-section${p.ideas ? ' host-section-alt' : ''}`} aria-labelledby="hl-why">
-        <span className="contact-form-eyebrow">Why Grown Folks Collective</span>
+        <span className="contact-form-eyebrow">Why Grown Folks™ Collective</span>
         <h2 className="host-h2" id="hl-why">{p.whyTitle}</h2>
         <div className="host-why host-why-4">
           {p.why.map(([title, text]) => (

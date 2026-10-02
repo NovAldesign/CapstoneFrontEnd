@@ -20,13 +20,13 @@ const Legal = ({ page }) => {
   return (
     <div className="legal-page">
       <Helmet>
-        <title>{`${content.title} | Grown Folks Collective`}</title>
+        <title>{`${content.title} | Grown Folks™ Collective`}</title>
         <meta name="description" content={content.description} />
       </Helmet>
 
       <header className="legal-hero">
         <div className="legal-hero-inner">
-          <p className="legal-eyebrow">Grown Folks Collective</p>
+          <p className="legal-eyebrow">Grown Folks™ Collective</p>
           <h1 className="playfair">{content.title}</h1>
           <p className="legal-updated">Effective {LEGAL.effectiveDate}</p>
         </div>

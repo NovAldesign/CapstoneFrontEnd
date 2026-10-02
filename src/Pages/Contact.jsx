@@ -181,10 +181,10 @@ const Contact = () => {
 
 
       <Helmet>
-        <title>Contact Us | Grown Folks Collective</title>
+        <title>Contact Us | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="Get in touch with Grown Folks Collective. Ask about events, membership, sponsorships, or let us plan an event for you."
+          content="Get in touch with Grown Folks™ Collective. Ask about events, membership, sponsorships, or let us plan an event for you."
         />
       </Helmet>
 

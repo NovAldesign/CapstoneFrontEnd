@@ -26,7 +26,7 @@ const MembershipSuccess = () => {
   return (
     <div className="membership-page">
       <Helmet>
-        <title>Welcome to the Collective | Grown Folks Collective</title>
+        <title>Welcome to the Collective | Grown Folks™ Collective</title>
         <meta name="robots" content="noindex" />
       </Helmet>
       <div className="ms-screen">
