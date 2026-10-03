@@ -1,9 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { BACKEND_URL } from "../Services/eventUtils";
 import { SelectTopbar, SelectFooter } from "../Components/SelectFrame";
 import SelectNotify, { useSelectStatus, fmtDoorDate, daysLeft } from "../Components/SelectNotify";
+import {
+  VALUES, SCALE, LOVE, CONNECT, KIDS_HAVE, KIDS_WANT, NIGHT_GOAL, giveLoveAsk, receiveLoveAsk,
+} from "../Services/selectQuestions";
+import { GENTLEMEN, LADIES } from "../Services/selectCopy";
 import "../Styles/Select.css";
 
 // Keep these lists in sync with the backend (routes/selectRoutes.js)
@@ -29,7 +33,7 @@ const LOOKING_FOR = [
 ];
 
 const STEPS = [
-  { n: "I", title: "Request", text: "Tell us who you are below. It takes about 10 minutes." },
+  { n: "I", title: "Request", text: "Tell us who you are, what you value and how you connect. It takes about 12 minutes." },
   { n: "II", title: "Selection", text: "Every guest is chosen by hand. Twenty men, twenty women, balanced by age." },
   { n: "III", title: "Invitation", text: "Selected guests receive the date, that evening's dress code and how to reserve a seat." },
   { n: "IV", title: "The Reveal", text: "The location is shared with selected guests 48 hours before." },
@@ -59,7 +63,7 @@ const FAQS = [
   },
   {
     q: "Can I bring a friend?",
-    a: "Not to the same evening. Every guest is selected on their own. After you attend, you can refer one person for a future Select.",
+    a: "Not as a plus-one. Every guest is selected on their own. If a friend is applying too, add their name to your request and we'll do our best to seat you at the same evening. After you attend, you can also refer one person for a future Select.",
   },
   {
     q: "How much is it?",
@@ -91,7 +95,24 @@ const EMPTY = {
   instagram: "",
   heardFrom: "",
   referredBy: "",
+  friendName: "",
+  friendEmail: "",
+  friendGender: "",
   lookingFor: "",
+  hasKids: "",
+  wantsKids: "",
+  ageMin: "",
+  ageMax: "",
+  nightGoal: "",
+  values: {},
+  valuesWhy: "",
+  social: "",
+  conflict: "",
+  pace: "",
+  roles: "",
+  weekend: "",
+  giveLove: [],
+  receiveLove: [],
   isSingle: false,
   whyNow: "",
   firstDate: "",
@@ -144,7 +165,11 @@ const SelectInvitation = () => {
   const doorsOpen = doors.state === "open";
   const left = daysLeft(doors.closesAt);
   const [params] = useSearchParams();
-  const [form, setForm] = useState(EMPTY);
+  // Arriving from /select/gentlemen or /select/ladies: Man or Woman already chosen
+  const [form, setForm] = useState(() => ({
+    ...EMPTY,
+    gender: ["man", "woman"].includes(params.get("g")) ? params.get("g") : "",
+  }));
   const [bingo, setBingo] = useState({}); // { prompt: answer }
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -199,6 +224,26 @@ const SelectInvitation = () => {
         : [...prev[field], value],
     }));
 
+  const setValue = (key, n) => {
+    if (error) setError("");
+    setForm((prev) => ({ ...prev, values: { ...prev.values, [key]: n } }));
+  };
+  const setChoice = (name, key) => {
+    if (error) setError("");
+    setForm((prev) => ({ ...prev, [name]: key }));
+  };
+  // Pick up to 2 (love languages)
+  const togglePick = (field, key) => {
+    if (error) setError("");
+    setForm((prev) => {
+      const has = prev[field].includes(key);
+      if (!has && prev[field].length >= 2) return prev;
+      return { ...prev, [field]: has ? prev[field].filter((x) => x !== key) : [...prev[field], key] };
+    });
+  };
+  const ratedCount = VALUES.filter((v) => form.values[v.key]).length;
+  const agesOk = Number(form.ageMin) >= 30 && Number(form.ageMax) >= Number(form.ageMin) && Number(form.ageMax) <= 99;
+
   const setAnswer = (prompt, answer) => {
     if (error) setError("");
     setBingo((prev) => ({ ...prev, [prompt]: answer }));
@@ -206,7 +251,9 @@ const SelectInvitation = () => {
 
   const stepDone = [
     Boolean(form.firstName.trim() && form.lastName.trim() && form.email.trim() && form.phone.trim() && form.birthdate && form.gender),
-    form.isSingle,
+    Boolean(form.isSingle && form.lookingFor && form.hasKids && form.wantsKids && agesOk && form.nightGoal),
+    ratedCount === VALUES.length,
+    Boolean(CONNECT.every((q) => form[q.key]) && form.giveLove.length === 2 && form.receiveLove.length === 2),
     bingoCount === 5,
     sawFood, // optional: done once they've looked at it
     form.agreed,
@@ -214,7 +261,7 @@ const SelectInvitation = () => {
 
   const openStep = (i) => {
     setStep(i);
-    if (i >= 3) setSawFood(true);
+    if (i >= 5) setSawFood(true);
     setTimeout(() => {
       document.getElementById(`select-step-head-${i}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 30);
@@ -229,16 +276,34 @@ const SelectInvitation = () => {
       openStep(0);
       return setError("Please finish \"About you\": name, email, phone, birthdate and man or woman.");
     }
+    if (form.friendEmail.trim() && !form.friendGender) {
+      openStep(0);
+      return setError("Let us know if your friend is a man or a woman.");
+    }
     if (!form.isSingle) {
       openStep(1);
       return setError("GFC Select™ is for singles only.");
     }
-    if (bingoCount !== 5) {
+    if (!stepDone[1]) {
+      openStep(1);
+      return setError(agesOk || !form.ageMin
+        ? "Please finish \"Your heart\": what you're looking for, kids, the ages you'd date and your goal for the night."
+        : "Please check the ages you'd date: 30 or older, and the first number no higher than the second.");
+    }
+    if (!stepDone[2]) {
       openStep(2);
+      return setError(`Please rate all ${VALUES.length} values (${ratedCount} of ${VALUES.length} done).`);
+    }
+    if (!stepDone[3]) {
+      openStep(3);
+      return setError("Please answer every question in \"How you connect\", and pick 2 for each love question.");
+    }
+    if (bingoCount !== 5) {
+      openStep(4);
       return setError("Please answer 5 of the fun-fact prompts.");
     }
     if (!form.agreed) {
-      openStep(4);
+      openStep(6);
       return setError("Please agree to the house rules.");
     }
 
@@ -364,6 +429,58 @@ const SelectInvitation = () => {
         </ol>
       </section>
 
+      {/* FOR THE GENTLEMEN */}
+      <section className="select-section select-gents" aria-labelledby="select-gents">
+        <p className="select-kicker">For the gentlemen</p>
+        <h2 id="select-gents" className="select-h2">We're holding twenty seats for you.</h2>
+        <p className="select-body">
+          The apps haven't been kind to good men either. So here are straight answers to what you're probably wondering.
+        </p>
+        <ul className="select-gents-grid">
+          {GENTLEMEN.map((g) => (
+            <li key={g.title}>
+              <h3>{g.title}</h3>
+              <p>{g.text}</p>
+            </li>
+          ))}
+        </ul>
+        <p className="select-gents-close">
+          The room doesn't work without you. Twenty seats, filled with the right men.
+        </p>
+        <p className="select-gents-links">
+          <a href="#select-gate-title" className="select-btn">I'm Interested</a>
+        </p>
+        <p className="select-gents-note">
+          Applying with a friend? Add his name to your request and we'll do our best to seat you together.
+        </p>
+      </section>
+
+      {/* FOR THE LADIES */}
+      <section className="select-section select-gents select-ladies" aria-labelledby="select-ladies">
+        <p className="select-kicker">For the ladies</p>
+        <h2 id="select-ladies" className="select-h2">Twenty seats for women who know their worth.</h2>
+        <p className="select-body">
+          You deserve better than endless swiping and men who aren't serious. Here's how the room is built for you.
+        </p>
+        <ul className="select-gents-grid">
+          {LADIES.map((g) => (
+            <li key={g.title}>
+              <h3>{g.title}</h3>
+              <p>{g.text}</p>
+            </li>
+          ))}
+        </ul>
+        <p className="select-gents-close">
+          Come as you are. Leave knowing you were seen.
+        </p>
+        <p className="select-gents-links">
+          <a href="#select-gate-title" className="select-btn">I'm Interested</a>
+        </p>
+        <p className="select-gents-note">
+          Know a good man who belongs in the room? <Link to="/select/nominate?g=man" className="select-peek">Nominate him →</Link>
+        </p>
+      </section>
+
       {/* HOUSE RULES */}
       <section className="select-section select-rules-wrap" aria-labelledby="select-rules">
         <p className="select-kicker">Before you request</p>
@@ -469,12 +586,31 @@ const SelectInvitation = () => {
                 <label>What you do<input name="occupation" value={form.occupation} onChange={update} maxLength={80} /></label>
                 <label><span>Instagram <span className="select-opt">(optional)</span></span><input name="instagram" value={form.instagram} onChange={update} maxLength={60} placeholder="@" /></label>
                 <label>How did you hear about Select?<input name="heardFrom" value={form.heardFrom} onChange={update} maxLength={80} /></label>
-                <label className="select-span-2"><span>Referred by a past guest? <span className="select-opt">(their name)</span></span><input name="referredBy" value={form.referredBy} onChange={update} maxLength={80} /></label>
+                <label><span>Referred by a past guest? <span className="select-opt">(their name)</span></span><input name="referredBy" value={form.referredBy} onChange={update} maxLength={80} /></label>
+                <label><span>Applying with a friend? <span className="select-opt">(their name)</span></span><input name="friendName" value={form.friendName} onChange={update} maxLength={80} /></label>
+                {form.friendName.trim() && (
+                  <>
+                    <label><span>Their email <span className="select-opt">(optional, we'll send them an invite)</span></span><input type="email" name="friendEmail" value={form.friendEmail} onChange={update} maxLength={120} /></label>
+                    {form.friendEmail.trim() && (
+                      <div className="select-radio-group" role="radiogroup" aria-label="Your friend is a">
+                        <span className="select-label-text">Your friend is a</span>
+                        <div className="select-pills">
+                          {[["man", "Man"], ["woman", "Woman"]].map(([v, l]) => (
+                            <label key={v} className={`select-pill ${form.friendGender === v ? "on" : ""}`}>
+                              <input type="radio" name="friendGender" value={v} checked={form.friendGender === v} onChange={update} />
+                              {l}
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             </fieldset>
             </FormStep>
 
-            {/* DATING */}
+            {/* YOUR HEART */}
             <FormStep index={1} title="Your heart" done={stepDone[1]} open={step === 1} onToggle={() => toggleStep(1)} onNext={() => openStep(2)}>
             <fieldset>
               <legend className="select-sr">Your heart</legend>
@@ -482,22 +618,126 @@ const SelectInvitation = () => {
                 <input type="checkbox" name="isSingle" checked={form.isSingle} onChange={update} />
                 I'm single and not currently seeing anyone *
               </label>
-              <label>
-                What are you looking for?
-                <select name="lookingFor" value={form.lookingFor} onChange={update}>
-                  <option value="">Choose one</option>
-                  {LOOKING_FOR.map((x) => <option key={x} value={x}>{x}</option>)}
-                </select>
-              </label>
+              <div className="select-grid">
+                <label>
+                  What are you looking for? *
+                  <select name="lookingFor" value={form.lookingFor} onChange={update}>
+                    <option value="">Choose one</option>
+                    {LOOKING_FOR.map((x) => <option key={x} value={x}>{x}</option>)}
+                  </select>
+                </label>
+                <label>
+                  What would make this night a success? *
+                  <select name="nightGoal" value={form.nightGoal} onChange={update}>
+                    <option value="">Choose one</option>
+                    {NIGHT_GOAL.map((x) => <option key={x.key} value={x.key}>{x.label}</option>)}
+                  </select>
+                </label>
+                <label>
+                  Do you have children? *
+                  <select name="hasKids" value={form.hasKids} onChange={update}>
+                    <option value="">Choose one</option>
+                    {KIDS_HAVE.map((x) => <option key={x.key} value={x.key}>{x.label}</option>)}
+                  </select>
+                </label>
+                <label>
+                  Do you want children? *
+                  <select name="wantsKids" value={form.wantsKids} onChange={update}>
+                    <option value="">Choose one</option>
+                    {KIDS_WANT.map((x) => <option key={x.key} value={x.key}>{x.label}</option>)}
+                  </select>
+                </label>
+              </div>
+              <div className="select-label-text">
+                {form.gender === "man" ? "Ages of women you'd like to meet *" : form.gender === "woman" ? "Ages of men you'd like to meet *" : "Ages you'd like to meet *"}
+                <div className="select-age-range">
+                  <input type="number" name="ageMin" value={form.ageMin} onChange={update} min={30} max={99} placeholder="From" aria-label="From age" inputMode="numeric" />
+                  <span aria-hidden="true">to</span>
+                  <input type="number" name="ageMax" value={form.ageMax} onChange={update} min={30} max={99} placeholder="To" aria-label="To age" inputMode="numeric" />
+                </div>
+              </div>
               <label>Why now? What made you ready to meet someone in person?<textarea name="whyNow" value={form.whyNow} onChange={update} rows={3} maxLength={800} /></label>
               <label>Describe your ideal first date.<textarea name="firstDate" value={form.firstDate} onChange={update} rows={3} maxLength={800} /></label>
-              <label>What 2–3 things matter most to you in a partner?<textarea name="matters" value={form.matters} onChange={update} rows={3} maxLength={800} /></label>
-              <label>What's something people only learn about you once they get to know you?<textarea name="learnLater" value={form.learnLater} onChange={update} rows={3} maxLength={800} /></label>
+            </fieldset>
+            </FormStep>
+
+            {/* WHAT YOU VALUE */}
+            <FormStep index={2} title="What you value" done={stepDone[2]} open={step === 2} onToggle={() => toggleStep(2)} onNext={() => openStep(3)}>
+            <fieldset>
+              <legend className="select-sr">What you value</legend>
+              <p className="select-help">
+                How important is each of these to you, in your own life and in a partner? There are no wrong answers.
+                We use them to put people who see life the same way in the same room.
+                <span className={`select-count ${ratedCount === VALUES.length ? "done" : ""}`} aria-live="polite">
+                  {ratedCount} of {VALUES.length} rated
+                </span>
+              </p>
+              <div className="select-rate-key" aria-hidden="true">
+                <span>1 = {SCALE[0].label}</span><span>5 = {SCALE[4].label}</span>
+              </div>
+              <div className="select-rates">
+                {VALUES.map((v) => (
+                  <div key={v.key} className="select-rate-row" role="radiogroup" aria-label={`${v.label}: 1 not important to 5 essential`}>
+                    <span className="select-rate-label">{v.label}</span>
+                    <div className="select-rate-btns">
+                      {SCALE.map((sc) => (
+                        <label key={sc.n} className={`select-rate-btn ${form.values[v.key] === sc.n ? "on" : ""}`} title={sc.label}>
+                          <input type="radio" name={`value-${v.key}`} checked={form.values[v.key] === sc.n} onChange={() => setValue(v.key, sc.n)} />
+                          <span aria-hidden="true">{sc.n}</span>
+                          <span className="select-sr">{sc.n}, {sc.label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <label>Why do the things you rated highest matter so much to you?<textarea name="valuesWhy" value={form.valuesWhy} onChange={update} rows={3} maxLength={800} /></label>
+            </fieldset>
+            </FormStep>
+
+            {/* HOW YOU CONNECT */}
+            <FormStep index={3} title="How you connect" done={stepDone[3]} open={step === 3} onToggle={() => toggleStep(3)} onNext={() => openStep(4)}>
+            <fieldset>
+              <legend className="select-sr">How you connect</legend>
+              <p className="select-help">Quick, honest answers. This is how we learn who you are around people, and who you'd click with.</p>
+              {CONNECT.map((q) => (
+                <div key={q.key} className="select-radio-group" role="radiogroup" aria-label={q.ask(form.gender)}>
+                  <span className="select-label-text">{q.ask(form.gender)} *</span>
+                  <div className="select-chips">
+                    {q.options.map((o) => (
+                      <label key={o.key} className={`select-chip ${form[q.key] === o.key ? "on" : ""}`}>
+                        <input type="radio" name={q.key} checked={form[q.key] === o.key} onChange={() => setChoice(q.key, o.key)} />
+                        {o.label}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              {[["giveLove", giveLoveAsk(form.gender)], ["receiveLove", receiveLoveAsk(form.gender)]].map(([field, ask]) => (
+                <div key={field} className="select-radio-group" role="group" aria-label={ask}>
+                  <span className="select-label-text">
+                    {ask} *
+                    <span className={`select-count ${form[field].length === 2 ? "done" : ""}`}>{form[field].length} of 2</span>
+                  </span>
+                  <div className="select-chips">
+                    {LOVE.map((o) => {
+                      const on = form[field].includes(o.key);
+                      const locked = !on && form[field].length >= 2;
+                      return (
+                        <label key={o.key} className={`select-chip ${on ? "on" : ""} ${locked ? "locked" : ""}`}>
+                          <input type="checkbox" checked={on} disabled={locked} onChange={() => togglePick(field, o.key)} />
+                          {o.label}
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </fieldset>
             </FormStep>
 
             {/* BINGO */}
-            <FormStep index={2} title="Fun facts for the evening" done={stepDone[2]} open={step === 2} onToggle={() => toggleStep(2)} onNext={() => openStep(3)}>
+            <FormStep index={4} title="Fun facts for the evening" done={stepDone[4]} open={step === 4} onToggle={() => toggleStep(4)} onNext={() => openStep(5)}>
             <fieldset>
               <legend className="select-sr">Fun facts for the evening</legend>
               <p className="select-help">
@@ -529,7 +769,7 @@ const SelectInvitation = () => {
             </FormStep>
 
             {/* FOOD */}
-            <FormStep index={3} title="At the table" done={stepDone[3]} optional open={step === 3} onToggle={() => toggleStep(3)} onNext={() => openStep(4)}>
+            <FormStep index={5} title="At the table" done={stepDone[5]} optional open={step === 5} onToggle={() => toggleStep(5)} onNext={() => openStep(6)}>
             <fieldset>
               <legend className="select-sr">At the table</legend>
               <p className="select-help">Food is served. Tell us about any food allergies.</p>
@@ -555,7 +795,7 @@ const SelectInvitation = () => {
             </FormStep>
 
             {/* AGREEMENT */}
-            <FormStep index={4} title="The house rules" done={stepDone[4]} open={step === 4} onToggle={() => toggleStep(4)} >
+            <FormStep index={6} title="The house rules" done={stepDone[6]} open={step === 6} onToggle={() => toggleStep(6)} >
             <fieldset>
               <legend className="select-sr">The house rules</legend>
               <label className="select-check">

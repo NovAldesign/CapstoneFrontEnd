@@ -30,12 +30,13 @@ export const daysLeft = (iso) => {
   return Math.max(0, Math.ceil(ms / 86400000));
 };
 
-const EMPTY = { firstName: "", email: "", phone: "", gender: "", textOk: false, newsletter: false, website: "" };
+const EMPTY = { firstName: "", email: "", phone: "", gender: "", textOk: false, newsletter: false, friendName: "", friendEmail: "", friendGender: "", website: "" };
 
 // "Notify me when the doors open" form
-const SelectNotify = ({ compact = false }) => {
+// gender: preset "man" | "woman" (hides the Man/Woman choice) · source: default tracking tag
+const SelectNotify = ({ compact = false, gender = "", source = "" }) => {
   const [params] = useSearchParams();
-  const [form, setForm] = useState(EMPTY);
+  const [form, setForm] = useState({ ...EMPTY, gender });
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(null); // null | "new" | "already"
   const [error, setError] = useState("");
@@ -51,12 +52,15 @@ const SelectNotify = ({ compact = false }) => {
     if (!form.firstName.trim() || !form.email.trim()) {
       return setError("Please add your first name and email.");
     }
+    if (form.friendEmail.trim() && !form.friendGender) {
+      return setError("Let us know if your friend is a man or a woman.");
+    }
     setSending(true);
     try {
       const res = await fetch(`${BACKEND_URL}/api/select/notify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, source: params.get("src") || "" }),
+        body: JSON.stringify({ ...form, source: params.get("src") || source }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
@@ -91,7 +95,8 @@ const SelectNotify = ({ compact = false }) => {
           <input type="email" name="email" value={form.email} onChange={update} placeholder="Email" maxLength={120} autoComplete="email" required />
         </label>
       </div>
-      <div className="select-notify-row">
+      <div className={`select-notify-row ${gender ? "is-single" : ""}`}>
+        {!gender && (
         <div className="select-notify-pills" role="radiogroup" aria-label="I am a">
           {[["man", "Man"], ["woman", "Woman"]].map(([v, l]) => (
             <label key={v} className={`select-notify-pill ${form.gender === v ? "on" : ""}`}>
@@ -100,11 +105,36 @@ const SelectNotify = ({ compact = false }) => {
             </label>
           ))}
         </div>
+        )}
         <label>
           <span className="select-sr">Phone (optional)</span>
           <input type="tel" name="phone" value={form.phone} onChange={update} placeholder="Phone (optional)" maxLength={30} autoComplete="tel" />
         </label>
       </div>
+      {form.gender && (
+        <label className="select-notify-friend">
+          <span className="select-sr">Applying with a friend? (their name, optional)</span>
+          <input name="friendName" value={form.friendName} onChange={update} placeholder="Applying with a friend? Their name (optional)" maxLength={80} />
+        </label>
+      )}
+      {form.gender && form.friendName.trim() && (
+        <div className="select-notify-friend-more">
+          <label>
+            <span className="select-sr">Their email (optional, we'll send them an invite)</span>
+            <input type="email" name="friendEmail" value={form.friendEmail} onChange={update} placeholder="Their email (we'll invite them)" maxLength={120} />
+          </label>
+          {form.friendEmail.trim() && (
+            <div className="select-notify-pills select-notify-pills-sm" role="radiogroup" aria-label="Your friend is a">
+              {[["man", "Man"], ["woman", "Woman"]].map(([v, l]) => (
+                <label key={v} className={`select-notify-pill ${form.friendGender === v ? "on" : ""}`}>
+                  <input type="radio" name="friendGender" value={v} checked={form.friendGender === v} onChange={update} />
+                  {l}
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
       {form.phone.trim() && (
         <label className="select-notify-check">
           <input type="checkbox" name="textOk" checked={form.textOk} onChange={update} />

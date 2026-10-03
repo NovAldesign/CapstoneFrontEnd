@@ -35,6 +35,8 @@ import Login from "./Pages/Login.jsx";
 import ForgotPassword from "./Pages/ForgotPassword.jsx";
 import Select from "./Pages/Select.jsx";
 import SelectInvitation from "./Pages/SelectInvitation.jsx";
+import SelectNominate from "./Pages/SelectNominate.jsx";
+import SelectAudience from "./Pages/SelectAudience.jsx";
 
 // --- Styles ---
 import "./Styles/App.css";
@@ -69,6 +71,9 @@ function App() {
             <Route path="/perform" element={<Perform />} />
             <Route path="/select" element={<Select />} />
             <Route path="/select/invitation" element={<SelectInvitation />} />
+            <Route path="/select/nominate" element={<SelectNominate />} />
+            <Route path="/select/gentlemen" element={<SelectAudience gender="man" key="man" />} />
+            <Route path="/select/ladies" element={<SelectAudience gender="woman" key="woman" />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/partnerships" element={<Partnerships />} />

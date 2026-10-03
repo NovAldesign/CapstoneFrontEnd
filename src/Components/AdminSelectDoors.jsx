@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { BACKEND_URL } from "../Services/eventUtils";
+import SelectEmailVersions, { emailPayload, hasPlaceholder } from "./SelectEmailVersions.jsx";
 
 // Admin: GFC Select™ "the doors" (application window) + notify list
 
@@ -41,21 +42,58 @@ Request your seat here: grownfolkscollective.com/select
 
 Doors close [CLOSING DATE]. Don't wait on this one.`;
 
+const DEFAULT_MEN = {
+  subject: "{firstName}, the doors are open. 20 seats for men.",
+  message: `{firstName},
+
+The doors to GFC Select™ are open. Two weeks only.
+
+Twenty seats for men. Every woman in the room is 30+, vetted, and there to meet a good man. Your picks stay private. Camera-free.
+
+Request your seat: grownfolkscollective.com/select/gentlemen
+
+Doors close [CLOSING DATE]. The seats go to the men who show up for them.`,
+};
+
+const DEFAULT_WOMEN = {
+  subject: "{firstName}, the doors are open",
+  message: `{firstName},
+
+The moment you've been waiting for: the doors to GFC Select™ are open, for two weeks only.
+
+Every man in the room will be chosen with care. A host welcomes you, the location stays private, and your information is never shared unless you both choose each other.
+
+Request your seat: grownfolkscollective.com/select/ladies
+
+Doors close [CLOSING DATE]. We'd love to see you there.`,
+};
+
 const AdminSelectDoors = () => {
   const [round, setRound] = useState({ name: "", opensAt: "", closesAt: "", eventDate: "" });
   const [state, setState] = useState("soon");
   const [list, setList] = useState([]);
   const [showList, setShowList] = useState(false);
+  const [noms, setNoms] = useState([]);
+  const [showNoms, setShowNoms] = useState(false);
   const [composer, setComposer] = useState(false);
-  const [subject, setSubject] = useState(DEFAULT_SUBJECT);
-  const [message, setMessage] = useState(DEFAULT_MESSAGE);
+  const [split, setSplit] = useState(true);
+  const [versions, setVersions] = useState({
+    base: { subject: DEFAULT_SUBJECT, message: DEFAULT_MESSAGE },
+    man: DEFAULT_MEN,
+    woman: DEFAULT_WOMEN,
+  });
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
 
   const load = async () => {
     try {
-      const [r, l] = await Promise.all([api("/admin/round"), api("/admin/notify")]);
+      const [r, l, n] = await Promise.all([
+        api("/admin/round"),
+        api("/admin/notify"),
+        api("/admin/nominations").catch(() => []),
+      ]);
+      setNoms(Array.isArray(n) ? n : []);
       setState(r.state);
       setRound({
         name: r.round?.name || "",
@@ -126,13 +164,13 @@ const AdminSelectDoors = () => {
   };
 
   const sendEmail = async (test) => {
-    if (!test && /\[CLOSING DATE\]/.test(message) && !window.confirm("Your message still says [CLOSING DATE]. Send anyway?")) return;
+    if (!test && hasPlaceholder(split, versions, /\[CLOSING DATE\]/) && !window.confirm("Your message still says [CLOSING DATE]. Send anyway?")) return;
     if (!test && !window.confirm(`Email all ${counts.total} people on the notify list?`)) return;
     setBusy(true);
     setNotice("");
     try {
-      const r = await api("/admin/notify/email", { method: "POST", body: JSON.stringify({ subject, message, test }) });
-      if (r.test) setNotice(`Test sent to ${r.sentTo}.`);
+      const r = await api("/admin/notify/email", { method: "POST", body: JSON.stringify({ ...emailPayload(split, versions), test }) });
+      if (r.test) setNotice(`Test sent to ${r.sentTo} (${(r.versions || []).join(", ")}).`);
       else {
         setNotice(r.failed?.length ? `Sent ${r.sent}. Couldn't send to: ${r.failed.join(", ")}` : `Sent to ${r.sent} people.`);
         setComposer(false);
@@ -146,8 +184,8 @@ const AdminSelectDoors = () => {
   };
 
   const exportCsv = () => {
-    const rows = [["First name", "Email", "Phone", "Man/Woman", "OK to text", "Newsletter", "Joined"]].concat(
-      list.map((p) => [p.firstName, p.email, p.phone, p.gender, p.textOk ? "yes" : "", p.newsletter ? "yes" : "", new Date(p.createdAt).toLocaleDateString()])
+    const rows = [["First name", "Email", "Phone", "Man/Woman", "OK to text", "Newsletter", "Applying with", "Joined"]].concat(
+      list.map((p) => [p.firstName, p.email, p.phone, p.gender, p.textOk ? "yes" : "", p.newsletter ? "yes" : "", p.friendName || "", new Date(p.createdAt).toLocaleDateString()])
     );
     const csv = rows.map((r) => r.map((c) => `"${String(c ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
     const a = document.createElement("a");
@@ -226,7 +264,7 @@ const AdminSelectDoors = () => {
         {showList && (
           <table className="admin-table sel-adm-table">
             <thead>
-              <tr><th>Name</th><th>Email</th><th>Phone</th><th>Man/Woman</th><th>Newsletter</th><th>Joined</th></tr>
+              <tr><th>Name</th><th>Email</th><th>Phone</th><th>Man/Woman</th><th>Newsletter</th><th>With</th><th>Joined</th></tr>
             </thead>
             <tbody>
               {list.map((p) => (
@@ -236,7 +274,51 @@ const AdminSelectDoors = () => {
                   <td>{p.phone}{p.textOk ? " · text OK" : ""}</td>
                   <td>{p.gender || "—"}</td>
                   <td>{p.newsletter ? "Yes" : "—"}</td>
+                  <td>{p.friendName || "—"}</td>
                   <td>{new Date(p.createdAt).toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {/* NOMINATIONS + FRIEND INVITES */}
+      <div className="sub-card sel-adm-card">
+        <div className="section-row">
+          <h4 className="sel-adm-composer-title">Nominations and friend invites</h4>
+          <button type="button" className="export-btn" onClick={() => setShowNoms((v) => !v)} disabled={!noms.length}>
+            {showNoms ? "Hide nominations" : "See nominations"}
+          </button>
+        </div>
+        <div className="sel-adm-room">
+          <div className="sel-adm-stat"><span className="sel-adm-stat-num">{noms.filter((x) => x.kind !== "friend" && x.nomineeGender !== "woman").length}</span><span className="sel-adm-stat-label">Men nominated</span></div>
+          <div className="sel-adm-stat"><span className="sel-adm-stat-num">{noms.filter((x) => x.kind !== "friend" && x.nomineeGender === "woman").length}</span><span className="sel-adm-stat-label">Women nominated</span></div>
+          <div className="sel-adm-stat"><span className="sel-adm-stat-num">{noms.filter((x) => x.kind === "friend").length}</span><span className="sel-adm-stat-label">Friends invited</span></div>
+          <div className="sel-adm-stat"><span className="sel-adm-stat-num">{noms.filter((x) => x.status === "invited").length}</span><span className="sel-adm-stat-label">Invites emailed</span></div>
+          <div className="sel-adm-stat"><span className="sel-adm-stat-num">{noms.filter((x) => x.status === "text").length}</span><span className="sel-adm-stat-label">To text</span></div>
+
+        </div>
+        <p className="td-muted">Share the link: grownfolkscollective.com/go/nominate</p>
+        {showNoms && (
+          <table className="admin-table sel-adm-table">
+            <thead>
+              <tr><th>Who</th><th>Contact</th><th>From</th><th>Status</th><th>Date</th></tr>
+            </thead>
+            <tbody>
+              {noms.map((x) => (
+                <tr key={x._id}>
+                  <td>
+                    {x.nomineeFirstName}
+                    <div className="td-muted">
+                      {x.nomineeGender === "woman" ? "Woman" : "Man"} · {x.kind === "friend" ? "Friend invite" : "Nominated"}
+                    </div>
+                    {x.note ? <div className="td-muted">{x.note}</div> : null}
+                  </td>
+                  <td>{x.nomineeEmail || x.nomineePhone}</td>
+                  <td>{x.nominatorName}{x.relationship ? ` (${x.relationship.toLowerCase()})` : ""}{x.shareName ? "" : " · keep private"}</td>
+                  <td>{{ invited: "Invite emailed", text: x.nomineeGender === "woman" ? "Text her" : "Text him", already: "Already on list", repeat: "Already invited" }[x.status] || x.status}</td>
+                  <td>{new Date(x.createdAt).toLocaleDateString()}</td>
                 </tr>
               ))}
             </tbody>
@@ -254,14 +336,19 @@ const AdminSelectDoors = () => {
             Each person gets their own private email. <code>{"{firstName}"}</code> becomes their first name.
             {closesNice && <> Doors close <strong>{closesNice}</strong>.</>}
           </p>
-          <label className="sel-adm-label">
-            Subject
-            <input className="search-input" value={subject} onChange={(e) => setSubject(e.target.value)} maxLength={200} />
-          </label>
-          <label className="sel-adm-label">
-            Message
-            <textarea className="search-input sel-adm-message" rows={10} value={message} onChange={(e) => setMessage(e.target.value)} />
-          </label>
+          <SelectEmailVersions
+            split={split}
+            setSplit={setSplit}
+            versions={versions}
+            setVersions={setVersions}
+            names={{
+              any: list[0]?.firstName,
+              man: list.find((p) => p.gender === "man")?.firstName,
+              woman: list.find((p) => p.gender === "woman")?.firstName,
+              other: list.find((p) => !p.gender)?.firstName,
+            }}
+            counts={{ man: counts.men, woman: counts.women, other: counts.total - counts.men - counts.women }}
+          />
           <div className="sel-adm-actions">
             <button type="button" className="export-btn" disabled={busy} onClick={() => sendEmail(true)}>Send me a test first</button>
             <button type="button" className="gold-fill-btn" disabled={busy} onClick={() => sendEmail(false)}>

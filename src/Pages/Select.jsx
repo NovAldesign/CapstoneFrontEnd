@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { SelectTopbar, SelectFooter } from "../Components/SelectFrame";
-import SelectNotify, { useSelectStatus, fmtDoorDate, daysLeft } from "../Components/SelectNotify";
+import { useSelectStatus, fmtDoorDate, daysLeft } from "../Components/SelectNotify";
 import "../Styles/Select.css";
 
 // GFC Select™ landing: one screen only.
@@ -60,10 +60,27 @@ const Select = () => {
                     ? <>The doors open <strong>{fmtDoorDate(status.opensAt)}</strong>, for two weeks only.</>
                     : "The doors open soon, for two weeks only. Be the first to know."}
               </p>
-              <SelectNotify compact />
-              <Link to="/select/invitation" className="select-peek">Peek inside the invitation →</Link>
             </>
           )}
+
+          {status.state !== "loading" && (
+            <nav className="select-doors-choice" aria-label="Choose your invitation">
+              <Link to="/select/gentlemen" className="select-door">
+                <span className="select-door-kicker">For the</span>
+                <span className="select-door-title">Gentlemen</span>
+                <span className="select-door-go" aria-hidden="true">→</span>
+              </Link>
+              <Link to="/select/ladies" className="select-door">
+                <span className="select-door-kicker">For the</span>
+                <span className="select-door-title">Ladies</span>
+                <span className="select-door-go" aria-hidden="true">→</span>
+              </Link>
+            </nav>
+          )}
+
+          <p className="select-nominate-line">
+            Know someone who belongs in the room? <Link to="/select/nominate">Nominate them</Link>
+          </p>
 
           <p className="select-launch">40 seats · January 2027 · By invitation only</p>
         </div>

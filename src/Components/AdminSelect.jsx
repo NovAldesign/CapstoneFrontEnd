@@ -1,6 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { BACKEND_URL } from "../Services/eventUtils";
 import AdminSelectDoors from "./AdminSelectDoors.jsx";
+import SelectEmailVersions, { emailPayload, hasPlaceholder } from "./SelectEmailVersions.jsx";
+import {
+  VALUES, LOVE, CONNECT, KIDS_HAVE, KIDS_WANT, NIGHT_GOAL, compatibility, labelOf,
+} from "../Services/selectQuestions";
 
 // Admin: GFC Select™ applications — review, approve, and email in bulk.
 
@@ -38,6 +42,40 @@ Next step: [HOW TO RESERVE YOUR SEAT]
 
 We can't wait to see you behind the mask.`;
 
+const DEFAULT_MEN = {
+  subject: "{firstName}, you've been selected.",
+  message: `{firstName},
+
+Out of every man who requested a seat, you were selected for GFC Select™.
+
+Date: [DATE]
+Time: [TIME]
+Dress code: [DRESS CODE]
+
+Twenty women, all 30+, all vetted, and every one there to meet a good man. Your picks stay private. The location is shared 48 hours before. Keep this invitation to yourself.
+
+Your seat is held for 48 hours: [HOW TO RESERVE YOUR SEAT]
+
+See you behind the mask.`,
+};
+
+const DEFAULT_WOMEN = {
+  subject: "{firstName}, your invitation has arrived",
+  message: `{firstName},
+
+It's our pleasure to tell you: you've been selected for GFC Select™.
+
+Date: [DATE]
+Time: [TIME]
+Dress code: [DRESS CODE]
+
+Every man in the room was chosen with the same care we took choosing you. A host will welcome you, the location is shared 48 hours before, and your information is never shared unless you both choose each other. Please keep this invitation private.
+
+Your seat is held for 48 hours: [HOW TO RESERVE YOUR SEAT]
+
+We can't wait to welcome you behind the mask.`,
+};
+
 const authHeaders = () => ({
   "Content-Type": "application/json",
   Authorization: `Bearer ${localStorage.getItem("gfc_token") || ""}`,
@@ -61,6 +99,16 @@ const Detail = ({ label, value }) =>
     </div>
   ) : null;
 
+// 1–5 shown as dots: ●●●○○
+const Dots = ({ n }) => (
+  <span className="sel-adm-dots" aria-label={`${n} of 5`}>
+    {"●".repeat(n || 0)}<span className="sel-adm-dots-off">{"○".repeat(5 - (n || 0))}</span>
+  </span>
+);
+
+const topValues = (a) =>
+  VALUES.filter((v) => (a.values?.[v.key] || 0) >= 5).map((v) => v.label.split(" ")[0]).slice(0, 3).join(", ");
+
 const AdminSelect = () => {
   const [apps, setApps] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -74,8 +122,12 @@ const AdminSelect = () => {
   const [busy, setBusy] = useState(false);
   const [notesDraft, setNotesDraft] = useState({});
   const [composer, setComposer] = useState(false);
-  const [subject, setSubject] = useState(DEFAULT_SUBJECT);
-  const [message, setMessage] = useState(DEFAULT_MESSAGE);
+  const [split, setSplit] = useState(true);
+  const [versions, setVersions] = useState({
+    base: { subject: DEFAULT_SUBJECT, message: DEFAULT_MESSAGE },
+    man: DEFAULT_MEN,
+    woman: DEFAULT_WOMEN,
+  });
   const [notice, setNotice] = useState("");
   const [view, setView] = useState("apps"); // "apps" | "doors"
 
@@ -162,7 +214,7 @@ const AdminSelect = () => {
   const sendEmail = async (test) => {
     const ids = checkedApps.map((a) => a._id);
     if (!ids.length) return;
-    if (/\[(DATE|TIME|DRESS CODE|HOW TO RESERVE YOUR SEAT)\]/.test(message) && !test) {
+    if (hasPlaceholder(split, versions, /\[(DATE|TIME|DRESS CODE|HOW TO RESERVE YOUR SEAT)\]/) && !test) {
       if (!window.confirm("Your message still has a [PLACEHOLDER] in it. Send anyway?")) return;
     }
     if (!test && !window.confirm(`Send this email to ${ids.length} ${ids.length === 1 ? "person" : "people"}?`)) return;
@@ -171,9 +223,9 @@ const AdminSelect = () => {
     try {
       const r = await api("/admin/email", {
         method: "POST",
-        body: JSON.stringify({ ids, subject, message, test }),
+        body: JSON.stringify({ ids, ...emailPayload(split, versions), test }),
       });
-      if (r.test) setNotice(`Test sent to ${r.sentTo}. Check that inbox.`);
+      if (r.test) setNotice(`Test sent to ${r.sentTo} (${(r.versions || []).join(", ")}). Check that inbox.`);
       else {
         setNotice(
           r.failed?.length
@@ -191,7 +243,6 @@ const AdminSelect = () => {
   };
 
   const previewName = checkedApps[0]?.firstName || "Jordan";
-  const fill = (t) => t.replace(/\{firstName\}/g, previewName);
 
   return (
     <div className="sel-adm">
@@ -304,19 +355,22 @@ const AdminSelect = () => {
           <p className="td-muted sel-adm-to">
             To: {checkedApps.map((a) => `${a.firstName} ${a.lastName.charAt(0)}.`).join(", ")}
           </p>
-          <label className="sel-adm-label">
-            Subject
-            <input className="search-input" value={subject} onChange={(e) => setSubject(e.target.value)} maxLength={200} />
-          </label>
-          <label className="sel-adm-label">
-            Message
-            <textarea className="search-input sel-adm-message" value={message} onChange={(e) => setMessage(e.target.value)} rows={12} />
-          </label>
-          <div className="sel-adm-preview" aria-label="Preview">
-            <span className="sel-adm-detail-label">Preview for {previewName}</span>
-            <strong>{fill(subject)}</strong>
-            <p>{fill(message)}</p>
-          </div>
+          <SelectEmailVersions
+            split={split}
+            setSplit={setSplit}
+            versions={versions}
+            setVersions={setVersions}
+            names={{
+              any: previewName,
+              man: checkedApps.find((a) => a.gender === "man")?.firstName,
+              woman: checkedApps.find((a) => a.gender === "woman")?.firstName,
+            }}
+            counts={{
+              man: checkedApps.filter((a) => a.gender === "man").length,
+              woman: checkedApps.filter((a) => a.gender === "woman").length,
+              other: 0,
+            }}
+          />
           <div className="sel-adm-actions">
             <button type="button" className="export-btn" disabled={busy} onClick={() => sendEmail(true)}>
               Send me a test first
@@ -361,6 +415,7 @@ const AdminSelect = () => {
                     <strong>{a.firstName} {a.lastName}</strong>
                     <span className="td-muted">
                       {a.gender === "man" ? "Man" : "Woman"} · {a.age} · {a.area || "—"}
+                      {topValues(a) && <> · ★ {topValues(a)}</>}
                     </span>
                   </button>
                   <span className={`status-pill ${STATUS_PILL[a.status]}`}>{STATUS_LABEL[a.status]}</span>
@@ -381,15 +436,79 @@ const AdminSelect = () => {
                       <Detail label="Instagram" value={a.instagram} />
                       <Detail label="Heard about it" value={a.heardFrom} />
                       <Detail label="Referred by" value={a.referredBy} />
+                      <Detail
+                        label="Applying with"
+                        value={a.friendName ? `${a.friendName}${a.friendEmail ? ` (${a.friendGender === "woman" ? "woman" : "man"}, ${a.friendEmail}, invited)` : ""}` : ""}
+                      />
                       <Detail label="Source link" value={a.source} />
                     </div>
 
                     <h5 className="sel-adm-sub">Their heart</h5>
                     <Detail label="Looking for" value={a.lookingFor} />
+                    <Detail label="A great night would be" value={labelOf(NIGHT_GOAL, a.nightGoal)} />
+                    <Detail
+                      label="Kids"
+                      value={a.hasKids ? `Has kids: ${labelOf(KIDS_HAVE, a.hasKids)} · Wants kids: ${labelOf(KIDS_WANT, a.wantsKids)}` : ""}
+                    />
+                    <Detail label="Would like to meet ages" value={a.ageMin ? `${a.ageMin} to ${a.ageMax}` : ""} />
                     <Detail label="Why now" value={a.whyNow} />
                     <Detail label="Ideal first date" value={a.firstDate} />
                     <Detail label="Matters most in a partner" value={a.matters} />
                     <Detail label="People learn later" value={a.learnLater} />
+
+                    {a.values && Object.keys(a.values).length > 0 && (
+                      <>
+                        <h5 className="sel-adm-sub">What they value (1 to 5)</h5>
+                        <ul className="sel-adm-values">
+                          {[...VALUES]
+                            .sort((x, y) => (a.values[y.key] || 0) - (a.values[x.key] || 0))
+                            .map((v) => (
+                              <li key={v.key}><span>{v.label}</span><Dots n={a.values[v.key]} /></li>
+                            ))}
+                        </ul>
+                        <Detail label="Why" value={a.valuesWhy} />
+                      </>
+                    )}
+
+                    {a.social && (
+                      <>
+                        <h5 className="sel-adm-sub">How they connect</h5>
+                        {CONNECT.map((q) => (
+                          <Detail key={q.key} label={q.ask(a.gender)} value={labelOf(q.options, a[q.key])} />
+                        ))}
+                        <Detail label="Shows love by" value={(a.giveLove || []).map((k) => labelOf(LOVE, k)).join(" · ")} />
+                        <Detail label="Feels loved by" value={(a.receiveLove || []).map((k) => labelOf(LOVE, k)).join(" · ")} />
+                      </>
+                    )}
+
+                    {a.values && Object.keys(a.values).length > 0 && (() => {
+                      const matches = apps
+                        .filter((b) => b.gender !== a.gender && b.status !== "not_this_time" && b.values && Object.keys(b.values).length)
+                        .map((b) => ({ b, ...compatibility(a, b) }))
+                        .sort((x, y) => y.score - x.score)
+                        .slice(0, 5);
+                      if (!matches.length) return null;
+                      return (
+                        <>
+                          <h5 className="sel-adm-sub">Best matches in the room</h5>
+                          <ul className="sel-adm-matches">
+                            {matches.map(({ b, score, flags }) => (
+                              <li key={b._id}>
+                                <button type="button" className="sel-adm-match-name" onClick={() => setOpenId(b._id)}>
+                                  {b.firstName} {b.lastName?.charAt(0)}. · {b.age}
+                                </button>
+                                <span className={`sel-adm-score ${score >= 75 ? "high" : score >= 55 ? "mid" : "low"}`}>{score}%</span>
+                                <span className={`status-pill ${STATUS_PILL[b.status]}`}>{STATUS_LABEL[b.status]}</span>
+                                {flags.length > 0 && <span className="sel-adm-flags">⚠ {flags.join(" · ")}</span>}
+                              </li>
+                            ))}
+                          </ul>
+                          <p className="td-muted sel-adm-score-note">
+                            Score: values 50%, how they give and receive love 20%, personality 15%, goals and kids 15%.
+                          </p>
+                        </>
+                      );
+                    })()}
 
                     <h5 className="sel-adm-sub">Fun facts (bingo)</h5>
                     <ul className="sel-adm-bingo">
