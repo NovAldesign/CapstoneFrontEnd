@@ -21,7 +21,7 @@ const BINGO_PROMPTS = [
   "A fun fact most people don't know about me",
   "My love language",
   "The last concert or show I went to",
-  "My zodiac sign",
+  "The movie or show I can watch on repeat",
 ];
 const ALLERGIES = ["Peanuts", "Tree nuts", "Shellfish", "Fish", "Dairy", "Eggs", "Gluten", "Soy", "Sesame"];
 const DIETS = ["Vegetarian", "Vegan", "Pescatarian", "Halal", "No pork"];
@@ -40,12 +40,14 @@ const STEPS = [
 ];
 
 const RULES = [
-  "For singles, 30 and over",
-  "Camera-free: your phone's camera wears our seal all night",
-  "What happens at Select stays at Select",
-  "No plus-ones. Every seat is selected",
-  "Each evening has its own dress code",
-  "No refunds. This is a curated room",
+  "Singles, 30 and over. Valid photo ID required at the door",
+  "Camera-free: your phone's camera is sealed at check-in. Break the seal and you leave",
+  "What happens at Select stays at Select. No names, no posts, no tags",
+  "No plus-ones. Every seat is selected and non-transferable",
+  "Follow the evening's dress code or you will not be admitted",
+  "No refunds. Your seat is final once reserved",
+  "Disrespect, harassment or unwanted contact gets you removed and banned",
+  "Alcohol-free. Arrive sober or you will not be admitted",
 ];
 
 const FAQS = [
@@ -276,7 +278,17 @@ const SelectInvitation = () => {
       openStep(0);
       return setError("Please finish \"About you\": name, email, phone, birthdate and man or woman.");
     }
-    if (form.friendEmail.trim() && !form.friendGender) {
+    // The friend's email only counts while their name is filled in (the field hides otherwise)
+    const friendEmail = form.friendName.trim() ? form.friendEmail.trim() : "";
+    if (friendEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(friendEmail)) {
+      openStep(0);
+      return setError("Your friend's email is missing something (like name@gmail.com). Fix it, or clear it to skip the invite.");
+    }
+    if (friendEmail && friendEmail.toLowerCase() === form.email.trim().toLowerCase()) {
+      openStep(0);
+      return setError("That's your own email in the friend box. Add your friend's email, or clear it.");
+    }
+    if (friendEmail && !form.friendGender) {
       openStep(0);
       return setError("Let us know if your friend is a man or a woman.");
     }
@@ -314,6 +326,8 @@ const SelectInvitation = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
+          friendEmail: form.friendName.trim() ? form.friendEmail.trim() : "",
+          friendGender: form.friendName.trim() && form.friendEmail.trim() ? form.friendGender : "",
           bingo: Object.entries(bingo)
             .filter(([, a]) => a.trim())
             .map(([prompt, answer]) => ({ prompt, answer })),
@@ -416,7 +430,7 @@ const SelectInvitation = () => {
 
       {/* HOW IT WORKS */}
       <section className="select-section select-dark" aria-labelledby="select-how">
-        <p className="select-kicker">The ritual</p>
+        <p className="select-kicker">Step by step</p>
         <h2 id="select-how" className="select-h2">How it works</h2>
         <ol className="select-steps">
           {STEPS.map((s) => (
@@ -801,9 +815,11 @@ const SelectInvitation = () => {
               <label className="select-check">
                 <input type="checkbox" name="agreed" checked={form.agreed} onChange={update} />
                 <span>
-                  I'm 30 or older. I agree to keep my phone camera covered all evening, keep what
-                  happens at Select private, come without a plus-one, follow the evening's dress
-                  code, and understand there are no refunds. *
+                  I'm single and 30 or older. I will keep my phone camera sealed all evening, keep
+                  what happens at Select private, come without a plus-one and follow the dress code.
+                  I understand seats are non-refundable and non-transferable, and that breaking any
+                  rule or the <Link to="/code-of-conduct">Code of Conduct</Link> gets me removed with no
+                  refund. I accept the <Link to="/terms">Terms</Link> and <Link to="/waiver">Participation Waiver</Link>. *
                 </span>
               </label>
             </fieldset>

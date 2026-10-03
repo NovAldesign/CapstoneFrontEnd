@@ -38,8 +38,10 @@ export const CONNECT = [
     ask: () => "At a party, you're usually…",
     options: [
       { key: "room", label: "Working the room, meeting everybody" },
-      { key: "few", label: "In a few deep conversations" },
-      { key: "mix", label: "A little of both" },
+      { key: "few", label: "In one or two deep conversations" },
+      { key: "warm", label: "Close to the people I came with until I warm up" },
+      { key: "quiet", label: "Sitting in the corner to myself, quietly taking it all in" },
+      { key: "mix", label: "A little of both: depends on the room" },
     ],
   },
   {
@@ -47,7 +49,7 @@ export const CONNECT = [
     ask: () => "When something bothers you in a relationship, you…",
     options: [
       { key: "now", label: "Talk it out right away" },
-      { key: "later", label: "Take some time, then talk it through" },
+      { key: "later", label: "Need quiet time to think first, then talk it through" },
       { key: "show", label: "Show it more than say it" },
     ],
   },
@@ -75,6 +77,7 @@ export const CONNECT = [
     options: [
       { key: "out", label: "Out: brunch, events, something new" },
       { key: "home", label: "Home: cooking, a movie, good company" },
+      { key: "recharge", label: "Quiet: a book, a walk, time to recharge alone" },
       { key: "mix", label: "A mix of both" },
     ],
   },
@@ -162,7 +165,10 @@ export const compatibility = (a, b) => {
   // Personality (15)
   const same = (k) => a[k] && b[k] && (a[k] === b[k] || a[k] === "mix" || b[k] === "mix" || a[k] === "flex" || b[k] === "flex");
   const pacePts = !a.pace || !b.pace ? 1.5 : a.pace === b.pace ? 4 : a.pace === "steady" || b.pace === "steady" ? 2 : 0;
-  score += pacePts + (same("roles") ? 4 : 0) + (same("conflict") ? 3 : 0) + (same("social") ? 2 : 0) + (same("weekend") ? 2 : 0);
+  // Quieter answers fit each other: an introvert pairs well with another introvert
+  const QUIET_SOCIAL = ["few", "warm", "quiet"], QUIET_WEEKEND = ["home", "recharge"];
+  const near = (k, group) => same(k) || (group.includes(a[k]) && group.includes(b[k]));
+  score += pacePts + (same("roles") ? 4 : 0) + (same("conflict") ? 3 : 0) + (near("social", QUIET_SOCIAL) ? 2 : 0) + (near("weekend", QUIET_WEEKEND) ? 2 : 0);
   if (a.roles && b.roles && a.roles !== b.roles && a.roles !== "flex" && b.roles !== "flex") flags.push("Different views on roles");
 
   // Goals (15)
