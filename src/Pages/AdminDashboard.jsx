@@ -1,9 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { getAllMembership, deleteMembership, updateMembershipStatus } from '../Services/adminService';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { getAllEvents, createEvent, updateEvent, deleteEvent } from '../Services/eventService';
+import { adminApi, adminLegacy } from '../Services/adminApi';
 import AdminReviews from "../Components/AdminReviews.jsx";
 import AdminSelect from "../Components/AdminSelect.jsx";
+import AdminToday from "../Components/admin/AdminToday.jsx";
+import AdminShowcases from "../Components/admin/AdminShowcases.jsx";
+import AdminCodes from "../Components/admin/AdminCodes.jsx";
+import { AdminInboxList, AdminPerks, AdminSubscribers } from "../Components/admin/AdminLists.jsx";
 import "../Styles/Admin.css";
+import "../Styles/AdminShell.css";
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -54,11 +59,13 @@ const Badge = ({ text, type }) => (
 );
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab]           = useState('overview');
+  const [activeTab, setActiveTab]           = useState(() => {
+    try { return sessionStorage.getItem('gfc_admin_tab') || 'today'; } catch { return 'today'; }
+  });
+  const [counts, setCounts]                 = useState({});
   const [membership, setMembership]         = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
   const [loading, setLoading]               = useState(true);
-  const [isUpdating, setIsUpdating]         = useState(false);
   const [memberSearch, setMemberSearch]     = useState('');
   const [memberFilter, setMemberFilter]     = useState('all');
 
@@ -75,61 +82,32 @@ const AdminDashboard = () => {
 
   useEffect(() => { loadData(); }, []);
 
+  // Remember the open tab when the page reloads
+  useEffect(() => {
+    try { sessionStorage.setItem('gfc_admin_tab', activeTab); } catch { /* private mode */ }
+  }, [activeTab]);
+
+  // Sidebar badges (what's waiting on you)
+  useEffect(() => {
+    adminApi('/inbox').then((d) => setCounts(d.counts || {})).catch(() => {});
+  }, []);
+  const handleCounts = useCallback((c) => setCounts(c || {}), []);
+
   const loadData = async () => {
-    try {
-      const [memberData, eventData] = await Promise.all([
-        getAllMembership(), getAllEvents()
-      ]);
-      setMembership(memberData);
-      setEvents(eventData);
-    } catch (err) { console.error(err); }
-    finally { setLoading(false); }
+    const [memberData, eventData] = await Promise.all([
+      adminLegacy('/membership').catch((err) => { console.error(err); return []; }),
+      getAllEvents(),
+    ]);
+    setMembership(Array.isArray(memberData) ? memberData : []);
+    setEvents(Array.isArray(eventData) ? eventData : []);
+    setLoading(false);
   };
-
-  // ── Computed Stats ──────────────────────────────────────────────────────
-  const stats = useMemo(() => {
-    const totalMembers    = membership.length;
-    const activeMembers   = membership.filter(m => m.status === 'accepted').length;
-    const waitlisted      = membership.filter(m => m.status === 'waitlisted').length;
-    const pending         = membership.filter(m => m.status === 'pending').length;
-
-    const totalEvents     = events.length;
-    const publishedEvents = events.filter(e => e.status === 'published').length;
-    const totalCapacity   = events.reduce((a, e) => a + (e.capacity || 0), 0);
-    const totalSold       = events.reduce((a, e) => a + (e.totalSold || 0), 0);
-
-    const totalRevenue = events.reduce((a, e) => {
-      const eventRev = (e.ticketTypes || []).reduce((ta, t) => {
-        const sold = Math.min(t.quantity || 0, e.totalSold || 0);
-        return ta + (sold * (t.price || 0));
-      }, 0);
-      return a + eventRev;
-    }, 0);
-
-    const fillRate = totalCapacity > 0 ? Math.round((totalSold / totalCapacity) * 100) : 0;
-
-    const industries = membership.reduce((acc, m) => {
-      const ind = m.industry || 'Unknown';
-      acc[ind] = (acc[ind] || 0) + 1;
-      return acc;
-    }, {});
-    const topIndustry = Object.entries(industries).sort((a, b) => b[1] - a[1])[0]?.[0] || '—';
-
-    const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
-    const recentSignups = membership.filter(m => new Date(m.createdAt) > thirtyDaysAgo).length;
-
-    return {
-      totalMembers, activeMembers, waitlisted, pending,
-      totalEvents, publishedEvents, totalCapacity, totalSold,
-      totalRevenue, fillRate, topIndustry, recentSignups, industries,
-    };
-  }, [membership, events]);
 
   // ── Filtered Members ────────────────────────────────────────────────────
   const filteredMembers = useMemo(() => {
     return membership.filter(m => {
       const matchSearch = memberSearch === '' ||
-        `${m.firstName} ${m.lastName} ${m.email} ${m.industry}`.toLowerCase().includes(memberSearch.toLowerCase());
+        `${m.firstName} ${m.lastName} ${m.email}`.toLowerCase().includes(memberSearch.toLowerCase());
       const matchFilter = memberFilter === 'all' || m.status === memberFilter;
       return matchSearch && matchFilter;
     });
@@ -150,20 +128,10 @@ const AdminDashboard = () => {
     return Math.abs(new Date(Date.now() - new Date(dob).getTime()).getUTCFullYear() - 1970);
   };
 
-  const handleStatusUpdate = async (id, newStatus) => {
-    setIsUpdating(true);
-    try {
-      const updated = await updateMembershipStatus(id, newStatus);
-      setMembership(prev => prev.map(m => m._id === id ? updated : m));
-      setSelectedMember(updated);
-    } catch { alert("Update failed"); }
-    finally { setIsUpdating(false); }
-  };
-
   const handleDelete = async (id) => {
     if (window.confirm("Remove this member from the GFC database?")) {
       try {
-        await deleteMembership(id);
+        await adminLegacy(`/membership/${id}`, { method: 'DELETE' });
         setMembership(prev => prev.filter(item => item._id !== id));
         if (selectedMember?._id === id) setSelectedMember(null);
       } catch (err) { console.error(err); }
@@ -176,7 +144,6 @@ const AdminDashboard = () => {
       'Last Name': m.lastName,
       'Email': m.email,
       'Phone': m.phone || '',
-      'Industry': m.industry || '',
       'Tier': m.tier || '',
       'Status': m.status,
       'Age': calculateAge(m.dob),
@@ -304,257 +271,165 @@ const AdminDashboard = () => {
   if (loading) return (
     <div className="admin-loading">
       <div className="loading-spinner" />
-      <p>Loading Executive Suite...</p>
+      <p>Loading your dashboard…</p>
     </div>
   );
 
-  const TABS = [
-    { id: 'overview',      label: '📊 Overview' },
-    { id: 'members',       label: '👥 Members' },
-    { id: 'events',        label: '🎟 Events' },
-    { id: 'reviews',       label: '⭐ Reviews' },
-    { id: 'select',        label: '🎭 GFC Select™' },
-    { id: 'create-event',  label: editingEvent ? '✏️ Edit Event' : '＋ New Event' },
+  // Sidebar: grouped so related work sits together
+  const NAV = [
+    { group: null, items: [{ id: 'today', icon: '☀️', label: 'Today' }] },
+    { group: 'Events', items: [
+      { id: 'events', icon: '🎟', label: 'Events' },
+      { id: 'showcases', icon: '🎤', label: 'Showcases', count: (counts.artists || 0) + (counts.hosts || 0) },
+      { id: 'create-event', icon: '＋', label: editingEvent ? 'Edit event' : 'New event' },
+    ] },
+    { group: 'Sales', items: [{ id: 'codes', icon: '🏷️', label: 'Discount codes' }] },
+    { group: 'Partnerships', items: [
+      { id: 'partners', icon: '🤝', label: 'Partners', count: counts.partners },
+      { id: 'perks', icon: '💳', label: 'Member Perks', count: counts.perks },
+      { id: 'private', icon: '🥂', label: 'Private events', count: counts.hosting },
+      { id: 'groups', icon: '🎉', label: 'Group bookings', count: counts.groups },
+    ] },
+    { group: 'People', items: [
+      { id: 'messages', icon: '✉️', label: 'Messages', count: counts.messages },
+      { id: 'members', icon: '👥', label: 'Members' },
+      { id: 'subscribers', icon: '📬', label: 'Subscribers' },
+      { id: 'select', icon: '🎭', label: 'GFC Select™', count: counts.select },
+      { id: 'reviews', icon: '⭐', label: 'Reviews', count: counts.reviews },
+    ] },
   ];
+  const TITLES = {
+    today: ['Today', 'Everything waiting on you, in one place.'],
+    events: ['Events', 'Every event, tickets sold and attendees.'],
+    showcases: ['Showcases', 'Lineups, artist and host applications, ticket codes and payouts.'],
+    'create-event': [editingEvent ? 'Edit event' : 'New event', 'Set the details, tickets and photo.'],
+    codes: ['Discount codes', 'Create, edit and pause codes. No coding needed.'],
+    partners: ['Partners', 'Sponsor and partnership inquiries.'],
+    perks: ['Member Perks', 'Businesses offering discounts to members.'],
+    private: ['Private events', 'Hosting requests from the /host page.'],
+    groups: ['Group bookings', 'Birthdays, celebrations and groups.'],
+    messages: ['Messages', 'Notes from the contact form.'],
+    members: ['Members', 'Memberships and their status.'],
+    subscribers: ['Subscribers', 'Your newsletter list.'],
+    select: ['GFC Select™', 'Applications, doors and matching.'],
+    reviews: ['Reviews', 'Guest reviews for the home page.'],
+  };
+  const [title, subtitle] = TITLES[activeTab] || TITLES.today;
+  const go = (tab) => { setActiveTab(tab); window.scrollTo({ top: 0 }); };
 
   return (
-    <div className="admin-container">
-      <div className="admin-header-section">
-        <div>
-          <h1 className="playfair">Executive Dashboard</h1>
-          <p>Grown Folks™ Collective · Command Center</p>
+    <div className="gfc-admin">
+      <nav className="ga-side" aria-label="Dashboard">
+        <div className="ga-brand">
+          <div className="ga-brand-name">Grown Folks™</div>
+          <div className="ga-brand-sub">Command Center</div>
         </div>
-        <div className="admin-header-meta">
-          <span className="live-badge">● LIVE</span>
-          <span className="header-date">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</span>
-        </div>
-      </div>
-
-      <div className="admin-tabs">
-        {TABS.map(t => (
-          <button
-            key={t.id}
-            className={`admin-tab ${activeTab === t.id ? 'active' : ''}`}
-            onClick={() => setActiveTab(t.id)}
-          >
-            {t.label}
-          </button>
+        {NAV.map((g) => (
+          <React.Fragment key={g.group || 'top'}>
+            {g.group && <div className="ga-nav-group">{g.group}</div>}
+            {g.items.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                className={`ga-nav-btn ${activeTab === t.id ? 'active' : ''}`}
+                aria-current={activeTab === t.id ? 'page' : undefined}
+                onClick={() => go(t.id)}
+              >
+                <span className="ga-nav-icon" aria-hidden="true">{t.icon}</span>
+                <span className="ga-nav-label">{t.label}</span>
+                {t.count > 0 && <span className="ga-count" aria-label={`${t.count} waiting`}>{t.count}</span>}
+              </button>
+            ))}
+          </React.Fragment>
         ))}
+      </nav>
+
+      <main className="ga-main">
+      <div className="ga-topbar">
+        <div>
+          <h1 className="ga-title">{title}</h1>
+          <p className="ga-subtitle">{subtitle}</p>
+        </div>
+        <span className="ga-date">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</span>
       </div>
 
-      {/* ── REVIEWS TAB ──────────────────────────────────────────────── */}
+      {activeTab === 'today' && <AdminToday go={go} onCounts={handleCounts} />}
+      {activeTab === 'showcases' && <AdminShowcases />}
+      {activeTab === 'codes' && <AdminCodes events={events} />}
+      {activeTab === 'perks' && <AdminPerks />}
+      {['partners', 'private', 'groups', 'messages'].includes(activeTab) && <AdminInboxList kind={activeTab} />}
+      {activeTab === 'subscribers' && <AdminSubscribers />}
       {activeTab === 'reviews' && <AdminReviews />}
       {activeTab === 'select' && <AdminSelect />}
 
-      {/* ── OVERVIEW TAB ─────────────────────────────────────────────── */}
-      {activeTab === 'overview' && (
-        <div className="overview-tab">
-          <div className="stats-section">
-            <h3 className="section-heading">Membership</h3>
-            <div className="stats-grid">
-              <StatCard label="Total Members"   value={stats.totalMembers}   sub={`+${stats.recentSignups} this month`} accent="#C9A84C" />
-              <StatCard label="Active Members"  value={stats.activeMembers}  sub="Approved & active"                    accent="#4CAF7D" />
-              <StatCard label="Waitlisted"      value={stats.waitlisted}     sub="Awaiting review"                      accent="#E8A838" />
-              <StatCard label="Pending Review"  value={stats.pending}        sub="Action required"                      accent="#E05C5C" />
+      {/* ── MEMBERS TAB ──────────────────────────────────────────────── */}
+      {activeTab === 'members' && (
+        <div className="ga-grid-2" style={{ gridTemplateColumns: selectedMember ? 'minmax(0,1.6fr) minmax(0,1fr)' : '1fr' }}>
+          <section className="ga-card">
+            <div className="ga-card-head">
+              <div className="ga-seg" role="tablist" aria-label="Filter members">
+                {[['all', 'All'], ['active', 'Active'], ['pending', 'Not paid yet'], ['canceled', 'Canceled']].map(([id, lbl]) => (
+                  <button key={id} type="button" className={memberFilter === id ? 'on' : ''} onClick={() => setMemberFilter(id)}>
+                    {lbl} · {id === 'all' ? membership.length : membership.filter(m => m.status === id).length}
+                  </button>
+                ))}
+              </div>
+              <div className="ga-row">
+                <input className="ga-input" style={{ width: 220 }} placeholder="Search name or email" aria-label="Search members"
+                  value={memberSearch} onChange={e => setMemberSearch(e.target.value)} />
+                <button type="button" className="ga-btn" onClick={exportMembers}>↓ CSV ({filteredMembers.length})</button>
+              </div>
             </div>
-          </div>
-
-          <div className="stats-section">
-            <h3 className="section-heading">Events & Revenue</h3>
-            <div className="stats-grid">
-              <StatCard label="Total Events"    value={stats.totalEvents}                                                  accent="#C9A84C" />
-              <StatCard label="Published"       value={stats.publishedEvents}  sub="Live & bookable"                       accent="#4CAF7D" />
-              <StatCard label="Tickets Sold"    value={stats.totalSold}        sub={`of ${stats.totalCapacity} capacity`}  accent="#7B68EE" />
-              <StatCard label="Fill Rate"       value={`${stats.fillRate}%`}   sub="Across all events"                     accent="#E8A838" />
-              <StatCard label="Est. Revenue"    value={`$${(stats.totalRevenue / 100).toLocaleString()}`} sub="Gross ticket sales" accent="#4CAF7D" />
-              <StatCard label="Top Industry"    value={stats.topIndustry}      sub="Among members"                         accent="#C9A84C" />
-            </div>
-          </div>
-
-          <div className="stats-section">
-            <h3 className="section-heading">Member Industries</h3>
-            <div className="industry-breakdown">
-              {Object.entries(stats.industries)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 8)
-                .map(([industry, count]) => {
-                  const pct = stats.totalMembers > 0 ? Math.round((count / stats.totalMembers) * 100) : 0;
-                  return (
-                    <div key={industry} className="industry-row">
-                      <span className="industry-name">{industry}</span>
-                      <div className="industry-bar-wrap">
-                        <div className="industry-bar" style={{ width: `${pct}%` }} />
-                      </div>
-                      <span className="industry-count">{count} <span className="industry-pct">({pct}%)</span></span>
-                    </div>
-                  );
-                })}
-            </div>
-          </div>
-
-          <div className="stats-section">
-            <h3 className="section-heading">Event Performance</h3>
-            <div className="event-perf-table">
-              <table className="admin-table">
-                <thead>
-                  <tr>
-                    <th>Event</th><th>Type</th><th>Date</th>
-                    <th>Sold</th><th>Capacity</th><th>Fill %</th><th>Status</th>
-                  </tr>
-                </thead>
+            <div className="ga-table-wrap">
+              <table className="ga-table">
+                <thead><tr><th>Name</th><th>Email</th><th>Tier</th><th>Status</th><th>Joined</th></tr></thead>
                 <tbody>
-                  {events.length === 0 && (
-                    <tr><td colSpan={7} className="empty-cell">No events yet — create your first!</td></tr>
+                  {filteredMembers.length === 0 && (
+                    <tr><td colSpan={5} className="ga-empty">No members match.</td></tr>
                   )}
-                  {events.map(ev => {
-                    const sold = ev.totalSold || 0;
-                    const cap  = ev.capacity  || 0;
-                    const fill = cap > 0 ? Math.round((sold / cap) * 100) : 0;
-                    return (
-                      <tr key={ev._id} className="admin-row">
-                        <td className="clickable-name" onClick={() => { setSelectedEvent(ev); setActiveTab('events'); }}>
-                          {ev.name}
-                        </td>
-                        <td>{ev.eventType}</td>
-                        <td>{new Date(ev.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
-                        <td>{sold}</td>
-                        <td>{cap}</td>
-                        <td>
-                          <div className="mini-bar-wrap">
-                            <div className="mini-bar" style={{ width: `${fill}%`, background: fill >= 80 ? '#4CAF7D' : fill >= 50 ? '#E8A838' : '#E05C5C' }} />
-                            <span>{fill}%</span>
-                          </div>
-                        </td>
-                        <td><Badge text={ev.status} type={ev.status} /></td>
-                      </tr>
-                    );
-                  })}
+                  {filteredMembers.map((member) => (
+                    <tr key={member._id}>
+                      <td><button type="button" className="ga-link" style={{ fontWeight: 600, textDecoration: 'none', color: 'var(--ga-navy)' }}
+                        onClick={() => setSelectedMember(member)}>{member.firstName} {member.lastName}</button></td>
+                      <td className="ga-small"><a href={`mailto:${member.email}`}>{member.email}</a></td>
+                      <td>{member.tier ? <span className="ga-pill gold">{member.tier}</span> : '—'}</td>
+                      <td><span className={`ga-pill ${member.status === 'active' ? 'green' : member.status === 'pending' ? 'amber' : ''}`}>
+                        {member.status === 'pending' ? 'Not paid yet' : member.status}</span></td>
+                      <td className="ga-small">{member.createdAt ? new Date(member.createdAt).toLocaleDateString() : '—'}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* ── MEMBERS TAB ──────────────────────────────────────────────── */}
-      {activeTab === 'members' && (
-        <div className="admin-layout">
-          <div className="table-container">
-            <div className="table-toolbar">
-              <input
-                className="search-input"
-                placeholder="Search by name, email, industry…"
-                value={memberSearch}
-                onChange={e => setMemberSearch(e.target.value)}
-              />
-              <select className="filter-select" value={memberFilter} onChange={e => setMemberFilter(e.target.value)}>
-                <option value="all">All Statuses</option>
-                <option value="accepted">Accepted</option>
-                <option value="pending">Pending</option>
-                <option value="waitlisted">Waitlisted</option>
-              </select>
-              <button className="export-btn" onClick={exportMembers}>
-                ↓ Export CSV ({filteredMembers.length})
-              </button>
-            </div>
-
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Name</th><th>Email</th><th>Industry</th>
-                  <th>Tier</th><th>Status</th><th>Joined</th><th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredMembers.length === 0 && (
-                  <tr><td colSpan={7} className="empty-cell">No members match your search.</td></tr>
-                )}
-                {filteredMembers.map((member) => (
-                  <tr key={member._id} className="admin-row">
-                    <td className="clickable-name" onClick={() => setSelectedMember(member)}>
-                      {member.firstName} {member.lastName}
-                    </td>
-                    <td className="td-muted">{member.email}</td>
-                    <td>{member.industry}</td>
-                    <td><span className={`tier-badge ${member.tier?.toLowerCase()}`}>{member.tier}</span></td>
-                    <td><Badge text={member.status} type={member.status} /></td>
-                    <td className="td-muted">
-                      {member.createdAt ? new Date(member.createdAt).toLocaleDateString() : '—'}
-                    </td>
-                    <td>
-                      <button onClick={() => handleDelete(member._id)} className="btn-delete">Remove</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          </section>
 
           {selectedMember && (
-            <div className="details-panel">
-              <button className="close-btn" onClick={() => setSelectedMember(null)}>×</button>
-              <h2 className="playfair">{selectedMember.firstName} {selectedMember.lastName}</h2>
-              <p className="subtitle">{selectedMember.industry} Professional</p>
-              <div className="gold-spacer-v2"></div>
-
-              <section className="detail-group contact-card">
-                <h4 className="detail-heading">Contact</h4>
-                <div className="detail-item"><label>Email</label>
-                  <a href={`mailto:${selectedMember.email}`} className="detail-link">{selectedMember.email}</a>
+            <section className="ga-card">
+              <div className="ga-card-head">
+                <div>
+                  <p className="ga-kicker">{selectedMember.tier || 'Member'}</p>
+                  <h2 className="ga-card-title">{selectedMember.firstName} {selectedMember.lastName}</h2>
                 </div>
-                <div className="detail-item"><label>Phone</label>
-                  <a href={`tel:${selectedMember.phone}`} className="detail-link">{selectedMember.phone || '—'}</a>
-                </div>
-              </section>
-
-              <section className="detail-group">
-                <h4 className="detail-heading">Identity</h4>
-                <div className="demo-grid">
-                  <div className="detail-item"><label>Age</label> {calculateAge(selectedMember.dob)}</div>
-                  <div className="detail-item"><label>Gender</label> {selectedMember.gender || '—'}</div>
-                </div>
-                <div className="detail-item"><label>Joined</label> {selectedMember.createdAt ? new Date(selectedMember.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '—'}</div>
-              </section>
-
-              <section className="detail-group">
-                <h4 className="detail-heading">Community Profile</h4>
-                <div className="detail-item"><label>Primary Interest</label> {selectedMember.connectionGoals?.primaryInterest || 'Networking'}</div>
-                <div className="detail-item"><label>Founder Status</label> {selectedMember.isFirstTimeFounder ? 'First-Time Founder' : 'Serial Entrepreneur'}</div>
-              </section>
-
-              <section className="detail-group">
-                <h4 className="detail-heading">Event Logistics</h4>
-                <div className="demo-grid">
-                  <div className="detail-item"><label>Shirt Size</label> {selectedMember.preferences?.apparelSize || 'N/A'}</div>
-                  <div className="detail-item"><label>Passport</label> {selectedMember.hasPassport ? '✓ Yes' : '✗ No'}</div>
-                </div>
-                <div className="detail-item">
-                  <label>Dietary Restrictions</label>
-                  <div className="tag-container">
-                    {selectedMember.preferences?.dietaryRestrictions?.length > 0
-                      ? selectedMember.preferences.dietaryRestrictions.map((d, i) => <span key={i} className="diet-tag">{d}</span>)
-                      : 'None'}
-                  </div>
-                </div>
-              </section>
-
-              <div className="panel-actions">
-                <button className="gold-fill-btn"
-                  disabled={selectedMember.status === 'accepted' || isUpdating}
-                  onClick={() => handleStatusUpdate(selectedMember._id, 'accepted')}>
-                  {isUpdating ? 'Processing...' : '✓ Approve'}
-                </button>
-                <button className="waitlist-action-btn"
-                  disabled={selectedMember.status === 'waitlisted' || isUpdating}
-                  onClick={() => handleStatusUpdate(selectedMember._id, 'waitlisted')}>
-                  {isUpdating ? 'Processing...' : 'Waitlist'}
-                </button>
-                <button className="btn-delete"
-                  onClick={() => handleDelete(selectedMember._id)}>
-                  Remove
-                </button>
+                <button type="button" className="ga-x" aria-label="Close" onClick={() => setSelectedMember(null)}>×</button>
               </div>
-            </div>
+              <div className="ga-detail">
+                <dl>
+                  <dt>Email</dt><dd><a href={`mailto:${selectedMember.email}`}>{selectedMember.email}</a></dd>
+                  <dt>Phone</dt><dd>{selectedMember.phone ? <a href={`tel:${selectedMember.phone}`}>{selectedMember.phone}</a> : '—'}</dd>
+                  <dt>Status</dt><dd>{selectedMember.status === 'pending' ? 'Not paid yet' : selectedMember.status}</dd>
+                  <dt>Age</dt><dd>{calculateAge(selectedMember.dob)}</dd>
+                  <dt>Joined</dt><dd>{selectedMember.createdAt ? new Date(selectedMember.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '—'}</dd>
+                  {selectedMember.paidAt && (<><dt>Paid</dt><dd>{new Date(selectedMember.paidAt).toLocaleDateString()}</dd></>)}
+                </dl>
+              </div>
+              <p className="ga-small ga-muted">Membership status updates on its own when Stripe confirms a payment or a cancellation.</p>
+              <div className="ga-row">
+                <a className="ga-btn ga-btn-sm" href={`mailto:${selectedMember.email}`}>✉️ Email</a>
+                {selectedMember.phone && <a className="ga-btn ga-btn-sm" href={`sms:${selectedMember.phone}`}>💬 Text</a>}
+                <span className="ga-spacer" />
+                <button type="button" className="ga-btn ga-btn-sm ga-btn-danger" onClick={() => handleDelete(selectedMember._id)}>Remove</button>
+              </div>
+            </section>
           )}
         </div>
       )}
@@ -990,6 +865,7 @@ const AdminDashboard = () => {
           </form>
         </div>
       )}
+      </main>
     </div>
   );
 };
