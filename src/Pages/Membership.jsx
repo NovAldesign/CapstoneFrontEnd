@@ -538,9 +538,11 @@ const Membership = () => {
               <span>
                 I understand my {selectedTier?.name || 'membership'} renews automatically at{' '}
                 <strong>{selectedTier?.price || ''}/month</strong> until I cancel, and I can cancel
-                anytime before my next billing date by emailing {LEGAL.email}. I agree to the{' '}
+                anytime before my next billing date by emailing {LEGAL.email}. Fees are not refunded for
+                partial months. I accept the{' '}
                 <a href="/terms" target="_blank" rel="noopener noreferrer">Terms</a>,{' '}
-                <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>, and{' '}
+                <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>,{' '}
+                <a href="/code-of-conduct" target="_blank" rel="noopener noreferrer">Code of Conduct</a>, and{' '}
                 <a href="/waiver" target="_blank" rel="noopener noreferrer">Participation Waiver</a>.
               </span>
             </label>
