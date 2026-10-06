@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 // --- Components ---
@@ -22,6 +23,8 @@ import About from "./Pages/About.jsx";
 import Contact from "./Pages/Contact.jsx";
 import ResetPassword from "./Pages/ResetPassword.jsx";
 import AdminDashboard from "./Pages/AdminDashboard.jsx";
+import CheckIn from "./Pages/CheckIn.jsx";
+import { rememberSource } from "./Services/ticketSources.js";
 import SuccessPage from "./Pages/SuccessPage.jsx";
 import MembershipSuccess from "./Pages/MembershipSuccess.jsx";
 import GroupBooking from "./Pages/GroupBooking.jsx";
@@ -44,8 +47,13 @@ import "./Styles/Index.css";
 
 function App() {
   // The link-in-bio page shows without the top navigation
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const isLinks = pathname === "/links";
+  // Door check-in has its own full-screen layout
+  const isCheckIn = pathname.startsWith("/checkin/");
+
+  // Remember which post sent this visitor (?src=threads-m), so ticket sales show where they came from
+  useEffect(() => { rememberSource(search); }, [search]);
   // GFC Select™ pages have their own quiet header and footer
   const isSelect = pathname === "/select" || pathname.startsWith("/select/");
 
@@ -53,12 +61,13 @@ function App() {
     <CartProvider>
       <div className="App-wrapper">
         <a href="#main-content" className="skip-link">Skip to main content</a>
-        {!isLinks && !isSelect && <Navbar />}
+        {!isLinks && !isSelect && !isCheckIn && <Navbar />}
 
         <main className="main-content" id="main-content" tabIndex={-1}>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
+            <Route path="/checkin/:eventId" element={<CheckIn />} />
             <Route path="/events" element={<Events />} />
             <Route path="/events/success" element={<SuccessPage />} />
             <Route path="/events/:slug" element={<EventDetail />} />
@@ -121,7 +130,7 @@ function App() {
             />
           </Routes>
         </main>
-        {!isSelect && <Footer />}
+        {!isSelect && !isCheckIn && <Footer />}
       </div>
     </CartProvider>
   );

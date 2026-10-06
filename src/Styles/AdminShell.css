@@ -247,3 +247,30 @@ button.ga-stat:hover { border-color: var(--ga-gold); transform: translateY(-1px)
 .gfc-admin .admin-row:hover { transform: none; box-shadow: none; background: #FBF9F4; }
 .gfc-admin .admin-row td { padding: 12px 14px; border-bottom: 1px solid #F0EBE1; }
 .gfc-admin .admin-form-container { max-width: 980px; }
+
+/* ---------- Reports ---------- */
+.rp-bars { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.rp-bar-row { display: grid; grid-template-columns: minmax(110px, 38%) minmax(0, 1fr) auto; align-items: center; gap: 10px; font-size: 0.86rem; }
+.rp-bar-label { display: flex; align-items: center; gap: 8px; color: var(--ga-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rp-swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.rp-bar-track { height: 10px; background: #F0EBE1; border-radius: 4px; overflow: hidden; }
+.rp-bar-track > i { display: block; height: 100%; background: var(--ga-navy); border-radius: 0 4px 4px 0; min-width: 2px; }
+.rp-bar-value { font-weight: 700; color: var(--ga-navy); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rp-bar-value small { font-weight: 400; color: var(--ga-muted); }
+.rp-split { display: flex; gap: 2px; height: 8px; width: 140px; border-radius: 4px; overflow: hidden; margin-bottom: 4px; background: #F0EBE1; }
+.rp-split > i { display: block; min-width: 3px; }
+.ga-grid-2 > .ga-card + .ga-card { margin-top: 0; }
+
+/* Phones: labels above bars, event table becomes cards */
+@media (max-width: 640px) {
+  .rp-bar-row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 4px; }
+  .rp-bar-label { grid-column: 1 / -1; white-space: normal; }
+  .rp-table thead { display: none; }
+  .rp-table, .rp-table tbody { display: block; }
+  .rp-table tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 12px 0; border-bottom: 1px solid var(--ga-line, #E8E2D5); }
+  .rp-table td { display: block; padding: 0 !important; border: 0 !important; text-align: left !important; }
+  .rp-table td.rp-name { grid-column: 1 / -1; order: -1; }
+  .rp-table td.rp-where { grid-column: 1 / -1; }
+  .rp-table td[data-label]::before { content: attr(data-label) ' '; color: var(--ga-muted); font-size: 0.78rem; font-weight: 400; }
+  .rp-table .ga-small.ga-muted { display: inline; margin-left: 4px; }
+}

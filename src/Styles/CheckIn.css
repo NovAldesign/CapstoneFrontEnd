@@ -1,0 +1,104 @@
+/* ==========================================================
+   Guest list + door check-in (phone first)
+   ========================================================== */
+.gl-wrap {
+  --gl-navy: #0E2340;
+  --gl-gold: #C5A059;
+  --gl-cream: #F7F4EE;
+  --gl-line: #E8E2D5;
+  --gl-ink: #14213D;
+  --gl-muted: #6B7280;
+  --gl-green: #2F855A;
+  --gl-green-soft: #E6F4EC;
+  max-width: 760px;
+  margin: 0 auto;
+  padding-bottom: 96px;
+  color: var(--gl-ink);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+.gl-loading, .gl-empty { text-align: center; padding: 40px 16px; color: var(--gl-muted); }
+.gl-error { background: #FDECEC; color: #822727; border-radius: 10px; padding: 10px 14px; margin: 10px 0; font-size: 0.92rem; }
+.gl-warn { background: #FDF3E1; color: #7B5413; border-radius: 10px; padding: 8px 12px; margin: 12px 0 0; font-size: 0.85rem; }
+
+.gl-head { background: linear-gradient(160deg, var(--gl-navy), #17325A); color: #fff; border-radius: 16px; padding: 20px 20px 18px; }
+.gl-kicker { margin: 0; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gl-gold); font-weight: 700; }
+.gl-title { margin: 6px 0 2px; font-family: 'Playfair Display', Georgia, serif; font-size: 1.45rem; line-height: 1.25; color: #fff; }
+.gl-sub { margin: 0; color: #C9D3E2; font-size: 0.88rem; }
+.gl-progress { margin-top: 16px; }
+.gl-progress-num { font-size: 1rem; color: #DCE3EE; }
+.gl-progress-num b { font-size: 2rem; color: #fff; margin-right: 4px; }
+.gl-bar { height: 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.15); overflow: hidden; margin-top: 8px; }
+.gl-bar > i { display: block; height: 100%; background: var(--gl-gold); border-radius: 999px; transition: width 0.3s; }
+.gl-sources { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.gl-chip { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 999px; padding: 4px 10px; font-size: 0.78rem; color: #fff; }
+.gl-chip i { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.6); }
+.gl-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+
+.gl-bar-sticky { position: sticky; top: 0; z-index: 5; background: var(--gl-cream); padding: 12px 0 10px; }
+.gl-search { width: 100%; box-sizing: border-box; font: inherit; font-size: 1.05rem; padding: 13px 16px; border: 1px solid #D9D2C3; border-radius: 12px; background: #fff; color: var(--gl-ink); }
+.gl-search:focus { outline: none; border-color: var(--gl-gold); box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.25); }
+.gl-filter { display: flex; gap: 4px; margin-top: 10px; background: #EFEAE0; border-radius: 10px; padding: 3px; }
+.gl-filter button { flex: 1; border: 0; background: transparent; padding: 8px 6px; border-radius: 8px; font: inherit; font-size: 0.84rem; font-weight: 600; color: var(--gl-muted); cursor: pointer; }
+.gl-filter button.on { background: #fff; color: var(--gl-navy); box-shadow: 0 1px 3px rgba(14, 35, 64, 0.12); }
+
+.gl-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.gl-row { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--gl-line); border-radius: 14px; padding: 12px 12px 12px 14px; }
+.gl-row.in { background: var(--gl-green-soft); border-color: #BFE3CD; }
+.gl-row.some { border-color: var(--gl-gold); }
+.gl-dot { width: 10px; height: 10px; border-radius: 50%; }
+.gl-who { background: none; border: 0; padding: 0; text-align: left; font: inherit; color: inherit; cursor: pointer; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.gl-name { font-weight: 700; font-size: 1.05rem; color: var(--gl-navy); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gl-meta { font-size: 0.8rem; color: var(--gl-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gl-in-time { color: var(--gl-green); font-weight: 600; }
+.gl-actions { display: flex; align-items: center; }
+.gl-detail { grid-column: 2 / -1; font-size: 0.86rem; background: var(--gl-cream); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
+.gl-detail span { display: inline-block; min-width: 100px; color: var(--gl-muted); }
+.gl-detail a { color: #2B6CB0; }
+.gl-link-danger { align-self: flex-start; background: none; border: 0; padding: 4px 0 0; color: #C53030; font: inherit; font-size: 0.84rem; text-decoration: underline; cursor: pointer; }
+
+.gl-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 16px; border-radius: 11px; border: 1px solid var(--gl-line); background: #fff; color: var(--gl-ink); font: inherit; font-size: 0.92rem; font-weight: 700; cursor: pointer; text-decoration: none; white-space: nowrap; }
+.gl-btn:disabled { opacity: 0.55; cursor: default; }
+.gl-btn:focus-visible, .gl-step:focus-visible { outline: 3px solid var(--gl-gold); outline-offset: 2px; }
+.gl-btn-go { background: var(--gl-navy); border-color: var(--gl-navy); color: #fff; }
+.gl-btn-undo { background: transparent; border-color: #A7D3B8; color: var(--gl-green); }
+.gl-btn-ghost { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.25); color: #fff; min-height: 38px; font-size: 0.84rem; }
+.gl-btn-sm { min-height: 40px; padding: 0 12px; margin-left: 6px; }
+.gl-wide { width: 100%; margin-top: 6px; }
+.gl-stepper { display: flex; align-items: center; gap: 6px; }
+.gl-step { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--gl-line); background: #fff; font-size: 1.3rem; line-height: 1; color: var(--gl-navy); cursor: pointer; }
+.gl-step-go { background: var(--gl-navy); color: #fff; border-color: var(--gl-navy); }
+.gl-step:disabled { opacity: 0.35; cursor: default; }
+.gl-count { min-width: 40px; text-align: center; font-size: 0.95rem; color: var(--gl-muted); }
+.gl-count b { color: var(--gl-navy); font-size: 1.1rem; }
+
+.gl-fab { position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 20; border: 0; border-radius: 999px; padding: 14px 22px; background: var(--gl-gold); color: var(--gl-navy); font: inherit; font-weight: 800; font-size: 0.95rem; box-shadow: 0 10px 24px rgba(14, 35, 64, 0.25); cursor: pointer; }
+.gl-toast { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%); z-index: 30; background: var(--gl-green); color: #fff; padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 0.9rem; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18); }
+
+.gl-sheet-back { position: fixed; inset: 0; z-index: 1000; background: rgba(10, 26, 49, 0.5); display: flex; align-items: flex-end; justify-content: center; }
+.gl-sheet { width: min(560px, 100%); max-height: 92vh; overflow-y: auto; background: #fff; border-radius: 18px 18px 0 0; padding: 18px 18px max(18px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 12px; box-sizing: border-box; }
+.gl-sheet-head { display: flex; justify-content: space-between; align-items: center; }
+.gl-sheet-head h2 { margin: 0; font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem; color: var(--gl-navy); }
+.gl-x { border: 0; background: none; font-size: 1.7rem; line-height: 1; color: var(--gl-muted); cursor: pointer; }
+.gl-field { display: flex; flex-direction: column; gap: 5px; font-size: 0.82rem; font-weight: 700; color: var(--gl-ink); }
+.gl-field small { font-weight: 400; color: var(--gl-muted); }
+.gl-field input, .gl-field select { font: inherit; font-size: 1rem; font-weight: 400; padding: 11px 12px; border: 1px solid #D9D2C3; border-radius: 10px; background: #fff; color: var(--gl-ink); width: 100%; box-sizing: border-box; }
+.gl-field input:focus, .gl-field select:focus { outline: none; border-color: var(--gl-gold); box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.25); }
+.gl-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.gl-check { display: flex; gap: 10px; align-items: center; font-size: 0.92rem; }
+.gl-check input { width: 20px; height: 20px; accent-color: var(--gl-navy); }
+
+/* The standalone door page */
+.gl-page { min-height: 100vh; background: var(--gl-cream, #F7F4EE); padding: 14px 14px 0; box-sizing: border-box; }
+.gl-page .gl-wrap { --gl-cream: #F7F4EE; }
+.gl-brandbar { max-width: 760px; margin: 0 auto 10px; display: flex; justify-content: space-between; align-items: center; font-family: 'Playfair Display', Georgia, serif; color: #0E2340; }
+.gl-brandbar small { font-family: 'Inter', sans-serif; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: #8A6A2B; }
+
+@media (max-width: 480px) {
+  .gl-two { grid-template-columns: 1fr; }
+  .gl-row { grid-template-columns: 8px minmax(0, 1fr); }
+  .gl-actions { grid-column: 2 / -1; }
+  .gl-actions .gl-btn { flex: 1; }
+  .gl-stepper { width: 100%; }
+}
+.gl-btn-gold { background: var(--gl-gold); border-color: var(--gl-gold); color: var(--gl-navy); min-height: 38px; font-size: 0.84rem; }
+.gl-wrap.gl-admin { padding-bottom: 24px; }

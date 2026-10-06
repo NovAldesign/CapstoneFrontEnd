@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { currentSource } from "../Services/ticketSources.js";
 import { Link } from "react-router-dom";
 import { BACKEND_URL, parseCleanPrice, formatMoney } from "../Services/eventUtils";
 import { LEGAL } from "../content/legalContent.js";
@@ -238,6 +239,7 @@ export const CartProvider = ({ children }) => {
           promoCode: promoApplies ? promoInfo.code : undefined,
           agreedToTerms: true,
           termsVersion: LEGAL.waiverVersion,
+          source: currentSource(),
         }),
       });
       const data = await res.json();

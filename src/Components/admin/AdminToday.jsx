@@ -19,7 +19,7 @@ const TILES = [
   { key: 'select', label: 'New GFC Select™ applications', tab: 'select' },
 ];
 
-const AdminToday = ({ go, onCounts }) => {
+const AdminToday = ({ go, onCounts, openGuests }) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
 
@@ -109,6 +109,7 @@ const AdminToday = ({ go, onCounts }) => {
                     </div>
                     {e.capacity > 0 && <div className="ga-bar" aria-hidden="true"><i style={{ width: `${pct}%` }} /></div>}
                   </div>
+                  <button type="button" className="ga-btn ga-btn-sm" onClick={() => openGuests?.(e.id)}>Guests</button>
                 </div>
               );
             })}

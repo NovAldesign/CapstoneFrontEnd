@@ -7,6 +7,8 @@ import AdminToday from "../Components/admin/AdminToday.jsx";
 import AdminShowcases from "../Components/admin/AdminShowcases.jsx";
 import AdminCodes from "../Components/admin/AdminCodes.jsx";
 import { AdminInboxList, AdminPerks, AdminSubscribers } from "../Components/admin/AdminLists.jsx";
+import AdminGuests from "../Components/admin/AdminGuests.jsx";
+import AdminReports from "../Components/admin/AdminReports.jsx";
 import "../Styles/Admin.css";
 import "../Styles/AdminShell.css";
 
@@ -63,6 +65,7 @@ const AdminDashboard = () => {
     try { return sessionStorage.getItem('gfc_admin_tab') || 'today'; } catch { return 'today'; }
   });
   const [counts, setCounts]                 = useState({});
+  const [guestEvent, setGuestEvent]         = useState('');
   const [membership, setMembership]         = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
   const [loading, setLoading]               = useState(true);
@@ -280,10 +283,14 @@ const AdminDashboard = () => {
     { group: null, items: [{ id: 'today', icon: '☀️', label: 'Today' }] },
     { group: 'Events', items: [
       { id: 'events', icon: '🎟', label: 'Events' },
+      { id: 'guests', icon: '✅', label: 'Guest lists & check-in' },
       { id: 'showcases', icon: '🎤', label: 'Showcases', count: (counts.artists || 0) + (counts.hosts || 0) },
       { id: 'create-event', icon: '＋', label: editingEvent ? 'Edit event' : 'New event' },
     ] },
-    { group: 'Sales', items: [{ id: 'codes', icon: '🏷️', label: 'Discount codes' }] },
+    { group: 'Sales', items: [
+      { id: 'reports', icon: '📈', label: 'Reports' },
+      { id: 'codes', icon: '🏷️', label: 'Discount codes' },
+    ] },
     { group: 'Partnerships', items: [
       { id: 'partners', icon: '🤝', label: 'Partners', count: counts.partners },
       { id: 'perks', icon: '💳', label: 'Member Perks', count: counts.perks },
@@ -304,6 +311,8 @@ const AdminDashboard = () => {
     showcases: ['Showcases', 'Lineups, artist and host applications, ticket codes and payouts.'],
     'create-event': [editingEvent ? 'Edit event' : 'New event', 'Set the details, tickets and photo.'],
     codes: ['Discount codes', 'Create, edit and pause codes. No coding needed.'],
+    guests: ['Guest lists & check-in', 'Every ticket from every platform, and the door link for event day.'],
+    reports: ['Reports', 'Tickets, revenue, who showed up and where tickets came from.'],
     partners: ['Partners', 'Sponsor and partnership inquiries.'],
     perks: ['Member Perks', 'Businesses offering discounts to members.'],
     private: ['Private events', 'Hosting requests from the /host page.'],
@@ -316,6 +325,7 @@ const AdminDashboard = () => {
   };
   const [title, subtitle] = TITLES[activeTab] || TITLES.today;
   const go = (tab) => { setActiveTab(tab); window.scrollTo({ top: 0 }); };
+  const openGuests = (eventId) => { setGuestEvent(eventId || ''); go('guests'); };
 
   return (
     <div className="gfc-admin">
@@ -353,7 +363,9 @@ const AdminDashboard = () => {
         <span className="ga-date">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</span>
       </div>
 
-      {activeTab === 'today' && <AdminToday go={go} onCounts={handleCounts} />}
+      {activeTab === 'today' && <AdminToday go={go} onCounts={handleCounts} openGuests={openGuests} />}
+      {activeTab === 'guests' && <AdminGuests startEventId={guestEvent} onOpen={setGuestEvent} />}
+      {activeTab === 'reports' && <AdminReports openGuests={openGuests} />}
       {activeTab === 'showcases' && <AdminShowcases />}
       {activeTab === 'codes' && <AdminCodes events={events} />}
       {activeTab === 'perks' && <AdminPerks />}
