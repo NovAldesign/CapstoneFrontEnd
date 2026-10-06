@@ -9,7 +9,7 @@ import '../Styles/Perform.css';
 import { PERFORMER_AGREEMENT_VERSION } from '../content/legalContent.js';
 
 // Keep in sync with ARTIST_TERMS in the backend (routes/artistRoutes.js)
-const TERMS = [
+const ARTIST_TERMS = [
   'Sell at least 5 tickets using my personal ticket link.',
   "I'm paid $15 for every ticket sold with my link, up to $75, within 3–5 business days after the show via Zelle or Cash App.",
   'Have at least 3 tickets sold one week before the show to hold my spot.',
@@ -19,7 +19,18 @@ const TERMS = [
   'Follow the Performer Agreement, Code of Conduct, and Participation Waiver, including the showcase rules and release.',
 ];
 
-const PERKS = [
+// Keep in sync with HOST_TERMS in the backend (routes/artistRoutes.js)
+const HOST_TERMS = [
+  'Sell at least 5 tickets using my personal ticket link.',
+  "I'm paid $15 for every ticket sold with my link, up to $75, within 3–5 business days after the show via Zelle or Cash App.",
+  'Have at least 3 tickets sold one week before the show to hold my spot.',
+  'Arrive 1 hour before doors to walk through the run of show.',
+  'Welcome the room, introduce each artist, and keep the night moving.',
+  'Tag @grownfolkscollective when I promote the show.',
+  'Follow the Performer Agreement, Code of Conduct, and Participation Waiver, including the showcase rules and release.',
+];
+
+const ARTIST_PERKS = [
   '$15 for every ticket you sell, up to $75',
   'A 20-minute set for a room that came to listen',
   'Keep 100% of your merch sales and tips',
@@ -27,10 +38,18 @@ const PERKS = [
   'Your photo and bio featured on the event page',
 ];
 
-const FAQS = [
+const HOST_PERKS = [
+  '$15 for every ticket you sell, up to $75',
+  'The mic all night, in a room that came to listen',
+  'Your photo and bio featured on the event page',
+  'Promotion on our socials, email list, and venue partners',
+  'A great night to build your name as a host',
+];
+
+const ARTIST_FAQS = [
   {
     q: 'Who can apply?',
-    a: 'Atlanta-area solo artists and duos who perform R&B, soul, neo-soul, jazz, acoustic, and similar styles. Our audience is grown folks 30+ who love live music and good vibes.',
+    a: "Atlanta-area singers, musicians, and duos who play R&B, soul, neo-soul, jazz, acoustic, and similar styles. You don't have to sing: keys, sax, guitar, bass, trumpet, violin, and other instrumentalists are welcome. Our audience is grown folks 30+ who love live music and good vibes.",
   },
   {
     q: 'How do I get paid?',
@@ -49,6 +68,63 @@ const FAQS = [
     a: 'Intimate, alcohol-free venues around Atlanta, like Aromas Tea Bar – The Koncept House. Each showcase features 3 artists with 20-minute sets.',
   },
 ];
+
+const HOST_FAQS = [
+  {
+    q: 'What does the host do?',
+    a: 'You welcome the room, introduce each artist, keep the energy up between sets, and handle a few announcements. We send you the run of show and the artist intros before the night.',
+  },
+  {
+    q: 'Who can apply?',
+    a: "MCs, comedians, radio and podcast voices, poets, and anyone who's great with a mic and a room full of grown folks 30+. Experience helps, but personality matters most.",
+  },
+  {
+    q: 'How do I get paid?',
+    a: 'Just like our artists: $15 for every ticket sold with your personal link, up to $75 for 5 tickets, paid within 3–5 business days after the show by Zelle or Cash App.',
+  },
+  {
+    q: 'Do I need to bring equipment?',
+    a: 'No. Just bring yourself, your voice, and your best energy.',
+  },
+];
+
+// Everything that changes between the artist page (/perform) and the host page (/perform/host)
+const ROLES = {
+  artist: {
+    terms: ARTIST_TERMS,
+    perks: ARTIST_PERKS,
+    faqs: ARTIST_FAQS,
+    title: 'Perform in Atlanta | Paid Live Music Showcase | Grown Folks™ Collective',
+    description: 'Atlanta singers and musicians: apply to perform at a Grown Folks™ Collective live music showcase. Paid per ticket, keep 100% of merch and tips, and play for a room that came to listen.',
+    canonical: 'https://www.grownfolkscollective.com/perform',
+    eyebrow: 'Perform With Us',
+    heading: 'Take the Stage',
+    lead: 'Paid live music showcases for Atlanta singers and musicians: R&B, soul, jazz, and acoustic. Vocalists and instrumentalists welcome. Perform for a room of grown folks who came to listen, and grow your fan base with us.',
+    perksLabel: 'What Artists Get',
+    jump: 'Apply to Perform',
+    other: { to: '/perform/host', text: 'Want to host the night instead? Apply to host →' },
+    formEyebrow: 'Artist Application',
+    formTitle: 'Apply to Perform',
+    agreementLegend: 'Artist Agreement',
+  },
+  host: {
+    terms: HOST_TERMS,
+    perks: HOST_PERKS,
+    faqs: HOST_FAQS,
+    title: 'Host a Live Music Night in Atlanta | Paid MC Spot | Grown Folks™ Collective',
+    description: 'Atlanta MCs, comedians, and personalities: apply to host Acoustic & Infused, a live music showcase for grown folks 30+. Paid per ticket, just like our artists.',
+    canonical: 'https://www.grownfolkscollective.com/perform/host',
+    eyebrow: 'Host With Us',
+    heading: 'Run the Room',
+    lead: "Every great show needs a voice that holds it together. Host Acoustic & Infused, welcome the room, introduce the artists, and keep the night moving. You're paid per ticket, just like our artists.",
+    perksLabel: 'What Hosts Get',
+    jump: 'Apply to Host',
+    other: { to: '/perform', text: 'Are you a singer or musician? Apply to perform →' },
+    formEyebrow: 'Host Application',
+    formTitle: 'Apply to Host',
+    agreementLegend: 'Host Agreement',
+  },
+};
 
 const MUSIC_EVENT = /showcase|live music|acoustic|open mic|concert|jam session/i;
 const eventName = (e) => e?.title || e?.name || '';
@@ -86,7 +162,10 @@ const EMPTY = {
   signatureName: '',
 };
 
-const Perform = () => {
+const Perform = ({ role = 'artist' }) => {
+  const isHost = role === 'host';
+  const R = ROLES[isHost ? 'host' : 'artist'];
+  const TERMS = R.terms;
   const [form, setForm] = useState(EMPTY);
   const [agreed, setAgreed] = useState(TERMS.map(() => false));
   const [events, setEvents] = useState([]);
@@ -193,16 +272,16 @@ const Perform = () => {
     e.preventDefault();
     const f = form;
     const links = [f.link1, f.link2, f.link3].map((l) => l.trim()).filter(Boolean);
-    if (!f.firstName.trim() || !f.lastName.trim() || !f.email.trim() || !f.phone.trim() || !f.artistName.trim()) {
-      setError('Please fill in your name, artist name, email, and phone.');
+    if (!f.firstName.trim() || !f.lastName.trim() || !f.email.trim() || !f.phone.trim() || (!isHost && !f.artistName.trim())) {
+      setError(isHost ? 'Please fill in your name, email, and phone.' : 'Please fill in your name, artist name, email, and phone.');
       return;
     }
-    if (!links.length || !links.every((l) => /^https?:\/\//i.test(l))) {
-      setError('Please add at least one performance link (starting with https://).');
+    if ((!isHost && !links.length) || !links.every((l) => /^https?:\/\//i.test(l))) {
+      setError(isHost ? 'Links need to start with https://.' : 'Please add at least one performance link (starting with https://).');
       return;
     }
     if (!agreed.every(Boolean)) {
-      setError('Please check every box in the artist agreement.');
+      setError(`Please check every box in the ${isHost ? 'host' : 'artist'} agreement.`);
       return;
     }
     if (!f.signatureName.trim()) {
@@ -222,6 +301,7 @@ const Perform = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...f,
+          role: isHost ? 'host' : 'artist',
           headshotUrl,
           performanceLinks: links,
           eventName: chosen ? eventLabel(chosen) : 'Any upcoming showcase',
@@ -243,32 +323,28 @@ const Perform = () => {
   return (
     <div className="contact-page perform-page">
       <Helmet>
-        <title>Perform in Atlanta | Paid Live Music Showcase | Grown Folks™ Collective</title>
-        <meta
-          name="description"
-          content="Atlanta R&B, soul, and acoustic artists: apply to perform at a Grown Folks™ Collective live music showcase. Paid per ticket, keep 100% of merch and tips, and play for a room that came to listen."
-        />
+        <title>{R.title}</title>
+        <meta name="description" content={R.description} />
+        <link rel="canonical" href={R.canonical} />
       </Helmet>
 
       {/* ── HERO ── */}
       <header className="contact-hero">
         <div className="contact-hero-inner">
           <div className="contact-hero-left">
-            <span className="contact-eyebrow">Perform With Us</span>
-            <h1 className="contact-hero-title">Take the Stage</h1>
+            <span className="contact-eyebrow">{R.eyebrow}</span>
+            <h1 className="contact-hero-title">{R.heading}</h1>
             <div className="contact-gold-spacer" aria-hidden="true"></div>
-            <p className="contact-hero-lead">
-              Paid live music showcases for Atlanta R&amp;B, soul, and acoustic artists.
-              Perform for a room of grown folks who came to listen, and grow your fan base with us.
-            </p>
+            <p className="contact-hero-lead">{R.lead}</p>
             <nav className="contact-hero-links" aria-label="Page sections">
-              <a href="#apply" className="contact-hero-link">Apply to Perform</a>
+              <a href="#apply" className="contact-hero-link">{R.jump}</a>
             </nav>
+            <p className="perform-switch"><Link to={R.other.to}>{R.other.text}</Link></p>
           </div>
           <div className="group-perks">
-            <p className="contact-info-label">What Artists Get</p>
+            <p className="contact-info-label">{R.perksLabel}</p>
             <ul className="group-perks-list">
-              {PERKS.map((p) => (
+              {R.perks.map((p) => (
                 <li key={p}>{p}</li>
               ))}
             </ul>
@@ -283,7 +359,7 @@ const Perform = () => {
               <span className="contact-form-eyebrow">Application Received</span>
               <h2 className="contact-form-title">Thanks, {form.firstName}! 🎶</h2>
               <p className="contact-form-subhead">
-                We emailed you a copy of the terms you agreed to. We'll review your music and
+                We emailed you a copy of the terms you agreed to. We'll review your application and
                 get back to you within 3–5 business days.
               </p>
               <Link to="/events" className="contact-submit-btn group-success-btn">See Upcoming Events</Link>
@@ -298,21 +374,21 @@ const Perform = () => {
                 <ol className="perform-steps">
                   <li>
                     <strong>Apply</strong>
-                    <span>Share your music, a headshot, and a short bio. Takes about 5 minutes.</span>
+                    <span>{isHost ? 'Tell us about you, add a headshot and a short bio. Takes about 5 minutes.' : 'Share your music, a headshot, and a short bio. Takes about 5 minutes.'}</span>
                   </li>
                   <li>
                     <strong>Get reviewed</strong>
-                    <span>We listen to your links and reply within 3–5 business days.</span>
+                    <span>{isHost ? 'We look at your links and reply within 3–5 business days.' : 'We listen to your links and reply within 3–5 business days.'}</span>
                   </li>
                   <li>
                     <strong>Get booked</strong>
-                    <span>You get your personal ticket link. Invite your people, then take the stage.</span>
+                    <span>{isHost ? 'You get your personal ticket link. Invite your people, then grab the mic.' : 'You get your personal ticket link. Invite your people, then take the stage.'}</span>
                   </li>
                 </ol>
 
                 <h2 className="perform-heading">Common Questions</h2>
                 <div className="perform-faqs">
-                  {FAQS.map((f) => (
+                  {R.faqs.map((f) => (
                     <details key={f.q} className="perform-faq">
                       <summary>{f.q}</summary>
                       <p>{f.a}</p>
@@ -326,8 +402,8 @@ const Perform = () => {
             <section className="contact-form-section" id="apply" aria-labelledby="apply-heading">
               <div className="contact-form-container">
                 <header className="contact-form-header">
-                  <span className="contact-form-eyebrow">Artist Application</span>
-                  <h2 className="contact-form-title" id="apply-heading">Apply to Perform</h2>
+                  <span className="contact-form-eyebrow">{R.formEyebrow}</span>
+                  <h2 className="contact-form-title" id="apply-heading">{R.formTitle}</h2>
                   <p className="contact-form-subhead">* Required fields</p>
                 </header>
 
@@ -359,15 +435,20 @@ const Perform = () => {
 
                   {/* Public profile */}
                   <fieldset className="contact-fieldset">
-                    <legend className="contact-form-divider">About You (for "Meet the Artists")</legend>
+                    <legend className="contact-form-divider">About You (for the event page)</legend>
                     <div className="contact-form-row">
                       <div className="contact-input-group">
-                        <label className="contact-label" htmlFor="pf-artist">Artist / Stage Name <span className="contact-required">*</span></label>
-                        <input id="pf-artist" name="artistName" value={form.artistName} onChange={handleChange} required />
+                        {isHost ? (
+                          <label className="contact-label" htmlFor="pf-artist">Host / Stage Name <span className="contact-label-optional">(Optional)</span></label>
+                        ) : (
+                          <label className="contact-label" htmlFor="pf-artist">Artist / Stage Name <span className="contact-required">*</span></label>
+                        )}
+                        <input id="pf-artist" name="artistName" value={form.artistName} onChange={handleChange} required={!isHost}
+                          placeholder={isHost ? 'Leave blank to use your name' : ''} />
                       </div>
                       <div className="contact-input-group">
-                        <label className="contact-label" htmlFor="pf-genres">Genre(s)</label>
-                        <input id="pf-genres" name="genres" placeholder="e.g. R&B, Neo-Soul" value={form.genres} onChange={handleChange} />
+                        <label className="contact-label" htmlFor="pf-genres">{isHost ? 'Your style' : 'Instrument / Genre(s)'}</label>
+                        <input id="pf-genres" name="genres" placeholder={isHost ? 'e.g. MC, Comedian, Radio Host' : 'e.g. Vocals, R&B · Sax, Jazz'} value={form.genres} onChange={handleChange} />
                       </div>
                     </div>
                     <div className="contact-input-group">
@@ -377,7 +458,7 @@ const Perform = () => {
                     <div className="contact-input-group">
                       <label className="contact-label" htmlFor="pf-bio">Short Bio <span className="contact-label-optional">(2–4 sentences)</span></label>
                       <textarea id="pf-bio" name="bio" className="contact-textarea" rows="4" maxLength={600} value={form.bio} onChange={handleChange}
-                        placeholder="Who you are, your sound, and what people can expect from your set." />
+                        placeholder={isHost ? 'Who you are, where you have hosted, and the energy you bring to a room.' : 'Who you are, your sound, and what people can expect from your set.'} />
                       <span className="contact-input-hint" style={{ textAlign: 'right', display: 'block' }}>{form.bio.length}/600</span>
                     </div>
 
@@ -416,11 +497,17 @@ const Perform = () => {
 
                   {/* Music */}
                   <fieldset className="contact-fieldset">
-                    <legend className="contact-form-divider">Your Music</legend>
-                    <p className="perform-note">Links to live performance videos help us most (YouTube, Instagram, TikTok, Spotify, SoundCloud).</p>
+                    <legend className="contact-form-divider">{isHost ? 'See You in Action' : 'Your Music'}</legend>
+                    <p className="perform-note">
+                      {isHost
+                        ? 'A video of you hosting, speaking, or performing helps us most (YouTube, Instagram, TikTok). No video yet? You can still apply.'
+                        : 'Links to live performance videos help us most (YouTube, Instagram, TikTok, Spotify, SoundCloud).'}
+                    </p>
                     <div className="contact-input-group">
-                      <label className="contact-label" htmlFor="pf-l1">Performance link 1 <span className="contact-required">*</span></label>
-                      <input id="pf-l1" name="link1" type="url" placeholder="https://" value={form.link1} onChange={handleChange} required />
+                      <label className="contact-label" htmlFor="pf-l1">
+                        {isHost ? <>Video link 1 <span className="contact-label-optional">(Optional)</span></> : <>Performance link 1 <span className="contact-required">*</span></>}
+                      </label>
+                      <input id="pf-l1" name="link1" type="url" placeholder="https://" value={form.link1} onChange={handleChange} required={!isHost} />
                     </div>
                     <div className="contact-form-row">
                       <div className="contact-input-group">
@@ -438,7 +525,7 @@ const Perform = () => {
                   <fieldset className="contact-fieldset">
                     <legend className="contact-form-divider">The Showcase</legend>
                     <div className="contact-input-group">
-                      <label className="contact-label" htmlFor="pf-event">Which showcase are you applying for?</label>
+                      <label className="contact-label" htmlFor="pf-event">{isHost ? 'Which showcase do you want to host?' : 'Which showcase are you applying for?'}</label>
                       <select id="pf-event" name="eventId" value={form.eventId} onChange={handleChange}>
                         <option value="">Any upcoming showcase</option>
                         {events.map((ev) => (
@@ -446,17 +533,21 @@ const Perform = () => {
                         ))}
                       </select>
                     </div>
-                    <div className="contact-input-group">
-                      <label className="contact-label" htmlFor="pf-equip">What equipment will you bring?</label>
-                      <textarea id="pf-equip" name="equipmentNotes" className="contact-textarea" rows="2" maxLength={600}
-                        placeholder="e.g. vocal mic, small PA speaker, acoustic guitar" value={form.equipmentNotes} onChange={handleChange} />
-                    </div>
-                    <div className="group-checks">
-                      <label className="group-check">
-                        <input type="checkbox" name="needsPower" checked={form.needsPower} onChange={handleChange} />
-                        <span>I'll need a power outlet near my spot 🔌</span>
-                      </label>
-                    </div>
+                    {!isHost && (
+                      <>
+                        <div className="contact-input-group">
+                          <label className="contact-label" htmlFor="pf-equip">What equipment will you bring?</label>
+                          <textarea id="pf-equip" name="equipmentNotes" className="contact-textarea" rows="2" maxLength={600}
+                            placeholder="e.g. vocal mic, small PA speaker, keyboard, sax" value={form.equipmentNotes} onChange={handleChange} />
+                        </div>
+                        <div className="group-checks">
+                          <label className="group-check">
+                            <input type="checkbox" name="needsPower" checked={form.needsPower} onChange={handleChange} />
+                            <span>I'll need a power outlet near my spot 🔌</span>
+                          </label>
+                        </div>
+                      </>
+                    )}
                     <div className="contact-form-row">
                       <div className="contact-input-group">
                         <label className="contact-label" htmlFor="pf-payout">Payout method</label>
@@ -476,7 +567,7 @@ const Perform = () => {
 
                   {/* Agreement */}
                   <fieldset className="contact-fieldset">
-                    <legend className="contact-form-divider">Artist Agreement</legend>
+                    <legend className="contact-form-divider">{R.agreementLegend}</legend>
                     <p className="perform-note">
                       Grown Folks™ Collective is a social club offering you a stage to showcase your talent.
                       Please read the <a href="/performer-agreement" target="_blank" rel="noopener noreferrer">Performer Agreement</a>.
@@ -493,7 +584,7 @@ const Perform = () => {
                     <div className="group-checks perform-consent">
                       <label className="group-check">
                         <input type="checkbox" name="featureConsent" checked={form.featureConsent} onChange={handleChange} />
-                        <span>Grown Folks™ Collective may feature my name, photo, bio, and music links on its website and social media.</span>
+                        <span>Grown Folks™ Collective may feature my name, photo, bio, and {isHost ? 'links' : 'music links'} on its website and social media.</span>
                       </label>
                     </div>
                     <div className="contact-form-row">

@@ -68,7 +68,8 @@ function App() {
             <Route path="/host" element={<Host />} />
             <Route path="/corporate-team-building-atlanta" element={<HostLanding page="teamBuilding" />} />
             <Route path="/office-holiday-party-atlanta" element={<HostLanding page="holiday" />} />
-            <Route path="/perform" element={<Perform />} />
+            <Route path="/perform" element={<Perform key="artist" />} />
+            <Route path="/perform/host" element={<Perform key="host" role="host" />} />
             <Route path="/select" element={<Select />} />
             <Route path="/select/invitation" element={<SelectInvitation />} />
             <Route path="/select/nominate" element={<SelectNominate />} />

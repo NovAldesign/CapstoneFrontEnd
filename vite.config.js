@@ -20,6 +20,7 @@ export default defineConfig({
         '/contact',
         '/celebrate',
         '/perform',
+        '/perform/host',
         '/host',
         '/select',
         '/select/invitation',

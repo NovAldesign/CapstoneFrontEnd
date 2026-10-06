@@ -25,13 +25,13 @@ const SOCIALS = [
   { label: "LinkedIn", url: "https://linkedin.com/company/grownfolkscollective" },
 ];
 
-// The fixed buttons under the events, in order. Add the Select waitlist once it's live:
-// { label: "Join the GFC Select waitlist", to: "/select" },
+// The fixed buttons under the events, in order.
 const BUTTONS = [
   { label: "See all events", to: "/events" },
+  { label: "GFC Select™: a private evening for 30+ singles", to: "/select" },
   { label: "Become a member", to: "/membership" },
   { label: "Bring your crew (group & birthday bookings)", to: "/celebrate" },
-  { label: "Perform with us", to: "/perform" },
+  { label: "Sing, play or host at our showcases", to: "/perform" },
   { label: "Partner with us", to: "/partnerships" },
 ];
 
