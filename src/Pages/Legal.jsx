@@ -48,6 +48,9 @@ const Legal = ({ page }) => {
                 ))}
               </ul>
             )}
+            {(section.after || []).map((para, i) => (
+              <p key={`after-${i}`}>{withEmailLinks(para)}</p>
+            ))}
           </section>
         ))}
 

@@ -496,11 +496,12 @@ const CartDrawer = () => {
                     onChange={(e) => setAgreed(e.target.checked)}
                   />
                   <span>
-                    I agree to the{" "}
+                    I accept the{" "}
                     <a href="/terms" target="_blank" rel="noopener noreferrer">Terms</a>,{" "}
-                    <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>, and{" "}
+                    <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a> (all sales are final),{" "}
+                    <a href="/code-of-conduct" target="_blank" rel="noopener noreferrer">Code of Conduct</a>, and{" "}
                     <a href="/waiver" target="_blank" rel="noopener noreferrer">Participation Waiver</a>{" "}
-                    for myself and any guests I'm buying tickets for.
+                    for myself and every guest I'm buying tickets for.
                   </span>
                 </label>
                 <button
