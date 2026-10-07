@@ -13,6 +13,8 @@ export default defineConfig({
       dynamicRoutes: [
         '/events',
         '/membership',
+        '/gift',
+        '/shop',
         '/blog',
         '/partnerships',
         '/partnerships/perks',
