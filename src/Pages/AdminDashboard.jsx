@@ -9,6 +9,7 @@ import AdminCodes from "../Components/admin/AdminCodes.jsx";
 import { AdminInboxList, AdminPerks, AdminSubscribers } from "../Components/admin/AdminLists.jsx";
 import AdminGuests from "../Components/admin/AdminGuests.jsx";
 import AdminReports from "../Components/admin/AdminReports.jsx";
+import AdminGifts from "../Components/admin/AdminGifts.jsx";
 import "../Styles/Admin.css";
 import "../Styles/AdminShell.css";
 
@@ -290,6 +291,7 @@ const AdminDashboard = () => {
     { group: 'Sales', items: [
       { id: 'reports', icon: '📈', label: 'Reports' },
       { id: 'codes', icon: '🏷️', label: 'Discount codes' },
+      { id: 'gifts', icon: '🎁', label: 'Gifts & merch' },
     ] },
     { group: 'Partnerships', items: [
       { id: 'partners', icon: '🤝', label: 'Partners', count: counts.partners },
@@ -312,6 +314,7 @@ const AdminDashboard = () => {
     'create-event': [editingEvent ? 'Edit event' : 'New event', 'Set the details, tickets and photo.'],
     codes: ['Discount codes', 'Create, edit and pause codes. No coding needed.'],
     guests: ['Guest lists & check-in', 'Every ticket from every platform, and the door link for event day.'],
+    gifts: ['Gifts & merch', 'Holiday Passes, gift cards and merch pre-orders.'],
     reports: ['Reports', 'Tickets, revenue, who showed up and where tickets came from.'],
     partners: ['Partners', 'Sponsor and partnership inquiries.'],
     perks: ['Member Perks', 'Businesses offering discounts to members.'],
@@ -368,6 +371,7 @@ const AdminDashboard = () => {
       {activeTab === 'reports' && <AdminReports openGuests={openGuests} />}
       {activeTab === 'showcases' && <AdminShowcases />}
       {activeTab === 'codes' && <AdminCodes events={events} />}
+      {activeTab === 'gifts' && <AdminGifts />}
       {activeTab === 'perks' && <AdminPerks />}
       {['partners', 'private', 'groups', 'messages'].includes(activeTab) && <AdminInboxList kind={activeTab} />}
       {activeTab === 'subscribers' && <AdminSubscribers />}

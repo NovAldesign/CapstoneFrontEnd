@@ -48,6 +48,25 @@ const applyCode = (info, cents) => {
 };
 
 // Bundle discount — based on DIFFERENT events. MUST match the backend checkout route.
+// Gift cards (GIFT-…), Holiday Passes (PASS-…) and bonus cards (BONUS-…)
+const looksLikeCard = (code = "") => /^(GIFT|PASS|BONUS)-/.test(String(code).trim().toUpperCase());
+
+// How much a gift card or pass takes off. MUST match utilities/giftCards.js cardCredit.
+const cardCredit = (info, units) => {
+  if (!info) return { creditCents: 0, uses: 0 };
+  if (info.kind === "pass") {
+    const cap = info.maxCoverCents || 3500;
+    const covered = units
+      .filter((u) => (info.eligibleEventIds || []).includes(u.eventId))
+      .map((u) => Math.min(u.cents, cap))
+      .sort((a, b) => b - a)
+      .slice(0, info.usesLeft || 0);
+    return { creditCents: covered.reduce((s, c) => s + c, 0), uses: covered.length };
+  }
+  const total = units.reduce((s, u) => s + u.cents, 0);
+  return { creditCents: Math.min(info.balanceCents || 0, total), uses: 0 };
+};
+
 const getDiscount = (uniqueEventCount) => {
   if (uniqueEventCount >= 3) return { rate: 0.10, label: "10% Mega-Bundle Discount Applied!" };
   if (uniqueEventCount === 2) return { rate: 0.05, label: "5% Multi-Event Discount Applied!" };
@@ -63,6 +82,9 @@ export const CartProvider = ({ children }) => {
   const [promoError, setPromoError] = useState("");
   const [promoChecking, setPromoChecking] = useState(false);
   const [codeEmail, setCodeEmail] = useState(""); // needed for first-visit codes like ACE5
+  const [giftCode, setGiftCode] = useState("");
+  const [giftInfo, setGiftInfo] = useState(null);
+  const [giftError, setGiftError] = useState("");
 
   // Remember the code for this visitor
   useEffect(() => {
@@ -92,6 +114,12 @@ export const CartProvider = ({ children }) => {
       .then((res) => res.json())
       .then((data) => {
         if (!active) return;
+        if (data.valid && data.kind) {
+          // It's a gift card or Holiday Pass: move it to the card slot
+          setGiftCode(data.code);
+          setPromoCode("");
+          return;
+        }
         if (data.valid) {
           setPromoInfo(data);
           setPromoError("");
@@ -111,9 +139,43 @@ export const CartProvider = ({ children }) => {
     };
   }, [promoCode, eventIdsKey]);
 
-  const applyPromoCode = (code) =>
-    setPromoCode(String(code || "").trim().toUpperCase().replace(/\s+/g, ""));
+  // Check the gift card / pass against the events in the bag
+  useEffect(() => {
+    if (!giftCode) {
+      setGiftInfo(null);
+      setGiftError("");
+      return;
+    }
+    let active = true;
+    fetch(`${BACKEND_URL}/api/promo-codes/validate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: giftCode, eventIds: eventIdsKey ? eventIdsKey.split(",") : [] }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!active) return;
+        if (data.valid && data.kind) {
+          setGiftInfo(data);
+          setGiftError("");
+        } else {
+          setGiftInfo(null);
+          setGiftError(data.error || "That gift card isn't valid.");
+        }
+      })
+      .catch(() => active && setGiftError("Couldn't check that card. Please try again."));
+    return () => {
+      active = false;
+    };
+  }, [giftCode, eventIdsKey]);
+
+  const applyPromoCode = (code) => {
+    const clean = String(code || "").trim().toUpperCase().replace(/\s+/g, "");
+    if (looksLikeCard(clean)) setGiftCode(clean);
+    else setPromoCode(clean);
+  };
   const removePromoCode = () => setPromoCode("");
+  const removeGiftCode = () => setGiftCode("");
 
   // Save the bag whenever it changes
   useEffect(() => {
@@ -202,8 +264,26 @@ export const CartProvider = ({ children }) => {
     }
     const codeSavingsInCents = subtotalInCents - afterCodeInCents;
     const discountInCents = Math.round(afterCodeInCents * rate);
-    const totalInCents = afterCodeInCents - discountInCents;
+    const beforeCardInCents = afterCodeInCents - discountInCents;
+
+    // One entry per ticket, priced like the backend (code, then bundle), for gift cards and passes
+    const units = [];
+    const onceItem = promoInfo?.oncePerOrder ? cartItems.find(codeEligible) : null;
+    cartItems.forEach((i) => {
+      for (let q = 0; q < i.quantity; q++) {
+        let cents = i.priceInCents;
+        if (codeEligible(i)) {
+          if (!promoInfo.oncePerOrder) cents = applyCode(promoInfo, cents);
+          else if (i === onceItem && q === 0) cents = applyCode(promoInfo, cents);
+        }
+        units.push({ cents: Math.round(cents * (1 - rate)), eventId: i.eventId });
+      }
+    });
+    const { creditCents: giftCreditInCents, uses: passUses } = cardCredit(giftInfo, units);
+    const totalInCents = Math.max(0, beforeCardInCents - giftCreditInCents);
     return {
+      giftCreditInCents,
+      passUses,
       uniqueEventCount,
       discountRate: rate,
       discountLabel: label,
@@ -214,7 +294,7 @@ export const CartProvider = ({ children }) => {
       itemCount: cartItems.reduce((sum, i) => sum + i.quantity, 0),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cartItems, promoInfo]);
+  }, [cartItems, promoInfo, giftInfo]);
 
   // Send the bag to Stripe (backend re-checks every price and ticket)
   const checkout = async ({ agreedToTerms = false } = {}) => {
@@ -237,6 +317,7 @@ export const CartProvider = ({ children }) => {
           customerEmail: needsEmail ? codeEmail.trim() : undefined,
           cartItems,
           promoCode: promoApplies ? promoInfo.code : undefined,
+          giftCode: giftInfo && totals.giftCreditInCents > 0 ? giftInfo.code : undefined,
           agreedToTerms: true,
           termsVersion: LEGAL.waiverVersion,
           source: currentSource(),
@@ -276,6 +357,10 @@ export const CartProvider = ({ children }) => {
     promoApplies,
     applyPromoCode,
     removePromoCode,
+    giftCode,
+    giftInfo,
+    giftError,
+    removeGiftCode,
     ...totals,
   };
 
@@ -305,6 +390,7 @@ const CartDrawer = () => {
     promoCode, promoInfo, promoError, promoChecking, promoApplies,
     applyPromoCode, removePromoCode, codeSavingsInCents,
     codeEmail, setCodeEmail,
+    giftCode, giftInfo, giftError, removeGiftCode, giftCreditInCents, passUses,
   } = useCart();
   const [codeInput, setCodeInput] = useState("");
   const [showCodeBox, setShowCodeBox] = useState(false);
@@ -444,7 +530,23 @@ const CartDrawer = () => {
                       />
                     </div>
                   )}
-                  {promoCode ? null : showCodeBox ? (
+                  {giftCode ? (
+                    <div className="gfc-code-applied" aria-live="polite">
+                      <span>
+                        {giftInfo
+                          ? giftCreditInCents > 0
+                            ? `✓ ${giftInfo.description}`
+                            : giftInfo.kind === "pass"
+                              ? "Your Holiday Pass works for Game Night, Karaoke Bingo and Acoustic & Infused"
+                              : giftInfo.description
+                          : giftError || `Checking ${giftCode}…`}
+                      </span>
+                      <button type="button" className="gfc-link-btn" onClick={removeGiftCode}>
+                        Remove
+                      </button>
+                    </div>
+                  ) : null}
+                  {promoCode && giftCode ? null : showCodeBox ? (
                     <form
                       className="gfc-code-form"
                       onSubmit={(e) => {
@@ -453,7 +555,7 @@ const CartDrawer = () => {
                         setCodeInput("");
                       }}
                     >
-                      <label htmlFor="gfc-code-input" className="sr-only">Ticket code</label>
+                      <label htmlFor="gfc-code-input" className="sr-only">Ticket code, gift card or Holiday Pass</label>
                       <input
                         id="gfc-code-input"
                         type="text"
@@ -466,7 +568,7 @@ const CartDrawer = () => {
                     </form>
                   ) : (
                     <button type="button" className="gfc-link-btn" onClick={() => setShowCodeBox(true)}>
-                      Have a code?
+                      {promoCode || giftCode ? "Add another code" : "Have a code or gift card?"}
                     </button>
                   )}
                 </div>
@@ -485,6 +587,12 @@ const CartDrawer = () => {
                   <div className="gfc-total-row savings">
                     <span>Discount ({Math.round(discountRate * 100)}%)</span>
                     <span>− ${(discountInCents / 100).toFixed(2)}</span>
+                  </div>
+                )}
+                {giftCreditInCents > 0 && (
+                  <div className="gfc-total-row savings">
+                    <span>{giftInfo?.kind === "pass" ? `Holiday Pass (${passUses} ${passUses === 1 ? "ticket" : "tickets"})` : "Gift card"}</span>
+                    <span>− ${(giftCreditInCents / 100).toFixed(2)}</span>
                   </div>
                 )}
                 <div className="gfc-total-row grand">

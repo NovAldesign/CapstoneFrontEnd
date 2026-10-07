@@ -24,6 +24,9 @@ import Contact from "./Pages/Contact.jsx";
 import ResetPassword from "./Pages/ResetPassword.jsx";
 import AdminDashboard from "./Pages/AdminDashboard.jsx";
 import CheckIn from "./Pages/CheckIn.jsx";
+import Gift from "./Pages/Gift.jsx";
+import Shop from "./Pages/Shop.jsx";
+import ShopSuccess from "./Pages/ShopSuccess.jsx";
 import { rememberSource } from "./Services/ticketSources.js";
 import SuccessPage from "./Pages/SuccessPage.jsx";
 import MembershipSuccess from "./Pages/MembershipSuccess.jsx";
@@ -73,6 +76,10 @@ function App() {
             <Route path="/events/:slug" element={<EventDetail />} />
             <Route path="/membership" element={<Membership />} />
             <Route path="/membership/success" element={<MembershipSuccess />} />
+            <Route path="/gift" element={<Gift />} />
+            <Route path="/gift/success" element={<ShopSuccess kind="gift" />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/shop/success" element={<ShopSuccess kind="merch" />} />
             <Route path="/celebrate" element={<GroupBooking />} />
             <Route path="/host" element={<Host />} />
             <Route path="/corporate-team-building-atlanta" element={<HostLanding page="teamBuilding" />} />

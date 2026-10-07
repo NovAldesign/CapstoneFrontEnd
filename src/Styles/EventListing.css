@@ -488,3 +488,17 @@
   .gfc-faq-tab { padding: 10px 12px; font-size: 12.5px; }
   .gfc-connect-links, .gfc-connect-btn { width: 100%; text-align: center; }
 }
+
+/* ── HOLIDAY PASS / GIFT BANNER ── */
+.gfc-pass-banner {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  background: linear-gradient(100deg, #C5A059, #e0c48c); color: #002147; border-radius: 4px;
+  padding: 14px 18px; margin: -12px 0 26px; font-size: 14px; line-height: 1.5; text-decoration: none;
+}
+.gfc-pass-banner strong { font-weight: 800; }
+.gfc-pass-banner-cta { flex-shrink: 0; font-weight: 800; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+.gfc-pass-banner:hover .gfc-pass-banner-cta { text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .gfc-pass-banner { flex-direction: column; align-items: flex-start; gap: 8px; }
+}

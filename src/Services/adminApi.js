@@ -65,3 +65,21 @@ export const downloadCSV = (rows, filename) => {
   a.click();
   URL.revokeObjectURL(url);
 };
+
+// Shop admin (gift cards, Holiday Passes, merch pre-orders) lives on /api/shop/admin
+export const shopAdmin = async (path, { method = 'GET', body } = {}) => {
+  const res = await fetch(`${BACKEND_URL}/api/shop/admin${path}`, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('gfc_token') || ''}`,
+    },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (res.status === 401 || res.status === 403) {
+    throw new Error('Your login expired. Please log out and log back in.');
+  }
+  if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.');
+  return data;
+};

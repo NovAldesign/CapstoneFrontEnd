@@ -37,7 +37,16 @@ const Navbar = () => {
       {/* NAV LINKS */}
       <ul className={`nav-links ${menuOpen ? "nav-links-open" : ""}`}>
         <li><NavLink to="/" end className={navClass} onClick={closeMenu}>Home</NavLink></li>
-        <li><NavLink to="/events" className={navClass} onClick={closeMenu}>Events</NavLink></li>
+        <li className="nav-dropdown">
+          <NavLink to="/events" className={navClass} onClick={closeMenu} aria-haspopup="true">
+            Events <span className="nav-caret" aria-hidden="true">▾</span>
+          </NavLink>
+          <ul className="nav-submenu" aria-label="Events">
+            <li><NavLink to="/events" end className="nav-sublink" onClick={closeMenu}>Upcoming Events</NavLink></li>
+            <li><NavLink to="/gift" className="nav-sublink" onClick={closeMenu}>Holiday Pass &amp; Gift Cards</NavLink></li>
+            <li><NavLink to="/shop" className="nav-sublink" onClick={closeMenu}>Merch</NavLink></li>
+          </ul>
+        </li>
         <li><NavLink to="/blog" className={navClass} onClick={closeMenu}>Blog</NavLink></li>
         {/* <li><NavLink to="/travel" className={navClass} onClick={closeMenu}>Travel</NavLink></li> */}
         {/* <li><NavLink to="/ic-dinners" className={navClass} onClick={closeMenu}>IC Dinners</NavLink></li>*/}

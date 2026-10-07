@@ -349,6 +349,15 @@ const Events = () => {
           <span className="gfc-bundle-fine">Multiple tickets to the same event count as one event.</span>
         </div>
 
+        {/* HOLIDAY PASS BANNER */}
+        <Link to="/gift" className="gfc-pass-banner">
+          <span>
+            <strong>Holiday Pass: 3 nights for $65.</strong>{" "}
+            Game Night, Karaoke Bingo and live music through March. Keep it or gift it.
+          </span>
+          <span className="gfc-pass-banner-cta">Gift a night out →</span>
+        </Link>
+
         {/* GROUP BOOKINGS BANNER */}
         <Link to="/celebrate" className="gfc-group-banner">
           <span>
