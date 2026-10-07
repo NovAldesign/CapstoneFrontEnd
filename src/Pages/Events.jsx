@@ -17,6 +17,7 @@ import {
   WHEN_OPTIONS,
 } from "../Services/eventUtils";
 import PriceTag from "../Components/PriceTag";
+import { passesLive } from "../Services/shopApi";
 import "../Styles/Events.css";
 import "../Styles/EventListing.css";
 
@@ -349,12 +350,19 @@ const Events = () => {
           <span className="gfc-bundle-fine">Multiple tickets to the same event count as one event.</span>
         </div>
 
-        {/* HOLIDAY PASS BANNER */}
+        {/* GIFT BANNER: switches to the Holiday Pass at 12:00 AM ET on Black Friday */}
         <Link to="/gift" className="gfc-pass-banner">
-          <span>
-            <strong>Holiday Pass: 3 nights for $65.</strong>{" "}
-            Game Night, Karaoke Bingo and live music through March. Keep it or gift it.
-          </span>
+          {passesLive() ? (
+            <span>
+              <strong>Holiday Pass: 3 nights for $65.</strong>{" "}
+              Game Night, Karaoke Bingo and live music through March. Keep it or gift it.
+            </span>
+          ) : (
+            <span>
+              <strong>Gift cards from $25.</strong>{" "}
+              Good for every GFC event and they never expire. Send one by email today.
+            </span>
+          )}
           <span className="gfc-pass-banner-cta">Gift a night out →</span>
         </Link>
 

@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import loginService from "../Services/loginService";
 import "../Styles/Navbar.css";
 import logo from "../assets/gfc-logo-nav.png";
+import { passesLive } from "../Services/shopApi";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const Navbar = () => {
           </NavLink>
           <ul className="nav-submenu" aria-label="Events">
             <li><NavLink to="/events" end className="nav-sublink" onClick={closeMenu}>Upcoming Events</NavLink></li>
-            <li><NavLink to="/gift" className="nav-sublink" onClick={closeMenu}>Holiday Pass &amp; Gift Cards</NavLink></li>
+            <li><NavLink to="/gift" className="nav-sublink" onClick={closeMenu}>{passesLive() ? 'Holiday Pass & Gift Cards' : 'Gift Cards'}</NavLink></li>
             <li><NavLink to="/shop" className="nav-sublink" onClick={closeMenu}>Merch</NavLink></li>
           </ul>
         </li>

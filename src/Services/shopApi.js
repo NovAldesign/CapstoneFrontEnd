@@ -1,6 +1,10 @@
 import { BACKEND_URL } from './eventUtils';
 
 // Shop: Holiday Passes, gift cards and merch pre-orders
+// Holiday Passes appear at 12:00 AM ET on Black Friday (keep in sync with the backend shopCatalog.js)
+export const PASS_RELEASE = '2026-11-27T00:00:00-05:00';
+export const passesLive = (now = new Date()) => now >= new Date(PASS_RELEASE);
+
 export const money = (cents = 0) => {
   const d = Number(cents) / 100;
   return `$${Number.isInteger(d) ? d : d.toFixed(2)}`;

@@ -122,7 +122,7 @@ const Shop = () => {
             <h2 className="playfair shop-h2">The drop is coming</h2>
             <p className="shop-muted">
               Want first dibs? Join our email list at the bottom of this page and you'll hear the moment pre-orders open.
-              In the meantime, a Holiday Pass makes a great gift.
+              In the meantime, a GFC gift card makes a great gift.
             </p>
             <Link to="/gift" className="shop-btn shop-btn-gold">Gift a night out</Link>
           </section>

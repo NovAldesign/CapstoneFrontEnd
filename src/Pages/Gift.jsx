@@ -1,17 +1,18 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { getCatalog, startCheckout, checkCard, money, longDate, todayYMD } from '../Services/shopApi';
 import { currentSource } from '../Services/ticketSources';
 import '../Styles/Shop.css';
 
-// /gift — Holiday Passes and gift cards (plus Black Friday and Cyber Monday deals)
+// /gift: gift cards now; Holiday Passes appear at 12:00 AM ET on Black Friday
+const PASS_FAQ = 'Which events does a Holiday Pass cover?';
 const FAQS = [
-  ['Which events does a Holiday Pass cover?', 'Game Night, Karaoke Bingo and Acoustic & Infused, through March 31, 2027. Each night on the pass is one ticket. Use them all yourself or bring friends to the same night. Dinners like Friendsgiving and the Holiday Table are not included, but a gift card works for those.'],
+  [PASS_FAQ, 'Game Night, Karaoke Bingo and Acoustic & Infused, through March 31, 2027. Each night on the pass is one ticket. Use them all yourself or bring friends to the same night. Dinners like Friendsgiving and the Holiday Table are not included, but a gift card works for those.'],
   ['How do they use it?', 'Pick an event at grownfolkscollective.com/events, add tickets to the bag, tap "Have a code or gift card?" and enter the code from the email. Anything left stays on the code for next time.'],
   ['When does the gift arrive?', 'On the date you choose, around 9 AM Eastern. Pick today and it goes out right after you pay. You get a receipt with the code too, just in case.'],
-  ['Do gift cards expire?', 'Paid gift cards never expire. Holiday Passes are good through March 31, 2027. Cyber Monday bonus cards are good through March 31, 2027.'],
-  ['Can I get a refund?', 'Passes and gift cards are final sale, like our tickets. If something goes wrong, email events@grownfolkscollective.com and we will make it right.'],
+  ['Do gift cards expire?', 'Paid gift cards never expire.'],
+  ['Can I get a refund?', 'Gift cards are final sale, like our tickets. If something goes wrong, email events@grownfolkscollective.com and we will make it right.'],
 ];
 
 const Gift = () => {
@@ -34,10 +35,23 @@ const Gift = () => {
 
   const sale = catalog?.sale;
   const passes = catalog?.passes || [];
+  const hasPasses = passes.length > 0;
+  const faqs = hasPasses
+    ? FAQS.map(([q, a]) =>
+        q === 'Do gift cards expire?'
+          ? [q, 'Paid gift cards never expire. Holiday Passes and Cyber Monday bonus cards are good through March 31, 2027.']
+          : q === 'Can I get a refund?' ? [q, a.replace('Gift cards are', 'Passes and gift cards are')] : [q, a])
+    : FAQS.filter(([q]) => q !== PASS_FAQ);
+  const chooseText = hasPasses ? 'Choose a Holiday Pass or a gift card' : 'Choose a gift card';
   const amounts = catalog?.giftAmounts || [];
   const chosenPass = passes.find((p) => p.id === product);
   const chosenAmount = amounts.find((a) => a.amountCents === amount);
   const priceCents = product === 'gift' ? amount : chosenPass?.priceCents || 0;
+
+  // A pass link opened before passes are on sale falls back to nothing selected
+  useEffect(() => {
+    if (catalog && product && product !== 'gift' && !passes.some((p) => p.id === product)) setProduct('');
+  }, [catalog, product, passes]);
 
   const choose = (id, cents) => {
     setProduct(id);
@@ -51,7 +65,7 @@ const Gift = () => {
   const pay = async (e) => {
     e.preventDefault();
     setError('');
-    if (!product) return setError('Choose a Holiday Pass or gift card first.');
+    if (!product) return setError(`${chooseText} first.`);
     if (isGift) {
       if (!form.recipientName.trim()) return setError("Add the name of the person you're gifting.");
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.recipientEmail.trim())) return setError('Add a valid email for them.');
@@ -83,15 +97,13 @@ const Gift = () => {
     }
   };
 
-  const saleDates = useMemo(() => (catalog?.sales || []).filter((s) => new Date(s.end) > new Date()), [catalog]);
-
   return (
     <div className="shop-page">
       <Helmet>
-        <title>Gift a Night Out: Holiday Passes & Gift Cards | Grown Folks™ Collective</title>
+        <title>{hasPasses ? 'Gift a Night Out: Holiday Passes & Gift Cards' : 'Gift a Night Out: Gift Cards'} | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="Give a night out in Atlanta. Holiday Passes and gift cards for Game Night, Karaoke Bingo and live music with Grown Folks™ Collective, an alcohol-free social club for 30+."
+          content="Give a night out in Atlanta. Gift cards for Game Night, Karaoke Bingo and live music with Grown Folks™ Collective, an alcohol-free social club for 30+."
         />
       </Helmet>
 
@@ -99,7 +111,7 @@ const Gift = () => {
         <p className="shop-kicker">Gift a night out</p>
         <h1 className="playfair">The gift of getting out the house.</h1>
         <p className="shop-lead">
-          Holiday Passes and gift cards for Game Night, Karaoke Bingo and live music in Atlanta.
+          {hasPasses ? 'Holiday Passes and gift cards' : 'Gift cards'} for Game Night, Karaoke Bingo and live music in Atlanta.
           Alcohol-free, 30+, and delivered by email on the day you pick.
         </p>
         <a href="#build" className="shop-btn shop-btn-gold">Start a gift</a>
@@ -109,14 +121,6 @@ const Gift = () => {
         <div className={`shop-sale shop-sale-${sale.key}`} role="status">
           <strong>{sale.label} is on.</strong> {sale.blurb} Ends {new Date(sale.end).toLocaleDateString('en-US', { timeZone: 'America/New_York', weekday: 'long' })} at midnight.
         </div>
-      ) : saleDates.length ? (
-        <div className="shop-sale shop-sale-soon">
-          {saleDates.map((s) => (
-            <span key={s.key}>
-              <strong>{s.label}, {new Date(s.start).toLocaleDateString('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric' })}:</strong> {s.blurb}
-            </span>
-          ))}
-        </div>
       ) : null}
 
       <main className="shop-main" id="build">
@@ -125,6 +129,7 @@ const Gift = () => {
 
         {catalog && (
           <>
+            {hasPasses && (
             <section aria-labelledby="passes-title">
               <p className="shop-label">Holiday Pass</p>
               <h2 id="passes-title" className="playfair shop-h2">Prepaid nights out</h2>
@@ -152,6 +157,7 @@ const Gift = () => {
                 ))}
               </div>
             </section>
+            )}
 
             <section aria-labelledby="cards-title">
               <p className="shop-label">Gift card</p>
@@ -177,7 +183,7 @@ const Gift = () => {
             <section className="shop-order" ref={orderRef} aria-labelledby="order-title">
               <h2 id="order-title" className="playfair shop-h2">Your order</h2>
               {!product ? (
-                <p className="shop-muted">Choose a Holiday Pass or a gift card above.</p>
+                <p className="shop-muted">{chooseText} above.</p>
               ) : (
                 <form onSubmit={pay} noValidate>
                   <p className="shop-order-line">
@@ -230,7 +236,7 @@ const Gift = () => {
           <div className="shop-card">
             <h2 className="playfair shop-h3">Check a balance</h2>
             <form className="shop-inline" onSubmit={lookUp}>
-              <label htmlFor="bal" className="sr-only">Gift card or pass code</label>
+              <label htmlFor="bal" className="sr-only">Gift card code</label>
               <input id="bal" placeholder="GIFT-XXXX-XXXX" value={balanceCode} onChange={(e) => setBalanceCode(e.target.value.toUpperCase())} />
               <button type="submit" className="shop-btn shop-btn-navy">Check</button>
             </form>
@@ -251,7 +257,7 @@ const Gift = () => {
 
         <section className="shop-faq" aria-labelledby="faq-title">
           <h2 id="faq-title" className="playfair shop-h2">Good to know</h2>
-          {FAQS.map(([q, a]) => (
+          {faqs.map(([q, a]) => (
             <details key={q}>
               <summary>{q}</summary>
               <p>{a}</p>
