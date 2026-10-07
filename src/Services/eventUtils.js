@@ -90,11 +90,12 @@ export const getTierRemaining = (t = {}) => {
 export const getTierStatus = (t = {}, now = new Date()) => {
   if (t.hidden || t.isHidden) return "hidden";
   const status = String(t.onSaleStatus || t.on_sale_status || "").toUpperCase();
-  if (status === "SOLD_OUT") return "sold-out";
-  if (status === "NOT_YET_ON_SALE") return "upcoming";
-  if (status === "UNAVAILABLE") return "ended";
   const start = t.salesStart || t.sales_start;
   const end = t.salesEnd || t.sales_end;
+  if (status === "SOLD_OUT") return "sold-out";
+  // Eventbrite's status is a snapshot from the last sync, so a passed start date wins
+  if (status === "NOT_YET_ON_SALE" && !(start && new Date(start) <= now)) return "upcoming";
+  if (status === "UNAVAILABLE") return "ended";
   if (start && new Date(start) > now) return "upcoming";
   if (end && new Date(end) < now) return "ended";
   const left = getTierRemaining(t);
