@@ -225,6 +225,51 @@ const perkApi = async (path = '', opts = {}) => {
   return data;
 };
 
+// Shrinks a logo to 320px max and returns it as a small image the server can store
+const shrinkLogo = (file) =>
+  new Promise((resolve, reject) => {
+    if (!/^image\/(png|jpe?g|webp)$/i.test(file.type)) return reject(new Error('Use a PNG, JPG or WebP logo.'));
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, 320 / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(img.src);
+      let out = canvas.toDataURL('image/png');
+      for (let q = 0.9; out.length > 110000 && q > 0.3; q -= 0.15) out = canvas.toDataURL('image/webp', q);
+      if (out.length > 110000) return reject(new Error('That logo is too detailed. Try a simpler or smaller file.'));
+      resolve(out);
+    };
+    img.onerror = () => reject(new Error("Couldn't read that image."));
+    img.src = URL.createObjectURL(file);
+  });
+
+const PerkLogo = ({ perk, onSave }) => {
+  const [busy, setBusy] = useState(false);
+  const pick = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    setBusy(true);
+    try { await onSave(await shrinkLogo(file)); } catch (err) { alert(err.message); }
+    setBusy(false);
+  };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flex: '0 0 76px' }}>
+      <div style={{ width: 64, height: 64, borderRadius: 8, background: '#f6f1e7', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+        {perk.logo ? <img src={perk.logo} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /> : <span className="ga-small ga-muted">No logo</span>}
+      </div>
+      <label className="ga-btn ga-btn-sm" style={{ cursor: 'pointer' }}>
+        {busy ? 'Saving…' : perk.logo ? 'Change' : 'Add logo'}
+        <input type="file" accept="image/png,image/jpeg,image/webp" onChange={pick} disabled={busy} style={{ display: 'none' }} />
+      </label>
+      {perk.logo && !busy && <button type="button" className="ga-small" style={{ background: 'none', border: 0, color: '#9b2c2c', cursor: 'pointer' }} onClick={() => onSave('')}>Remove</button>}
+    </div>
+  );
+};
+
 export const AdminPerks = () => {
   const [items, setItems] = useState(null);
   const [error, setError] = useState('');
@@ -243,13 +288,14 @@ export const AdminPerks = () => {
   return (
     <>
       {error && <p className="ga-note err">{error}</p>}
-      <p className="ga-subtitle" style={{ marginTop: -12, marginBottom: 16 }}>Approved perks show on the Member Perks page right away. Pause one to hide it.</p>
+      <p className="ga-subtitle" style={{ marginTop: -12, marginBottom: 16 }}>Approved perks show on the Membership page right away, with their logo. Pause one to hide it.</p>
       <Toolbar {...f} openCount={items.filter((d) => d.status === 'pending').length} total={items.length} />
       {f.shown.length === 0 ? <div className="ga-card ga-empty">{f.filter === 'open' ? 'No perks waiting for approval.' : 'No Member Perks yet.'}</div> : (
         <div className="ga-stack" style={{ gap: 12 }}>
           {f.shown.map((d) => (
             <article key={d._id} className="ga-card" style={{ padding: '14px 18px' }}>
               <div className="ga-row" style={{ alignItems: 'flex-start' }}>
+                <PerkLogo perk={d} onSave={(logo) => update(d._id, { logo })} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div className="ga-row" style={{ gap: 8 }}>
                     <strong style={{ color: 'var(--ga-navy)' }}>{d.businessName}</strong>

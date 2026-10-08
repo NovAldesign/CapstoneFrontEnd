@@ -4,6 +4,58 @@ import { Helmet } from 'react-helmet-async';
 import '../Styles/Membership.css';
 import membershipService from '../Services/membershipService';
 import { LEGAL } from '../content/legalContent.js';
+import { BACKEND_URL } from '../Services/eventUtils';
+
+// Member Perks: AMC is set up by hand; every perk approved in the dashboard is added after it
+const AMC_PERK = {
+  _id: 'amc',
+  businessName: 'AMC Performance Company',
+  offer: '10% off every show',
+  category: 'Plays, musicals & tribute shows',
+  redeem: 'promo-code',
+};
+const REDEEM_TEXT = {
+  'promo-code': 'Your code is in the private member group chat.',
+  'show-membership': 'Show your GFC membership when you pay.',
+  mention: 'Mention Grown Folks™ Collective when you pay.',
+  other: 'Details are in the private member group chat.',
+};
+const perkLink = (url) => (!url ? '' : /^https?:\/\//i.test(url) ? url : url.startsWith('@') ? `https://instagram.com/${url.slice(1)}` : `https://${url}`);
+
+const MemberPerkList = () => {
+  const [perks, setPerks] = useState([AMC_PERK]);
+  useEffect(() => {
+    fetch(`${BACKEND_URL}/api/discount-partners`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((list) => {
+        if (!Array.isArray(list)) return;
+        setPerks([AMC_PERK, ...list.filter((p) => !/\bamc\b/i.test(p.businessName || ''))]);
+      })
+      .catch(() => {});
+  }, []);
+  return (
+    <ul className="member-perk-grid">
+      {perks.map((p) => {
+        const link = perkLink(p.website);
+        return (
+          <li key={p._id} className="member-perk-card">
+            <div className="member-perk-logo">
+              {p.logo ? <img src={p.logo} alt={`${p.businessName} logo`} loading="lazy" /> : <span aria-hidden="true">{(p.businessName || '?').charAt(0)}</span>}
+            </div>
+            <div className="member-perk-info">
+              <strong className="member-perk-name">
+                {link ? <a href={link} target="_blank" rel="noopener noreferrer">{p.businessName}</a> : p.businessName}
+              </strong>
+              <span className="member-perk-offer">{p.offer}</span>
+              {p.category && <span className="member-perk-meta">{p.category}</span>}
+              <span className="member-perk-meta">{REDEEM_TEXT[p.redeem] || REDEEM_TEXT.other}</span>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
 
 const TIERS = [
   {
@@ -354,15 +406,14 @@ const Membership = () => {
 
       {/* ── PARTNER PERK ── */}
       <section className="member-partner-section" aria-labelledby="partner-heading">
-        <span className="tier-eyebrow">Member Partner Perk</span>
+        <span className="tier-eyebrow">Member Perks</span>
         <h2 id="partner-heading" className="playfair member-partner-title">
-          🎭 10% Off AMC Performance Company Shows
+          Savings around Atlanta
         </h2>
         <p className="member-partner-body">
-          All members save 10% on every AMC Performance Company production in
-          Atlanta: plays, musicals, and tribute shows. Your discount code is
-          shared in the private member group chat.
+          Local businesses that take care of GFC members. Your membership pays you back all over town.
         </p>
+        <MemberPerkList />
       </section>
 
       {/* ── FINE PRINT ── */}

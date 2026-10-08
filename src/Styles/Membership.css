@@ -942,3 +942,67 @@
   font-weight: 700;
   text-decoration: underline;
 }
+
+/* ── Member Perks list ── */
+.membership-page .member-perk-grid {
+  list-style: none;
+  margin: 26px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  text-align: left;
+}
+.membership-page .member-perk-card {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  background: #fff;
+  color: #002147;
+  border-radius: 8px;
+  padding: 14px;
+  border-top: 3px solid #C5A059;
+}
+.membership-page .member-perk-logo {
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  background: #f6f1e7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.membership-page .member-perk-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.membership-page .member-perk-logo span {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: #9A7630;
+}
+.membership-page .member-perk-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.membership-page .member-perk-name,
+.membership-page .member-perk-name a {
+  color: #002147;
+  font-size: 1rem;
+  text-decoration: none;
+}
+.membership-page .member-perk-name a:hover { text-decoration: underline; }
+.membership-page .member-perk-offer {
+  font-weight: 700;
+  color: #9A7630;
+}
+.membership-page .member-perk-meta {
+  font-size: 0.85rem;
+  color: #4a5568;
+  line-height: 1.4;
+}
