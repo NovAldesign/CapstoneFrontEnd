@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import '../Styles/Membership.css';
-import membershipService from '../Services/membershipService';
+import membershipService from '../Services/membershipService.js';
 import { LEGAL } from '../content/legalContent.js';
-import { BACKEND_URL } from '../Services/eventUtils';
+import { BACKEND_URL } from '../Services/eventUtils.js';
 
-// Member Perks: AMC is set up by hand; every perk approved in the dashboard is added after it
+// Member Perks: every perk approved in the dashboard; AMC shows as a placeholder until they submit
 const AMC_PERK = {
   _id: 'amc',
   businessName: 'AMC Performance Company',
@@ -29,7 +29,9 @@ const MemberPerkList = () => {
       .then((r) => (r.ok ? r.json() : []))
       .then((list) => {
         if (!Array.isArray(list)) return;
-        setPerks([AMC_PERK, ...list.filter((p) => !/\bamc\b/i.test(p.businessName || ''))]);
+        // Once AMC submits through the form, their own listing (with logo) replaces the placeholder
+        const hasAmc = list.some((p) => /\bamc\b/i.test(p.businessName || ''));
+        setPerks(hasAmc ? list : [AMC_PERK, ...list]);
       })
       .catch(() => {});
   }, []);
