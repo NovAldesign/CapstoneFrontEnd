@@ -6,6 +6,57 @@ import membershipService from '../Services/membershipService.js';
 import { LEGAL } from '../content/legalContent.js';
 import { BACKEND_URL } from '../Services/eventUtils.js';
 
+// Member Perks: every perk approved in the dashboard (the section hides until there is one)
+const REDEEM_TEXT = {
+  'promo-code': 'Your code is in the private member group chat.',
+  'show-membership': 'Show your GFC membership when you pay.',
+  mention: 'Mention Grown Folks™ Collective when you pay.',
+  other: 'Details are in the private member group chat.',
+};
+const perkLink = (url) => (!url ? '' : /^https?:\/\//i.test(url) ? url : url.startsWith('@') ? `https://instagram.com/${url.slice(1)}` : `https://${url}`);
+
+const MemberPerks = () => {
+  const [perks, setPerks] = useState([]);
+  useEffect(() => {
+    fetch(`${BACKEND_URL}/api/discount-partners`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((list) => { if (Array.isArray(list)) setPerks(list); })
+      .catch(() => {});
+  }, []);
+  if (!perks.length) return null;
+  return (
+    <section className="member-partner-section" aria-labelledby="partner-heading">
+      <span className="tier-eyebrow">Member Perks</span>
+      <h2 id="partner-heading" className="playfair member-partner-title">
+        Savings around Atlanta
+      </h2>
+      <p className="member-partner-body">
+        Local businesses that take care of GFC members. Your membership pays you back all over town.
+      </p>
+      <ul className="member-perk-grid">
+        {perks.map((p) => {
+          const link = perkLink(p.website);
+          return (
+            <li key={p._id} className="member-perk-card">
+              <div className="member-perk-logo">
+                {p.logo ? <img src={p.logo} alt={`${p.businessName} logo`} loading="lazy" /> : <span aria-hidden="true">{(p.businessName || '?').charAt(0)}</span>}
+              </div>
+              <div className="member-perk-info">
+                <strong className="member-perk-name">
+                  {link ? <a href={link} target="_blank" rel="noopener noreferrer">{p.businessName}</a> : p.businessName}
+                </strong>
+                <span className="member-perk-offer">{p.offer}</span>
+                {p.category && <span className="member-perk-meta">{p.category}</span>}
+                <span className="member-perk-meta">{REDEEM_TEXT[p.redeem] || REDEEM_TEXT.other}</span>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+};
+
 
 const TIERS = [
   {
@@ -354,17 +405,8 @@ const Membership = () => {
         </div>
       </section>
 
-      {/* ── PARTNER PERK ── */}
-      <section className="member-partner-section" aria-labelledby="partner-heading">
-        <span className="tier-eyebrow">Member Perks</span>
-        <h2 id="partner-heading" className="playfair member-partner-title">
-          Savings around Atlanta
-        </h2>
-        <p className="member-partner-body">
-          Local businesses that take care of GFC members. Your membership pays you back all over town.
-        </p>
-        <MemberPerkList />
-      </section>
+      {/* ── MEMBER PERKS ── */}
+      <MemberPerks />
 
       {/* ── FINE PRINT ── */}
       <section className="member-fineprint" aria-labelledby="fineprint-heading">
