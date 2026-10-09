@@ -96,3 +96,28 @@
 .pp-save { font-size: 0.82rem; font-weight: 600; color: #6b6b6b; align-self: center; }
 .pp-save.ok { color: #1d6b3a; }
 .pp-save.err { color: #9b2c2c; }
+
+/* Scroll-to-sign agreement */
+.pp-terms {
+  max-height: 300px; overflow-y: auto; border: 1px solid #E8E2D6; background: #FDFBF7;
+  padding: 16px 18px; font-size: 0.84rem; line-height: 1.55; color: #333; margin: 6px 0 6px;
+}
+.pp-terms:focus { outline: 2px solid #002147; outline-offset: 2px; }
+.pp-terms h3 { font-size: 0.82rem; font-weight: 700; color: #002147; margin: 14px 0 6px; }
+.pp-terms p { margin: 0 0 8px; }
+.pp-terms ul { margin: 0 0 8px; padding-left: 18px; }
+.pp-terms li { margin-bottom: 4px; }
+.pp-terms-intro { font-style: italic; }
+.pp-terms-end { color: #6b6b6b; font-size: 0.75rem; margin-top: 14px !important; }
+.pp-terms-hint { margin-bottom: 10px; }
+.pp-terms-hint.ok { color: #1d6b3a; font-weight: 600; }
+.pp-agree.locked { opacity: 0.55; cursor: not-allowed; }
+
+/* After the event */
+.pp-recap-featured { margin-bottom: 24px; border-top-width: 5px; }
+.pp-recap-featured .md-card-title { font-size: 1.7rem; }
+.pp-recap-eyebrow { color: #8a6d2f; margin-bottom: 6px; }
+.pp-shared-imgs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.pp-shared-imgs img { width: 84px; height: 84px; object-fit: cover; background: #F6F1E7; }
+.pp-shared-imgs .pp-shared-logo { object-fit: contain; }
+.md-facts dd.pp-pre { text-align: right; max-width: 65%; }

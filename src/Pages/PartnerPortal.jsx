@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import partnerApi, { SessionExpired, partnerToken, signOutPartner } from '../Services/partnerApi';
-import { SPONSOR_AGREEMENT_VERSION, PERK_TERMS_VERSION } from '../content/legalContent.js';
+import { SPONSOR_AGREEMENT_VERSION, PERK_TERMS_VERSION, LEGAL_PAGES, LEGAL } from '../content/legalContent.js';
 import '../Styles/MemberDashboard.css';
 import '../Styles/PartnerPortal.css';
 
@@ -388,7 +388,17 @@ const Agreement = ({ portal, run }) => {
   const isPerk = portal.kind === 'perk';
   const [name, setName] = useState('');
   const [agree, setAgree] = useState(false);
+  const [readAll, setReadAll] = useState(false);
+  const boxRef = useRef(null);
   const doc = isPerk ? { href: '/perk-terms', title: 'Member Perk Terms' } : { href: '/sponsor-agreement', title: 'Sponsor Agreement' };
+  const text = LEGAL_PAGES[isPerk ? 'perks' : 'sponsor'];
+
+  // Sign unlocks once they've scrolled to the end of the agreement
+  const checkScroll = useCallback(() => {
+    const el = boxRef.current;
+    if (el && el.scrollTop + el.clientHeight >= el.scrollHeight - 12) setReadAll(true);
+  }, []);
+  useEffect(() => { checkScroll(); }, [checkScroll]);
   const outdated = a.signedAt && a.version && a.version !== (isPerk ? PERK_TERMS_VERSION : SPONSOR_AGREEMENT_VERSION);
   return (
     <section className="md-card" aria-labelledby="pp-agree-title">
@@ -398,15 +408,31 @@ const Agreement = ({ portal, run }) => {
       ) : (
         <form className="md-form" onSubmit={(e) => { e.preventDefault(); run(() => partnerApi.agree(name), 'Signed. Thank you!'); }}>
           {outdated && <p className="md-note md-note-gold">We updated the {doc.title}. Please read and sign the new version.</p>}
-          <p className="md-muted">Please read the <a href={doc.href} target="_blank" rel="noopener noreferrer">{doc.title}</a>, then sign by typing your full name.</p>
+          <p className="md-muted">Please read it all the way through, then sign by typing your full name.</p>
+          <div ref={boxRef} className="pp-terms" tabIndex={0} role="document" aria-label={`${doc.title} text`} onScroll={checkScroll}>
+            <p className="pp-terms-intro">{text.intro}</p>
+            {text.sections.map((s) => (
+              <div key={s.h}>
+                <h3>{s.h}</h3>
+                {(s.p || []).map((para, i) => <p key={i}>{para}</p>)}
+                {s.list && <ul>{s.list.map((li, i) => <li key={i}>{li}</li>)}</ul>}
+                {(s.after || []).map((para, i) => <p key={`a${i}`}>{para}</p>)}
+              </div>
+            ))}
+            <p className="pp-terms-end">Version {isPerk ? PERK_TERMS_VERSION : SPONSOR_AGREEMENT_VERSION} · {LEGAL.legalName}</p>
+          </div>
+          <p className={`md-hint pp-terms-hint ${readAll ? 'ok' : ''}`} aria-live="polite">
+            {readAll ? '✓ You reached the end.' : 'Scroll to the end of the agreement to sign.'}{' '}
+            <a href={doc.href} target="_blank" rel="noopener noreferrer">Open full page</a>
+          </p>
           <label className="md-label" htmlFor="pp-sign-name">Full name</label>
           <input id="pp-sign-name" className="md-input" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" required />
-          <label className="pp-agree">
-            <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} />
+          <label className={`pp-agree ${readAll ? '' : 'locked'}`}>
+            <input type="checkbox" checked={agree} disabled={!readAll} onChange={(e) => setAgree(e.target.checked)} />
             <span>I've read the {doc.title}, I'm authorized to sign for {portal.name}, and I agree.</span>
           </label>
           <div className="md-actions">
-            <button type="submit" className="md-btn md-btn-gold" disabled={!agree || name.trim().length < 2}>Sign</button>
+            <button type="submit" className="md-btn md-btn-gold" disabled={!readAll || !agree || name.trim().length < 2}>Sign</button>
           </div>
         </form>
       )}
@@ -491,17 +517,80 @@ const EventInfo = ({ portal }) => {
 };
 
 /* ---------------- Sponsor: recap ---------------- */
-const Recap = ({ portal }) => {
+// The event is over (end time, or 4 hours after the start)
+const eventOver = (portal, now = new Date()) => {
+  const e = portal.event;
+  if (portal.kind !== 'sponsor' || !e?.date) return false;
+  const end = e.endDate ? new Date(e.endDate) : new Date(new Date(e.date).getTime() + 4 * 3600000);
+  return end < now;
+};
+
+const Recap = ({ portal, featured = false }) => {
   const r = portal.recap;
-  if (!r.recapUrl && !r.recapNote && !r.newsletterUrl) return null;
+  const has = Boolean(r.recapUrl || r.recapNote || r.newsletterUrl);
+  if (!has && !featured) return null;
   return (
-    <section className="md-card" aria-labelledby="pp-recap-title">
-      <h2 id="pp-recap-title" className="playfair md-card-title">Your recap</h2>
-      {r.recapNote && <p className="pp-pre">{r.recapNote}</p>}
-      <div className="md-actions">
-        {r.recapUrl && <a className="md-btn md-btn-gold" href={r.recapUrl} target="_blank" rel="noopener noreferrer">Photos &amp; recap</a>}
-        {r.newsletterUrl && <a className="md-btn md-btn-outline" href={r.newsletterUrl} target="_blank" rel="noopener noreferrer">Your newsletter feature</a>}
-      </div>
+    <section className={`md-card ${featured ? 'pp-recap-featured' : ''}`} aria-labelledby="pp-recap-title">
+      {featured && <span className="md-eyebrow pp-recap-eyebrow">Thank you for partnering with us</span>}
+      <h2 id="pp-recap-title" className="playfair md-card-title">Your recap{featured && portal.event?.name ? `: ${portal.event.name}` : ''}</h2>
+      {has ? (
+        <>
+          {r.recapNote && <p className="pp-pre">{r.recapNote}</p>}
+          <div className="md-actions">
+            {r.recapUrl && <a className="md-btn md-btn-gold" href={r.recapUrl} target="_blank" rel="noopener noreferrer">Photos &amp; recap</a>}
+            {r.newsletterUrl && <a className="md-btn md-btn-outline" href={r.newsletterUrl} target="_blank" rel="noopener noreferrer">Your newsletter feature</a>}
+          </div>
+        </>
+      ) : (
+        <p className="md-muted">Your photos and event highlights are on the way. We'll add them here within a week and email you when they're ready.</p>
+      )}
+    </section>
+  );
+};
+
+/* ---------------- After the event: book again ---------------- */
+const NextEvent = ({ portal }) => (
+  <section className="md-card" aria-labelledby="pp-next-title">
+    <h2 id="pp-next-title" className="playfair md-card-title">Let's do it again</h2>
+    <p className="md-muted">
+      Game Nights, Karaoke Bingo, Acoustic &amp; Infused and our holiday events are coming up, and we'd love to have you back.
+    </p>
+    <div className="md-actions">
+      <Link to="/partnerships#levels" className="md-btn md-btn-gold">Book your next event</Link>
+      <a className="md-btn md-btn-outline" href={`mailto:${portal.gfcContact.email}?subject=${encodeURIComponent(`Next event: ${portal.name}`)}`}>Email Vaughn</a>
+    </div>
+  </section>
+);
+
+/* ---------------- After the event: what they shared (read-only) ---------------- */
+const SponsorSummary = ({ portal }) => {
+  const d = portal.details;
+  const rows = [
+    ['About your brand', d.blurb],
+    ['Website', d.website],
+    ['Instagram', d.instagram],
+    ['Facebook', d.facebook],
+    ['TikTok', d.tiktok],
+    ['On-site contact', [d.onsiteName, d.onsitePhone].filter(Boolean).join(' · ')],
+    ['Table', d.tableNeeds],
+    ['Signage', d.signageNeeds],
+    ['Sampling', d.samplingPlan],
+  ].filter(([, v]) => v);
+  return (
+    <section className="md-card" aria-labelledby="pp-shared-title">
+      <h2 id="pp-shared-title" className="playfair md-card-title">What you shared</h2>
+      {(d.logoUrl || d.photos?.length > 0) && (
+        <div className="pp-shared-imgs">
+          {d.logoUrl && <img src={d.logoUrl} alt="Your logo" className="pp-shared-logo" />}
+          {(d.photos || []).map((u) => <img key={u} src={u} alt="Your brand photo" />)}
+        </div>
+      )}
+      {rows.length > 0 && (
+        <dl className="md-facts">
+          {rows.map(([k, v]) => <div key={k}><dt>{k}</dt><dd className="pp-pre">{v}</dd></div>)}
+        </dl>
+      )}
+      <p className="md-hint">Want to change anything for next time? Email {portal.gfcContact.email}.</p>
     </section>
   );
 };
@@ -708,6 +797,7 @@ const PartnerPortal = () => {
 
   const portal = data.portal;
   const isPerk = portal.kind === 'perk';
+  const over = eventOver(portal);
   return (
     <div className="md-page">
       <Helmet>
@@ -718,7 +808,11 @@ const PartnerPortal = () => {
         <div className="md-hero-inner">
           <span className="md-eyebrow">{isPerk ? 'Member Perk Partner' : `${TIER_NAME[portal.tier]} Sponsor`}</span>
           <h1 className="playfair md-hero-title">{portal.name}</h1>
-          <p className="md-hero-sub">Welcome, {String(portal.contactName || '').split(' ')[0]}. Everything for your partnership lives here.</p>
+          <p className="md-hero-sub">
+            {over
+              ? `Thank you, ${String(portal.contactName || '').split(' ')[0]}. It was a pleasure having you with us.`
+              : `Welcome, ${String(portal.contactName || '').split(' ')[0]}. Everything for your partnership lives here.`}
+          </p>
         </div>
       </header>
 
@@ -734,6 +828,21 @@ const PartnerPortal = () => {
           <Steps steps={portal.steps} />
         </section>
 
+        {over ? (
+          <>
+            <Recap portal={portal} featured />
+            <div className="md-grid pp-grid">
+              <div className="md-col">
+                <NextEvent portal={portal} />
+                <Payment portal={portal} run={run} />
+                <Agreement key={`${portal.kind}-${portal.id}-a`} portal={portal} run={run} />
+              </div>
+              <div className="md-col">
+                <SponsorSummary portal={portal} />
+              </div>
+            </div>
+          </>
+        ) : (
         <div className="md-grid pp-grid">
           <div className="md-col">
             <Checklist portal={portal} />
@@ -756,6 +865,7 @@ const PartnerPortal = () => {
             )}
           </div>
         </div>
+        )}
 
         <footer className="md-foot">
           {data.others?.length > 0 && (

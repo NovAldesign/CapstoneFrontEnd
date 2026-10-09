@@ -56,7 +56,7 @@ const partnerApi = {
   },
   me: () => call('/me'),
   save: (changes) => call('/me', { method: 'PATCH', body: changes }),
-  agree: (name) => call('/agree', { method: 'POST', body: { name, agree: true } }),
+  agree: (name) => call('/agree', { method: 'POST', body: { name, agree: true, readInFull: true } }),
   pay: () => call('/pay', { method: 'POST' }),
   confirmPayment: (sessionId) => call('/pay/confirm', { method: 'POST', body: { sessionId } }),
   perkStatus: (action) => call('/perk/status', { method: 'POST', body: { action } }),
