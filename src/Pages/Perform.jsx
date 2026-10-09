@@ -176,9 +176,12 @@ const Perform = ({ role = 'artist' }) => {
   const [submitted, setSubmitted] = useState(false);
   const errorRef = useRef(null);
 
-  // Upcoming music events for the dropdown
+  // Upcoming showcases for the dropdown, with how many spots are left
   useEffect(() => {
-    fetchGfcEvents()
+    fetch(`${BACKEND_URL}/api/artists/showcases`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((list) => { if (Array.isArray(list)) setEvents(list); else throw new Error(); })
+      .catch(() => fetchGfcEvents()
       .then((data) => {
         const upcoming = (Array.isArray(data) ? data : [])
           .filter((e) => e && e.status?.toLowerCase() === 'published' && isUpcoming(e))
@@ -186,8 +189,12 @@ const Perform = ({ role = 'artist' }) => {
           .sort((a, b) => new Date(a.date) - new Date(b.date));
         setEvents(upcoming);
       })
-      .catch(() => {});
+      .catch(() => {}));
   }, []);
+
+  // A date stays open until it's full
+  const spotsLeft = (ev) => (isHost ? ev.hostSpotsLeft : ev.artistSpotsLeft);
+  const isFull = (ev) => spotsLeft(ev) !== undefined && spotsLeft(ev) <= 0;
 
   useEffect(() => {
     if (error && errorRef.current) errorRef.current.focus();
@@ -529,7 +536,9 @@ const Perform = ({ role = 'artist' }) => {
                       <select id="pf-event" name="eventId" value={form.eventId} onChange={handleChange}>
                         <option value="">Any upcoming showcase</option>
                         {events.map((ev) => (
-                          <option key={ev._id} value={String(ev._id)}>{eventLabel(ev)}</option>
+                          <option key={ev._id} value={String(ev._id)} disabled={isFull(ev)}>
+                            {eventLabel(ev)}{isFull(ev) ? ' (Full)' : !isHost && spotsLeft(ev) === 1 ? ' (1 spot left)' : ''}
+                          </option>
                         ))}
                       </select>
                     </div>
