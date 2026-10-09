@@ -83,3 +83,16 @@
 .pp-signin .md-eyebrow { color: #8a6d2f; }
 .pp-signin-foot { margin-top: 18px; font-size: 0.85rem; }
 .pp-switch { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; }
+
+/* To-do items jump to their spot on the page */
+.pp-todo-link {
+  background: none; border: 0; padding: 0; text-align: left; font: inherit; color: #002147; cursor: pointer;
+  text-decoration: underline; text-decoration-color: rgba(197, 160, 89, 0.7); text-underline-offset: 3px;
+}
+.pp-todo-link:hover { color: #8a6d2f; }
+.pp-later { margin-top: 12px; }
+
+/* Save status beside form buttons */
+.pp-save { font-size: 0.82rem; font-weight: 600; color: #6b6b6b; align-self: center; }
+.pp-save.ok { color: #1d6b3a; }
+.pp-save.err { color: #9b2c2c; }

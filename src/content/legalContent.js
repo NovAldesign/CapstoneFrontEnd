@@ -526,7 +526,7 @@ export const LEGAL_PAGES = {
       {
         h: "3. Payment",
         list: [
-          "Your sponsorship amount is shown in your portal. Payment is due at least 7 days before the event.",
+          "Your sponsorship amount is shown in your portal. Payment is due at least 14 days before the event.",
           "If payment isn't in by then, we may release your placement.",
         ],
       },
@@ -658,5 +658,5 @@ export const LEGAL_FOOTER_LINKS = [
 // Pages that exist but aren't in the footer (linked from their forms)
 export const PERFORMER_AGREEMENT_VERSION = "2026-10-02";
 // MUST match SPONSOR_TERMS_VERSION / PERK_TERMS_VERSION in the backend utilities/partnerPortal.js
-export const SPONSOR_AGREEMENT_VERSION = "2026-10-09";
+export const SPONSOR_AGREEMENT_VERSION = "2026-10-09.2";
 export const PERK_TERMS_VERSION = "2026-10-09";

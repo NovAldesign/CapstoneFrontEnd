@@ -158,8 +158,23 @@ const Steps = ({ steps }) => {
 };
 
 /* ---------------- To-do list ---------------- */
+// Where each to-do lives on the page
+const JUMP = {
+  sponsor: { logo: 'pp-logo-label', blurb: 'pp-blurb', socials: 'pp-web', onsite: 'pp-onsite', setup: 'pp-table', sampling: 'pp-sample', agreement: 'pp-agree-title', payment: 'pp-pay-title' },
+  perk: { logo: 'pp-perk-logo-label', photo: 'pp-perk-photo-label', confirm: 'pp-perk-title', agreement: 'pp-agree-title' },
+};
+const jumpTo = (id) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const field = /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) ? el : null;
+  if (field) setTimeout(() => field.focus({ preventScroll: true }), 400);
+};
+
 const Checklist = ({ portal }) => {
   const { done, total } = portal.progress;
+  const next = portal.checklist.find((i) => !i.done);
+  const where = JUMP[portal.kind] || {};
   const pct = total ? Math.round((done / total) * 100) : 100;
   return (
     <section className="md-card" aria-labelledby="pp-todo-title">
@@ -174,11 +189,19 @@ const Checklist = ({ portal }) => {
         {portal.checklist.map((i) => (
           <li key={i.key} className={i.done ? 'done' : ''}>
             <span className="pp-check" aria-hidden="true">{i.done ? '✓' : ''}</span>
-            <span>{i.label}</span>
+            {!i.done && where[i.key]
+              ? <button type="button" className="pp-todo-link" onClick={() => jumpTo(where[i.key])}>{i.label}</button>
+              : <span>{i.label}</span>}
             <span className="md-sr">{i.done ? '(done)' : '(to do)'}</span>
           </li>
         ))}
       </ul>
+      {next && done > 0 && where[next.key] && (
+        <div className="md-actions">
+          <button type="button" className="md-btn md-btn-gold" onClick={() => jumpTo(where[next.key])}>Pick up where you left off</button>
+        </div>
+      )}
+      {done < total && <p className="md-hint pp-later">Everything saves as you go. Come back anytime at grownfolkscollective.com/partner and we'll email you a sign-in link.</p>}
       {done === total && <p className="md-note md-note-gold">You're all set. Thank you! We'll reach out if we need anything else.</p>}
     </section>
   );
@@ -243,6 +266,19 @@ const SponsorAssets = ({ portal, run }) => {
   );
 };
 
+/* ---------------- Save status next to the buttons ---------------- */
+const SaveStatus = ({ state }) => {
+  if (!state) return null;
+  const known = {
+    pending: ['', 'Unsaved changes…'],
+    saving: ['', 'Saving…'],
+    saved: ['ok', '✓ All changes saved'],
+    later: ['ok', '✓ Saved. Come back anytime to finish.'],
+  }[state];
+  const [kind, text] = known || ['err', state];
+  return <span className={`pp-save ${kind}`} role={kind === 'err' ? 'alert' : 'status'} aria-live="polite">{text}</span>;
+};
+
 /* ---------------- Sponsor: details form ---------------- */
 const SponsorDetails = ({ portal, run }) => {
   const d = portal.details;
@@ -253,12 +289,37 @@ const SponsorDetails = ({ portal, run }) => {
     tableNeeds: d.tableNeeds || '', signageNeeds: d.signageNeeds || '', samplingPlan: d.samplingPlan || '',
   };
   const [form, setForm] = useState(initial);
+  const [saveState, setSaveState] = useState(''); // '' | pending | saving | saved | later | error text
   const dirty = JSON.stringify(form) !== JSON.stringify(initial);
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
   const count = words(form.blurb);
+
+  const saveNow = useCallback(async (finishLater = false) => {
+    setSaveState('saving');
+    const error = await run(() => partnerApi.save(form), null, { quiet: true });
+    setSaveState(error || (finishLater ? 'later' : 'saved'));
+  }, [form, run]);
+
+  // Saves on its own a moment after they stop typing
+  useEffect(() => {
+    if (!dirty) return undefined;
+    setSaveState('pending');
+    const t = setTimeout(() => saveNow(false), 1500);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form]);
+
+  // Don't lose typing if they close the tab mid-save
+  useEffect(() => {
+    if (saveState !== 'pending' && saveState !== 'saving') return undefined;
+    const warn = (e) => { e.preventDefault(); e.returnValue = ''; };
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [saveState]);
+
   const save = (e) => {
     e.preventDefault();
-    run(() => partnerApi.save(form), 'Your details are saved.');
+    saveNow(true);
   };
   return (
     <section className="md-card" aria-labelledby="pp-details-title">
@@ -313,7 +374,8 @@ const SponsorDetails = ({ portal, run }) => {
           </>
         )}
         <div className="md-actions">
-          <button type="submit" className="md-btn md-btn-gold" disabled={!dirty}>Save details</button>
+          <button type="submit" className="md-btn md-btn-gold" disabled={saveState === 'saving'}>Save &amp; finish later</button>
+          <SaveStatus state={saveState} />
         </div>
       </form>
     </section>
@@ -373,7 +435,12 @@ const Payment = ({ portal, run }) => {
         <p className="pp-signed">✓ Paid {shortDate(p.paidAt)}.{p.receiptUrl && <> <a href={p.receiptUrl} target="_blank" rel="noopener noreferrer">View receipt</a></>}</p>
       ) : (
         <>
-          <p className="md-muted">Due at least 7 days before your event. You'll pay securely with Stripe and get an emailed receipt.</p>
+          <p className="md-muted">
+            {portal.event?.date
+              ? <>Due by <strong>{longDate(new Date(new Date(portal.event.date).getTime() - 14 * 86400000))}</strong> (14 days before your event).</>
+              : 'Due at least 14 days before your event.'}{' '}
+            You'll pay securely with Stripe and get an emailed receipt.
+          </p>
           {!signed && <p className="md-note md-note-gold">Sign the Sponsor Agreement first, then you can pay here.</p>}
           <div className="md-actions">
             <button type="button" className="md-btn md-btn-gold" disabled={!signed}
@@ -475,9 +542,17 @@ const PerkDetails = ({ portal, run }) => {
   const dirty = JSON.stringify(form) !== JSON.stringify(initial);
   const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
   const confirmed = Boolean(k.confirmedAt);
-  const submit = (e) => {
+  const [saveState, setSaveState] = useState('');
+  const submit = async (e) => {
     e.preventDefault();
-    run(() => partnerApi.save({ ...form, ...(confirmed ? {} : { confirm: true }) }), confirmed ? 'Your perk is updated.' : 'Thanks! Your perk details are confirmed.');
+    setSaveState('saving');
+    const error = await run(() => partnerApi.save({ ...form, ...(confirmed ? {} : { confirm: true }) }), confirmed ? 'Your perk is updated.' : 'Thanks! Your perk details are confirmed.', { quiet: true });
+    setSaveState(error || (confirmed ? 'saved' : ''));
+  };
+  const saveDraft = async () => {
+    setSaveState('saving');
+    const error = await run(() => partnerApi.save(form), null, { quiet: true });
+    setSaveState(error || 'later');
   };
   return (
     <section className="md-card" aria-labelledby="pp-perk-title">
@@ -521,7 +596,9 @@ const PerkDetails = ({ portal, run }) => {
         <label className="md-label" htmlFor="pp-fine">Fine print</label>
         <textarea id="pp-fine" className="md-input" rows={3} maxLength={1000} value={form.finePrint} onChange={set('finePrint')} placeholder="Minimum purchase, days or times, exclusions…" />
         <div className="md-actions">
-          <button type="submit" className="md-btn md-btn-gold" disabled={confirmed && !dirty}>{confirmed ? 'Save changes' : 'Confirm my perk'}</button>
+          <button type="submit" className="md-btn md-btn-gold" disabled={(confirmed && !dirty) || saveState === 'saving'}>{confirmed ? 'Save changes' : 'Confirm my perk'}</button>
+          {!confirmed && <button type="button" className="md-btn md-btn-outline" disabled={!dirty || saveState === 'saving'} onClick={saveDraft}>Save &amp; finish later</button>}
+          <SaveStatus state={saveState} />
         </div>
         {confirmed && <span className="md-hint">Changes show to members right away. Please give 14 days' notice before making the discount smaller.</span>}
       </form>
@@ -596,20 +673,25 @@ const PartnerPortal = () => {
   }, [needsSignIn]);
 
   // Runs a save; shows a message; refreshes the portal from the reply
-  const run = useCallback(async (fn, okText) => {
-    setNotice(null);
+  const run = useCallback(async (fn, okText, { quiet = false } = {}) => {
+    if (!quiet) setNotice(null);
     try {
       const r = await fn();
       if (r?.portal) setData((d) => ({ ...d, portal: r.portal }));
-      if (okText) setNotice({ kind: 'ok', text: okText });
+      if (okText && !quiet) setNotice({ kind: 'ok', text: okText });
+      return null;
     } catch (err) {
       if (err instanceof SessionExpired) {
         signOutPartner();
         setSignInNote(err.message);
         setNeedsSignIn(true);
-        return;
+        return err.message;
       }
-      setNotice({ kind: 'error', text: err.message });
+      if (!quiet) {
+        setNotice({ kind: 'error', text: err.message });
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // so the message is never off-screen
+      }
+      return err.message;
     }
   }, []);
 
