@@ -98,6 +98,10 @@ const Host = () => {
   useEffect(() => {
     const type = searchParams.get('type');
     const hash = window.location.hash.replace('#', '');
+    if (hash === 'book') {
+      const t = setTimeout(() => formRef.current?.scrollIntoView({ block: 'start' }), 150);
+      return () => clearTimeout(t);
+    }
     const target = hash === 'apartments' || hash === 'companies' ? hash
       : type === 'corporate' ? 'companies' : type === 'residents' ? 'apartments' : '';
     if (!target) return;
@@ -371,7 +375,7 @@ const Host = () => {
       </section>
 
       {/* ── FORM ── */}
-      <section className="contact-form-section" aria-labelledby="host-form-heading" ref={formRef}>
+      <section className="contact-form-section host-door" id="book" aria-labelledby="host-form-heading" ref={formRef}>
         <div className="contact-form-container">
           {submitted ? (
             <div className="group-success" role="status">

@@ -59,6 +59,8 @@ function App() {
   useEffect(() => { rememberSource(search); }, [search]);
   // GFC Select™ pages have their own quiet header and footer
   const isSelect = pathname === "/select" || pathname.startsWith("/select/");
+  // Hosting pages for apartments and companies get the corporate footer (hosting number + planner sign-up)
+  const isCorporatePage = ["/host", "/corporate-team-building-atlanta", "/office-holiday-party-atlanta"].includes(pathname.replace(/\/$/, ""));
 
   return (
     <CartProvider>
@@ -137,7 +139,7 @@ function App() {
             />
           </Routes>
         </main>
-        {!isSelect && !isCheckIn && <Footer />}
+        {!isSelect && !isCheckIn && <Footer variant={isCorporatePage ? "corporate" : "default"} />}
       </div>
     </CartProvider>
   );

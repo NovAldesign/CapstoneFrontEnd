@@ -339,10 +339,14 @@ export const AdminSubscribers = () => {
   const [items, setItems] = useState(null);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
+  const [audience, setAudience] = useState('guests'); // guests | corporate
   useEffect(() => { adminApi('/subscribers').then((d) => setItems(d.items)).catch((e) => setError(e.message)); }, []);
 
+  // Corporate sign-ups (hosting pages) are kept apart from the guest list
+  const isCorp = (s) => String(s.source || '').startsWith('corporate');
   const shown = useMemo(() => (items || []).filter((s) =>
-    !search.trim() || `${s.fullName} ${s.email}`.toLowerCase().includes(search.trim().toLowerCase())), [items, search]);
+    (audience === 'corporate' ? isCorp(s) : !isCorp(s)) &&
+    (!search.trim() || `${s.fullName} ${s.email}`.toLowerCase().includes(search.trim().toLowerCase()))), [items, search, audience]);
 
   // Brevo import format: EMAIL, FIRSTNAME, LASTNAME, SMS (only for people who agreed to texts)
   const exportBrevo = () => {
@@ -352,7 +356,7 @@ export const AdminSubscribers = () => {
       const sms = s.smsOptIn && digits ? (digits.length === 10 ? `+1${digits}` : `+${digits}`) : '';
       return { EMAIL: s.email, FIRSTNAME: first || '', LASTNAME: rest.join(' '), SMS: sms };
     });
-    downloadCSV(rows, `brevo-subscribers-${new Date().toISOString().slice(0, 10)}.csv`);
+    downloadCSV(rows, `brevo-${audience === 'corporate' ? 'corporate' : 'subscribers'}-${new Date().toISOString().slice(0, 10)}.csv`);
   };
 
   if (!items) return error ? <p className="ga-note err">{error}</p> : <div className="ga-loading">Loading subscribers…</div>;
@@ -368,10 +372,14 @@ export const AdminSubscribers = () => {
       </div>
       <div className="ga-card">
         <div className="ga-card-head">
+          <select className="ga-select" style={{ maxWidth: 200 }} aria-label="Which list" value={audience} onChange={(e) => setAudience(e.target.value)}>
+            <option value="guests">Guests ({items.filter((s) => !isCorp(s)).length})</option>
+            <option value="corporate">Corporate & property ({items.filter(isCorp).length})</option>
+          </select>
           <input className="ga-input" style={{ maxWidth: 260 }} placeholder="Search" aria-label="Search subscribers" value={search} onChange={(e) => setSearch(e.target.value)} />
           <button type="button" className="ga-btn ga-btn-gold" onClick={exportBrevo}>↓ Brevo import file ({shown.length})</button>
         </div>
-        <p className="ga-small ga-muted" style={{ marginTop: -4 }}>In Brevo: Contacts → Import contacts → upload this file → list “GFC Past Guests”, with “Update existing contacts” on.</p>
+        <p className="ga-small ga-muted" style={{ marginTop: -4 }}>In Brevo: Contacts → Import contacts → upload this file → list {audience === 'corporate' ? '“GFC Corporate & Property”' : '“GFC Past Guests”'}, with “Update existing contacts” on.</p>
         <div className="ga-table-wrap">
           <table className="ga-table">
             <thead><tr><th>Name</th><th>Email</th><th>Texts</th><th>From</th><th>Joined</th></tr></thead>

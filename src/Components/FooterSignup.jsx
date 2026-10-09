@@ -3,7 +3,7 @@ import { BACKEND_URL } from '../Services/eventUtils';
 import { SMS_CONSENT_TEXT, SMS_CONSENT_VERSION } from '../content/legalContent.js';
 
 // ── Newsletter signup (saves to /api/subscribers) ──
-const FooterSignup = () => {
+const FooterSignup = ({ corporate = false }) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [smsOptIn, setSmsOptIn] = useState(false);
@@ -32,11 +32,11 @@ const FooterSignup = () => {
         body: JSON.stringify({
           fullName: fullName.trim(),
           email: email.trim(),
-          smsOptIn,
-          phoneNumber: smsOptIn ? phoneNumber.trim() : '',
+          smsOptIn: corporate ? false : smsOptIn,
+          phoneNumber: !corporate && smsOptIn ? phoneNumber.trim() : '',
           smsConsentText: smsOptIn ? SMS_CONSENT_TEXT : '',
           smsConsentVersion: smsOptIn ? SMS_CONSENT_VERSION : '',
-          source: 'footer',
+          source: corporate ? 'corporate' : 'footer',
         }),
       });
       const result = await response.json().catch(() => ({}));
@@ -62,7 +62,9 @@ const FooterSignup = () => {
         <div className="footer-signup-success-title">
           {status === 'done' ? "You're on the list! ✨" : "You're already on the list! ✨"}
         </div>
-        <p>We'll let you know first when new events drop. See you soon.</p>
+        <p>{corporate
+          ? "We'll send hosting ideas and open dates about once a month. Talk soon."
+          : "We'll let you know first when new events drop. See you soon."}</p>
       </div>
     );
   }
@@ -83,16 +85,17 @@ const FooterSignup = () => {
         <input
           id="footer-email"
           type="email"
-          placeholder="you@email.com"
+          placeholder={corporate ? 'you@company.com' : 'you@email.com'}
           autoComplete="email"
           value={email}
           onChange={(e) => { setEmail(e.target.value); setError(''); }}
         />
         <button type="submit" disabled={status === 'sending'}>
-          {status === 'sending' ? 'Joining…' : 'Join the List'}
+          {status === 'sending' ? 'Joining…' : corporate ? 'Get Hosting Updates' : 'Join the List'}
         </button>
       </div>
 
+      {!corporate && (
       <label className="footer-signup-sms">
         <input
           type="checkbox"
@@ -101,8 +104,9 @@ const FooterSignup = () => {
         />
         <span>{SMS_CONSENT_TEXT}</span>
       </label>
+      )}
 
-      {smsOptIn && (
+      {!corporate && smsOptIn && (
         <div className="footer-signup-phone">
           <label className="sr-only" htmlFor="footer-phone">Phone number</label>
           <input
@@ -125,17 +129,31 @@ const FooterSignup = () => {
   );
 };
 
-// ── Full "Stay in the Loop" section shown at the top of the footer ──
-const FooterSignupSection = () => (
+// ── Full sign-up section shown at the top of the footer ──
+// The corporate version speaks to property managers, HR and team leads (tagged "corporate")
+const FooterSignupSection = ({ corporate = false }) => (
   <section className="footer-signup" aria-labelledby="footer-signup-title">
     <div className="footer-signup-text">
-      <div className="footer-block-label">Stay in the Loop</div>
-      <h2 id="footer-signup-title" className="footer-signup-title">Get first dibs on new events</h2>
-      <p className="footer-signup-sub">
-        Game nights, dinners, and trips for Atlanta's 30+ crowd. Hear about them before tickets sell out.
-      </p>
+      {corporate ? (
+        <>
+          <div className="footer-block-label">For Planners</div>
+          <h2 id="footer-signup-title" className="footer-signup-title">Fresh ideas for your residents and team</h2>
+          <p className="footer-signup-sub">
+            For property managers, HR and team leads. Seasonal event ideas, holiday booking dates and
+            first pick of open weekday dates, about once a month.
+          </p>
+        </>
+      ) : (
+        <>
+          <div className="footer-block-label">Stay in the Loop</div>
+          <h2 id="footer-signup-title" className="footer-signup-title">Get first dibs on new events</h2>
+          <p className="footer-signup-sub">
+            Game nights, dinners, and trips for Atlanta's 30+ crowd. Hear about them before tickets sell out.
+          </p>
+        </>
+      )}
     </div>
-    <FooterSignup />
+    <FooterSignup corporate={corporate} />
   </section>
 );
 

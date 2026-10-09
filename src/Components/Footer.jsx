@@ -77,7 +77,8 @@ const SocialLink = ({ social }) => {
   return <a {...linkProps}>{social.icon}</a>;
 };
 
-const Footer = () => {
+const Footer = ({ variant = 'default' }) => {
+  const corporate = variant === 'corporate';
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -108,7 +109,7 @@ const Footer = () => {
       <div className="footer-rule"></div>
 
       {/* Newsletter signup */}
-      <FooterSignupSection />
+      <FooterSignupSection corporate={corporate} />
 
       <div className="footer-inner">
 
@@ -126,6 +127,29 @@ const Footer = () => {
         </div>
 
         {/* Contact */}
+        {corporate ? (
+          <div className="footer-contact-block">
+            <div className="footer-block-label">Get In Touch</div>
+            <a href="tel:+14702567729" className="footer-contact-link">
+              Questions about hosting? Call or text 470-256-7729
+            </a>
+            <a href="mailto:hello@grownfolkscollective.com" className="footer-contact-link">
+              hello@grownfolkscollective.com
+            </a>
+            <a href="/host#book" className="footer-contact-link">
+              Book a Call
+            </a>
+            <a href="/celebrate" className="footer-contact-link">
+              Group &amp; Birthday Bookings
+            </a>
+            <a href="/host" className="footer-contact-link">
+              Resident &amp; Corporate Events
+            </a>
+            <a href="/perform" className="footer-contact-link">
+              Perform With Us
+            </a>
+          </div>
+        ) : (
         <div className="footer-contact-block">
           <div className="footer-block-label">Get In Touch</div>
           <a href="mailto:hello@grownfolkscollective.com" className="footer-contact-link">
@@ -146,6 +170,7 @@ const Footer = () => {
             Perform With Us
           </a>
         </div>
+        )}
 
         {/* Social */}
         <div className="footer-social-block">
