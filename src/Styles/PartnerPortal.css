@@ -1,0 +1,85 @@
+/* =============================================
+   PARTNER PORTAL — builds on MemberDashboard.css
+   ============================================= */
+.pp-status { margin-bottom: 24px; padding: 22px 20px; }
+
+/* Status steps */
+.pp-steps { list-style: none; margin: 0; padding: 0; display: flex; gap: 0; counter-reset: s; }
+.pp-step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; text-align: center; min-width: 0; }
+.pp-step::before {
+  content: ""; position: absolute; top: 15px; left: calc(-50% + 16px); right: calc(50% + 16px);
+  height: 2px; background: #E8E2D6;
+}
+.pp-step:first-child::before { display: none; }
+.pp-step.done::before, .pp-step.current::before { background: #C5A059; }
+.pp-step-dot {
+  width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.85rem; background: #fff; border: 2px solid #E8E2D6; color: #6b6b6b; position: relative; z-index: 1;
+}
+.pp-step.done .pp-step-dot { background: #C5A059; border-color: #C5A059; color: #002147; }
+.pp-step.current .pp-step-dot { border-color: #002147; color: #002147; box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.25); }
+.pp-step-label { font-size: 0.75rem; font-weight: 600; color: #6b6b6b; line-height: 1.25; }
+.pp-step.done .pp-step-label, .pp-step.current .pp-step-label { color: #002147; }
+@media (max-width: 520px) {
+  .pp-step-label { font-size: 0.66rem; }
+  .pp-step-dot { width: 28px; height: 28px; font-size: 0.75rem; }
+  .pp-step::before { top: 13px; }
+}
+
+/* Checklist */
+.pp-count { font-size: 0.8rem; font-weight: 700; color: #8a6d2f; white-space: nowrap; }
+.pp-bar { height: 8px; background: #F3EEE4; border-radius: 4px; overflow: hidden; margin-bottom: 16px; }
+.pp-bar span { display: block; height: 100%; background: #C5A059; transition: width 0.3s ease; }
+.pp-checklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.pp-checklist li { display: flex; gap: 10px; align-items: flex-start; font-size: 0.92rem; line-height: 1.4; }
+.pp-checklist li.done { color: #6b6b6b; }
+.pp-checklist li.done > span:nth-child(2) { text-decoration: line-through; text-decoration-color: rgba(0,0,0,0.25); }
+.pp-check {
+  flex: 0 0 20px; width: 20px; height: 20px; border: 2px solid #C5A059; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: #002147;
+}
+.pp-checklist li.done .pp-check { background: #C5A059; }
+
+/* Uploads */
+.pp-upload { display: flex; gap: 16px; align-items: center; margin-bottom: 18px; }
+.pp-upload-preview {
+  flex: 0 0 auto; background: #F6F1E7; border: 1px dashed #D9CDB4; display: flex; align-items: center; justify-content: center;
+  overflow: hidden; font-size: 0.72rem; text-align: center; padding: 4px;
+}
+.pp-upload-preview.square { width: 88px; height: 88px; }
+.pp-upload-preview.wide { width: 132px; height: 88px; }
+.pp-upload-preview img { width: 100%; height: 100%; object-fit: contain; }
+.pp-upload-preview.wide img { object-fit: cover; }
+.pp-upload-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.pp-upload-body .md-label { margin: 0; }
+.pp-upload-actions { display: flex; gap: 12px; align-items: center; margin-top: 4px; flex-wrap: wrap; }
+.pp-file-btn { position: relative; cursor: pointer; }
+.pp-file-btn input, .pp-photo-add input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+.pp-file-btn:focus-within, .pp-photo-add:focus-within { outline: 2px solid #002147; outline-offset: 2px; }
+
+.pp-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; margin-top: 8px; }
+.pp-photo { position: relative; aspect-ratio: 1; background: #F6F1E7; overflow: hidden; }
+.pp-photo img { width: 100%; height: 100%; object-fit: cover; }
+.pp-photo-x {
+  position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; border-radius: 50%; border: 0;
+  background: rgba(0, 33, 71, 0.8); color: #fff; font-size: 1rem; line-height: 1; cursor: pointer;
+}
+.pp-photo-add {
+  display: flex; align-items: center; justify-content: center; border: 1px dashed #C5A059; color: #8a6d2f;
+  font-size: 0.8rem; font-weight: 700; cursor: pointer; text-align: center; padding: 6px;
+}
+
+/* Forms + misc */
+.pp-over { color: #9b2c2c; font-weight: 700; }
+.pp-agree { display: flex; gap: 10px; align-items: flex-start; font-size: 0.88rem; line-height: 1.45; margin-top: 12px; cursor: pointer; }
+.pp-agree input { margin-top: 3px; accent-color: #002147; }
+.pp-signed { color: #14482a; font-weight: 600; margin: 0; }
+.pp-signed a { font-weight: 600; }
+.pp-amount { font-family: 'Playfair Display', serif; font-size: 2.3rem; color: #002147; line-height: 1; }
+.pp-amount-sub { margin: 6px 0 14px; }
+.pp-pre { white-space: pre-wrap; }
+.pp-error { color: #9b2c2c; font-weight: 600; font-size: 0.88rem; margin: 6px 0 0; }
+.pp-signin { max-width: 460px; text-align: left; }
+.pp-signin .md-eyebrow { color: #8a6d2f; }
+.pp-signin-foot { margin-top: 18px; font-size: 0.85rem; }
+.pp-switch { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; }

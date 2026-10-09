@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { BACKEND_URL } from '../../Services/eventUtils';
 import { adminApi, downloadCSV, fmtDate, timeAgo } from '../../Services/adminApi';
+import { PortalProgress, loadPartnerOverview, sendPortalLink } from './AdminPartners.jsx';
 
 // Partnerships, Member Perks, private events, group bookings, messages, subscribers.
 // One card per request: who, what, status, private notes, and quick reply links.
@@ -213,7 +214,7 @@ export const AdminInboxList = ({ kind }) => {
 };
 
 // Member Perks use their own endpoints (/api/discount-partners/admin)
-const PERK_STATUSES = ['pending', 'approved', 'paused', 'declined'];
+const PERK_STATUSES = ['pending', 'approved', 'paused', 'ended', 'declined'];
 const perkApi = async (path = '', opts = {}) => {
   const res = await fetch(`${BACKEND_URL}/api/discount-partners/admin${path}`, {
     method: opts.method || 'GET',
@@ -273,7 +274,22 @@ const PerkLogo = ({ perk, onSave }) => {
 export const AdminPerks = () => {
   const [items, setItems] = useState(null);
   const [error, setError] = useState('');
-  useEffect(() => { perkApi().then(setItems).catch((e) => setError(e.message)); }, []);
+  const [portals, setPortals] = useState(new Map()); // partner portal progress by perk id
+  const [sentTo, setSentTo] = useState('');
+  useEffect(() => {
+    perkApi().then(setItems).catch((e) => setError(e.message));
+    loadPartnerOverview().then((o) => setPortals(new Map(o.perks.map((r) => [String(r._id), r])))).catch(() => {});
+  }, []);
+  // Approve (if pending) and email the portal link
+  const invite = async (d) => {
+    setSentTo('');
+    try {
+      const r = await sendPortalLink('perk', d._id);
+      setPortals((m) => new Map(m).set(String(d._id), r.item));
+      setItems((list) => list.map((x) => (x._id === d._id ? { ...x, status: r.item.status } : x)));
+      setSentTo(r.message);
+    } catch (e) { setError(e.message); }
+  };
   const keyOf = useCallback((d) => `${d.businessName} ${d.offer} ${d.contactName} ${d.category}`, []);
   const f = useFilter(items, keyOf);
 
@@ -288,7 +304,8 @@ export const AdminPerks = () => {
   return (
     <>
       {error && <p className="ga-note err">{error}</p>}
-      <p className="ga-subtitle" style={{ marginTop: -12, marginBottom: 16 }}>Approved perks show on the Membership page right away, with their logo. Pause one to hide it.</p>
+      <p className="ga-subtitle" style={{ marginTop: -12, marginBottom: 16 }}>Approved perks show on the Membership page right away, with their logo. Approving also emails the business their partner portal link, where they add a logo and photo, confirm the details, sign, and can pause or end the perk. Pause one to hide it.</p>
+      {sentTo && <p className="ga-note" role="status">{sentTo}</p>}
       <Toolbar {...f} openCount={items.filter((d) => d.status === 'pending').length} total={items.length} />
       {f.shown.length === 0 ? <div className="ga-card ga-empty">{f.filter === 'open' ? 'No perks waiting for approval.' : 'No Member Perks yet.'}</div> : (
         <div className="ga-stack" style={{ gap: 12 }}>
@@ -306,9 +323,12 @@ export const AdminPerks = () => {
                     {[d.category, d.where === 'both' ? 'In store & online' : label(d.where), d.redeem === 'promo-code' ? `Code ${d.promoCode}` : label(d.redeem)].filter(Boolean).join(' · ')}
                     {' · '}{timeAgo(d.createdAt)}
                   </div>
+                  <PortalProgress row={portals.get(String(d._id))} compact />
                 </div>
                 <div className="ga-row" style={{ gap: 6 }}>
-                  {d.status !== 'approved' && <button type="button" className="ga-btn ga-btn-sm ga-btn-navy" onClick={() => update(d._id, { status: 'approved' })}>Approve</button>}
+                  {d.status === 'pending' && <button type="button" className="ga-btn ga-btn-sm ga-btn-navy" onClick={() => invite(d)}>Approve &amp; send portal link</button>}
+                  {['approved', 'paused'].includes(d.status) && <button type="button" className="ga-btn ga-btn-sm" onClick={() => invite(d)}>{portals.get(String(d._id))?.portal.invitedAt ? 'Resend portal link' : 'Send portal link'}</button>}
+                  {['paused', 'ended', 'declined'].includes(d.status) && <button type="button" className="ga-btn ga-btn-sm ga-btn-navy" onClick={() => update(d._id, { status: 'approved' })}>Approve</button>}
                   {d.status === 'approved' && <button type="button" className="ga-btn ga-btn-sm" onClick={() => update(d._id, { status: 'paused' })}>Pause</button>}
                   {d.status === 'pending' && <button type="button" className="ga-btn ga-btn-sm ga-btn-danger" onClick={() => update(d._id, { status: 'declined' })}>Decline</button>}
                 </div>

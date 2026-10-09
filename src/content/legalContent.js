@@ -499,6 +499,118 @@ export const LEGAL_PAGES = {
       },
     ],
   },
+  sponsor: {
+    path: "/sponsor-agreement",
+    title: "Sponsor Agreement",
+    description: `The agreement for brands that sponsor ${brand} events.`,
+    intro: `This agreement is between ${who} and the business that sponsors a GFC event ("you"). It covers the sponsorship level, event, and amount shown in your partner portal. You accept it when you type your name and sign in your partner portal.`,
+    sections: [
+      {
+        h: "1. What GFC provides",
+        list: [
+          "The benefits listed for your sponsorship level on our Partnerships page, for the event shown in your portal.",
+          "Event-day details in your portal: date, address, load-in time, and a GFC contact.",
+          "After the event, your recap and any newsletter feature, shared in your portal.",
+          "Gold sponsors get category exclusivity for their event: we won't accept another sponsor in the same product category for that event.",
+        ],
+      },
+      {
+        h: "2. What you provide",
+        list: [
+          "Your logo, a short brand description, and links, through your portal.",
+          "For Silver and Gold: an on-site contact, your table and signage needs, and your sampling or activation plan, at least 7 days before the event.",
+          "Your own table display, signage, products, and samples, unless we agree otherwise in writing.",
+          "Arrive at your load-in time, set up only in the space we assign, and leave it clean.",
+        ],
+      },
+      {
+        h: "3. Payment",
+        list: [
+          "Your sponsorship amount is shown in your portal. Payment is due at least 7 days before the event.",
+          "If payment isn't in by then, we may release your placement.",
+        ],
+      },
+      {
+        h: "4. Changes and cancellation",
+        list: [
+          "If you cancel 14 or more days before the event, we refund your payment minus card processing fees.",
+          "If you cancel less than 14 days before the event, your payment isn't refundable, but we'll move it once to another GFC event within 6 months.",
+          "If GFC cancels or moves the event, we move your sponsorship to another event or refund you in full, your choice.",
+        ],
+      },
+      {
+        h: "5. Event rules",
+        list: [
+          "GFC events are alcohol-free. Don't bring, serve, or sample alcohol, or products made to look like it.",
+          "If you hand out food or drink samples, you're responsible for food safety, labeling, and any permits.",
+          "Keep it welcoming: no pushy selling, and only collect guests' contact details when they choose to give them to you.",
+          "Follow our Code of Conduct, the venue's rules, and instructions from GFC and venue staff.",
+        ],
+      },
+      {
+        h: "6. Using each other's names and logos",
+        list: [
+          "You let GFC use your business name, logo, description, links, and photos from the event to promote the event and your partnership, on our website, emails, and social media.",
+          "GFC lets you say you sponsored the event and use the GFC name and logo for that purpose. Please send us anything that uses our logo before you post it.",
+          "Each of us keeps ownership of our own names, logos, and content.",
+        ],
+      },
+      {
+        h: "7. Responsibility",
+        p: [
+          `You are responsible for your products, samples, staff, and equipment. To the fullest extent allowed by ${state} law, you release ${legalName}, its owners, team members, hosts, volunteers, venues, and partners from claims arising from your participation, except claims caused by gross negligence or willful misconduct. ${legalName}'s total liability to you is limited to the amount you paid for the sponsorship. We are independent businesses; this agreement doesn't make either of us the other's employee, partner, or agent.`,
+        ],
+      },
+      {
+        h: "8. Agreement",
+        p: [
+          `By typing your name and signing in your partner portal, you confirm you're authorized to sign for your business and you accept this Sponsor Agreement and the Code of Conduct. Questions? Email partners@grownfolkscollective.com.`,
+        ],
+      },
+    ],
+  },
+  perks: {
+    path: "/perk-terms",
+    title: "Member Perk Terms",
+    description: `The terms for businesses that offer a discount to ${brand} members.`,
+    intro: `These terms are between ${who} and the business that offers a Member Perk ("you"). They cover the discount shown in your partner portal. You accept them when you type your name and sign in your partner portal.`,
+    sections: [
+      {
+        h: "1. Your perk",
+        list: [
+          "You'll honor the discount, redemption steps, and fine print shown in your portal for active GFC members while your perk is live.",
+          "Members prove membership the way your portal says (for example, by showing their member dashboard or using a promo code).",
+          "There's no fee to list a Member Perk, and GFC doesn't take a share of your sales.",
+        ],
+      },
+      {
+        h: "2. Changes, pauses, and ending",
+        list: [
+          "You can update, pause, or end your perk anytime in your portal. Please give members 14 days' notice before ending it or making it less generous, so anyone who planned a visit is covered.",
+          "GFC may pause or remove a perk at any time, for example if members report it isn't being honored.",
+        ],
+      },
+      {
+        h: "3. How GFC shows your perk",
+        list: [
+          "You let GFC show your business name, logo, photo, offer, and links on our Membership page, the member dashboard, emails, and social media.",
+          "Each of us keeps ownership of our own names, logos, and content.",
+        ],
+      },
+      {
+        h: "4. Responsibility",
+        p: [
+          `You are responsible for your products, services, and premises, and for your dealings with members. GFC is not a party to your sales. To the fullest extent allowed by ${state} law, ${legalName} isn't liable for claims arising from your products, services, or premises. We are independent businesses; these terms don't make either of us the other's employee, partner, or agent.`,
+        ],
+      },
+      {
+        h: "5. Agreement",
+        p: [
+          `By typing your name and signing in your partner portal, you confirm you're authorized to offer this discount for your business and you accept these Member Perk Terms. Questions? Email partners@grownfolkscollective.com.`,
+        ],
+      },
+    ],
+  },
   accessibility: {
     path: "/accessibility",
     title: "Accessibility Statement",
@@ -545,3 +657,6 @@ export const LEGAL_FOOTER_LINKS = [
 
 // Pages that exist but aren't in the footer (linked from their forms)
 export const PERFORMER_AGREEMENT_VERSION = "2026-10-02";
+// MUST match SPONSOR_TERMS_VERSION / PERK_TERMS_VERSION in the backend utilities/partnerPortal.js
+export const SPONSOR_AGREEMENT_VERSION = "2026-10-09";
+export const PERK_TERMS_VERSION = "2026-10-09";

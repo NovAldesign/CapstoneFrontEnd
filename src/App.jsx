@@ -39,6 +39,7 @@ import Host from "./Pages/Host.jsx";
 import HostLanding from "./Pages/HostLanding.jsx";
 import Login from "./Pages/Login.jsx";
 import MemberLoginLink from "./Pages/MemberLoginLink.jsx";
+import PartnerPortal, { PartnerLoginLink } from "./Pages/PartnerPortal.jsx";
 import MemberDashboard from "./Pages/MemberDashboard.jsx";
 import ForgotPassword from "./Pages/ForgotPassword.jsx";
 import Select from "./Pages/Select.jsx";
@@ -113,10 +114,15 @@ function App() {
             <Route path="/photo-policy" element={<Legal page="photos" />} />
             <Route path="/accessibility" element={<Legal page="accessibility" />} />
             <Route path="/performer-agreement" element={<Legal page="performer" />} />
+            <Route path="/sponsor-agreement" element={<Legal page="sponsor" />} />
+            <Route path="/perk-terms" element={<Legal page="perks" />} />
           
 
             <Route path="/login" element={<Login />} />
             <Route path="/member/login/:token" element={<MemberLoginLink />} />
+            <Route path="/partner" element={<PartnerPortal />} />
+            <Route path="/partner/login/:token" element={<PartnerLoginLink />} />
+            <Route path="/partner/vault" element={<Navigate to="/partner" replace />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
 

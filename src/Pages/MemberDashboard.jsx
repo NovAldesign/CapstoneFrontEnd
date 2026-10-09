@@ -5,7 +5,6 @@ import memberApi, { SessionExpired } from '../Services/memberApi';
 import '../Styles/MemberDashboard.css';
 
 // Paying with credit at checkout is the next build. Flip this to true when it ships.
-const CREDIT_AT_CHECKOUT = false;
 const TEAM_EMAIL = 'community@grownfolkscollective.com';
 
 const money = (cents = 0) => {
@@ -69,10 +68,10 @@ const CreditCard = ({ member, credit }) => {
         Food events get your member discount instead. Unused credit rolls over one month, then expires,
         and your oldest credit is always used first.
       </p>
-      {!CREDIT_AT_CHECKOUT && credit.balanceCents > 0 && (
+      {credit.balanceCents > 0 && (
         <p className="md-note md-note-gold">
-          Paying with credit at checkout is coming soon. Until then, email{' '}
-          <a href={`mailto:${TEAM_EMAIL}?subject=Use my event credit`}>{TEAM_EMAIL}</a> with the event you want, and we'll book it with your credit.
+          Your credit and member price come off automatically in your bag when you buy tickets on our site while
+          logged in. <a href="/events">Find an event</a>
         </p>
       )}
 

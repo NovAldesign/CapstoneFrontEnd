@@ -13,7 +13,7 @@ const Login = () => {
   const [loading, setLoading]         = useState(false);
   const navigate                      = useNavigate();
 
-  // Members log in with an emailed link; staff and partners use a password
+  // Members log in with an emailed link; staff use a password (partners use /partner)
   const [staffMode, setStaffMode]     = useState(false);
   const [memberEmail, setMemberEmail] = useState('');
   const [linkSent, setLinkSent]       = useState('');
@@ -64,7 +64,7 @@ const Login = () => {
       if (role === 'admin' || role === 'moderator') {
         navigate('/admin/dashboard');
       } else if (role === 'partner') {
-        navigate('/partner/vault');
+        navigate('/partner');
       } else {
         navigate('/member/dashboard');
       }
@@ -117,7 +117,7 @@ const Login = () => {
         <div className="login-card">
 
           <div className="login-header">
-            <span className="login-card-eyebrow">{staffMode ? 'Staff & Partners' : 'Member Login'}</span>
+            <span className="login-card-eyebrow">{staffMode ? 'Staff' : 'Member Login'}</span>
             <h2 className="playfair login-card-title">Welcome back</h2>
             <p className="login-card-sub">
               {staffMode
@@ -269,7 +269,7 @@ const Login = () => {
               className="login-access-toggle-btn"
               onClick={() => { setStaffMode((m) => !m); setError(''); setLinkSent(''); }}
             >
-              {staffMode ? '← Member login' : 'Staff or partner? Log in with a password'}
+              {staffMode ? '← Member login' : 'Staff? Log in with a password'}
             </button>
           </div>
 
@@ -285,9 +285,9 @@ const Login = () => {
               </Link>
             </p>
             <p>
-              Interested in partnering?{' '}
-              <Link to="/partnerships" className="login-footer-link">
-                View partnership options.
+              Sponsor or Member Perks partner?{' '}
+              <Link to="/partner" className="login-footer-link">
+                Open your partner portal.
               </Link>
             </p>
           </div>

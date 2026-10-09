@@ -7,6 +7,7 @@ import AdminToday from "../Components/admin/AdminToday.jsx";
 import AdminShowcases from "../Components/admin/AdminShowcases.jsx";
 import AdminCodes from "../Components/admin/AdminCodes.jsx";
 import { AdminInboxList, AdminPerks, AdminSubscribers } from "../Components/admin/AdminLists.jsx";
+import AdminPartners from "../Components/admin/AdminPartners.jsx";
 import AdminGuests from "../Components/admin/AdminGuests.jsx";
 import AdminReports from "../Components/admin/AdminReports.jsx";
 import AdminGifts from "../Components/admin/AdminGifts.jsx";
@@ -317,7 +318,7 @@ const AdminDashboard = () => {
     guests: ['Guest lists & check-in', 'Every ticket from every platform, and the door link for event day.'],
     gifts: ['Gifts & merch', 'Holiday Passes, gift cards and merch pre-orders.'],
     reports: ['Reports', 'Tickets, revenue, who showed up and where tickets came from.'],
-    partners: ['Partners', 'Sponsor and partnership inquiries.'],
+    partners: ['Partners', 'Sponsor inquiries and partner portal progress.'],
     perks: ['Member Perks', 'Businesses offering discounts to members.'],
     private: ['Private events', 'Hosting requests from the /host page.'],
     groups: ['Group bookings', 'Birthdays, celebrations and groups.'],
@@ -374,7 +375,8 @@ const AdminDashboard = () => {
       {activeTab === 'codes' && <AdminCodes events={events} />}
       {activeTab === 'gifts' && <AdminGifts />}
       {activeTab === 'perks' && <AdminPerks />}
-      {['partners', 'private', 'groups', 'messages'].includes(activeTab) && <AdminInboxList kind={activeTab} />}
+      {activeTab === 'partners' && <AdminPartners />}
+      {['private', 'groups', 'messages'].includes(activeTab) && <AdminInboxList kind={activeTab} />}
       {activeTab === 'subscribers' && <AdminSubscribers />}
       {activeTab === 'reviews' && <AdminReviews />}
       {activeTab === 'select' && <AdminSelect />}
