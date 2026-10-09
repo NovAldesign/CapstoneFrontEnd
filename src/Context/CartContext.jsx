@@ -3,6 +3,7 @@ import { currentSource } from "../Services/ticketSources.js";
 import { Link } from "react-router-dom";
 import { BACKEND_URL, parseCleanPrice, formatMoney } from "../Services/eventUtils";
 import { LEGAL } from "../content/legalContent.js";
+import { memberPriceCents, creditCoversEvent, memberToken, isMemberTier } from "../Services/memberPricing.js";
 import "../Styles/EventListing.css";
 
 const CartContext = createContext(null);
@@ -22,7 +23,8 @@ const loadSaved = () => {
     // Old format was a plain array with no timestamp — start fresh
     if (!saved || !Array.isArray(saved.items)) return [];
     if (Date.now() - (saved.savedAt || 0) > MAX_AGE_MS) return [];
-    return saved.items;
+    // Member ticket types aren't sold on the website (member price comes off automatically)
+    return saved.items.filter((i) => !/member/i.test(i.ticketTypeName || ""));
   } catch {
     return [];
   }
@@ -85,6 +87,25 @@ export const CartProvider = ({ children }) => {
   const [giftCode, setGiftCode] = useState("");
   const [giftInfo, setGiftInfo] = useState(null);
   const [giftError, setGiftError] = useState("");
+  // Logged-in member: member price + event credit (null for guests)
+  const [memberWallet, setMemberWallet] = useState(null);
+  const [useMemberCredit, setUseMemberCredit] = useState(true);
+
+  // Load the member's price and credit balance (again each time the bag opens)
+  const refreshWallet = useCallback(() => {
+    const token = memberToken();
+    if (!token) {
+      setMemberWallet(null);
+      return;
+    }
+    fetch(`${BACKEND_URL}/api/member/wallet`, { headers: { Authorization: `Bearer ${token}` } })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => setMemberWallet(data))
+      .catch(() => setMemberWallet(null));
+  }, []);
+  useEffect(() => {
+    refreshWallet();
+  }, [refreshWallet, isCartOpen]);
 
   // Remember the code for this visitor
   useEffect(() => {
@@ -188,6 +209,7 @@ export const CartProvider = ({ children }) => {
 
   // Add one ticket (never edits existing items in place)
   const addToCart = (event, ticketType) => {
+    if (isMemberTier(ticketType)) return; // member price comes off automatically in the bag
     const eventId = String(event._id || event.eventbriteId);
     const ticketTypeId = String(ticketType._id || ticketType.id || "standard-pass");
 
@@ -250,15 +272,19 @@ export const CartProvider = ({ children }) => {
   const totals = useMemo(() => {
     const uniqueEventCount = new Set(cartItems.map((i) => i.eventId)).size;
     const { rate, label } = getDiscount(uniqueEventCount);
-    const subtotalInCents = cartItems.reduce((sum, i) => sum + i.priceInCents * i.quantity, 0);
+    const fullSubtotalInCents = cartItems.reduce((sum, i) => sum + i.priceInCents * i.quantity, 0);
+    // Member price first (same as the backend), then codes, bundle, credit, gift card
+    const price = (i) => memberPriceCents(memberWallet, i.priceInCents, i.eventName);
+    const memberSavingsInCents = cartItems.reduce((sum, i) => sum + (i.priceInCents - price(i)) * i.quantity, 0);
+    const subtotalInCents = fullSubtotalInCents - memberSavingsInCents;
     let afterCodeInCents;
     if (promoInfo?.oncePerOrder) {
       // code comes off ONE ticket (the first one it works for)
       const first = cartItems.find(codeEligible);
-      afterCodeInCents = subtotalInCents - (first ? first.priceInCents - applyCode(promoInfo, first.priceInCents) : 0);
+      afterCodeInCents = subtotalInCents - (first ? price(first) - applyCode(promoInfo, price(first)) : 0);
     } else {
       afterCodeInCents = cartItems.reduce(
-        (sum, i) => sum + (codeEligible(i) ? applyCode(promoInfo, i.priceInCents) : i.priceInCents) * i.quantity,
+        (sum, i) => sum + (codeEligible(i) ? applyCode(promoInfo, price(i)) : price(i)) * i.quantity,
         0
       );
     }
@@ -271,17 +297,33 @@ export const CartProvider = ({ children }) => {
     const onceItem = promoInfo?.oncePerOrder ? cartItems.find(codeEligible) : null;
     cartItems.forEach((i) => {
       for (let q = 0; q < i.quantity; q++) {
-        let cents = i.priceInCents;
+        let cents = price(i);
         if (codeEligible(i)) {
           if (!promoInfo.oncePerOrder) cents = applyCode(promoInfo, cents);
           else if (i === onceItem && q === 0) cents = applyCode(promoInfo, cents);
         }
-        units.push({ cents: Math.round(cents * (1 - rate)), eventId: i.eventId });
+        units.push({ cents: Math.round(cents * (1 - rate)), eventId: i.eventId, name: i.eventName });
       }
     });
-    const { creditCents: giftCreditInCents, uses: passUses } = cardCredit(giftInfo, units);
-    const totalInCents = Math.max(0, beforeCardInCents - giftCreditInCents);
+    // Member event credit (eligible events only), taken off those tickets before the gift card
+    const creditBalanceInCents = memberWallet?.balanceCents || 0;
+    const creditEligibleInCents = units.filter((u) => creditCoversEvent(u.name)).reduce((s, u) => s + u.cents, 0);
+    const memberCreditInCents = useMemberCredit ? Math.min(creditBalanceInCents, creditEligibleInCents) : 0;
+    let creditLeft = memberCreditInCents;
+    units.forEach((u) => {
+      if (creditLeft <= 0 || !creditCoversEvent(u.name)) return;
+      const take = Math.min(creditLeft, u.cents);
+      u.cents -= take;
+      creditLeft -= take;
+    });
+    const { creditCents: giftCreditInCents, uses: passUses } = cardCredit(giftInfo, units.filter((u) => u.cents > 0));
+    const totalInCents = Math.max(0, beforeCardInCents - memberCreditInCents - giftCreditInCents);
     return {
+      fullSubtotalInCents,
+      memberSavingsInCents,
+      memberCreditInCents,
+      creditBalanceInCents,
+      creditEligibleInCents,
       giftCreditInCents,
       passUses,
       uniqueEventCount,
@@ -294,7 +336,7 @@ export const CartProvider = ({ children }) => {
       itemCount: cartItems.reduce((sum, i) => sum + i.quantity, 0),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cartItems, promoInfo, giftInfo]);
+  }, [cartItems, promoInfo, giftInfo, memberWallet, useMemberCredit]);
 
   // Send the bag to Stripe (backend re-checks every price and ticket)
   const checkout = async ({ agreedToTerms = false } = {}) => {
@@ -310,12 +352,14 @@ export const CartProvider = ({ children }) => {
     }
     setCheckoutLoading(true);
     try {
+      const token = memberToken();
       const res = await fetch(`${BACKEND_URL}/api/events/checkout`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(token && { Authorization: `Bearer ${token}` }) },
         body: JSON.stringify({
+          useMemberCredit: token ? useMemberCredit : undefined,
           customerEmail: needsEmail ? codeEmail.trim() : undefined,
-          cartItems,
+          cartItems: cartItems.filter((i) => !isMemberTier({ name: i.ticketTypeName })),
           promoCode: promoApplies ? promoInfo.code : undefined,
           giftCode: giftInfo && totals.giftCreditInCents > 0 ? giftInfo.code : undefined,
           agreedToTerms: true,
@@ -361,6 +405,10 @@ export const CartProvider = ({ children }) => {
     giftInfo,
     giftError,
     removeGiftCode,
+    memberWallet,
+    useMemberCredit,
+    setUseMemberCredit,
+    memberPrice: (cents, eventName) => memberPriceCents(memberWallet, cents, eventName),
     ...totals,
   };
 
@@ -391,6 +439,8 @@ const CartDrawer = () => {
     applyPromoCode, removePromoCode, codeSavingsInCents,
     codeEmail, setCodeEmail,
     giftCode, giftInfo, giftError, removeGiftCode, giftCreditInCents, passUses,
+    memberWallet, useMemberCredit, setUseMemberCredit, memberPrice,
+    fullSubtotalInCents, memberSavingsInCents, memberCreditInCents, creditBalanceInCents, creditEligibleInCents,
   } = useCart();
   const [codeInput, setCodeInput] = useState("");
   const [showCodeBox, setShowCodeBox] = useState(false);
@@ -473,7 +523,10 @@ const CartDrawer = () => {
                         </button>
                       </div>
                       <span className="gfc-bag-item-price">
-                        {formatMoney((item.priceInCents * item.quantity) / 100)}
+                        {memberPrice(item.priceInCents, item.eventName) < item.priceInCents && (
+                          <s className="gfc-bag-item-was">{formatMoney((item.priceInCents * item.quantity) / 100)}</s>
+                        )}
+                        {formatMoney((memberPrice(item.priceInCents, item.eventName) * item.quantity) / 100)}
                       </span>
                     </div>
                     <button
@@ -573,10 +626,49 @@ const CartDrawer = () => {
                   )}
                 </div>
 
+                {/* Member price + event credit */}
+                {memberWallet ? (
+                  <div className="gfc-member-box">
+                    <div className="gfc-member-box-head">
+                      {memberWallet.tier === "Founding" ? "Founding Member" : "Social Pass"} · {memberWallet.firstName}
+                    </div>
+                    {!memberWallet.memberPricing && (
+                      <p className="gfc-member-box-note">
+                        Member pricing is off while your membership is {memberWallet.status}. You can still use your event credit.
+                      </p>
+                    )}
+                    {creditBalanceInCents > 0 && (
+                      <label className="gfc-member-credit-toggle">
+                        <input
+                          type="checkbox"
+                          checked={useMemberCredit}
+                          onChange={(e) => setUseMemberCredit(e.target.checked)}
+                        />
+                        <span>Use my event credit (${(creditBalanceInCents / 100).toFixed(2)} available)</span>
+                      </label>
+                    )}
+                    {creditBalanceInCents > 0 && creditEligibleInCents === 0 && (
+                      <p className="gfc-member-box-note">
+                        Event credit works on Game Night, Karaoke Bingo and Acoustic &amp; Infused tickets.
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <p className="gfc-member-box-note">
+                    Member? <Link to="/login" onClick={() => setIsCartOpen(false)}>Log in</Link> for your member price and event credit.
+                  </p>
+                )}
+
                 <div className="gfc-total-row muted">
                   <span>Subtotal</span>
-                  <span>${(subtotalInCents / 100).toFixed(2)}</span>
+                  <span>${(fullSubtotalInCents / 100).toFixed(2)}</span>
                 </div>
+                {memberSavingsInCents > 0 && (
+                  <div className="gfc-total-row savings">
+                    <span>Member pricing</span>
+                    <span>− ${(memberSavingsInCents / 100).toFixed(2)}</span>
+                  </div>
+                )}
                 {promoApplies && codeSavingsInCents > 0 && (
                   <div className="gfc-total-row savings">
                     <span>Code {promoCode}</span>
@@ -587,6 +679,12 @@ const CartDrawer = () => {
                   <div className="gfc-total-row savings">
                     <span>Discount ({Math.round(discountRate * 100)}%)</span>
                     <span>− ${(discountInCents / 100).toFixed(2)}</span>
+                  </div>
+                )}
+                {memberCreditInCents > 0 && (
+                  <div className="gfc-total-row savings">
+                    <span>Member event credit</span>
+                    <span>− ${(memberCreditInCents / 100).toFixed(2)}</span>
                   </div>
                 )}
                 {giftCreditInCents > 0 && (

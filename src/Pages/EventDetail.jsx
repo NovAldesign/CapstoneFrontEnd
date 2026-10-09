@@ -43,7 +43,7 @@ const calendarUrl = (event) => {
 
 const EventDetail = () => {
   const { slug } = useParams();
-  const { addToCart } = useCart();
+  const { addToCart, memberWallet, memberPrice } = useCart();
   const [event, setEvent] = useState(null);
   const [moreEvents, setMoreEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -317,7 +317,7 @@ const EventDetail = () => {
 
           {!past && (
             <ul className="gfc-tier-list">
-              {visibleTiers.map((tier, i) => {
+              {visibleTiers.filter((t) => !/member/i.test(t.name || "")).map((tier, i) => {
                 const status = getTierStatus(tier);
                 const left = getTierRemaining(tier);
                 const endsAt = tier.salesEnd || tier.sales_end;
@@ -329,6 +329,11 @@ const EventDetail = () => {
                       <span className="gfc-tier-price">
                         {parseCleanPrice(tier) === 0 ? "Free" : formatMoney(parseCleanPrice(tier))}
                       </span>
+                      {memberWallet?.memberPricing && parseCleanPrice(tier) > 0 && (
+                        <span className="gfc-tier-member">
+                          Your member price: {formatMoney(memberPrice(Math.round(parseCleanPrice(tier) * 100), event.title) / 100)}
+                        </span>
+                      )}
                       {status === "available" && endsAt && (
                         <span className="gfc-tier-note">Available until {formatShortDate(endsAt)}</span>
                       )}
@@ -357,9 +362,19 @@ const EventDetail = () => {
             Book 2 different events and save 5%, or 3+ different events and save 10%.{" "}
             <Link to="/events">Browse events</Link>
           </p>
-          <p className="gfc-ticket-perk">
-            Members get priority access and member pricing. <Link to="/membership">Learn more</Link>
-          </p>
+          {memberWallet ? (
+            <p className="gfc-ticket-perk">
+              {memberWallet.memberPricing ? "Your member price comes off in your bag" : "You're logged in as a member"}
+              {memberWallet.balanceCents > 0
+                ? `, and you have ${formatMoney(memberWallet.balanceCents / 100)} in event credit to use.`
+                : "."}
+            </p>
+          ) : (
+            <p className="gfc-ticket-perk">
+              Members save on every ticket and get monthly event credit.{" "}
+              <Link to="/login">Log in</Link> or <Link to="/membership">learn more</Link>
+            </p>
+          )}
 
           <button className="gfc-btn-outline full" onClick={handleShare}>
             {copied ? "Link copied!" : "Share this event"}

@@ -340,6 +340,25 @@
 .gfc-total-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
 .gfc-total-row.muted { color: #777; }
 .gfc-total-row.savings { color: var(--gfc-green); font-weight: 600; font-size: 13px; }
+.gfc-bag-item-was { color: var(--gfc-muted); font-weight: 400; margin-right: 6px; font-size: 13px; }
+
+/* Member price + event credit in the bag */
+.gfc-member-box {
+  border: 1px solid var(--gfc-gold);
+  background: var(--gfc-gold-soft);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 0 0 12px;
+  font-size: 13px;
+}
+.gfc-member-box-head { font-weight: 700; color: var(--gfc-navy); margin-bottom: 4px; }
+.gfc-member-box-note { font-size: 12px; color: var(--gfc-muted); margin: 4px 0 10px; line-height: 1.4; }
+.gfc-member-box-note a { color: var(--gfc-navy); font-weight: 600; }
+.gfc-member-credit-toggle { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; color: var(--gfc-ink); }
+.gfc-member-credit-toggle input { margin-top: 2px; accent-color: var(--gfc-navy); }
+
+/* Member price on the event page */
+.gfc-tier-member { font-size: 12px; font-weight: 600; color: var(--gfc-green); }
 .gfc-total-row.grand {
   font-size: 16px; font-weight: 700; color: var(--gfc-navy);
   border-top: 1px solid #eee; padding-top: 10px; margin: 6px 0 18px;
