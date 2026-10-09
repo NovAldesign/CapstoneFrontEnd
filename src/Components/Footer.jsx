@@ -139,15 +139,6 @@ const Footer = ({ variant = 'default' }) => {
             <a href="/host#book" className="footer-contact-link">
               Book a Call
             </a>
-            <a href="/celebrate" className="footer-contact-link">
-              Group &amp; Birthday Bookings
-            </a>
-            <a href="/host" className="footer-contact-link">
-              Resident &amp; Corporate Events
-            </a>
-            <a href="/perform" className="footer-contact-link">
-              Perform With Us
-            </a>
           </div>
         ) : (
         <div className="footer-contact-block">
