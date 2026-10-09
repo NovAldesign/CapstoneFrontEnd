@@ -10,6 +10,7 @@ import { AdminInboxList, AdminPerks, AdminSubscribers } from "../Components/admi
 import AdminGuests from "../Components/admin/AdminGuests.jsx";
 import AdminReports from "../Components/admin/AdminReports.jsx";
 import AdminGifts from "../Components/admin/AdminGifts.jsx";
+import AdminTestMember from "../Components/admin/AdminTestMember.jsx";
 import "../Styles/Admin.css";
 import "../Styles/AdminShell.css";
 
@@ -380,6 +381,7 @@ const AdminDashboard = () => {
 
       {/* ── MEMBERS TAB ──────────────────────────────────────────────── */}
       {activeTab === 'members' && (
+        <>
         <div className="ga-grid-2" style={{ gridTemplateColumns: selectedMember ? 'minmax(0,1.6fr) minmax(0,1fr)' : '1fr' }}>
           <section className="ga-card">
             <div className="ga-card-head">
@@ -406,7 +408,8 @@ const AdminDashboard = () => {
                   {filteredMembers.map((member) => (
                     <tr key={member._id}>
                       <td><button type="button" className="ga-link" style={{ fontWeight: 600, textDecoration: 'none', color: 'var(--ga-navy)' }}
-                        onClick={() => setSelectedMember(member)}>{member.firstName} {member.lastName}</button></td>
+                        onClick={() => setSelectedMember(member)}>{member.firstName} {member.lastName}</button>
+                        {member.isTest && <span className="ga-pill amber" style={{ marginLeft: 6 }}>Test</span>}</td>
                       <td className="ga-small"><a href={`mailto:${member.email}`}>{member.email}</a></td>
                       <td>{member.tier ? <span className="ga-pill gold">{member.tier}</span> : '—'}</td>
                       <td><span className={`ga-pill ${member.status === 'active' ? 'green' : member.status === 'pending' ? 'amber' : ''}`}>
@@ -448,6 +451,8 @@ const AdminDashboard = () => {
             </section>
           )}
         </div>
+        <AdminTestMember />
+        </>
       )}
 
       {/* ── EVENTS TAB ───────────────────────────────────────────────── */}
