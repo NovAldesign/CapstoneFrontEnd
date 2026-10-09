@@ -317,6 +317,7 @@ export const AdminPerks = () => {
                   <div className="ga-row" style={{ gap: 8 }}>
                     <strong style={{ color: 'var(--ga-navy)' }}>{d.businessName}</strong>
                     <span className={`ga-pill ${tone(d.status)}`}>{label(d.status)}</span>
+                    {d.isTest && <span className="ga-pill amber">Test · hidden from members</span>}
                   </div>
                   <div style={{ fontWeight: 600, margin: '4px 0' }}>{d.offer}</div>
                   <div className="ga-small ga-muted">

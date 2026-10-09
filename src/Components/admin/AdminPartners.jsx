@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { BACKEND_URL } from '../../Services/eventUtils';
 import { adminApi, downloadCSV, fmtDate, timeAgo } from '../../Services/adminApi';
+import AdminTestPartner from './AdminTestPartner.jsx';
 
 // =============================================================
 // Partners tab: sponsor inquiries + partner portal progress.
@@ -188,6 +189,7 @@ const SponsorCard = ({ inquiry, row, events, onInquiry, onRow, setError }) => {
           <div className="ga-row" style={{ gap: 8 }}>
             <strong style={{ color: 'var(--ga-navy)' }}>{inquiry.companyName}</strong>
             <span className={`ga-pill ${tone(inquiry.status)}`}>{label(inquiry.status)}</span>
+            {inquiry.isTest && <span className="ga-pill amber">Test</span>}
             {row?.portal.paidAt && <span className="ga-pill green">Paid {money(row.portal.amountCents)}</span>}
           </div>
           <div className="ga-small ga-muted">{inquiry.contactPerson} · {inquiry.tierRequested || 'Partnership'} tier{row?.event ? ` · ${fmtDate(row.event.date)} ${row.event.name}` : ''} · {timeAgo(inquiry.createdAt)}</div>
@@ -311,6 +313,7 @@ export const AdminPartners = () => {
           ))}
         </div>
       )}
+      <AdminTestPartner />
     </>
   );
 };
