@@ -14,10 +14,12 @@ const Navbar = () => {
   const firstName = (user?.name || "").trim().split(" ")[0] || "Account";
 
   const isAdmin = user?.role === "admin";
+  const isMember = user?.role === "member";
 
   const handleLogout = () => {
-    loginService.logout();
-    navigate("/"); // there's no /login page, so send them home
+    localStorage.removeItem("gfc_user");
+    localStorage.removeItem("gfc_token");
+    navigate("/");
   };
 
   const closeMenu = () => setMenuOpen(false);
@@ -66,11 +68,23 @@ const Navbar = () => {
 
 
         {/* Mobile-only auth */}
+        {!user && (
+          <li className="nav-mobile-auth">
+            <Link to="/login" className="nav-dashboard-btn" onClick={closeMenu}>
+              Member Login
+            </Link>
+          </li>
+        )}
         {user && (
           <li className="nav-mobile-auth">
             {isAdmin && (
               <Link to="/admin/dashboard" className="nav-dashboard-btn" onClick={closeMenu}>
                 Dashboard
+              </Link>
+            )}
+            {isMember && (
+              <Link to="/member/dashboard" className="nav-dashboard-btn" onClick={closeMenu}>
+                My Membership
               </Link>
             )}
             <button
@@ -84,11 +98,21 @@ const Navbar = () => {
       </ul>
 
       {/* Desktop auth */}
-      {user && (
+      {!user && (
         <div className="nav-right-section">
+          <Link to="/login" className="nav-login-link">Log in</Link>
+        </div>
+      )}
+      {user && (
+        <div className="nav-right-section nav-right-auth">
           {isAdmin && (
             <Link to="/admin/dashboard" className="nav-dashboard-btn">
               Dashboard
+            </Link>
+          )}
+          {isMember && (
+            <Link to="/member/dashboard" className="nav-dashboard-btn">
+              My Membership
             </Link>
           )}
           <button onClick={handleLogout} className="logout-btn-styled">

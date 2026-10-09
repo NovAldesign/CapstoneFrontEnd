@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import loginService from '../Services/loginService';
+import memberApi from '../Services/memberApi';
 import "../Styles/Login.css";
 
 const Login = () => {
@@ -11,6 +12,35 @@ const Login = () => {
   const [error, setError]             = useState('');
   const [loading, setLoading]         = useState(false);
   const navigate                      = useNavigate();
+
+  // Members log in with an emailed link; staff and partners use a password
+  const [staffMode, setStaffMode]     = useState(false);
+  const [memberEmail, setMemberEmail] = useState('');
+  const [linkSent, setLinkSent]       = useState('');
+
+  // Already logged in as a member? Go straight to the dashboard
+  useEffect(() => {
+    const user = loginService.getCurrentUser();
+    if (user?.role === 'member' && loginService.getToken()) navigate('/member/dashboard', { replace: true });
+  }, [navigate]);
+
+  const sendLink = async (e) => {
+    e.preventDefault();
+    setError('');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(memberEmail.trim())) {
+      setError('Please enter the email you used to join.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const { message } = await memberApi.requestLink(memberEmail.trim());
+      setLinkSent(message);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,7 +66,7 @@ const Login = () => {
       } else if (role === 'partner') {
         navigate('/partner/vault');
       } else {
-        navigate('/member/profile');
+        navigate('/member/dashboard');
       }
     } catch (err) {
       setError(err.message);
@@ -87,9 +117,13 @@ const Login = () => {
         <div className="login-card">
 
           <div className="login-header">
-            <span className="login-card-eyebrow">Member Portal</span>
-            <h2 className="playfair login-card-title">GFC Portal</h2>
-            <p className="login-card-sub">Welcome back.</p>
+            <span className="login-card-eyebrow">{staffMode ? 'Staff & Partners' : 'Member Login'}</span>
+            <h2 className="playfair login-card-title">Welcome back</h2>
+            <p className="login-card-sub">
+              {staffMode
+                ? 'Log in with your password.'
+                : "Enter the email you joined with and we'll send you a one-tap login link. No password needed."}
+            </p>
           </div>
 
           {error && (
@@ -98,101 +132,146 @@ const Login = () => {
             </div>
           )}
 
-          <form onSubmit={handleLogin} className="login-form" noValidate>
-
-            <div className="login-input-group">
-              <label className="login-label" htmlFor="email">
-                Email Address
-              </label>
-              <input
-                id="email"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="your@email.com"
-                required
-                autoComplete="email"
-                className="login-input"
-              />
+          {!staffMode && (linkSent ? (
+            <div className="login-sent" role="status">
+              <span className="login-sent-icon" aria-hidden="true">✉</span>
+              <h3 className="playfair login-sent-title">Check your email</h3>
+              <p>{linkSent}</p>
+              <p className="login-sent-hint">
+                Don't see it? Check your spam or promotions folder, or{' '}
+                <button type="button" className="login-text-btn" onClick={() => { setLinkSent(''); setError(''); }}>
+                  try a different email
+                </button>.
+              </p>
             </div>
-
-            <div className="login-input-group">
-              <div className="login-label-row">
-                <label className="login-label" htmlFor="password">
-                  Password
-                </label>
-                <Link to="/forgot-password" className="login-forgot">
-                  Forgot Password?
-                </Link>
-              </div>
-              <div className="login-password-wrap">
+          ) : (
+            <form onSubmit={sendLink} className="login-form" noValidate>
+              <div className="login-input-group">
+                <label className="login-label" htmlFor="member-email">Email Address</label>
                 <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="••••••••"
+                  id="member-email"
+                  type="email"
+                  value={memberEmail}
+                  onChange={(e) => { setMemberEmail(e.target.value); if (error) setError(''); }}
+                  placeholder="your@email.com"
                   required
-                  autoComplete="current-password"
+                  autoComplete="email"
                   className="login-input"
                 />
+              </div>
+              <button type="submit" className="login-btn" disabled={loading}>
+                {loading ? 'Sending...' : 'Email Me a Login Link'}
+              </button>
+            </form>
+          ))}
+
+          {staffMode && (
+            <form onSubmit={handleLogin} className="login-form" noValidate>
+
+              <div className="login-input-group">
+                <label className="login-label" htmlFor="email">
+                  Email Address
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="your@email.com"
+                  required
+                  autoComplete="email"
+                  className="login-input"
+                />
+              </div>
+
+              <div className="login-input-group">
+                <div className="login-label-row">
+                  <label className="login-label" htmlFor="password">
+                    Password
+                  </label>
+                  <Link to="/forgot-password" className="login-forgot">
+                    Forgot Password?
+                  </Link>
+                </div>
+                <div className="login-password-wrap">
+                  <input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="••••••••"
+                    required
+                    autoComplete="current-password"
+                    className="login-input"
+                  />
+                  <button
+                    type="button"
+                    className="login-show-btn"
+                    onClick={() => setShowPassword(p => !p)}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? 'Hide' : 'Show'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Access Key — staff/admin only, hidden by default */}
+              <div className="login-access-toggle">
                 <button
                   type="button"
-                  className="login-show-btn"
-                  onClick={() => setShowPassword(p => !p)}
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  className="login-access-toggle-btn"
+                  onClick={() => {
+                    setShowAccessKey(p => !p);
+                    setFormData(prev => ({ ...prev, accessKey: '' }));
+                  }}
                 >
-                  {showPassword ? 'Hide' : 'Show'}
+                  {showAccessKey ? '− Staff login' : '+ Staff / Admin access'}
                 </button>
               </div>
-            </div>
 
-            {/* Access Key — staff/admin only, hidden by default */}
-            <div className="login-access-toggle">
+              {showAccessKey && (
+                <div className="login-input-group login-access-key-group">
+                  <label className="login-label" htmlFor="accessKey">
+                    Access Key
+                  </label>
+                  <input
+                    id="accessKey"
+                    type="password"
+                    name="accessKey"
+                    value={formData.accessKey}
+                    onChange={handleChange}
+                    placeholder="Enter your staff access key"
+                    autoComplete="off"
+                    className="login-input"
+                  />
+                  <span className="login-input-hint">
+                    Staff and admin use only.
+                  </span>
+                </div>
+              )}
+
               <button
-                type="button"
-                className="login-access-toggle-btn"
-                onClick={() => {
-                  setShowAccessKey(p => !p);
-                  setFormData(prev => ({ ...prev, accessKey: '' }));
-                }}
+                type="submit"
+                className="login-btn"
+                disabled={loading}
               >
-                {showAccessKey ? '− Staff login' : '+ Staff / Admin access'}
+                {loading ? 'Verifying...' : 'Enter the Collective'}
               </button>
-            </div>
 
-            {showAccessKey && (
-              <div className="login-input-group login-access-key-group">
-                <label className="login-label" htmlFor="accessKey">
-                  Access Key
-                </label>
-                <input
-                  id="accessKey"
-                  type="password"
-                  name="accessKey"
-                  value={formData.accessKey}
-                  onChange={handleChange}
-                  placeholder="Enter your staff access key"
-                  autoComplete="off"
-                  className="login-input"
-                />
-                <span className="login-input-hint">
-                  Staff and admin use only.
-                </span>
-              </div>
-            )}
+            </form>
+          )}
 
+          <div className="login-access-toggle login-mode-toggle">
             <button
-              type="submit"
-              className="login-btn"
-              disabled={loading}
+              type="button"
+              className="login-access-toggle-btn"
+              onClick={() => { setStaffMode((m) => !m); setError(''); setLinkSent(''); }}
             >
-              {loading ? 'Verifying...' : 'Enter the Collective'}
+              {staffMode ? '← Member login' : 'Staff or partner? Log in with a password'}
             </button>
-
-          </form>
+          </div>
 
           <div className="login-divider">
             <span>or</span>

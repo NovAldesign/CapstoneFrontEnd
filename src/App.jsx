@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 // --- Components ---
 import Navbar from "./Components/Navbar.jsx";
@@ -38,6 +38,8 @@ import Go from "./Pages/Go.jsx";
 import Host from "./Pages/Host.jsx";
 import HostLanding from "./Pages/HostLanding.jsx";
 import Login from "./Pages/Login.jsx";
+import MemberLoginLink from "./Pages/MemberLoginLink.jsx";
+import MemberDashboard from "./Pages/MemberDashboard.jsx";
 import ForgotPassword from "./Pages/ForgotPassword.jsx";
 import Select from "./Pages/Select.jsx";
 import SelectInvitation from "./Pages/SelectInvitation.jsx";
@@ -114,6 +116,7 @@ function App() {
           
 
             <Route path="/login" element={<Login />} />
+            <Route path="/member/login/:token" element={<MemberLoginLink />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
 
@@ -126,6 +129,17 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            <Route
+              path="/member/dashboard"
+              element={
+                <ProtectedRoute allowedRole="member">
+                  <MemberDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/member" element={<Navigate to="/member/dashboard" replace />} />
+            <Route path="/member/profile" element={<Navigate to="/member/dashboard" replace />} />
 
             {/* Single Catch-All 404 Route (MUST BE LAST) */}
             <Route

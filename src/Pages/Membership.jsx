@@ -413,17 +413,17 @@ const Membership = () => {
         <h2 id="fineprint-heading" className="member-fineprint-title">Good to Know</h2>
         <ul>
           <li>
-            Event credit, guest passes, and birthday credit can be used at any GFC
-            event except food-inclusive events (such as our Cookout, Friendsgiving,
-            and holiday dinners). Members still receive their member discount on
-            food-inclusive events.
+            Event credit, guest passes, and birthday credit work on Game Nights,
+            Karaoke Bingo and Acoustic &amp; Infused. They don't apply to
+            food-inclusive events (such as our Cookout, Friendsgiving, and holiday
+            dinners), where members get their member discount instead.
           </li>
           <li>Unused monthly event credit rolls over for one month, then expires.</li>
           <li>
             Referral credit counts when a friend who is new to GFC buys a ticket to
             their first event using your code.
           </li>
-          <li>Memberships renew automatically every month. Cancel anytime before your next billing date by emailing community@grownfolkscollective.com.</li>
+          <li>Memberships renew automatically every month. Pause for 1 or 2 months, or cancel anytime before your next billing date, from your <a href="/login">member dashboard</a>.</li>
         </ul>
       </section>
 
