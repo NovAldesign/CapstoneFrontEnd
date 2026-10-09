@@ -236,7 +236,7 @@ const HostLanding = ({ page }) => {
         </div>
         <p className="host-fine host-landing-fine">
           Serving metro Atlanta. Travel is included within 25 miles of East Atlanta.
-          Hosting an apartment community instead? <Link to="/host">See resident pricing</Link>.
+          Hosting an apartment community instead? <Link to="/host#apartments">See The Resident Package</Link>.
         </p>
       </section>
 

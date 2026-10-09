@@ -183,8 +183,11 @@
 .host-card-title {
   font-family: 'Playfair Display', serif;
   font-size: 1.6rem;
+  line-height: 1.2;
   color: #002147;
   margin: 8px 0 14px;
+  /* Room for two lines on every card, so all the prices start at the same height */
+  min-height: 2.4em;
 }
 
 .host-card-price {
@@ -592,3 +595,41 @@
   .host-rp-extras ul { grid-template-columns: 1fr; }
 }
 .host-rp-terms + .host-series-lead { margin-top: 16px; }
+
+/* One card per row on phones: no need to reserve a second title line */
+@media (max-width: 600px) {
+  .host-card-title { min-height: 0; }
+}
+
+/* Hero chooser: two doors */
+.host-chooser { margin-top: 26px; }
+.host-chooser-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #C5A059;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+.host-chooser-btns { display: flex; flex-wrap: wrap; gap: 10px; }
+.host-chooser-btns button {
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 12px 20px;
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid #C5A059;
+  cursor: pointer;
+}
+.host-chooser-btns button:hover { background: #C5A059; color: #002147; }
+.host-chooser-btns button:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.host-door { scroll-margin-top: 90px; }
+.host-rp-name {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: #9A7630;
+  margin: 0 0 6px;
+}
+.host-series-h2 { margin-top: 64px; }

@@ -10,6 +10,7 @@ export const PACKAGES = [
     maxGuests: 40,
     guests: 'Up to 40 guests · 2 hours',
     blurb: 'Spades, dominoes, Uno and more. Card tables, music and a host who keeps every table laughing.',
+    badge: 'Fan Favorite',
   },
   {
     name: 'Play. Sip. Toast. Spades Tournament',
@@ -19,7 +20,6 @@ export const PACKAGES = [
     maxGuests: 32,
     guests: 'Up to 32 players · 2 hours',
     blurb: 'Brackets, scorekeeping and bragging rights. The winning pair takes home a trophy.',
-    badge: 'Fan Favorite',
   },
   {
     name: 'Play. Sip. Toast. Karaoke Bingo',

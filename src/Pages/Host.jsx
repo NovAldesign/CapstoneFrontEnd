@@ -12,11 +12,11 @@ import { PACKAGES, WEEKEND_EXTRA, perGuest, RESIDENT_PACKAGE } from '../content/
 
 const INCLUDED = [
   '2 hours (2.5 for the Mystery), hosted start to finish',
+  'Professional event photographer, with an edited gallery delivered within 48 hours',
   'Signature mocktail bar, with one drink named after your property or company',
   'The Toast: we celebrate your residents’ or team’s wins, live',
   'Branded flyer to promote it to your residents or staff',
   'Setup and breakdown',
-  'Professional event photographer, with an edited gallery delivered within 48 hours',
   'Attendance count for your report',
 ];
 
@@ -94,19 +94,21 @@ const Host = () => {
   // Holiday special: book a December event by Oct 31
   const showHoliday = new Date() <= new Date('2026-10-31T23:59:59-04:00');
 
-  // Links like /host?type=corporate show corporate prices first
+  // Links like /host?type=corporate or /host#companies open the right section
   useEffect(() => {
     const type = searchParams.get('type');
-    if (type === 'corporate' || type === 'residents') {
-      setFormData((prev) => ({ ...prev, clientType: type }));
-    }
+    const hash = window.location.hash.replace('#', '');
+    const target = hash === 'apartments' || hash === 'companies' ? hash
+      : type === 'corporate' ? 'companies' : type === 'residents' ? 'apartments' : '';
+    if (!target) return;
+    setFormData((prev) => ({ ...prev, clientType: target === 'companies' ? 'corporate' : 'residents' }));
+    const t = setTimeout(() => document.getElementById(target)?.scrollIntoView({ block: 'start' }), 150);
+    return () => clearTimeout(t);
   }, [searchParams]);
 
   useEffect(() => {
     if (feedback && feedbackRef.current) feedbackRef.current.focus();
   }, [feedback]);
-
-  const isCorporate = formData.clientType === 'corporate';
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -119,6 +121,18 @@ const Host = () => {
   const pickPackage = (name) => {
     setFormData((prev) => ({ ...prev, package: name }));
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // Fill the form for apartments or companies, then scroll to it
+  const requestFor = (clientType, extra = {}) => {
+    setFormData((prev) => ({ ...prev, clientType, package: '', frequency: 'One-time event', ...extra }));
+    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // Hero chooser: jump to a section and set who the request is for
+  const jumpTo = (id) => {
+    setFormData((prev) => ({ ...prev, clientType: id === 'companies' ? 'corporate' : 'residents' }));
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const handleSubmit = async (e) => {
@@ -184,8 +198,14 @@ const Host = () => {
               <button type="button" className="contact-submit-btn host-btn" onClick={() => pickPackage('')}>
                 Book a Call
               </button>
-              <a href="#packages" className="host-link">See packages &amp; pricing →</a>
               <a href="tel:+14702567729" className="host-link">Call or text 470-256-7729</a>
+            </div>
+            <div className="host-chooser" role="group" aria-labelledby="host-chooser-label">
+              <p className="host-chooser-label" id="host-chooser-label">Who's this for?</p>
+              <div className="host-chooser-btns">
+                <button type="button" onClick={() => jumpTo('apartments')}>For apartment communities</button>
+                <button type="button" onClick={() => jumpTo('companies')}>For companies &amp; teams</button>
+              </div>
             </div>
           </div>
 
@@ -221,29 +241,45 @@ const Host = () => {
         </div>
       </section>
 
-      {/* ── PACKAGES ── */}
-      <section className="host-section host-section-alt" id="packages" aria-labelledby="host-packages">
-        <span className="contact-form-eyebrow">Packages</span>
-        <h2 className="host-h2" id="host-packages">Pick your play.</h2>
-
-        <div className="host-toggle" role="group" aria-label="Show prices for">
-          <button
-            type="button"
-            className={!isCorporate ? 'active' : ''}
-            aria-pressed={!isCorporate}
-            onClick={() => setFormData((p) => ({ ...p, clientType: 'residents' }))}
-          >
-            Apartment Communities
-          </button>
-          <button
-            type="button"
-            className={isCorporate ? 'active' : ''}
-            aria-pressed={isCorporate}
-            onClick={() => setFormData((p) => ({ ...p, clientType: 'corporate' }))}
-          >
-            Offices &amp; Teams
-          </button>
+      {/* ── FOR APARTMENT COMMUNITIES: one answer ── */}
+      <section className="host-section host-section-alt host-door" id="apartments" aria-labelledby="host-apartments">
+        <span className="contact-form-eyebrow">For Apartment Communities</span>
+        <h2 className="host-h2" id="host-apartments">Keep your residents. Fill your vacancies.</h2>
+        <h3 className="host-rp-name">{RESIDENT_PACKAGE.name}</h3>
+        <p className="host-rp-price">
+          {money(RESIDENT_PACKAGE.price)}<span>/month</span>
+        </p>
+        <p className="host-rp-terms">{RESIDENT_PACKAGE.terms}</p>
+        <p className="host-series-lead">{RESIDENT_PACKAGE.lead}</p>
+        <div className="host-rp-events">
+          {RESIDENT_PACKAGE.events.map((ev) => (
+            <div className="host-series-card host-rp-event" key={ev.title}>
+              <p className="host-series-freq">{ev.label}</p>
+              <h3>{ev.title}</h3>
+              <p className="host-rp-text">{ev.text}</p>
+            </div>
+          ))}
         </div>
+        <div className="host-rp-extras">
+          <p className="contact-info-label">Only with the mixer</p>
+          <ul>
+            {RESIDENT_PACKAGE.mixerExtras.map((x) => <li key={x}>{x}</li>)}
+          </ul>
+        </div>
+        <p className="host-rp-math">{RESIDENT_PACKAGE.math}</p>
+        <button
+          type="button"
+          className="contact-submit-btn host-btn"
+          onClick={() => requestFor('residents', { frequency: RESIDENT_PACKAGE.frequency })}
+        >
+          Book a Call
+        </button>
+      </section>
+
+      {/* ── FOR COMPANIES & TEAMS: the menu ── */}
+      <section className="host-section host-door" id="companies" aria-labelledby="host-companies">
+        <span className="contact-form-eyebrow">For Companies &amp; Teams</span>
+        <h2 className="host-h2" id="host-companies">Pick your play.</h2>
 
         <div className="host-packages">
           {PACKAGES.map((pkg) => (
@@ -252,18 +288,16 @@ const Host = () => {
               <p className="host-card-eyebrow">Play. Sip. Toast.</p>
               <h3 className="host-card-title">{pkg.short}</h3>
               <p className="host-card-price">
-                {money(isCorporate ? pkg.corporate : pkg.residents)}
+                {money(pkg.corporate)}
                 <span> Mon–Thu</span>
               </p>
-              <p className="host-card-weekend">
-                {money((isCorporate ? pkg.corporate : pkg.residents) + WEEKEND_EXTRA)} Fri–Sun
-              </p>
+              <p className="host-card-weekend">{money(pkg.corporate + WEEKEND_EXTRA)} Fri–Sun</p>
               <p className="host-card-guests">
                 {pkg.guests}
-                {isCorporate && <span className="host-card-perguest">from {money(perGuest(pkg.corporate, pkg))}/guest</span>}
+                <span className="host-card-perguest">from {money(perGuest(pkg.corporate, pkg))}/guest</span>
               </p>
               <p className="host-card-blurb">{pkg.blurb}</p>
-              <button type="button" className="host-card-btn" onClick={() => pickPackage(pkg.name)}>
+              <button type="button" className="host-card-btn" onClick={() => requestFor('corporate', { package: pkg.name })}>
                 Request this package
               </button>
             </article>
@@ -286,29 +320,23 @@ const Host = () => {
             Atlanta, with a small travel fee beyond that. Have a bigger group or a custom idea? Ask us.
           </p>
         </div>
-      </section>
 
-      {/* ── SERIES ── */}
-      <section className="host-section" aria-labelledby="host-series">
-        <span className="contact-form-eyebrow">The GFC Community Series</span>
-        <h2 className="host-h2" id="host-series">Make it a series.</h2>
+        <h2 className="host-h2 host-series-h2" id="host-series">Make it a series.</h2>
         <p className="host-series-lead">
-          Give your residents or team something to look forward to every month. We rotate the
-          games, theme them to the season, and toast that month's birthdays, anniversaries and wins.
+          Give your team something to look forward to every month. We rotate the games, theme
+          them to the season, and toast that month's birthdays, anniversaries and wins.
         </p>
         <div className="host-series">
-          {SERIES.map((plan) => {
-            const base = isCorporate ? PACKAGES[0].corporate : PACKAGES[0].residents;
-            const each = Math.round(base * (1 - plan.off / 100));
-            return (
-              <div className="host-series-card" key={plan.name}>
-                <h3>{plan.name}</h3>
-                <p className="host-series-freq">{plan.freq}</p>
-                <p className="host-series-off">Save {plan.off}%</p>
-                <p className="host-series-price">Game Night from {money(each)} per event</p>
-              </div>
-            );
-          })}
+          {SERIES.map((plan) => (
+            <div className="host-series-card" key={plan.name}>
+              <h3>{plan.name}</h3>
+              <p className="host-series-freq">{plan.freq}</p>
+              <p className="host-series-off">Save {plan.off}%</p>
+              <p className="host-series-price">
+                Game Night from {money(Math.round(PACKAGES[0].corporate * (1 - plan.off / 100)))} per event
+              </p>
+            </div>
+          ))}
         </div>
         <ul className="host-series-perks">
           <li>Rotating formats: Game Night, Spades, Karaoke Bingo and the Mystery</li>
@@ -318,53 +346,11 @@ const Host = () => {
         <button
           type="button"
           className="contact-submit-btn host-btn"
-          onClick={() => {
-            setFormData((p) => ({ ...p, frequency: 'Monthly series' }));
-            formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }}
+          onClick={() => requestFor('corporate', { frequency: 'Monthly series' })}
         >
-          Ask About a Series
+          Book a Call
         </button>
       </section>
-
-      {/* ── THE RESIDENT PACKAGE (apartment communities only) ── */}
-      {!isCorporate && (
-        <section className="host-section host-section-alt" aria-labelledby="host-resident-pkg">
-          <span className="contact-form-eyebrow">For Apartment Communities</span>
-          <h2 className="host-h2" id="host-resident-pkg">{RESIDENT_PACKAGE.name}</h2>
-          <p className="host-rp-price">
-            {money(RESIDENT_PACKAGE.price)}<span>/month</span>
-          </p>
-          <p className="host-rp-terms">{RESIDENT_PACKAGE.terms}</p>
-          <p className="host-series-lead">{RESIDENT_PACKAGE.lead}</p>
-          <div className="host-rp-events">
-            {RESIDENT_PACKAGE.events.map((ev) => (
-              <div className="host-series-card host-rp-event" key={ev.title}>
-                <p className="host-series-freq">{ev.label}</p>
-                <h3>{ev.title}</h3>
-                <p className="host-rp-text">{ev.text}</p>
-              </div>
-            ))}
-          </div>
-          <div className="host-rp-extras">
-            <p className="contact-info-label">Only with the mixer</p>
-            <ul>
-              {RESIDENT_PACKAGE.mixerExtras.map((x) => <li key={x}>{x}</li>)}
-            </ul>
-          </div>
-          <p className="host-rp-math">{RESIDENT_PACKAGE.math}</p>
-          <button
-            type="button"
-            className="contact-submit-btn host-btn"
-            onClick={() => {
-              setFormData((p) => ({ ...p, clientType: 'residents', frequency: RESIDENT_PACKAGE.frequency }));
-              formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }}
-          >
-            Ask About The Resident Package
-          </button>
-        </section>
-      )}
 
       {/* ── WHY GFC ── */}
       <section className="host-section" aria-labelledby="host-why">
