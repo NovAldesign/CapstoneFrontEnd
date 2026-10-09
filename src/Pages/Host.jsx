@@ -5,7 +5,7 @@ import { BACKEND_URL } from '../Services/eventUtils';
 import '../Styles/Contact.css';
 import '../Styles/GroupBooking.css';
 import '../Styles/Host.css';
-import { PACKAGES, WEEKEND_EXTRA } from '../content/hostingPackages';
+import { PACKAGES, WEEKEND_EXTRA, perGuest, RESIDENT_PACKAGE } from '../content/hostingPackages';
 
 // ── Play. Sip. Toast. — GFC hosts at apartment communities, offices and teams ──
 // Prices live in content/hostingPackages.js (shared with the landing pages).
@@ -16,7 +16,7 @@ const INCLUDED = [
   'The Toast: we celebrate your residents’ or team’s wins, live',
   'Branded flyer to promote it to your residents or staff',
   'Setup and breakdown',
-  'Event photos within 48 hours',
+  'Professional event photographer, with an edited gallery delivered within 48 hours',
   'Attendance count for your report',
 ];
 
@@ -49,7 +49,7 @@ const SERIES = [
   { name: 'Weekly', freq: '4 events a month', off: 20 },
 ];
 
-const FREQUENCIES = ['One-time event', 'Monthly series', 'Biweekly series', 'Weekly series'];
+const FREQUENCIES = ['One-time event', 'Monthly series', 'Biweekly series', 'Weekly series', RESIDENT_PACKAGE.frequency];
 
 const WHY = [
   ['Alcohol-free by design', 'No bartender, no liability, and everyone is included.'],
@@ -258,7 +258,10 @@ const Host = () => {
               <p className="host-card-weekend">
                 {money((isCorporate ? pkg.corporate : pkg.residents) + WEEKEND_EXTRA)} Fri–Sun
               </p>
-              <p className="host-card-guests">{pkg.guests}</p>
+              <p className="host-card-guests">
+                {pkg.guests}
+                {isCorporate && <span className="host-card-perguest">from {money(perGuest(pkg.corporate, pkg))}/guest</span>}
+              </p>
               <p className="host-card-blurb">{pkg.blurb}</p>
               <button type="button" className="host-card-btn" onClick={() => pickPackage(pkg.name)}>
                 Request this package
@@ -323,6 +326,45 @@ const Host = () => {
           Ask About a Series
         </button>
       </section>
+
+      {/* ── THE RESIDENT PACKAGE (apartment communities only) ── */}
+      {!isCorporate && (
+        <section className="host-section host-section-alt" aria-labelledby="host-resident-pkg">
+          <span className="contact-form-eyebrow">For Apartment Communities</span>
+          <h2 className="host-h2" id="host-resident-pkg">{RESIDENT_PACKAGE.name}</h2>
+          <p className="host-rp-price">
+            {money(RESIDENT_PACKAGE.price)}<span>/month</span>
+          </p>
+          <p className="host-rp-terms">{RESIDENT_PACKAGE.terms}</p>
+          <p className="host-series-lead">{RESIDENT_PACKAGE.lead}</p>
+          <div className="host-rp-events">
+            {RESIDENT_PACKAGE.events.map((ev) => (
+              <div className="host-series-card host-rp-event" key={ev.title}>
+                <p className="host-series-freq">{ev.label}</p>
+                <h3>{ev.title}</h3>
+                <p className="host-rp-text">{ev.text}</p>
+              </div>
+            ))}
+          </div>
+          <div className="host-rp-extras">
+            <p className="contact-info-label">Only with the mixer</p>
+            <ul>
+              {RESIDENT_PACKAGE.mixerExtras.map((x) => <li key={x}>{x}</li>)}
+            </ul>
+          </div>
+          <p className="host-rp-math">{RESIDENT_PACKAGE.math}</p>
+          <button
+            type="button"
+            className="contact-submit-btn host-btn"
+            onClick={() => {
+              setFormData((p) => ({ ...p, clientType: 'residents', frequency: RESIDENT_PACKAGE.frequency }));
+              formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }}
+          >
+            Ask About The Resident Package
+          </button>
+        </section>
+      )}
 
       {/* ── WHY GFC ── */}
       <section className="host-section" aria-labelledby="host-why">

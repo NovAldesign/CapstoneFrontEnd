@@ -198,6 +198,7 @@
   font-size: 0.95rem;
   font-weight: 500;
   color: #666;
+  white-space: nowrap;
 }
 
 .host-card-weekend {
@@ -212,6 +213,13 @@
   color: #9A7630;
   font-weight: 600;
   margin: 6px 0 16px;
+}
+
+/* "from $35/guest" sits on its own line under the guest count */
+.host-card-perguest {
+  display: block;
+  color: #3A4A63;
+  font-weight: 600;
 }
 
 .host-card-blurb {
@@ -518,3 +526,69 @@
     grid-template-columns: 1fr;
   }
 }
+/* The Resident Package */
+.host-rp-price {
+  text-align: center;
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #002147;
+  margin: 4px 0 0;
+}
+.host-rp-price span {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #666;
+}
+.host-rp-terms {
+  text-align: center;
+  color: #9A7630;
+  font-weight: 600;
+  margin: 4px 0 18px;
+}
+.host-rp-events {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.host-rp-event { background: #fff; }
+.host-rp-text {
+  color: #3A4A63;
+  line-height: 1.6;
+  margin: 10px 0 0;
+}
+.host-rp-extras {
+  max-width: 900px;
+  margin: 28px auto 0;
+}
+.host-rp-extras ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 24px;
+}
+.host-rp-extras li {
+  color: #3A4A63;
+  line-height: 1.5;
+}
+.host-rp-extras li::before {
+  content: '✦ ';
+  color: #C5A059;
+}
+.host-rp-math {
+  max-width: 700px;
+  margin: 24px auto;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: #002147;
+}
+@media (max-width: 700px) {
+  .host-rp-events,
+  .host-rp-extras ul { grid-template-columns: 1fr; }
+}
+.host-rp-terms + .host-series-lead { margin-top: 16px; }

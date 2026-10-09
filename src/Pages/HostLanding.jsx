@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { PACKAGES, WEEKEND_EXTRA } from '../content/hostingPackages';
+import { PACKAGES, WEEKEND_EXTRA, perGuest } from '../content/hostingPackages';
 import '../Styles/Contact.css';
 import '../Styles/GroupBooking.css';
 import '../Styles/Host.css';
@@ -225,7 +225,10 @@ const HostLanding = ({ page }) => {
                 <span> Mon–Thu</span>
               </p>
               <p className="host-card-weekend">{money(pkg.corporate + WEEKEND_EXTRA)} Fri–Sun</p>
-              <p className="host-card-guests">{pkg.guests}</p>
+              <p className="host-card-guests">
+                {pkg.guests}
+                <span className="host-card-perguest">from {money(perGuest(pkg.corporate, pkg))}/guest</span>
+              </p>
               <p className="host-card-blurb">{pkg.blurb}</p>
               <Link to={bookLink} className="host-card-btn host-card-link">Request this package</Link>
             </article>
