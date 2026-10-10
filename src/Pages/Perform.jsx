@@ -16,6 +16,7 @@ const ARTIST_TERMS = [
   'Bring all my own equipment (mic, amp, instrument, cables).',
   'Arrive 1 hour before doors for setup and sound check.',
   'Tag @grownfolkscollective when I promote the show.',
+  'Be featured: GFC shares my name, photo, bio, music links, and photos and video of my set to promote the show and future showcases. Guests may also photograph, record, or go live.',
   'Follow the Performer Agreement, Code of Conduct, and Participation Waiver, including the showcase rules and release.',
 ];
 
@@ -27,6 +28,7 @@ const HOST_TERMS = [
   'Arrive 1 hour before doors to walk through the run of show.',
   'Welcome the room, introduce each artist, and keep the night moving.',
   'Tag @grownfolkscollective when I promote the show.',
+  'Be featured: GFC shares my name, photo, bio, links, and photos and video of my hosting to promote the show and future showcases. Guests may also photograph, record, or go live.',
   'Follow the Performer Agreement, Code of Conduct, and Participation Waiver, including the showcase rules and release.',
 ];
 
@@ -589,12 +591,6 @@ const Perform = ({ role = 'artist' }) => {
                           <span>{t}</span>
                         </label>
                       ))}
-                    </div>
-                    <div className="group-checks perform-consent">
-                      <label className="group-check">
-                        <input type="checkbox" name="featureConsent" checked={form.featureConsent} onChange={handleChange} />
-                        <span>Grown Folks™ Collective may feature my name, photo, bio, and {isHost ? 'links' : 'music links'} on its website and social media.</span>
-                      </label>
                     </div>
                     <div className="contact-form-row">
                       <div className="contact-input-group">

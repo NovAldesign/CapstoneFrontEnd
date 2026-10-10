@@ -480,8 +480,9 @@ export const LEGAL_PAGES = {
       {
         h: "6. Photos, video, and promotion",
         list: [
-          "If you checked the feature box, GFC uses your name, photo, bio, and links on its website, emails, and social media to promote the event and future showcases.",
-          "GFC photographs and records parts of your performance and uses short clips to promote GFC, with credit to you. Email us to remove a post.",
+          "The showcase exists to put your talent in front of people, so being featured is part of performing. By applying, you allow GFC to use your name, photo, bio, and links on its website, emails, and social media to promote the event and future showcases.",
+          "GFC photographs, records, and may livestream your performance, and uses photos and clips to promote GFC, with credit to you. Email us to remove a specific post.",
+          "Showcases are public events. Guests may photograph, record, or go live during your set. GFC does not control and is not responsible for guest recordings or posts.",
           "You may record your own set for your own promotion. Tag @grownfolkscollective.",
         ],
       },
@@ -656,7 +657,7 @@ export const LEGAL_FOOTER_LINKS = [
 ];
 
 // Pages that exist but aren't in the footer (linked from their forms)
-export const PERFORMER_AGREEMENT_VERSION = "2026-10-02";
+export const PERFORMER_AGREEMENT_VERSION = "2026-10-10";
 // MUST match SPONSOR_TERMS_VERSION / PERK_TERMS_VERSION in the backend utilities/partnerPortal.js
 export const SPONSOR_AGREEMENT_VERSION = "2026-10-09.2";
 export const PERK_TERMS_VERSION = "2026-10-09";
