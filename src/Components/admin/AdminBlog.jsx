@@ -26,6 +26,8 @@ const slugify = (s) => String(s || '').toLowerCase().replace(/['’]/g, '').repl
 
 const today = () => new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
 
+const isFuture = (d) => d && new Date(d) > new Date();
+
 const BLANK = {
   title: '', slug: '', excerpt: '', category: 'General', content: '',
   imageUrl: '', imageAlt: '', imageCaption: '', pinImageUrl: '', affiliate: false, publishedAt: today(),
@@ -106,7 +108,8 @@ const PostDrawer = ({ editing, onClose, onSaved }) => {
       if (/\.json$/i.test(file.name)) {
         try {
           const data = JSON.parse(text);
-          setF((p) => ({ ...p, ...Object.fromEntries(Object.keys(BLANK).filter((k) => data[k] !== undefined).map((k) => [k, data[k]])) }));
+          // Keep the publish date picked in the form, never the one in the file
+          setF((p) => ({ ...p, ...Object.fromEntries(Object.keys(BLANK).filter((k) => k !== 'publishedAt' && data[k] !== undefined).map((k) => [k, data[k]])) }));
           if (data.slug) setSlugTouched(true);
           setError('');
         } catch { setError("That file isn't a post file I can read."); }
@@ -123,11 +126,15 @@ const PostDrawer = ({ editing, onClose, onSaved }) => {
     if (!f.content.trim()) return setError('Add the post itself.');
     setSaving(true);
     try {
-      const body = { ...f, slug: slugify(f.slug || f.title), publishedAt: f.publishedAt ? `${f.publishedAt}T12:00:00` : undefined };
+      const { publishedAt, ...rest } = f;
+      const body = { ...rest, slug: slugify(f.slug || f.title) };
+      // Goes live at 12:00 AM (your time) on the picked day. Editing keeps the original date unless you change it.
+      const dateChanged = !editing || publishedAt !== toForm(editing).publishedAt;
+      if (publishedAt && dateChanged) body.publishedAt = new Date(`${publishedAt}T00:00:00`).toISOString();
       const r = editing
         ? await call(`/${editing._id}`, { method: 'PATCH', body })
         : await call('', { method: 'POST', body });
-      onSaved(r, editing ? 'saved' : 'published');
+      onSaved(r, editing ? 'saved' : isFuture(r.publishedAt) ? `scheduled for ${fmtDate(r.publishedAt, { month: 'short', day: 'numeric', year: 'numeric' })}` : 'published');
     } catch (err) {
       setError(err.message);
       setSaving(false);
@@ -146,13 +153,11 @@ const PostDrawer = ({ editing, onClose, onSaved }) => {
         </div>
         <div className="ga-drawer-body">
           {error && <p className="ga-note err">{error}</p>}
-          {!editing && (
-            <p className="ga-note info">
-              Have a post file from Claude? <label style={{ textDecoration: 'underline', cursor: 'pointer', fontWeight: 600 }}>
-                Load it here<input type="file" accept=".json,.html,.htm" onChange={importFile} style={{ display: 'none' }} />
-              </label> and every field fills in.
-            </p>
-          )}
+          <p className="ga-note info">
+            Have a post file from Claude? <label style={{ textDecoration: 'underline', cursor: 'pointer', fontWeight: 600 }}>
+              Load it here<input type="file" accept=".json,.html,.htm" onChange={importFile} style={{ display: 'none' }} />
+            </label> and every field fills in{editing ? ' (your publish date stays the same)' : ''}.
+          </p>
           <label className="ga-field">Title
             <input className="ga-input" value={f.title} onChange={set('title')} maxLength={140} required />
           </label>
@@ -170,6 +175,7 @@ const PostDrawer = ({ editing, onClose, onSaved }) => {
             </label>
             <label className="ga-field">Publish date
               <input className="ga-input" type="date" value={f.publishedAt} onChange={set('publishedAt')} />
+              <small>{f.publishedAt > today() ? 'Scheduled: goes live at 12:00 AM that day.' : 'Live on the blog now.'}</small>
             </label>
           </div>
           <ImageField label="Cover picture" hint="Wide picture at the top of the post (1600 × 900 works best)." value={f.imageUrl} onChange={set('imageUrl')} />
@@ -207,7 +213,7 @@ const PostDrawer = ({ editing, onClose, onSaved }) => {
         </div>
         <div className="ga-drawer-foot">
           <button type="button" className="ga-btn" onClick={onClose}>Cancel</button>
-          <button type="submit" className="ga-btn ga-btn-navy" disabled={saving}>{saving ? 'Saving…' : editing ? 'Save changes' : 'Publish post'}</button>
+          <button type="submit" className="ga-btn ga-btn-navy" disabled={saving}>{saving ? 'Saving…' : editing ? 'Save changes' : f.publishedAt > today() ? 'Schedule post' : 'Publish post'}</button>
         </div>
       </form>
     </div>
@@ -221,7 +227,7 @@ const AdminBlog = () => {
   const [busy, setBusy] = useState('');
 
   const load = useCallback(() => {
-    call().then(setPosts).catch((e) => { setPosts([]); setNote({ type: 'err', text: e.message }); });
+    call('/admin/all').then(setPosts).catch((e) => { setPosts([]); setNote({ type: 'err', text: e.message }); });
   }, []);
   useEffect(load, [load]);
 
@@ -256,13 +262,14 @@ const AdminBlog = () => {
                     <td>
                       <strong>{p.title}</strong>
                       <div className="ga-small ga-muted" style={{ marginTop: 4 }}>/blog/{p.slug}</div>
+                      {isFuture(p.publishedAt) && <span className="ga-pill amber" style={{ marginTop: 4, marginRight: 6 }}>Scheduled</span>}
                       {p.affiliate && <span className="ga-pill gold" style={{ marginTop: 4 }}>Affiliate links</span>}
                     </td>
                     <td className="ga-small">{p.category}</td>
                     <td className="ga-small">{fmtDate(p.publishedAt, { month: 'short', day: 'numeric', year: 'numeric' })}</td>
                     <td>
                       <div className="ga-row" style={{ justifyContent: 'flex-end', gap: 6, flexWrap: 'nowrap' }}>
-                        <a className="ga-btn ga-btn-sm" href={`/blog/${p.slug}`} target="_blank" rel="noreferrer">View</a>
+                        <a className="ga-btn ga-btn-sm" href={`/blog/${p.slug}`} target="_blank" rel="noreferrer">{isFuture(p.publishedAt) ? 'Preview' : 'View'}</a>
                         <button type="button" className="ga-btn ga-btn-sm" onClick={() => setDrawer({ editing: p })}>Edit</button>
                         <button type="button" className="ga-btn ga-btn-sm ga-btn-danger" onClick={() => remove(p)} disabled={busy === p._id}>Delete</button>
                       </div>
