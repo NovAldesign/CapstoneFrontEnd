@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { SMS_CONSENT_TEXT, SMS_CONSENT_VERSION } from '../content/legalContent.js';
+import AffiliateNote from '../Components/AffiliateNote';
 import '../Styles/BlogPost.css';
 
 const API_BASE = 
@@ -105,14 +106,28 @@ const BlogPost = () => {
     : 'September 9, 2026';
 
   const authorDisplay = "Vaughn W.";
-  const displayImageUrl = CLOUDINARY_HERO_IMAGE;
-  const imageAltText = article.imageAlt || "Grown Folks Collective members and attendees gathered together at Aromas Tea Bar for game night.";
-  const imageCaptionText = article.imageCaption || "GFC members and attendees gathering for a group picture at game night at Aromas Tea Bar.";
+  const displayImageUrl = article.imageUrl || article.featuredImage || CLOUDINARY_HERO_IMAGE;
+  const hasOwnImage = !!(article.imageUrl || article.featuredImage);
+  const pageUrl = `https://www.grownfolkscollective.com/blog/${article.slug}`;
+  const description = article.excerpt || '';
+  const pinUrl = article.pinImageUrl
+    ? `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(pageUrl)}&media=${encodeURIComponent(article.pinImageUrl)}&description=${encodeURIComponent(`${article.title}: ${description}`)}`
+    : '';
+  const imageAltText = article.imageAlt || (hasOwnImage ? article.title : "Grown Folks Collective members and attendees gathered together at Aromas Tea Bar for game night.");
+  const imageCaptionText = article.imageCaption || (hasOwnImage ? '' : "GFC members and attendees gathering for a group picture at game night at Aromas Tea Bar.");
 
   return (
     <div className="editorial-page">
       <Helmet>
         <title>{`${article.title} | Grown Folks™ Collective`}</title>
+        {description && <meta name="description" content={description} />}
+        <link rel="canonical" href={pageUrl} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={article.title} />
+        {description && <meta property="og:description" content={description} />}
+        <meta property="og:url" content={pageUrl} />
+        <meta property="og:image" content={displayImageUrl} />
+        <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
       <div className="editorial-nav-bar">
         <Link to="/blog" className="editorial-back">← Back to Articles</Link>
@@ -137,10 +152,23 @@ const BlogPost = () => {
               onContextMenu={(e) => e.preventDefault()}
               onDragStart={(e) => e.preventDefault()}
             />
-            <figcaption className="editorial-hero-caption">
-              {imageCaptionText}
-            </figcaption>
+            {imageCaptionText && (
+              <figcaption className="editorial-hero-caption">
+                {imageCaptionText}
+              </figcaption>
+            )}
           </figure>
+
+          {(article.affiliate || pinUrl) && (
+            <div className="blog-post-tools">
+              {article.affiliate && <AffiliateNote />}
+              {pinUrl && (
+                <a className="blog-pin-btn" href={pinUrl} target="_blank" rel="noopener noreferrer">
+                  Save to Pinterest
+                </a>
+              )}
+            </div>
+          )}
 
           {/* Article Body Content */}
           <div 

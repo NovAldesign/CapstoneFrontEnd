@@ -87,8 +87,8 @@ const Blog = () => {
                   >
                     <Link to={`/blog/${article.slug}`} className="blog-card-image-link">
                       <img 
-                        src={article.featuredImage || FALLBACK_IMAGE} 
-                        alt={article.title} 
+                        src={article.imageUrl || article.featuredImage || FALLBACK_IMAGE} 
+                        alt={article.imageAlt || article.title} 
                         className="blog-card-image"
                         onContextMenu={(e) => e.preventDefault()}
                         onDragStart={(e) => e.preventDefault()}

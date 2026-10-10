@@ -12,6 +12,7 @@ import AdminGuests from "../Components/admin/AdminGuests.jsx";
 import AdminReports from "../Components/admin/AdminReports.jsx";
 import AdminGifts from "../Components/admin/AdminGifts.jsx";
 import AdminTestMember from "../Components/admin/AdminTestMember.jsx";
+import AdminBlog from "../Components/admin/AdminBlog.jsx";
 import "../Styles/Admin.css";
 import "../Styles/AdminShell.css";
 
@@ -305,6 +306,7 @@ const AdminDashboard = () => {
       { id: 'messages', icon: '✉️', label: 'Messages', count: counts.messages },
       { id: 'members', icon: '👥', label: 'Members' },
       { id: 'subscribers', icon: '📬', label: 'Subscribers' },
+      { id: 'blog', icon: '📝', label: 'Blog' },
       { id: 'select', icon: '🎭', label: 'GFC Select™', count: counts.select },
       { id: 'reviews', icon: '⭐', label: 'Reviews', count: counts.reviews },
     ] },
@@ -325,6 +327,7 @@ const AdminDashboard = () => {
     messages: ['Messages', 'Notes from the contact form.'],
     members: ['Members', 'Memberships and their status.'],
     subscribers: ['Subscribers', 'Your newsletter list.'],
+    blog: ['Blog', 'Write, edit and remove posts on The Gathering Table.'],
     select: ['GFC Select™', 'Applications, doors and matching.'],
     reviews: ['Reviews', 'Guest reviews for the home page.'],
   };
@@ -378,6 +381,7 @@ const AdminDashboard = () => {
       {activeTab === 'partners' && <AdminPartners />}
       {['private', 'groups', 'messages'].includes(activeTab) && <AdminInboxList kind={activeTab} />}
       {activeTab === 'subscribers' && <AdminSubscribers />}
+      {activeTab === 'blog' && <AdminBlog />}
       {activeTab === 'reviews' && <AdminReviews />}
       {activeTab === 'select' && <AdminSelect />}
 
