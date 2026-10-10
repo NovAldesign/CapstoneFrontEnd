@@ -48,6 +48,7 @@ const EventDetail = () => {
   const [moreEvents, setMoreEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [lineup, setLineup] = useState([]); // showcase artists, for Google event data
 
   useEffect(() => {
     const id = idFromSlug(slug);
@@ -165,6 +166,10 @@ const EventDetail = () => {
         };
       }),
     }),
+    // Who's on stage: the showcase lineup when there is one, otherwise GFC hosts the night
+    performer: lineup.length
+      ? lineup.map((a) => ({ "@type": "Person", name: a.artistName }))
+      : { "@type": "PerformingGroup", name: "Grown Folks Collective", url: "https://www.grownfolkscollective.com" },
     typicalAgeRange: "30-",
   };
 
@@ -283,7 +288,7 @@ const EventDetail = () => {
             )}
           </section>
 
-          <MeetTheArtists eventId={event._id} />
+          <MeetTheArtists eventId={event._id} onLoaded={setLineup} />
 
           {event.faqs?.length > 0 && (
             <section className="gfc-detail-section">

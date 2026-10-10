@@ -3,7 +3,7 @@ import { BACKEND_URL } from '../Services/eventUtils';
 import '../Styles/MeetTheArtists.css';
 
 // Approved artists for an event (shows nothing if there are none)
-const MeetTheArtists = ({ eventId }) => {
+const MeetTheArtists = ({ eventId, onLoaded }) => {
   const [artists, setArtists] = useState([]);
 
   useEffect(() => {
@@ -12,13 +12,17 @@ const MeetTheArtists = ({ eventId }) => {
     fetch(`${BACKEND_URL}/api/artists/public?eventId=${encodeURIComponent(eventId)}`)
       .then((res) => res.json())
       // The host is listed first
-      .then((data) => active && setArtists(
-        (Array.isArray(data) ? data : []).sort((a, b) => (b.role === 'host') - (a.role === 'host'))
-      ))
-      .catch(() => active && setArtists([]));
+      .then((data) => {
+        if (!active) return;
+        const list = (Array.isArray(data) ? data : []).sort((a, b) => (b.role === 'host') - (a.role === 'host'));
+        setArtists(list);
+        onLoaded?.(list);
+      })
+      .catch(() => { if (active) { setArtists([]); onLoaded?.([]); } });
     return () => {
       active = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventId]);
 
   if (!artists.length) return null;
