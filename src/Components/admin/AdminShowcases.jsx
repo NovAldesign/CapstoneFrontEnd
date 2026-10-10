@@ -15,6 +15,46 @@ const Avatar = ({ p }) =>
     <div className="ga-avatar" aria-hidden="true">{p.role === 'host' ? '🎙️' : '🎤'}</div>
   );
 
+// Bio with an Edit button (fixes show on the event page right away)
+const BioField = ({ p }) => {
+  const [bio, setBio] = useState(p.bio || '');
+  const [draft, setDraft] = useState(p.bio || '');
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const save = async () => {
+    setSaving(true);
+    setError('');
+    try {
+      const r = await adminApi(`/applications/${p.id}`, { method: 'PATCH', body: { bio: draft } });
+      setBio(r.bio);
+      setEditing(false);
+    } catch (err) {
+      setError(err.message);
+    }
+    setSaving(false);
+  };
+  if (editing) {
+    return (
+      <div>
+        <textarea className="ga-textarea" rows={5} maxLength={600} value={draft} onChange={(e) => setDraft(e.target.value)} aria-label={`Bio for ${p.artistName}`} />
+        <div className="ga-row" style={{ gap: 6, marginTop: 6 }}>
+          <button type="button" className="ga-btn ga-btn-sm ga-btn-navy" disabled={saving} onClick={save}>{saving ? 'Saving…' : 'Save bio'}</button>
+          <button type="button" className="ga-btn ga-btn-sm" disabled={saving} onClick={() => { setDraft(bio); setEditing(false); }}>Cancel</button>
+          <span className="ga-small ga-muted">{draft.length}/600</span>
+        </div>
+        {error && <p className="ga-note err">{error}</p>}
+      </div>
+    );
+  }
+  return (
+    <span>
+      {bio || '—'}{' '}
+      <button type="button" className="ga-link" onClick={() => { setDraft(bio); setEditing(true); }}>Edit</button>
+    </span>
+  );
+};
+
 const Details = ({ p }) => (
   <div className="ga-detail">
     <dl>
@@ -22,7 +62,7 @@ const Details = ({ p }) => (
       <dt>Email</dt><dd><a href={`mailto:${p.email}`}>{p.email}</a></dd>
       <dt>Phone</dt><dd><a href={`tel:${p.phone}`}>{p.phone}</a></dd>
       {p.genres && (<><dt>{p.role === 'host' ? 'Style' : 'Sound'}</dt><dd>{p.genres}</dd></>)}
-      {p.bio && (<><dt>Bio</dt><dd>{p.bio}</dd></>)}
+      <dt>Bio</dt><dd><BioField p={p} /></dd>
       {p.links?.length > 0 && (
         <><dt>Links</dt><dd>{p.links.map((l) => <div key={l}><a href={l} target="_blank" rel="noreferrer">{l}</a></div>)}</dd></>
       )}
