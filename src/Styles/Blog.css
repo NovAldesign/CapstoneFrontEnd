@@ -149,7 +149,8 @@
 
 .blog-card-image {
   width: 100%;
-  height: 240px;
+  height: auto;
+  aspect-ratio: 16 / 9;   /* matches blog covers (1600 x 900), so nothing gets cut off */
   object-fit: cover;
   display: block;
   transition: transform 0.3s ease;
@@ -161,7 +162,7 @@
 }
 
 .featured-card .blog-card-image {
-  height: 340px;
+  height: auto;
   border-radius: 2px;
 }
 
