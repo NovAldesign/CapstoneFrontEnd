@@ -230,6 +230,19 @@ const AdminShowcases = () => {
     } finally { setBusy(false); }
   };
 
+  // Remove an empty duplicate showcase (no tickets, nobody booked or applied)
+  const removeShow = async (s) => {
+    if (!window.confirm(`Remove this copy of "${s.name}" (${fmtDay(s.date)})? It has no tickets and nobody booked. It disappears from the website, the perform page and this list.`)) return;
+    setBusy(true);
+    try {
+      await adminApi(`/showcases/${s.id}/remove`, { method: 'POST' });
+      setNote({ type: 'ok', text: `Removed the empty copy of ${s.name}.${s.eventbrite ? ' If it comes back after an Eventbrite sync, delete it in Eventbrite too.' : ''}` });
+      load();
+    } catch (e) {
+      setNote({ type: 'err', text: e.message });
+    } finally { setBusy(false); }
+  };
+
   const paid = async (p, isPaid) => {
     setBusy(true);
     try {
@@ -296,6 +309,11 @@ const AdminShowcases = () => {
               <div className="ga-slots">
                 <span className={`ga-slot ${artistsFull ? 'full' : ''}`}>Artists {s.artists.length}/{ARTIST_SLOTS}</span>
                 <span className={`ga-slot ${hostFull ? 'full' : ''}`}>Host {s.hosts.length}/1</span>
+                {s.removable && view === 'upcoming' && (
+                  <button type="button" className="ga-btn ga-btn-sm ga-btn-danger" disabled={busy} onClick={() => removeShow(s)}>
+                    Remove
+                  </button>
+                )}
               </div>
             </div>
             <div className="ga-show-body">
