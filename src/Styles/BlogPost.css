@@ -450,3 +450,22 @@
   .editorial-body-content .gfc-recipe { padding: 22px 18px 6px; }
   .editorial-body-content h2 { font-size: 1.55rem; }
 }
+
+/* Recipe photo at the top of a recipe card */
+.editorial-body-content .gfc-recipe-photo {
+  display: block;
+  width: calc(100% + 60px);
+  max-width: none;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  margin: -28px -30px 22px;
+  border-radius: 6px 6px 0 0;
+}
+
+@media (max-width: 600px) {
+  .editorial-body-content .gfc-recipe-photo {
+    width: calc(100% + 36px);
+    margin: -22px -18px 18px;
+  }
+}
