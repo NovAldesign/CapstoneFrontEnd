@@ -132,13 +132,32 @@ const AdminDashboard = () => {
   }, [membership, memberSearch, memberFilter]);
 
   // ── Filtered Events ─────────────────────────────────────────────────────
+  // Events list views: live upcoming events, past events, or drafts & cancelled copies
+  const [eventView, setEventView] = useState('upcoming');
+  const eventGroup = (e) => {
+    if (e.status === 'draft' || e.status === 'cancelled') return 'hidden';
+    return new Date(e.date) >= new Date(Date.now() - 86400000) ? 'upcoming' : 'past';
+  };
+  const eventViewCounts = useMemo(() => events.reduce((c, e) => { const g = eventGroup(e); c[g] = (c[g] || 0) + 1; return c; }, {}), [events]);
   const filteredEvents = useMemo(() => {
-    return events.filter(e =>
-      eventSearch === '' ||
-      e.name?.toLowerCase().includes(eventSearch.toLowerCase()) ||
-      e.eventType?.toLowerCase().includes(eventSearch.toLowerCase())
-    );
-  }, [events, eventSearch]);
+    const q = eventSearch.toLowerCase();
+    return events
+      .filter((e) => eventGroup(e) === eventView)
+      .filter((e) => !q || e.name?.toLowerCase().includes(q) || e.eventType?.toLowerCase().includes(q))
+      .sort((a, b) => (eventView === 'upcoming' ? 1 : -1) * (new Date(a.date) - new Date(b.date)));
+  }, [events, eventSearch, eventView]);
+
+  // Real ticket counts for the list (website + Eventbrite + added by hand)
+  const [eventTotals, setEventTotals] = useState({});
+  useEffect(() => {
+    if (activeTab !== 'events' || eventView === 'hidden') return;
+    const ids = filteredEvents.map((e) => e._id).filter((id) => !(id in eventTotals)).slice(0, 60);
+    if (!ids.length) return;
+    adminApi(`/events/totals?ids=${ids.join(',')}`)
+      .then((d) => setEventTotals((prev) => ({ ...prev, ...d.totals })))
+      .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, eventView, filteredEvents]);
 
   // ── Members Handlers ────────────────────────────────────────────────────
   const calculateAge = (dob) => {
@@ -593,6 +612,13 @@ const AdminDashboard = () => {
           ) : (
             <div className="table-container full-width">
               <div className="table-toolbar">
+                <div className="ga-seg" role="tablist" aria-label="Which events">
+                  {[['upcoming', 'Upcoming'], ['past', 'Past'], ['hidden', 'Drafts & cancelled']].map(([id, label]) => (
+                    <button key={id} type="button" role="tab" aria-selected={eventView === id} className={eventView === id ? 'on' : ''} onClick={() => setEventView(id)}>
+                      {label} ({eventViewCounts[id] || 0})
+                    </button>
+                  ))}
+                </div>
                 <input
                   className="search-input"
                   placeholder="Search events…"
@@ -609,10 +635,10 @@ const AdminDashboard = () => {
                 </thead>
                 <tbody>
                   {filteredEvents.length === 0 && (
-                    <tr><td colSpan={7} className="empty-cell">No events yet — create your first one!</td></tr>
+                    <tr><td colSpan={7} className="empty-cell">{eventView === 'hidden' ? 'No drafts or cancelled events.' : 'No events here.'}</td></tr>
                   )}
                   {filteredEvents.map(ev => {
-                    const sold = ev.totalSold || 0;
+                    const sold = eventTotals[ev._id]?.tickets ?? (ev.totalSold || 0);
                     const cap  = ev.capacity  || 0;
                     const fill = cap > 0 ? Math.round((sold / cap) * 100) : 0;
                     return (
