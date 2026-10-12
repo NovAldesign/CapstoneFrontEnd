@@ -92,7 +92,7 @@ const AdminDashboard = () => {
     let active = true;
     setEventLive({ loading: true });
     adminApi(`/events/${selectedEvent._id}/guests`)
-      .then((d) => active && setEventLive({ totals: d.totals, guests: d.guests || [], eventbrite: d.eventbrite }))
+      .then((d) => active && setEventLive({ totals: d.totals, guests: d.guests || [], eventbrite: d.eventbrite, mergedFrom: d.mergedFrom || [] }))
       .catch((e) => active && setEventLive({ error: e.message }));
     return () => { active = false; };
   }, [selectedEvent?._id]);
@@ -150,7 +150,7 @@ const AdminDashboard = () => {
   // Real ticket counts for the list (website + Eventbrite + added by hand)
   const [eventTotals, setEventTotals] = useState({});
   useEffect(() => {
-    if (activeTab !== 'events' || eventView === 'hidden') return;
+    if (activeTab !== 'events') return;
     const ids = filteredEvents.map((e) => e._id).filter((id) => !(id in eventTotals)).slice(0, 60);
     if (!ids.length) return;
     adminApi(`/events/totals?ids=${ids.join(',')}`)
@@ -598,6 +598,9 @@ const AdminDashboard = () => {
                       ))}
                     </tbody>
                   </table>
+                )}
+                {eventLive?.mergedFrom?.length > 0 && (
+                  <p className="empty-hint">Includes guests from a copy of this event ({eventLive.mergedFrom.map((m) => `${m.name}, ${m.status}`).join('; ')}).</p>
                 )}
                 {eventLive?.eventbrite?.connected && eventLive.eventbrite.ok === false && (
                   <p className="empty-hint">Eventbrite sales couldn't load right now, so totals may be missing those.</p>

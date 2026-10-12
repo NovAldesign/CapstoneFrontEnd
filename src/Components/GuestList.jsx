@@ -207,7 +207,7 @@ const GuestList = ({ api, admin = false, title, doorUrl }) => {
     );
   }
 
-  const { totals, event, eventbrite } = data;
+  const { totals, event, eventbrite, mergedFrom } = data;
   const pct = totals.tickets ? Math.round((totals.checkedIn / totals.tickets) * 100) : 0;
   const waiting = data.guests.filter((g) => g.checkedIn < g.tickets).length;
   const here = data.guests.filter((g) => g.checkedIn > 0).length;
@@ -253,6 +253,9 @@ const GuestList = ({ api, admin = false, title, doorUrl }) => {
           </div>
         )}
         {eventbrite?.connected && !eventbrite.ok && <p className="gl-warn">{eventbrite.error}</p>}
+        {admin && mergedFrom?.length > 0 && (
+          <p className="gl-warn">Includes guests from a copy of this event ({mergedFrom.map((m) => `${m.name}, ${m.status}`).join('; ')}), so everyone is on one list.</p>
+        )}
       </header>
 
       <div className="gl-bar-sticky">
