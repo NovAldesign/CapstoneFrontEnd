@@ -85,6 +85,17 @@ const AdminDashboard = () => {
   const [editingEvent, setEditingEvent] = useState(null);
   const [eventLoading, setEventLoading] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  // Real sales for the open event: website + Eventbrite + guests added by hand
+  const [eventLive, setEventLive] = useState(null);
+  useEffect(() => {
+    if (!selectedEvent?._id) { setEventLive(null); return; }
+    let active = true;
+    setEventLive({ loading: true });
+    adminApi(`/events/${selectedEvent._id}/guests`)
+      .then((d) => active && setEventLive({ totals: d.totals, guests: d.guests || [], eventbrite: d.eventbrite }))
+      .catch((e) => active && setEventLive({ error: e.message }));
+    return () => { active = false; };
+  }, [selectedEvent?._id]);
   const [eventSearch, setEventSearch]   = useState('');
 
   useEffect(() => { loadData(); }, []);
@@ -260,17 +271,19 @@ const AdminDashboard = () => {
   };
 
   const exportEventAttendees = (event) => {
-    const attendees = event.attendees || [];
-    if (!attendees.length) return alert('No attendees to export yet.');
-    const data = attendees.map(a => ({
-      'First Name': a.firstName || '',
-      'Last Name': a.lastName || '',
-      'Email': a.email || '',
-      'Phone': a.phone || '',
-      'Ticket Type': a.ticketType || '',
-      'Amount Paid': a.amountPaid ? `$${(a.amountPaid / 100).toFixed(2)}` : '$0',
-      'Checked In': a.checkedIn ? 'Yes' : 'No',
-      'Purchase Date': a.createdAt ? new Date(a.createdAt).toLocaleDateString() : '',
+    const guests = eventLive?.guests || [];
+    if (!guests.length) return alert('No attendees to export yet.');
+    const data = guests.map((g) => ({
+      'Name': g.name || '',
+      'Email': g.email || '',
+      'Phone': g.phone || '',
+      'Tickets': g.tickets,
+      'Ticket Type': g.ticketName || '',
+      'Amount Paid': `$${((g.paidCents || 0) / 100).toFixed(2)}`,
+      'From': g.source || '',
+      'Code': g.code || '',
+      'Checked In': g.checkedIn || 0,
+      'Purchase Date': g.boughtAt ? new Date(g.boughtAt).toLocaleDateString() : '',
     }));
     exportToCSV(data, `${event.name.replace(/\s+/g,'-')}-attendees.csv`);
   };
@@ -476,16 +489,22 @@ const AdminDashboard = () => {
               <div className="gold-spacer-v2" />
 
               <div className="stats-grid mini">
-                <StatCard label="Tickets Sold"  value={selectedEvent.totalSold || 0}    accent="#C9A84C" />
-                <StatCard label="Capacity"       value={selectedEvent.capacity || 0}     accent="#7B68EE" />
-                <StatCard label="Fill Rate"
-                  value={selectedEvent.capacity > 0 ? `${Math.round(((selectedEvent.totalSold||0) / selectedEvent.capacity) * 100)}%` : '0%'}
-                  accent="#4CAF7D"
-                />
-                <StatCard label="Est. Revenue"
-                  value={`$${((selectedEvent.ticketTypes || []).reduce((a, t) => a + ((t.price||0) * Math.min(t.quantity||0, selectedEvent.totalSold||0)), 0) / 100).toLocaleString()}`}
-                  accent="#E8A838"
-                />
+                {(() => {
+                  const live = eventLive?.totals;
+                  const sold = live ? live.tickets : (selectedEvent.totalSold || 0);
+                  const cap = selectedEvent.capacity || 0;
+                  const wait = eventLive?.loading ? '…' : null;
+                  return (
+                    <>
+                      <StatCard label="Tickets Sold" value={wait ?? sold} accent="#C9A84C" />
+                      <StatCard label="Capacity" value={cap} accent="#7B68EE" />
+                      <StatCard label="Fill Rate" value={wait ?? (cap > 0 ? `${Math.round((sold / cap) * 100)}%` : '0%')} accent="#4CAF7D" />
+                      <StatCard label="Ticket Revenue"
+                        value={wait ?? (live ? `$${(live.paidCents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '—')}
+                        accent="#E8A838" />
+                    </>
+                  );
+                })()}
               </div>
 
               {selectedEvent.ticketTypes?.length > 0 && (
@@ -497,7 +516,7 @@ const AdminDashboard = () => {
                       {selectedEvent.ticketTypes.map((t, i) => (
                         <tr key={i} className="admin-row">
                           <td>{t.name}</td>
-                          <td>{t.price ? `$${(t.price / 100).toFixed(2)}` : 'Free'}</td>
+                          <td>{t.price ? `$${Number(t.price).toFixed(2)}` : 'Free'}</td>
                           <td>{t.quantity}</td>
                           <td className="td-muted">{t.description || '—'}</td>
                         </tr>
@@ -530,30 +549,39 @@ const AdminDashboard = () => {
               <section className="detail-group">
                 <div className="section-row">
                   <h4 className="detail-heading">Attendees</h4>
-                  <button className="export-btn" onClick={() => exportEventAttendees(selectedEvent)}>
-                    ↓ Export CSV
-                  </button>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <button className="export-btn" onClick={() => exportEventAttendees(selectedEvent)}>↓ Export CSV</button>
+                    <button className="export-btn" onClick={() => openGuests(selectedEvent._id)}>Guest list &amp; check-in →</button>
+                  </div>
                 </div>
-                {!selectedEvent.attendees?.length ? (
-                  <p className="empty-hint">No attendees registered yet.</p>
+                {eventLive?.loading ? (
+                  <p className="empty-hint">Loading attendees…</p>
+                ) : eventLive?.error ? (
+                  <p className="empty-hint">{eventLive.error}</p>
+                ) : !eventLive?.guests?.length ? (
+                  <p className="empty-hint">No attendees yet.</p>
                 ) : (
                   <table className="admin-table">
                     <thead>
-                      <tr><th>Name</th><th>Email</th><th>Phone</th><th>Ticket</th><th>Paid</th><th>Checked In</th></tr>
+                      <tr><th>Name</th><th>Email</th><th>Tickets</th><th>Ticket</th><th>Paid</th><th>From</th><th>Checked In</th></tr>
                     </thead>
                     <tbody>
-                      {selectedEvent.attendees.map((a, i) => (
-                        <tr key={i} className="admin-row">
-                          <td>{a.firstName} {a.lastName}</td>
-                          <td className="td-muted"><a href={`mailto:${a.email}`} className="detail-link">{a.email}</a></td>
-                          <td className="td-muted">{a.phone || '—'}</td>
-                          <td>{a.ticketType || '—'}</td>
-                          <td>{a.amountPaid ? `$${(a.amountPaid / 100).toFixed(2)}` : 'Free'}</td>
-                          <td>{a.checkedIn ? <span className="dot-green">● In</span> : <span className="dot-red">● No</span>}</td>
+                      {eventLive.guests.map((g) => (
+                        <tr key={g.key} className="admin-row">
+                          <td>{g.name}</td>
+                          <td className="td-muted">{g.email ? <a href={`mailto:${g.email}`} className="detail-link">{g.email}</a> : '—'}</td>
+                          <td>{g.tickets}</td>
+                          <td>{g.ticketName || '—'}</td>
+                          <td>{g.paidCents ? `$${(g.paidCents / 100).toFixed(2)}` : 'Free'}</td>
+                          <td className="td-muted">{g.source}{g.code ? ` · ${g.code}` : ''}</td>
+                          <td>{g.checkedIn ? <span className="dot-green">● {g.checkedIn}</span> : <span className="dot-red">● No</span>}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
+                )}
+                {eventLive?.eventbrite?.connected && eventLive.eventbrite.ok === false && (
+                  <p className="empty-hint">Eventbrite sales couldn't load right now, so totals may be missing those.</p>
                 )}
               </section>
 
