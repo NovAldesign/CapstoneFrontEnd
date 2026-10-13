@@ -11,10 +11,11 @@ const MeetTheArtists = ({ eventId, onLoaded }) => {
     let active = true;
     fetch(`${BACKEND_URL}/api/artists/public?eventId=${encodeURIComponent(eventId)}`)
       .then((res) => res.json())
-      // The host is listed first
+      // The host is listed first, the live artist last
       .then((data) => {
         if (!active) return;
-        const list = (Array.isArray(data) ? data : []).sort((a, b) => (b.role === 'host') - (a.role === 'host'));
+        const rank = (a) => (a.role === 'host' ? 0 : a.role === 'visual' ? 2 : 1);
+        const list = (Array.isArray(data) ? data : []).sort((a, b) => rank(a) - rank(b));
         setArtists(list);
         onLoaded?.(list);
       })
@@ -43,13 +44,13 @@ const MeetTheArtists = ({ eventId, onLoaded }) => {
                 loading="lazy"
               />
             ) : (
-              <div className="gfc-artist-photo gfc-artist-photo-empty" aria-hidden="true">🎤</div>
+              <div className="gfc-artist-photo gfc-artist-photo-empty" aria-hidden="true">{a.role === 'visual' ? '🎨' : '🎤'}</div>
             )}
             <div className="gfc-artist-body">
               <h3 className="gfc-artist-name">{a.artistName}</h3>
-              {(a.role === 'host' || a.genres || a.hometown) && (
+              {(a.role === 'host' || a.role === 'visual' || a.genres || a.hometown) && (
                 <p className="gfc-artist-meta">
-                  {[a.role === 'host' ? 'Your host' : '', a.genres, a.hometown].filter(Boolean).join(' · ')}
+                  {[a.role === 'host' ? 'Your host' : a.role === 'visual' ? 'Live artist' : '', a.genres, a.hometown].filter(Boolean).join(' · ')}
                 </p>
               )}
               {a.bio && <p className="gfc-artist-bio">{a.bio}</p>}
@@ -61,7 +62,7 @@ const MeetTheArtists = ({ eventId, onLoaded }) => {
                 )}
                 {a.listenUrl && (
                   <a href={a.listenUrl} target="_blank" rel="noopener noreferrer">
-                    {a.role === 'host' ? 'Watch ▸' : 'Listen ▸'}
+                    {a.role === 'host' ? 'Watch ▸' : a.role === 'visual' ? 'See the work ▸' : 'Listen ▸'}
                   </a>
                 )}
               </p>

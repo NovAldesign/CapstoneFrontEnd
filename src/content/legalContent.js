@@ -433,8 +433,8 @@ export const LEGAL_PAGES = {
   performer: {
     path: "/performer-agreement",
     title: "Performer Agreement",
-    description: `The agreement for artists, MCs, DJs, and other performers at ${brand} events.`,
-    intro: `${brand} is a social club for adults 30 and older. Our showcases give artists, MCs, DJs, comedians, and other performers ("you") a stage and an audience. This agreement applies when you apply, are booked, or perform at a GFC event. You accept it when you check the agreement box on our application.`,
+    description: `The agreement for artists, MCs, DJs, live artists, and other performers at ${brand} events.`,
+    intro: `${brand} is a social club for adults 30 and older. Our showcases give artists, MCs, DJs, comedians, live painters and sketch artists, and other performers ("you") a stage and an audience. This agreement applies when you apply, are booked, or perform at a GFC event. You accept it when you check the agreement box on our application.`,
     sections: [
       {
         h: "1. What this is",
@@ -453,6 +453,7 @@ export const LEGAL_PAGES = {
           "Follow our Code of Conduct, the venue's rules, and every instruction from GFC and venue staff.",
           "Do not bring alcohol or drugs to the event, and do not perform intoxicated.",
           "Meet the ticket requirements in your booking email (for example, at least 3 tickets sold one week before the show).",
+          "Live artists: create in the space we assign. No spray paint or solvents. Use a drop cloth to protect the floor and furniture, and leave your space clean.",
         ],
       },
       {
@@ -467,14 +468,15 @@ export const LEGAL_PAGES = {
       {
         h: "4. Your equipment",
         p: [
-          "You bring and are responsible for your own instruments, mics, cables, and gear. GFC and the venue are not liable for any loss, theft, or damage to your equipment. You are responsible for any damage your equipment or setup causes to the venue.",
+          "You bring and are responsible for your own instruments, mics, cables, and gear, and live artists for their own easels, canvases, paints, and supplies. GFC and the venue are not liable for any loss, theft, or damage to your equipment. You are responsible for any damage your equipment or setup causes to the venue.",
         ],
       },
       {
-        h: "5. Your music and material",
+        h: "5. Your music, art, and material",
         list: [
           "You confirm you have the right to perform your material. Original work stays yours. For covers, you are responsible for following music licensing rules and any limits we or the venue set.",
           "You keep ownership of your music, material, and merch, and you keep 100% of your merch sales and tips.",
+          "Live artists keep ownership of their artwork, including the piece created at the show. You set your own prices, handle your own sales and payments, and keep 100% of your art sales, merch, and tips. You are responsible for any sales tax on what you sell.",
         ],
       },
       {
@@ -483,6 +485,7 @@ export const LEGAL_PAGES = {
           "The showcase exists to put your talent in front of people, so being featured is part of performing. By applying, you allow GFC to use your name, photo, bio, and links on its website, emails, and social media to promote the event and future showcases.",
           "GFC photographs, records, and may livestream your performance, and uses photos and clips to promote GFC, with credit to you. Email us to remove a specific post.",
           "Showcases are public events. Guests may photograph, record, or go live during your set. GFC does not control and is not responsible for guest recordings or posts.",
+          "For live artists, this includes photos and video of you creating and of your finished artwork, which GFC may post with credit to you.",
           "You may record your own set for your own promotion. Tag @grownfolkscollective.",
         ],
       },
@@ -657,7 +660,7 @@ export const LEGAL_FOOTER_LINKS = [
 ];
 
 // Pages that exist but aren't in the footer (linked from their forms)
-export const PERFORMER_AGREEMENT_VERSION = "2026-10-10";
+export const PERFORMER_AGREEMENT_VERSION = "2026-10-13";
 // MUST match SPONSOR_TERMS_VERSION / PERK_TERMS_VERSION in the backend utilities/partnerPortal.js
 export const SPONSOR_AGREEMENT_VERSION = "2026-10-09.2";
 export const PERK_TERMS_VERSION = "2026-10-09";

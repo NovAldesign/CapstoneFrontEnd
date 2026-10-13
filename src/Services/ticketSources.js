@@ -35,6 +35,7 @@ export const SOURCES = {
   meetup: { label: 'Meetup', color: '#8a8f98' },
   allevents: { label: 'AllEvents', color: '#8a8f98' },
   partner: { label: 'Partner', color: '#8a8f98' },
+  scout: { label: 'Industry scout', color: '#8a8f98' },
   other: { label: 'Other', color: '#8a8f98' },
 };
 

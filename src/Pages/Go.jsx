@@ -24,6 +24,11 @@ const LINKS = {
   events: "/events",
   showcase: "/events/acoustic-and-infused-gfc-live-music-showcase-30-6aa634669e0da510aa0c0ea5", // update to the next showcase
   perform: "/perform",
+  art: "/perform/art",
+  artist: "/perform/art",
+  paint: "/perform/art",
+  scout: "/scouts",
+  scouts: "/scouts",
   mc: "/perform/host",
   emcee: "/perform/host",
   select: "/select",

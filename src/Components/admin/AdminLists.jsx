@@ -421,3 +421,78 @@ export const AdminSubscribers = () => {
     </>
   );
 };
+
+// Industry scouts from /scouts: who they are, what they're looking for, and which showcases they're coming to
+export const AdminScouts = () => {
+  const [items, setItems] = useState(null);
+  const [error, setError] = useState('');
+  const [search, setSearch] = useState('');
+  useEffect(() => { adminApi('/scouts').then((d) => setItems(d.items)).catch((e) => setError(e.message)); }, []);
+
+  const shown = useMemo(() => (items || []).filter((s) =>
+    !search.trim() || `${name(s)} ${s.email} ${s.company} ${s.title}`.toLowerCase().includes(search.trim().toLowerCase())), [items, search]);
+
+  // Brevo import format, for scouts who said yes to showcase emails
+  const exportBrevo = () => {
+    const rows = shown.filter((s) => s.notify).map((s) => ({
+      EMAIL: s.email, FIRSTNAME: s.firstName, LASTNAME: s.lastName, COMPANY: s.company || '', JOB_TITLE: s.title || '',
+    }));
+    downloadCSV(rows, `brevo-scouts-${new Date().toISOString().slice(0, 10)}.csv`);
+  };
+
+  if (!items) return error ? <p className="ga-note err">{error}</p> : <div className="ga-loading">Loading scouts…</div>;
+  const upcoming = (s) => (s.showcases || []).filter((e) => new Date(e.date) >= new Date(Date.now() - 86400000));
+  const coming = items.filter((s) => upcoming(s).length).length;
+
+  return (
+    <>
+      <div className="ga-stats">
+        <div className="ga-stat"><div className="ga-stat-num">{items.length}</div><div className="ga-stat-label">Scouts</div></div>
+        <div className="ga-stat"><div className="ga-stat-num">{coming}</div><div className="ga-stat-label">Coming to a showcase</div></div>
+        <div className="ga-stat"><div className="ga-stat-num">{items.filter((s) => s.notify).length}</div><div className="ga-stat-label">OK to email</div></div>
+      </div>
+      <div className="ga-card">
+        <div className="ga-card-head">
+          <input className="ga-input" style={{ maxWidth: 260 }} placeholder="Search" aria-label="Search scouts" value={search} onChange={(e) => setSearch(e.target.value)} />
+          <button type="button" className="ga-btn ga-btn-gold" onClick={exportBrevo}>↓ Brevo import file ({shown.filter((s) => s.notify).length})</button>
+        </div>
+        <p className="ga-small ga-muted" style={{ marginTop: -4 }}>
+          Share grownfolkscollective.com/go/scout. Scouts are added to the guest list (free) for the showcases they pick.
+          In Brevo: Contacts → Import contacts → upload this file → list “GFC Industry Scouts”.
+        </p>
+        {shown.length === 0 ? (
+          <p className="ga-small ga-muted">No scouts yet.</p>
+        ) : (
+          <div className="ga-table-wrap">
+            <table className="ga-table">
+              <thead><tr><th>Name</th><th>Company & role</th><th>Looking for</th><th>Showcases</th><th>Joined</th></tr></thead>
+              <tbody>
+                {shown.map((s) => (
+                  <tr key={s._id}>
+                    <td>
+                      {name(s)}<br />
+                      <a className="ga-small" href={`mailto:${s.email}`}>{s.email}</a>
+                      {s.phone && <div className="ga-small">{s.phone}</div>}
+                    </td>
+                    <td className="ga-small">
+                      {[s.company, s.title].filter(Boolean).join(' · ') || '—'}
+                      {s.website && <div><a href={s.website} target="_blank" rel="noopener noreferrer">Website</a></div>}
+                      {s.instagram && <div><a href={`https://instagram.com/${s.instagram}`} target="_blank" rel="noopener noreferrer">@{s.instagram}</a></div>}
+                    </td>
+                    <td className="ga-small">{(s.lookingFor || []).join(', ') || '—'}{s.genres ? <div className="ga-muted">{s.genres}</div> : null}</td>
+                    <td className="ga-small">
+                      {(s.showcases || []).length
+                        ? s.showcases.map((e) => <div key={e.id}>{fmtDate(e.date)} · {e.name}</div>)
+                        : <span className="ga-muted">None picked</span>}
+                    </td>
+                    <td className="ga-small">{fmtDate(s.createdAt)}{s.notify ? '' : <div className="ga-muted">No emails</div>}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </>
+  );
+};

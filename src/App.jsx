@@ -32,6 +32,7 @@ import SuccessPage from "./Pages/SuccessPage.jsx";
 import MembershipSuccess from "./Pages/MembershipSuccess.jsx";
 import GroupBooking from "./Pages/GroupBooking.jsx";
 import Perform from "./Pages/Perform.jsx";
+import Scouts from "./Pages/Scouts.jsx";
 import Legal from "./Pages/Legal.jsx";
 import Links from "./Pages/Links.jsx";
 import Go from "./Pages/Go.jsx";
@@ -91,6 +92,8 @@ function App() {
             <Route path="/office-holiday-party-atlanta" element={<HostLanding page="holiday" />} />
             <Route path="/perform" element={<Perform key="artist" />} />
             <Route path="/perform/host" element={<Perform key="host" role="host" />} />
+            <Route path="/perform/art" element={<Perform key="visual" role="visual" />} />
+            <Route path="/scouts" element={<Scouts />} />
             <Route path="/select" element={<Select />} />
             <Route path="/select/invitation" element={<SelectInvitation />} />
             <Route path="/select/nominate" element={<SelectNominate />} />

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { adminApi, fmtDate, fmtDay, timeAgo } from '../../Services/adminApi';
 
-// Showcases: lineups, artist + host applications, ticket sales by code, payouts
+// Showcases: lineups, artist + host + live artist applications, ticket sales by code, payouts
 const ARTIST_SLOTS = 3;
 const HOLD_MIN = 3; // tickets needed one week before the show
 
@@ -12,7 +12,7 @@ const Avatar = ({ p }) =>
   p.headshotUrl ? (
     <img className="ga-avatar" src={p.headshotUrl.replace('/upload/', '/upload/c_fill,g_face,w_96,h_96,q_auto,f_auto/')} alt="" />
   ) : (
-    <div className="ga-avatar" aria-hidden="true">{p.role === 'host' ? '🎙️' : '🎤'}</div>
+    <div className="ga-avatar" aria-hidden="true">{p.role === 'host' ? '🎙️' : p.role === 'visual' ? '🎨' : '🎤'}</div>
   );
 
 // Bio with an Edit button (fixes show on the event page right away)
@@ -61,7 +61,7 @@ const Details = ({ p }) => (
       <dt>Name</dt><dd>{p.name}</dd>
       <dt>Email</dt><dd><a href={`mailto:${p.email}`}>{p.email}</a></dd>
       <dt>Phone</dt><dd><a href={`tel:${p.phone}`}>{p.phone}</a></dd>
-      {p.genres && (<><dt>{p.role === 'host' ? 'Style' : 'Sound'}</dt><dd>{p.genres}</dd></>)}
+      {p.genres && (<><dt>{p.role === 'host' ? 'Style' : p.role === 'visual' ? 'Medium' : 'Sound'}</dt><dd>{p.genres}</dd></>)}
       <dt>Bio</dt><dd><BioField p={p} /></dd>
       {p.links?.length > 0 && (
         <><dt>Links</dt><dd>{p.links.map((l) => <div key={l}><a href={l} target="_blank" rel="noreferrer">{l}</a></div>)}</dd></>
@@ -69,7 +69,7 @@ const Details = ({ p }) => (
       {(p.instagram || p.tiktok) && (
         <><dt>Socials</dt><dd>{[p.instagram && `IG @${p.instagram}`, p.tiktok && `TikTok @${p.tiktok}`].filter(Boolean).join(' · ')}</dd></>
       )}
-      {p.role !== 'host' && (<><dt>Equipment</dt><dd>{p.equipmentNotes || '—'}{p.needsPower ? ' · needs power' : ''}</dd></>)}
+      {p.role !== 'host' && (<><dt>{p.role === 'visual' ? 'Bringing' : 'Equipment'}</dt><dd>{p.equipmentNotes || '—'}{p.needsPower ? ' · needs power' : ''}</dd></>)}
       <dt>Payout</dt><dd>{[p.payoutMethod, p.payoutHandle].filter(Boolean).join(': ') || '—'}</dd>
       <dt>On event page</dt><dd>{p.featureConsent ? 'Yes' : 'No (no permission)'}</dd>
       <dt>Applied</dt><dd>{timeAgo(p.createdAt)}{p.eventName ? ` · for ${p.eventName}` : ''}</dd>
@@ -105,7 +105,7 @@ const ApproveDrawer = ({ person, showcases, onClose, onDone }) => {
       <form className="ga-drawer" onClick={(e) => e.stopPropagation()} onSubmit={submit}>
         <div className="ga-drawer-head">
           <div>
-            <p className="ga-kicker">{person.role === 'host' ? 'Book a host' : 'Book an artist'}</p>
+            <p className="ga-kicker">{person.role === 'host' ? 'Book a host' : person.role === 'visual' ? 'Book a live artist' : 'Book an artist'}</p>
             <h2 id="approve-title" className="ga-card-title">{person.artistName}</h2>
           </div>
           <button type="button" className="ga-x" aria-label="Close" onClick={onClose}>×</button>
@@ -136,7 +136,7 @@ const ApproveDrawer = ({ person, showcases, onClose, onDone }) => {
         <div className="ga-drawer-foot">
           <button type="button" className="ga-btn" onClick={onClose}>Cancel</button>
           <button type="submit" className="ga-btn ga-btn-navy" disabled={saving || !eventId}>
-            {saving ? 'Booking…' : `Book ${person.role === 'host' ? 'host' : 'artist'}`}
+            {saving ? 'Booking…' : `Book ${person.role === 'host' ? 'host' : person.role === 'visual' ? 'live artist' : 'artist'}`}
           </button>
         </div>
       </form>
@@ -156,7 +156,7 @@ const PersonRow = ({ p, show, onApprove, onDecline, onPaid, busy }) => {
       <div style={{ minWidth: 0 }}>
         <div className="ga-row" style={{ gap: 8 }}>
           <span className="ga-person-name">{p.artistName}</span>
-          <span className={`ga-pill ${p.role === 'host' ? 'blue' : 'gold'}`}>{p.role === 'host' ? 'Host' : 'Artist'}</span>
+          <span className={`ga-pill ${p.role === 'host' ? 'blue' : p.role === 'visual' ? 'green' : 'gold'}`}>{p.role === 'host' ? 'Host' : p.role === 'visual' ? 'Live art' : 'Artist'}</span>
           {!booked && <span className="ga-pill amber">New</span>}
         </div>
         <div className="ga-person-sub">
@@ -167,7 +167,7 @@ const PersonRow = ({ p, show, onApprove, onDecline, onPaid, busy }) => {
               {behind && <> · <span className="ga-pill amber">Needs {HOLD_MIN} by {fmtDate(holdBy)}</span></>}
             </>
           ) : (
-            <>{p.genres || (p.role === 'host' ? 'Host' : 'Artist')} · applied {timeAgo(p.createdAt)}</>
+            <>{p.genres || (p.role === 'host' ? 'Host' : p.role === 'visual' ? 'Live artist' : 'Artist')} · applied {timeAgo(p.createdAt)}</>
           )}
         </div>
       </div>
@@ -257,7 +257,7 @@ const AdminShowcases = () => {
   if (!data) return note ? <p className={`ga-note ${note.type}`}>{note.text}</p> : <div className="ga-loading">Loading showcases…</div>;
 
   const unpaid = (data.showcases || []).filter((s) => s.past)
-    .flatMap((s) => [...s.artists, ...s.hosts])
+    .flatMap((s) => [...s.artists, ...s.hosts, ...(s.visuals || [])])
     .filter((p) => !p.payoutPaidAt && p.owed > 0);
   const owedTotal = unpaid.reduce((n, p) => n + p.owed, 0);
 
@@ -295,6 +295,8 @@ const AdminShowcases = () => {
       {shows.map((s) => {
         const artistsFull = s.artists.length >= ARTIST_SLOTS;
         const hostFull = s.hosts.length >= 1;
+        const visuals = s.visuals || [];
+        const visualFull = visuals.length >= 1;
         return (
           <section key={s.id} className="ga-show" aria-label={s.name}>
             <div className="ga-show-head">
@@ -309,6 +311,7 @@ const AdminShowcases = () => {
               <div className="ga-slots">
                 <span className={`ga-slot ${artistsFull ? 'full' : ''}`}>Artists {s.artists.length}/{ARTIST_SLOTS}</span>
                 <span className={`ga-slot ${hostFull ? 'full' : ''}`}>Host {s.hosts.length}/1</span>
+                <span className={`ga-slot ${visualFull ? 'full' : ''}`}>Live art {visuals.length}/1</span>
                 {s.removable && view === 'upcoming' && (
                   <button type="button" className="ga-btn ga-btn-sm ga-btn-danger" disabled={busy} onClick={() => removeShow(s)}>
                     Remove
@@ -318,8 +321,8 @@ const AdminShowcases = () => {
             </div>
             <div className="ga-show-body">
               <p className="ga-sub-head">Lineup</p>
-              {s.hosts.length + s.artists.length === 0 && <p className="ga-small ga-muted">Nobody booked yet.</p>}
-              {[...s.hosts, ...s.artists].map((p) => (
+              {s.hosts.length + s.artists.length + visuals.length === 0 && <p className="ga-small ga-muted">Nobody booked yet.</p>}
+              {[...s.hosts, ...s.artists, ...visuals].map((p) => (
                 <PersonRow key={p.id} p={p} show={s} onApprove={setApproving} onDecline={decline} onPaid={paid} busy={busy} />
               ))}
               {s.applicants.length > 0 && (

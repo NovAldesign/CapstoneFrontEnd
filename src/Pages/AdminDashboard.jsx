@@ -6,7 +6,7 @@ import AdminSelect from "../Components/AdminSelect.jsx";
 import AdminToday from "../Components/admin/AdminToday.jsx";
 import AdminShowcases from "../Components/admin/AdminShowcases.jsx";
 import AdminCodes from "../Components/admin/AdminCodes.jsx";
-import { AdminInboxList, AdminPerks, AdminSubscribers } from "../Components/admin/AdminLists.jsx";
+import { AdminInboxList, AdminPerks, AdminSubscribers, AdminScouts } from "../Components/admin/AdminLists.jsx";
 import AdminPartners from "../Components/admin/AdminPartners.jsx";
 import AdminGuests from "../Components/admin/AdminGuests.jsx";
 import AdminReports from "../Components/admin/AdminReports.jsx";
@@ -338,6 +338,7 @@ const AdminDashboard = () => {
       { id: 'messages', icon: '✉️', label: 'Messages', count: counts.messages },
       { id: 'members', icon: '👥', label: 'Members' },
       { id: 'subscribers', icon: '📬', label: 'Subscribers' },
+      { id: 'scouts', icon: '🔎', label: 'Industry Scouts' },
       { id: 'blog', icon: '📝', label: 'Blog' },
       { id: 'select', icon: '🎭', label: 'GFC Select™', count: counts.select },
       { id: 'reviews', icon: '⭐', label: 'Reviews', count: counts.reviews },
@@ -346,7 +347,7 @@ const AdminDashboard = () => {
   const TITLES = {
     today: ['Today', 'Everything waiting on you, in one place.'],
     events: ['Events', 'Every event, tickets sold and attendees.'],
-    showcases: ['Showcases', 'Lineups, artist and host applications, ticket codes and payouts.'],
+    showcases: ['Showcases', 'Lineups, artist, host and live artist applications, ticket codes and payouts.'],
     'create-event': [editingEvent ? 'Edit event' : 'New event', 'Set the details, tickets and photo.'],
     codes: ['Discount codes', 'Create, edit and pause codes. No coding needed.'],
     guests: ['Guest lists & check-in', 'Every ticket from every platform, and the door link for event day.'],
@@ -359,6 +360,7 @@ const AdminDashboard = () => {
     messages: ['Messages', 'Notes from the contact form.'],
     members: ['Members', 'Memberships and their status.'],
     subscribers: ['Subscribers', 'Your newsletter list.'],
+    scouts: ['Industry Scouts', 'Labels, managers and A&R coming to showcases for free.'],
     blog: ['Blog', 'Write, edit and remove posts on The Gathering Table.'],
     select: ['GFC Select™', 'Applications, doors and matching.'],
     reviews: ['Reviews', 'Guest reviews for the home page.'],
@@ -413,6 +415,7 @@ const AdminDashboard = () => {
       {activeTab === 'partners' && <AdminPartners />}
       {['private', 'groups', 'messages'].includes(activeTab) && <AdminInboxList kind={activeTab} />}
       {activeTab === 'subscribers' && <AdminSubscribers />}
+      {activeTab === 'scouts' && <AdminScouts />}
       {activeTab === 'blog' && <AdminBlog />}
       {activeTab === 'reviews' && <AdminReviews />}
       {activeTab === 'select' && <AdminSelect />}
