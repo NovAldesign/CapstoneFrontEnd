@@ -23,6 +23,8 @@ export default defineConfig({
         '/celebrate',
         '/perform',
         '/perform/host',
+        '/perform/art',
+        '/scouts',
         '/host',
         '/select',
         '/select/invitation',
