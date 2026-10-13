@@ -7,6 +7,7 @@ import '../Styles/Contact.css';
 import '../Styles/GroupBooking.css';
 import '../Styles/Perform.css';
 import PerformLinks from '../Components/PerformLinks.jsx';
+import OnOurStage from '../Components/OnOurStage.jsx';
 
 // Industry scouts: label reps, managers, A&R, booking agents, producers.
 // They join the scout list, pick showcases, and get a free ticket (their name on the guest list).
@@ -255,6 +256,9 @@ const Scouts = () => {
                 </div>
               </div>
             </section>
+
+            {/* ── WHO YOU'LL SEE ── */}
+            <OnOurStage role="all" intro="A look at the artists, hosts, and live artists booked for our showcases." />
 
             {/* ── SIGN-UP ── */}
             <section className="contact-form-section" id="join" aria-labelledby="join-heading">

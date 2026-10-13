@@ -8,6 +8,8 @@ import '../Styles/GroupBooking.css';
 import '../Styles/Perform.css';
 import { PERFORMER_AGREEMENT_VERSION } from '../content/legalContent.js';
 import PerformLinks from '../Components/PerformLinks.jsx';
+import OnOurStage from '../Components/OnOurStage.jsx';
+import ArtistCard from '../Components/ArtistCard.jsx';
 
 // Keep in sync with ARTIST_TERMS in the backend (routes/artistRoutes.js)
 const ARTIST_TERMS = [
@@ -475,6 +477,9 @@ const Perform = ({ role = 'artist' }) => {
               </div>
             </section>
 
+            {/* ── ON OUR STAGE: booked talent, past and upcoming ── */}
+            <OnOurStage role={kind} />
+
             {/* ── APPLICATION ── */}
             <section className="contact-form-section" id="apply" aria-labelledby="apply-heading">
               <div className="contact-form-container">
@@ -569,6 +574,24 @@ const Perform = ({ role = 'artist' }) => {
                     <div className="contact-input-group">
                       <label className="contact-label" htmlFor="pf-other">Website or other link <span className="contact-label-optional">(Optional)</span></label>
                       <input id="pf-other" name="otherSocial" placeholder="https://" value={form.otherSocial} onChange={handleChange} />
+                    </div>
+
+                    {/* Live preview: how they'll look in Meet the Artists */}
+                    <div className="perform-preview" aria-live="polite">
+                      <span className="perform-preview-label">Preview: how you'll look on the event page</span>
+                      <ArtistCard
+                        as="div"
+                        a={{
+                          role: kind,
+                          artistName: form.artistName.trim() || (isHost ? `${form.firstName} ${form.lastName}`.trim() : ''),
+                          genres: form.genres.trim(),
+                          hometown: form.hometown.trim(),
+                          bio: form.bio.trim() || 'Your bio shows here.',
+                          headshotUrl,
+                          instagram: form.instagram.trim().replace(/^@/, ''),
+                          listenUrl: form.link1.trim(),
+                        }}
+                      />
                     </div>
                   </fieldset>
 

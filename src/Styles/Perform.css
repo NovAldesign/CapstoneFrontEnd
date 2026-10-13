@@ -185,3 +185,53 @@
   font-size: 1rem;
   color: #002147;
 }
+
+/* "On Our Stage" gallery: past and upcoming booked talent */
+.perform-stage {
+  background: #FAF7F0;
+  padding: 10px 10% 60px;
+}
+.perform-stage-intro {
+  margin: -6px 0 22px;
+  color: #555;
+  font-size: 15px;
+}
+.perform-stage-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.perform-stage-grid .gfc-artist {
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0, 33, 71, 0.06);
+}
+.gfc-artist-show {
+  margin: -4px 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: #6b7280;
+}
+@media (max-width: 760px) {
+  .perform-stage { padding: 0 6% 44px; }
+  .perform-stage-grid { grid-template-columns: 1fr; }
+}
+
+/* Live "how your profile will look" preview on the application form */
+.perform-preview {
+  margin: 8px 0 4px;
+  padding: 16px;
+  border: 1px dashed #C5A059;
+  border-radius: 6px;
+  background: #fff;
+}
+.perform-preview-label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9A7630;
+}
+.perform-preview .gfc-artist-name:empty::before {
+  content: 'Your name';
+  color: #9aa3ad;
+}

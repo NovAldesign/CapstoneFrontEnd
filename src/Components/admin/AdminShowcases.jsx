@@ -55,6 +55,32 @@ const BioField = ({ p }) => {
   );
 };
 
+// Show or hide a booked person in the "On Our Stage" gallery on the Perform pages
+const GalleryToggle = ({ p }) => {
+  const [hidden, setHidden] = useState(Boolean(p.galleryHidden));
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const flip = async () => {
+    setSaving(true);
+    setError('');
+    try {
+      const r = await adminApi(`/applications/${p.id}`, { method: 'PATCH', body: { galleryHidden: !hidden } });
+      setHidden(Boolean(r.galleryHidden));
+    } catch (e) {
+      setError(e.message);
+    } finally { setSaving(false); }
+  };
+  return (
+    <>
+      {hidden ? 'Hidden' : 'Showing'}{' '}
+      <button type="button" className="ga-btn ga-btn-sm" disabled={saving} onClick={flip}>
+        {saving ? 'Saving…' : hidden ? 'Show again' : 'Hide'}
+      </button>
+      {error && <span className="ga-small" style={{ color: '#B3261E' }}> {error}</span>}
+    </>
+  );
+};
+
 const Details = ({ p }) => (
   <div className="ga-detail">
     <dl>
@@ -72,6 +98,9 @@ const Details = ({ p }) => (
       {p.role !== 'host' && (<><dt>{p.role === 'visual' ? 'Bringing' : 'Equipment'}</dt><dd>{p.equipmentNotes || '—'}{p.needsPower ? ' · needs power' : ''}</dd></>)}
       <dt>Payout</dt><dd>{[p.payoutMethod, p.payoutHandle].filter(Boolean).join(': ') || '—'}</dd>
       <dt>On event page</dt><dd>{p.featureConsent ? 'Yes' : 'No (no permission)'}</dd>
+      {p.status === 'approved' && p.featureConsent && (
+        <><dt>On Our Stage gallery</dt><dd><GalleryToggle p={p} /></dd></>
+      )}
       <dt>Applied</dt><dd>{timeAgo(p.createdAt)}{p.eventName ? ` · for ${p.eventName}` : ''}</dd>
     </dl>
   </div>
