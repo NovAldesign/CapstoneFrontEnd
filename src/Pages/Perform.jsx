@@ -7,6 +7,7 @@ import '../Styles/Contact.css';
 import '../Styles/GroupBooking.css';
 import '../Styles/Perform.css';
 import { PERFORMER_AGREEMENT_VERSION } from '../content/legalContent.js';
+import PerformLinks from '../Components/PerformLinks.jsx';
 
 // Keep in sync with ARTIST_TERMS in the backend (routes/artistRoutes.js)
 const ARTIST_TERMS = [
@@ -147,6 +148,7 @@ const ROLES = {
     title: 'Perform in Atlanta | Paid Live Music Showcase | Grown Folks™ Collective',
     description: 'Atlanta singers and musicians: apply to perform at a Grown Folks™ Collective live music showcase. Paid per ticket, keep 100% of merch and tips, and play for a room that came to listen.',
     canonical: 'https://www.grownfolkscollective.com/perform',
+    path: '/perform',
     eyebrow: 'Perform With Us',
     heading: 'Take the Stage',
     lead: 'Paid live music showcases for Atlanta singers and musicians: R&B, soul, jazz, and acoustic. Vocalists and instrumentalists welcome. Perform for a room of grown folks who came to listen, and grow your fan base with us.',
@@ -155,10 +157,6 @@ const ROLES = {
     formEyebrow: 'Artist Application',
     formTitle: 'Apply to Perform',
     agreementLegend: 'Artist Agreement',
-    others: [
-      { to: '/perform/host', text: 'Want to host the night instead? Apply to host →' },
-      { to: '/perform/art', text: 'Painter or sketch artist? Apply to create live →' },
-    ],
   },
   host: {
     terms: HOST_TERMS,
@@ -167,6 +165,7 @@ const ROLES = {
     title: 'Host a Live Music Night in Atlanta | Paid MC Spot | Grown Folks™ Collective',
     description: 'Atlanta MCs, comedians, and personalities: apply to host Acoustic & Infused, a live music showcase for grown folks 30+. Paid per ticket, just like our artists.',
     canonical: 'https://www.grownfolkscollective.com/perform/host',
+    path: '/perform/host',
     eyebrow: 'Host With Us',
     heading: 'Run the Room',
     lead: "Every great show needs a voice that holds it together. Host Acoustic & Infused, welcome the room, introduce the artists, and keep the night moving. You're paid per ticket, just like our artists.",
@@ -175,7 +174,6 @@ const ROLES = {
     formEyebrow: 'Host Application',
     formTitle: 'Apply to Host',
     agreementLegend: 'Host Agreement',
-    others: [{ to: '/perform', text: 'Are you a singer or musician? Apply to perform →' }],
   },
   visual: {
     terms: VISUAL_TERMS,
@@ -184,6 +182,7 @@ const ROLES = {
     title: 'Live Painting in Atlanta | Paint at a Live Music Showcase | Grown Folks™ Collective',
     description: 'Atlanta painters and sketch artists: create live at Acoustic & Infused, a live music showcase for grown folks 30+. Paint the sound of the night, sell your original work on site, and keep 100%.',
     canonical: 'https://www.grownfolkscollective.com/perform/art',
+    path: '/perform/art',
     eyebrow: 'Create With Us',
     heading: 'Paint the Room',
     lead: "Painters and sketch artists: bring your easel to Acoustic & Infused and capture the sound of the night as it happens. One live artist per show, a room of grown folks who came for the music, and a table to sell your one-of-a-kind work.",
@@ -192,7 +191,6 @@ const ROLES = {
     formEyebrow: 'Live Artist Application',
     formTitle: 'Apply to Create Live',
     agreementLegend: 'Live Artist Agreement',
-    others: [{ to: '/perform', text: 'Are you a singer or musician? Apply to perform →' }],
   },
 };
 
@@ -418,9 +416,7 @@ const Perform = ({ role = 'artist' }) => {
             <nav className="contact-hero-links" aria-label="Page sections">
               <a href="#apply" className="contact-hero-link">{R.jump}</a>
             </nav>
-            {R.others.map((o) => (
-              <p key={o.to} className="perform-switch"><Link to={o.to}>{o.text}</Link></p>
-            ))}
+            <PerformLinks current={R.path} />
           </div>
           <div className="group-perks">
             <p className="contact-info-label">{R.perksLabel}</p>

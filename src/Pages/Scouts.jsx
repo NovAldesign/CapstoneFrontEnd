@@ -6,6 +6,7 @@ import { BACKEND_URL, isUpcoming } from '../Services/eventUtils';
 import '../Styles/Contact.css';
 import '../Styles/GroupBooking.css';
 import '../Styles/Perform.css';
+import PerformLinks from '../Components/PerformLinks.jsx';
 
 // Industry scouts: label reps, managers, A&R, booking agents, producers.
 // They join the scout list, pick showcases, and get a free ticket (their name on the guest list).
@@ -182,7 +183,7 @@ const Scouts = () => {
             <nav className="contact-hero-links" aria-label="Page sections">
               <a href="#join" className="contact-hero-link">Join the Scout List</a>
             </nav>
-            <p className="perform-switch"><Link to="/perform">Are you an artist? Apply to perform →</Link></p>
+            <PerformLinks current="/scouts" />
           </div>
           <div className="group-perks">
             <p className="contact-info-label">What Scouts Get</p>
@@ -202,8 +203,15 @@ const Scouts = () => {
               {done.length ? (
                 <>
                   <p className="contact-form-subhead">Your free ticket is set. Just check in at the door under your name for:</p>
-                  <ul className="group-perks-list" style={{ textAlign: 'left', margin: '0 auto 22px', maxWidth: 440 }}>
-                    {done.map((e) => <li key={e.id}>{eventLabel(e)}</li>)}
+                  <ul className="scout-tickets">
+                    {done.map((e) => (
+                      <li key={e.id}>
+                        <span className="scout-ticket-date">
+                          {new Date(e.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                        </span>
+                        <span className="scout-ticket-name">{eventName(e)}</span>
+                      </li>
+                    ))}
                   </ul>
                 </>
               ) : (

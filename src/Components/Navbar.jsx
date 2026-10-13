@@ -4,6 +4,7 @@ import loginService from "../Services/loginService";
 import "../Styles/Navbar.css";
 import logo from "../assets/gfc-logo-nav.png";
 import { passesLive } from "../Services/shopApi";
+import { PERFORM_PAGES } from "./PerformLinks.jsx";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -63,8 +64,25 @@ const Navbar = () => {
             <li><NavLink to="/partnerships/perks" className="nav-sublink" onClick={closeMenu}>Offer a Member Perk</NavLink></li>
           </ul>
         </li>
-        <li><NavLink to="/about" className={navClass} onClick={closeMenu}>About Us</NavLink></li>
-        <li><NavLink to="/contact" className={navClass} onClick={closeMenu}>Contact Us</NavLink></li>
+        <li className="nav-dropdown">
+          <NavLink to="/perform" className={navClass} onClick={closeMenu} aria-haspopup="true">
+            Perform <span className="nav-caret" aria-hidden="true">▾</span>
+          </NavLink>
+          <ul className="nav-submenu" aria-label="Perform">
+            {PERFORM_PAGES.map((p) => (
+              <li key={p.to}><NavLink to={p.to} end className="nav-sublink" onClick={closeMenu}>{p.label}</NavLink></li>
+            ))}
+          </ul>
+        </li>
+        <li className="nav-dropdown">
+          <NavLink to="/about" className={navClass} onClick={closeMenu} aria-haspopup="true">
+            About <span className="nav-caret" aria-hidden="true">▾</span>
+          </NavLink>
+          <ul className="nav-submenu" aria-label="About">
+            <li><NavLink to="/about" end className="nav-sublink" onClick={closeMenu}>About Us</NavLink></li>
+            <li><NavLink to="/contact" className="nav-sublink" onClick={closeMenu}>Contact Us</NavLink></li>
+          </ul>
+        </li>
 
 
         {/* Mobile-only auth */}

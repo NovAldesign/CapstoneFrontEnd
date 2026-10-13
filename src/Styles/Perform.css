@@ -155,3 +155,33 @@
 .perform-switch a:focus-visible {
   color: #fff;
 }
+
+/* Scout sign-up confirmation: the showcases they're on the list for */
+.scout-tickets {
+  list-style: none;
+  margin: 6px auto 26px;
+  padding: 0;
+  max-width: 460px;
+  text-align: left;
+}
+.scout-tickets li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  background: #FAF7F0;
+  border-left: 3px solid #C5A059;
+  border-radius: 4px;
+}
+.scout-ticket-date {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9A7630;
+}
+.scout-ticket-name {
+  font-size: 1rem;
+  color: #002147;
+}
