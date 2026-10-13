@@ -29,6 +29,8 @@ const LINKS = {
   paint: "/perform/art",
   scout: "/scouts",
   scouts: "/scouts",
+  stage: "/on-our-stage",
+  lineup: "/on-our-stage",
   mc: "/perform/host",
   emcee: "/perform/host",
   select: "/select",

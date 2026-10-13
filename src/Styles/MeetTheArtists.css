@@ -72,3 +72,62 @@
     flex-direction: column;
   }
 }
+/* Keep long names, bios, and links inside the card */
+.gfc-artist-body {
+  flex: 1;
+  min-width: 0;
+}
+.gfc-artist-name,
+.gfc-artist-bio,
+.gfc-artist-links a {
+  overflow-wrap: anywhere;
+}
+.gfc-artist-links {
+  flex-wrap: wrap;
+  row-gap: 6px;
+}
+
+/* Gallery cards: smaller photo, bio cut to 3 lines */
+.gfc-artist-compact {
+  padding: 16px;
+  gap: 14px;
+}
+.gfc-artist-compact .gfc-artist-photo {
+  width: 72px;
+  height: 72px;
+}
+.gfc-artist-compact .gfc-artist-name {
+  font-size: 1.1rem;
+}
+.gfc-artist-compact .gfc-artist-bio {
+  font-size: 14px;
+  line-height: 1.55;
+  margin-bottom: 4px;
+}
+.gfc-artist-bio-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.gfc-artist-more {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0 0 10px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: #9A7630;
+  cursor: pointer;
+}
+.gfc-artist-more:hover { text-decoration: underline; }
+@media (max-width: 480px) {
+  .gfc-artist-compact {
+    flex-direction: row;
+  }
+  .gfc-artist-compact .gfc-artist-photo {
+    width: 56px;
+    height: 56px;
+  }
+}

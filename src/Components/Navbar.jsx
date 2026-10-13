@@ -72,6 +72,7 @@ const Navbar = () => {
             {PERFORM_PAGES.map((p) => (
               <li key={p.to}><NavLink to={p.to} end className="nav-sublink" onClick={closeMenu}>{p.label}</NavLink></li>
             ))}
+            <li><NavLink to="/on-our-stage" className="nav-sublink" onClick={closeMenu}>On Our Stage</NavLink></li>
           </ul>
         </li>
         <li className="nav-dropdown">

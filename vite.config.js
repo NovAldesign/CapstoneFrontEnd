@@ -68,6 +68,7 @@ export default defineConfig(async ({ command, mode }) => {
         '/perform/host',
         '/perform/art',
         '/scouts',
+        '/on-our-stage',
         '/host',
         '/select',
         '/select/invitation',

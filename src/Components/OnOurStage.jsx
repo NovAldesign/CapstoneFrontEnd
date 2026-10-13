@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { BACKEND_URL } from '../Services/eventUtils';
 import ArtistCard from './ArtistCard.jsx';
 
-// "On Our Stage": approved artists, hosts, and live artists from past and
-// upcoming showcases, so new applicants see how their profile will look.
+// Small "On Our Stage" preview for the Perform and Scout pages: the next few
+// booked people (in show order) and a link to see everyone at /on-our-stage.
 // Shows nothing until someone has been booked.
 const HEADINGS = {
   artist: 'Artists on Our Stage',
-  host: 'Hosts Who Ran the Room',
+  host: 'Hosts Who Run the Room',
   visual: 'Live Artists in the Room',
   all: 'Talent on Our Stage',
 };
+const PREVIEW = 4;
 
-const showLine = (p) => {
+export const showLine = (p) => {
   const day = new Date(p.showDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  return `${p.past ? '' : 'Coming up · '}${p.showName} · ${day}`;
+  return `${p.past ? '' : 'Coming up · '}${day}`;
 };
 
 const OnOurStage = ({ role = 'all', intro }) => {
@@ -30,6 +32,7 @@ const OnOurStage = ({ role = 'all', intro }) => {
   }, [role]);
 
   if (!people.length) return null;
+  const allLink = role === 'all' ? '/on-our-stage' : `/on-our-stage?role=${role}`;
 
   return (
     <section className="perform-stage" aria-labelledby="stage-heading">
@@ -39,8 +42,11 @@ const OnOurStage = ({ role = 'all', intro }) => {
           {intro || 'Every booked artist gets a profile like these on the event page.'}
         </p>
         <div className="gfc-artists perform-stage-grid">
-          {people.map((p) => <ArtistCard key={p.id} a={p} showLine={showLine(p)} />)}
+          {people.slice(0, PREVIEW).map((p) => <ArtistCard key={p.id} a={p} compact showLine={showLine(p)} />)}
         </div>
+        <p className="perform-stage-all">
+          <Link to={allLink}>See everyone on our stage, show by show →</Link>
+        </p>
       </div>
     </section>
   );
