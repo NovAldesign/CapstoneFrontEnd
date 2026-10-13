@@ -49,6 +49,18 @@ const OnOurStagePage = () => {
     return groups;
   }, [people, role]);
 
+  // Hero card: the next upcoming show and its lineup, plus a few totals
+  const next = useMemo(() => {
+    const all = people || [];
+    const first = all.find((p) => !p.past);
+    return {
+      show: first ? { id: first.eventId, name: first.showName, date: first.showDate } : null,
+      lineup: first ? all.filter((p) => p.eventId === first.eventId) : [],
+      talent: new Set(all.map((p) => p.artistName)).size,
+      shows: new Set(all.map((p) => p.eventId)).size,
+    };
+  }, [people]);
+
   const pickTab = (id) => setParams(id === 'all' ? {} : { role: id }, { replace: true });
 
   return (
@@ -77,6 +89,48 @@ const OnOurStagePage = () => {
             </nav>
             <PerformLinks current="" />
           </div>
+
+          <aside className="group-perks stage-next" aria-label="Next on stage">
+            {next.show ? (
+              <>
+                <p className="contact-info-label">Next on Stage</p>
+                <p className="stage-next-date">{fmtDay(next.show.date)}</p>
+                <p className="stage-next-name">{next.show.name}</p>
+                <div className="stage-next-faces" aria-hidden="true">
+                  {next.lineup.slice(0, 5).map((p) => (
+                    p.headshotUrl
+                      ? <img key={p.id} src={p.headshotUrl.replace('/upload/', '/upload/c_fill,g_face,w_120,h_120,q_auto,f_auto/')} alt="" />
+                      : <span key={p.id}>{p.role === 'visual' ? '🎨' : p.role === 'host' ? '🎙️' : '🎤'}</span>
+                  ))}
+                </div>
+                <ul className="stage-next-lineup">
+                  {next.lineup.map((p) => (
+                    <li key={p.id}>
+                      {p.artistName}
+                      {p.role === 'host' && <em> · Host</em>}
+                      {p.role === 'visual' && <em> · Live art</em>}
+                    </li>
+                  ))}
+                </ul>
+                <Link className="contact-hero-link stage-next-btn" to={eventPath({ _id: next.show.id, name: next.show.name })}>
+                  Get Tickets
+                </Link>
+              </>
+            ) : (
+              <>
+                <p className="contact-info-label">Next on Stage</p>
+                <p className="stage-next-name">Could be you.</p>
+                <p className="stage-next-copy">Our next lineup is being booked now.</p>
+                <Link className="contact-hero-link stage-next-btn" to="/perform">Apply to Perform</Link>
+              </>
+            )}
+            {next.talent > 0 && (
+              <div className="stage-next-stats">
+                <div><b>{next.talent}</b><span>Featured</span></div>
+                <div><b>{next.shows}</b><span>{next.shows === 1 ? 'Show' : 'Shows'}</span></div>
+              </div>
+            )}
+          </aside>
         </div>
       </header>
 

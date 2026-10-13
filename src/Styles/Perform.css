@@ -302,3 +302,67 @@
   border-bottom: 1px solid #C5A059;
   white-space: nowrap;
 }
+
+/* /on-our-stage hero card: next show + lineup */
+.stage-next { align-self: center; }
+.stage-next-date {
+  margin: 14px 0 2px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #C5A059;
+}
+.stage-next-name {
+  margin: 0 0 16px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  line-height: 1.25;
+  color: #fff;
+}
+.stage-next-copy { margin: -8px 0 18px; color: rgba(255, 255, 255, 0.8); }
+.stage-next-faces { display: flex; margin-bottom: 14px; }
+.stage-next-faces img,
+.stage-next-faces span {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid #C5A059;
+  object-fit: cover;
+  background: #0b2a52;
+  margin-right: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.stage-next-lineup {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
+  line-height: 1.8;
+}
+.stage-next-lineup em { color: #C5A059; font-style: normal; font-size: 13px; }
+.stage-next-btn { display: inline-block; }
+.stage-next-stats {
+  display: flex;
+  gap: 28px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(197, 160, 89, 0.3);
+}
+.stage-next-stats b {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: #fff;
+  line-height: 1;
+}
+.stage-next-stats span {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
