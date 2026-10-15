@@ -15,6 +15,48 @@ const Avatar = ({ p }) =>
     <div className="ga-avatar" aria-hidden="true">{p.role === 'host' ? '🎙️' : p.role === 'visual' ? '🎨' : '🎤'}</div>
   );
 
+// Stage name with an Edit button (what shows on the event page, emails and gallery)
+const NameField = ({ p }) => {
+  const [name, setName] = useState(p.artistName || '');
+  const [draft, setDraft] = useState(p.artistName || '');
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [saved, setSaved] = useState(false);
+  const save = async () => {
+    setSaving(true);
+    setError('');
+    try {
+      const r = await adminApi(`/applications/${p.id}`, { method: 'PATCH', body: { artistName: draft } });
+      setName(r.artistName);
+      setEditing(false);
+      setSaved(true);
+    } catch (err) {
+      setError(err.message);
+    }
+    setSaving(false);
+  };
+  if (editing) {
+    return (
+      <div>
+        <input className="ga-input" maxLength={80} value={draft} onChange={(e) => setDraft(e.target.value)} aria-label="Stage name" />
+        <div className="ga-row" style={{ gap: 6, marginTop: 6 }}>
+          <button type="button" className="ga-btn ga-btn-sm ga-btn-navy" disabled={saving || !draft.trim()} onClick={save}>{saving ? 'Saving…' : 'Save name'}</button>
+          <button type="button" className="ga-btn ga-btn-sm" disabled={saving} onClick={() => { setDraft(name); setEditing(false); }}>Cancel</button>
+        </div>
+        {error && <p className="ga-note err">{error}</p>}
+      </div>
+    );
+  }
+  return (
+    <span>
+      {name || '—'}{' '}
+      <button type="button" className="ga-link" onClick={() => { setDraft(name); setEditing(true); setSaved(false); }}>Edit</button>
+      {saved && <span className="ga-small ga-muted"> Saved. Refresh to see it in the list.</span>}
+    </span>
+  );
+};
+
 // Bio with an Edit button (fixes show on the event page right away)
 const BioField = ({ p }) => {
   const [bio, setBio] = useState(p.bio || '');
@@ -84,6 +126,7 @@ const GalleryToggle = ({ p }) => {
 const Details = ({ p }) => (
   <div className="ga-detail">
     <dl>
+      <dt>{p.role === 'host' ? 'Host name' : 'Stage name'}</dt><dd><NameField p={p} /></dd>
       <dt>Name</dt><dd>{p.name}</dd>
       <dt>Email</dt><dd><a href={`mailto:${p.email}`}>{p.email}</a></dd>
       <dt>Phone</dt><dd><a href={`tel:${p.phone}`}>{p.phone}</a></dd>
