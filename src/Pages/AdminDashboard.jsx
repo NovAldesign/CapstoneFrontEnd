@@ -7,6 +7,7 @@ import AdminToday from "../Components/admin/AdminToday.jsx";
 import AdminShowcases from "../Components/admin/AdminShowcases.jsx";
 import AdminCodes from "../Components/admin/AdminCodes.jsx";
 import { AdminInboxList, AdminPerks, AdminSubscribers, AdminScouts } from "../Components/admin/AdminLists.jsx";
+import AdminPeople from "../Components/admin/AdminPeople.jsx";
 import AdminPartners from "../Components/admin/AdminPartners.jsx";
 import AdminGuests from "../Components/admin/AdminGuests.jsx";
 import AdminReports from "../Components/admin/AdminReports.jsx";
@@ -335,6 +336,7 @@ const AdminDashboard = () => {
       { id: 'groups', icon: '🎉', label: 'Group bookings', count: counts.groups },
     ] },
     { group: 'People', items: [
+      { id: 'people', icon: '📇', label: 'People (CRM)' },
       { id: 'messages', icon: '✉️', label: 'Messages', count: counts.messages },
       { id: 'members', icon: '👥', label: 'Members' },
       { id: 'subscribers', icon: '📬', label: 'Subscribers' },
@@ -357,6 +359,7 @@ const AdminDashboard = () => {
     perks: ['Member Perks', 'Businesses offering discounts to members.'],
     private: ['Private events', 'Hosting requests from the /host page.'],
     groups: ['Group bookings', 'Birthdays, celebrations and groups.'],
+    people: ['People (CRM)', 'Everyone in one place: notes, tags, details and who\'s in Brevo.'],
     messages: ['Messages', 'Notes from the contact form.'],
     members: ['Members', 'Memberships and their status.'],
     subscribers: ['Subscribers', 'Your newsletter list.'],
@@ -416,6 +419,7 @@ const AdminDashboard = () => {
       {['private', 'groups', 'messages'].includes(activeTab) && <AdminInboxList kind={activeTab} />}
       {activeTab === 'subscribers' && <AdminSubscribers />}
       {activeTab === 'scouts' && <AdminScouts />}
+      {activeTab === 'people' && <AdminPeople />}
       {activeTab === 'blog' && <AdminBlog />}
       {activeTab === 'reviews' && <AdminReviews />}
       {activeTab === 'select' && <AdminSelect />}
