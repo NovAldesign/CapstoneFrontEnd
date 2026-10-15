@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import loginService from "../Services/loginService";
 import "../Styles/Navbar.css";
@@ -24,6 +24,14 @@ const Navbar = () => {
   };
 
   const closeMenu = () => setMenuOpen(false);
+
+  // While the menu is open on a phone, lock the page behind it so swipes scroll the menu
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, [menuOpen]);
 
   const navClass = ({ isActive }) =>
     isActive ? "btn active" : "btn";

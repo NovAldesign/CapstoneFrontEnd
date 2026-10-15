@@ -164,11 +164,16 @@
     right: -100%; /* Hidden off-screen to the right */
     width: 280px; /* Drawer width */
     height: 100vh;
+    height: 100dvh; /* fits the visible screen on phones (address bar included) */
     background: #002147;
     flex-direction: column;
+    flex-wrap: nowrap;
     align-items: flex-start;
     justify-content: flex-start;
-    padding: 100px 30px 40px;
+    padding: 100px 30px calc(40px + env(safe-area-inset-bottom));
+    overflow-y: auto; /* long menus scroll inside the drawer */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain; /* scrolling the menu doesn't scroll the page behind it */
     transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
     border-left: 1px solid rgba(197, 160, 89, 0.2);
@@ -181,6 +186,7 @@
 
   .nav-links li {
     width: 100%;
+    flex-shrink: 0; /* keep each link full size so the drawer scrolls instead of squishing */
   }
 
   .nav-links .btn {
