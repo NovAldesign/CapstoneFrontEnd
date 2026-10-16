@@ -274,3 +274,13 @@ button.ga-stat:hover { border-color: var(--ga-gold); transform: translateY(-1px)
   .rp-table td[data-label]::before { content: attr(data-label) ' '; color: var(--ga-muted); font-size: 0.78rem; font-weight: 400; }
   .rp-table .ga-small.ga-muted { display: inline; margin-left: 4px; }
 }
+
+/* --- New / edit event form --- */
+.ga-event-form { display: flex; flex-direction: column; gap: 18px; max-width: 860px; }
+.ga-event-form .ga-card + .ga-card { margin-top: 0; }
+.ga-tier { padding: 14px 0; border-top: 1px solid var(--ga-line); }
+.ga-tier:first-of-type { border-top: 0; padding-top: 0; }
+.ga-event-actions { position: sticky; bottom: 0; display: flex; justify-content: flex-end; gap: 10px; padding: 14px 0; background: linear-gradient(180deg, rgba(244, 241, 234, 0) 0%, #F4F1EA 30%); }
+@media (max-width: 640px) {
+  .ga-event-actions .ga-btn { flex: 1; }
+}

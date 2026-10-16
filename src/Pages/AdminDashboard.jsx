@@ -679,282 +679,176 @@ const AdminDashboard = () => {
 
       {/* ── CREATE / EDIT EVENT TAB ──────────────────────────────────── */}
       {activeTab === 'create-event' && (
-        <div className="admin-form-container">
-          <form onSubmit={handleEventSubmit} className="admin-creation-form">
-            <h2 className="playfair">{editingEvent ? '✏️ Edit Gathering' : '＋ Schedule New Gathering'}</h2>
-            <p className="subtitle">Configure details, custom ticket tiers, and bundle promo options</p>
-            <div className="gold-spacer-v2" />
-
-            <div className="form-row-grid">
-              <div className="form-group flex-2">
-                <label>Event Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={eventForm.name}
-                  onChange={handleEventFormChange}
-                  required
-                  placeholder="e.g. Spades Tournament & Game Night"
-                />
-              </div>
-              <div className="form-group">
-                <label>Event Type</label>
-                <select name="eventType" value={eventForm.eventType} onChange={handleEventFormChange}>
-                  {EVENT_TYPES.map(type => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
+        <form onSubmit={handleEventSubmit} className="ga-event-form">
+          {/* Prices are stored in cents; the form shows dollars */}
+          <div className="ga-card">
+            <h3 className="ga-card-title">The basics</h3>
+            <div className="ga-form-grid" style={{ marginTop: 14 }}>
+              <label className="ga-field ga-span-2">Event name
+                <input className="ga-input" type="text" name="name" value={eventForm.name} onChange={handleEventFormChange} required
+                  placeholder="e.g. Grown Folks Game Night" />
+              </label>
+              <label className="ga-field">Event type
+                <select className="ga-select" name="eventType" value={eventForm.eventType} onChange={handleEventFormChange}>
+                  {EVENT_TYPES.map((type) => <option key={type} value={type}>{type}</option>)}
                 </select>
-              </div>
+              </label>
+              <label className="ga-field">Capacity
+                <input className="ga-input" type="number" name="capacity" value={eventForm.capacity} onChange={handleEventFormChange} required min="1" />
+                <small>Total people the room holds.</small>
+              </label>
+              <label className="ga-field">Starts
+                <input className="ga-input" type="datetime-local" name="date" value={eventForm.date} onChange={handleEventFormChange} required />
+              </label>
+              <label className="ga-field">Ends
+                <input className="ga-input" type="datetime-local" name="endDate" value={eventForm.endDate} onChange={handleEventFormChange} />
+              </label>
+              <label className="ga-field ga-span-2">Description
+                <textarea className="ga-textarea" name="description" value={eventForm.description} onChange={handleEventFormChange} required rows={5}
+                  placeholder="What the night is, who it's for, and what to expect." />
+              </label>
             </div>
+          </div>
 
-            <div className="form-group">
-              <label>Event Description</label>
-              <textarea
-                name="description"
-                value={eventForm.description}
-                onChange={handleEventFormChange}
-                required
-                placeholder="Detail the experience layout, target community vibe, and attendance criteria..."
-                rows={4}
-              />
+          <div className="ga-card">
+            <h3 className="ga-card-title">Where</h3>
+            <div className="ga-form-grid" style={{ marginTop: 14 }}>
+              <label className="ga-field">Venue name
+                <input className="ga-input" type="text" name="locationName" value={eventForm.locationName} onChange={handleEventFormChange} placeholder="e.g. Aromas Tea Bar" />
+              </label>
+              <label className="ga-field">Street address
+                <input className="ga-input" type="text" name="locationAddress" value={eventForm.locationAddress} onChange={handleEventFormChange} placeholder="e.g. 141 Mangum St SW" />
+              </label>
+              <label className="ga-field">City
+                <input className="ga-input" type="text" name="locationCity" value={eventForm.locationCity} onChange={handleEventFormChange} />
+              </label>
+              <label className="ga-field">State
+                <input className="ga-input" type="text" name="locationState" value={eventForm.locationState} onChange={handleEventFormChange} maxLength="2" />
+              </label>
             </div>
+          </div>
 
-            <div className="form-row-grid">
-              <div className="form-group">
-                <label>Start Date & Time</label>
-                <input
-                  type="datetime-local"
-                  name="date"
-                  value={eventForm.date}
-                  onChange={handleEventFormChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>End Date & Time</label>
-                <input
-                  type="datetime-local"
-                  name="endDate"
-                  value={eventForm.endDate}
-                  onChange={handleEventFormChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Max Attendance Capacity</label>
-                <input
-                  type="number"
-                  name="capacity"
-                  value={eventForm.capacity}
-                  onChange={handleEventFormChange}
-                  required
-                  min="1"
-                />
-              </div>
+          <div className="ga-card">
+            <h3 className="ga-card-title">Cover photo</h3>
+            <div className="ga-row" style={{ gap: 14, marginTop: 14, alignItems: 'center', flexWrap: 'wrap' }}>
+              <label className="ga-btn" style={{ cursor: 'pointer' }}>
+                {imagePreview ? 'Change photo' : 'Choose photo'}
+                <input type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
+              </label>
+              <span className="ga-small ga-muted">JPEG, PNG or WEBP. A wide photo works best.</span>
             </div>
+            {imagePreview && (
+              <div style={{ position: 'relative', marginTop: 14, maxWidth: 360 }}>
+                <img src={imagePreview} alt="Cover preview" style={{ display: 'block', width: '100%', borderRadius: 10 }} />
+                <button type="button" className="ga-btn ga-btn-sm" style={{ position: 'absolute', top: 8, right: 8 }}
+                  onClick={() => { setImageFile(null); setImagePreview(null); }}>Remove</button>
+              </div>
+            )}
+          </div>
 
-            <h3 className="form-subheading">📍 Venue Details</h3>
-            <div className="form-row-grid">
-              <div className="form-group flex-2">
-                <label>Venue / Location Name</label>
-                <input
-                  type="text"
-                  name="locationName"
-                  value={eventForm.locationName}
-                  onChange={handleEventFormChange}
-                  placeholder="e.g. Rudolph's Restaurant, Tea Bar"
-                />
-              </div>
-              <div className="form-group flex-2">
-                <label>Street Address</label>
-                <input
-                  type="text"
-                  name="locationAddress"
-                  value={eventForm.locationAddress}
-                  onChange={handleEventFormChange}
-                  placeholder="e.g. 123 Main Street"
-                />
-              </div>
-              <div className="form-group">
-                <label>City</label>
-                <input
-                  type="text"
-                  name="locationCity"
-                  value={eventForm.locationCity}
-                  onChange={handleEventFormChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>State</label>
-                <input
-                  type="text"
-                  name="locationState"
-                  value={eventForm.locationState}
-                  onChange={handleEventFormChange}
-                  maxLength="2"
-                />
-              </div>
-            </div>
-
-            <h3 className="form-subheading">🖼️ Event Branding</h3>
-            <div className="form-row-grid file-upload-row">
-              <div className="form-group">
-                <label className="file-input-label">
-                  Choose Cover Image (JPEG, PNG, WEBP)
-                  <input type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
-                </label>
-              </div>
-              {imagePreview && (
-                <div className="image-preview-box">
-                  <img src={imagePreview} alt="Preview" />
-                  <button type="button" className="btn-remove-img" onClick={() => { setImageFile(null); setImagePreview(null); }}>×</button>
-                </div>
-              )}
-            </div>
-
-            <div className="section-row-header">
-              <h3 className="form-subheading">🎟️ Ticket Allocation Tiers</h3>
-              <button type="button" className="add-row-btn" onClick={addTicket}>＋ Add Tier</button>
+          <div className="ga-card">
+            <div className="ga-card-head">
+              <h3 className="ga-card-title">Tickets</h3>
+              <button type="button" className="ga-btn ga-btn-sm" onClick={addTicket}>＋ Add ticket type</button>
             </div>
             {ticketTypes.map((ticket, index) => (
-              <div key={index} className="dynamic-form-row card-item-row">
-                <input
-                  type="text"
-                  placeholder="Tier Name (e.g. General Admission)"
-                  value={ticket.name}
-                  onChange={(e) => updateTicket(index, 'name', e.target.value)}
-                  required
-                  style={{ flex: 2 }}
-                />
-                <input
-                  type="number"
-                  placeholder="Price (in Cents - e.g. 3000 = $30)"
-                  value={ticket.price || ''}
-                  onChange={(e) => updateTicket(index, 'price', Number(e.target.value))}
-                  required
-                  style={{ flex: 1 }}
-                />
-                <input
-                  type="number"
-                  placeholder="Total Qty Available"
-                  value={ticket.quantity || ''}
-                  onChange={(e) => updateTicket(index, 'quantity', Number(e.target.value))}
-                  required
-                  style={{ flex: 1 }}
-                />
-                <input
-                  type="text"
-                  placeholder="Short perks details..."
-                  value={ticket.description || ''}
-                  onChange={(e) => updateTicket(index, 'description', e.target.value)}
-                  style={{ flex: 2 }}
-                />
+              <div key={index} className="ga-form-grid ga-tier">
+                <label className="ga-field">Ticket name
+                  <input className="ga-input" type="text" placeholder="e.g. General Admission" value={ticket.name}
+                    onChange={(e) => updateTicket(index, 'name', e.target.value)} required />
+                </label>
+                <label className="ga-field">Price ($)
+                  <input className="ga-input" type="number" min="0" step="0.01" placeholder="25.00"
+                    value={ticket.price === '' || ticket.price == null ? '' : ticket.price / 100}
+                    onChange={(e) => updateTicket(index, 'price', e.target.value === '' ? '' : Math.round(Number(e.target.value) * 100))} required />
+                </label>
+                <label className="ga-field">How many
+                  <input className="ga-input" type="number" min="0" placeholder="e.g. 36" value={ticket.quantity || ''}
+                    onChange={(e) => updateTicket(index, 'quantity', Number(e.target.value))} required />
+                </label>
+                <label className="ga-field">What's included <small>(optional)</small>
+                  <input className="ga-input" type="text" placeholder="e.g. Includes one mocktail" value={ticket.description || ''}
+                    onChange={(e) => updateTicket(index, 'description', e.target.value)} />
+                </label>
                 {ticketTypes.length > 1 && (
-                  <button type="button" className="row-delete-btn" onClick={() => removeTicket(index)}>×</button>
+                  <div className="ga-span-2"><button type="button" className="ga-link" onClick={() => removeTicket(index)}>Remove this ticket type</button></div>
                 )}
               </div>
             ))}
+          </div>
 
-            <div className="section-row-header" style={{ marginTop: '30px' }}>
-              <h3 className="form-subheading">🏷️ Event Specific Promo Codes</h3>
-              <button type="button" className="add-row-btn" onClick={addPromo}>＋ Add Code</button>
+          <div className="ga-card">
+            <div className="ga-card-head">
+              <h3 className="ga-card-title">Codes just for this event <small className="ga-muted" style={{ fontFamily: 'inherit', fontSize: '0.8rem' }}>(optional)</small></h3>
+              <button type="button" className="ga-btn ga-btn-sm" onClick={addPromo}>＋ Add code</button>
             </div>
             {promoCodes.length === 0 ? (
-              <p className="empty-hint-text">No custom single-event overrides added yet. Global multi-event automated cart rules apply during user checkouts.</p>
+              <p className="ga-small ga-muted" style={{ margin: 0 }}>None. Codes from the Discount codes page still work at checkout.</p>
             ) : (
               promoCodes.map((promo, index) => (
-                <div key={index} className="dynamic-form-row card-item-row compact">
-                  <input
-                    type="text"
-                    placeholder="CODE"
-                    value={promo.code}
-                    onChange={(e) => updatePromo(index, 'code', e.target.value.toUpperCase().trim())}
-                    required
-                    style={{ flex: 1.5, textTransform: 'uppercase' }}
-                  />
-                  <select
-                    value={promo.discountType}
-                    onChange={(e) => updatePromo(index, 'discountType', e.target.value)}
-                    style={{ flex: 1.2 }}
-                  >
-                    <option value="percent">Percent (%)</option>
-                    <option value="flat">Flat Cents ($)</option>
-                  </select>
-                  <input
-                    type="number"
-                    placeholder="Value"
-                    value={promo.discountValue || ''}
-                    onChange={(e) => updatePromo(index, 'discountValue', Number(e.target.value))}
-                    required
-                    style={{ flex: 1 }}
-                  />
-                  <input
-                    type="number"
-                    placeholder="Max Uses"
-                    value={promo.maxUses || ''}
-                    onChange={(e) => updatePromo(index, 'maxUses', e.target.value ? Number(e.target.value) : '')}
-                    style={{ flex: 1 }}
-                  />
-                  <input
-                    type="date"
-                    value={promo.expiresAt ? promo.expiresAt.substring(0, 10) : ''}
-                    onChange={(e) => updatePromo(index, 'expiresAt', e.target.value)}
-                    style={{ flex: 1.5 }}
-                  />
-                  <label className="toggle-label" style={{ flex: 0.8 }}>
-                    Active
-                    <input
-                      type="checkbox"
-                      checked={promo.active}
-                      onChange={(e) => updatePromo(index, 'active', e.target.checked)}
-                    />
+                <div key={index} className="ga-form-grid ga-tier">
+                  <label className="ga-field">Code
+                    <input className="ga-input" type="text" placeholder="e.g. FRIENDS10" value={promo.code} style={{ textTransform: 'uppercase' }}
+                      onChange={(e) => updatePromo(index, 'code', e.target.value.toUpperCase().trim())} required />
                   </label>
-                  <button type="button" className="row-delete-btn" onClick={() => removePromo(index)}>×</button>
+                  <label className="ga-field">Discount
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      <select className="ga-select" style={{ width: 70, flex: '0 0 70px' }} value={promo.discountType} onChange={(e) => updatePromo(index, 'discountType', e.target.value)}>
+                        <option value="percent">%</option>
+                        <option value="flat">$</option>
+                      </select>
+                      <input className="ga-input" type="number" min="0" step={promo.discountType === 'flat' ? '0.01' : '1'}
+                        placeholder={promo.discountType === 'flat' ? '5.00' : '10'}
+                        value={promo.discountValue === '' || promo.discountValue == null || promo.discountValue === 0 ? '' : promo.discountType === 'flat' ? promo.discountValue / 100 : promo.discountValue}
+                        onChange={(e) => updatePromo(index, 'discountValue', e.target.value === '' ? 0 : promo.discountType === 'flat' ? Math.round(Number(e.target.value) * 100) : Number(e.target.value))} required />
+                    </div>
+                  </label>
+                  <label className="ga-field">Max uses <small>(blank = no limit)</small>
+                    <input className="ga-input" type="number" min="1" value={promo.maxUses || ''}
+                      onChange={(e) => updatePromo(index, 'maxUses', e.target.value ? Number(e.target.value) : '')} />
+                  </label>
+                  <label className="ga-field">Expires <small>(optional)</small>
+                    <input className="ga-input" type="date" value={promo.expiresAt ? promo.expiresAt.substring(0, 10) : ''}
+                      onChange={(e) => updatePromo(index, 'expiresAt', e.target.value)} />
+                  </label>
+                  <div className="ga-row ga-span-2" style={{ gap: 16, alignItems: 'center' }}>
+                    <label className="ga-check">
+                      <input type="checkbox" checked={promo.active} onChange={(e) => updatePromo(index, 'active', e.target.checked)} />
+                      <span>Active</span>
+                    </label>
+                    <button type="button" className="ga-link" onClick={() => removePromo(index)}>Remove code</button>
+                  </div>
                 </div>
               ))
             )}
+          </div>
 
-            <h3 className="form-subheading">⚙️ Visibility & Metadata</h3>
-            <div className="form-row-grid compact-flags">
-              <div className="form-group">
-                <label>Publish Status</label>
-                <select name="status" value={eventForm.status} onChange={handleEventFormChange}>
-                  <option value="published">Published (Visible on Live Feed)</option>
-                  <option value="draft">Draft (Admin Only View)</option>
+          <div className="ga-card">
+            <h3 className="ga-card-title">Publishing</h3>
+            <div className="ga-form-grid" style={{ marginTop: 14 }}>
+              <label className="ga-field">Status
+                <select className="ga-select" name="status" value={eventForm.status} onChange={handleEventFormChange}>
+                  <option value="published">Published: shows on the website</option>
+                  <option value="draft">Draft: only you can see it</option>
                 </select>
-              </div>
-              <div className="form-group">
-                <label>Featured Partner / Corporate Sponsor</label>
-                <input
-                  type="text"
-                  name="featuredSponsor"
-                  value={eventForm.featuredSponsor}
-                  onChange={handleEventFormChange}
-                  placeholder="e.g. Nov'Al Web Agency, Local Tea Bar"
-                />
-              </div>
-              <div className="form-group checkbox-align">
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    name="isFree"
-                    checked={eventForm.isFree}
-                    onChange={handleEventFormChange}
-                  />
-                  Mark as an Entirely Complimentary Gathering
-                </label>
-              </div>
+              </label>
+              <label className="ga-field">Sponsor <small>(optional)</small>
+                <input className="ga-input" type="text" name="featuredSponsor" value={eventForm.featuredSponsor} onChange={handleEventFormChange} placeholder="e.g. Lip Print" />
+              </label>
+              <label className="ga-check ga-span-2">
+                <input type="checkbox" name="isFree" checked={eventForm.isFree} onChange={handleEventFormChange} />
+                <span>This is a free event</span>
+              </label>
             </div>
+          </div>
 
-            <div className="form-actions-row">
-              <button type="button" className="cancel-form-btn" onClick={() => { resetEventForm(); setActiveTab('events'); }}>
-                Cancel
-              </button>
-              <button type="submit" disabled={eventLoading} className="submit-form-btn gold-fill-btn">
-                {eventLoading ? 'Synchronizing Gathering...' : editingEvent ? 'Save Event Updates' : 'Publish Gathering to Registry'}
-              </button>
-            </div>
-          </form>
-        </div>
+          <div className="ga-event-actions">
+            <button type="button" className="ga-btn" onClick={() => { resetEventForm(); setActiveTab('events'); }}>Cancel</button>
+            <button type="submit" disabled={eventLoading} className="ga-btn ga-btn-navy">
+              {eventLoading ? 'Saving…' : editingEvent ? 'Save changes' : 'Publish event'}
+            </button>
+          </div>
+        </form>
       )}
       </main>
     </div>
