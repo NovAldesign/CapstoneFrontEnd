@@ -44,7 +44,6 @@ const ShopSuccess = ({ kind = 'gift' }) => {
             <p className="shop-lead-dark">
               Order {order.orderNumber}. We also emailed you this link, so you can download and print again any time.
             </p>
-            <Link to={`/downloads/${order.token}`} className="shop-btn shop-btn-gold">Download your cards</Link>
           </>
         ) : kind === 'merch' && order?.type === 'pending' ? (
           <>
@@ -89,12 +88,17 @@ const ShopSuccess = ({ kind = 'gift' }) => {
             <strong>{order.bonus.code}</strong>
           </div>
         )}
-        <div className="shop-actions">
-          <Link to="/events" className="shop-btn shop-btn-navy">See upcoming events</Link>
-          {order?.type === 'digital'
-            ? <Link to="/shop#bingo" className="shop-btn shop-btn-ghost">More editions</Link>
-            : <Link to="/gift" className="shop-btn shop-btn-ghost">Send another gift</Link>}
-        </div>
+        {order?.type === 'digital' ? (
+          <div className="shop-actions shop-actions-stack">
+            <Link to={`/downloads/${order.token}`} className="shop-btn shop-btn-gold">Download your cards</Link>
+            <Link to="/shop#bingo" className="shop-textlink">Browse more editions</Link>
+          </div>
+        ) : (
+          <div className="shop-actions">
+            <Link to="/events" className="shop-btn shop-btn-navy">See upcoming events</Link>
+            <Link to="/gift" className="shop-btn shop-btn-ghost">Send another gift</Link>
+          </div>
+        )}
         <p className="shop-tagline playfair">Where grown folks come out to play.™</p>
       </main>
     </div>
