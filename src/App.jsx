@@ -27,6 +27,7 @@ import CheckIn from "./Pages/CheckIn.jsx";
 import Gift from "./Pages/Gift.jsx";
 import Shop from "./Pages/Shop.jsx";
 import ShopSuccess from "./Pages/ShopSuccess.jsx";
+import Downloads from "./Pages/Downloads.jsx";
 import { rememberSource } from "./Services/ticketSources.js";
 import SuccessPage from "./Pages/SuccessPage.jsx";
 import MembershipSuccess from "./Pages/MembershipSuccess.jsx";
@@ -87,6 +88,7 @@ function App() {
             <Route path="/gift/success" element={<ShopSuccess kind="gift" />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/shop/success" element={<ShopSuccess kind="merch" />} />
+            <Route path="/downloads/:token" element={<Downloads />} />
             <Route path="/celebrate" element={<GroupBooking />} />
             <Route path="/host" element={<Host />} />
             <Route path="/corporate-team-building-atlanta" element={<HostLanding page="teamBuilding" />} />

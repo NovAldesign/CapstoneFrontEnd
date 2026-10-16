@@ -36,7 +36,22 @@ const ShopSuccess = ({ kind = 'gift' }) => {
       </Helmet>
       <main className="shop-main shop-center shop-thanks">
         <div className="shop-check" aria-hidden="true">✓</div>
-        {kind === 'merch' ? (
+        {!order && sessionId ? (
+          <h1 className="playfair">One moment…</h1>
+        ) : order?.type === 'digital' ? (
+          <>
+            <h1 className="playfair">Your cards are ready!</h1>
+            <p className="shop-lead-dark">
+              Order {order.orderNumber}. We also emailed you this link, so you can download and print again any time.
+            </p>
+            <Link to={`/downloads/${order.token}`} className="shop-btn shop-btn-gold">Download your cards</Link>
+          </>
+        ) : kind === 'merch' && order?.type === 'pending' ? (
+          <>
+            <h1 className="playfair">Thank you!</h1>
+            <p className="shop-lead-dark">Your payment went through. Your receipt and order details are on their way by email.</p>
+          </>
+        ) : kind === 'merch' ? (
           <>
             <h1 className="playfair">Your pre-order is in.</h1>
             <p className="shop-lead-dark">
@@ -76,7 +91,9 @@ const ShopSuccess = ({ kind = 'gift' }) => {
         )}
         <div className="shop-actions">
           <Link to="/events" className="shop-btn shop-btn-navy">See upcoming events</Link>
-          <Link to={kind === 'merch' ? '/gift' : '/gift'} className="shop-btn shop-btn-ghost">Send another gift</Link>
+          {order?.type === 'digital'
+            ? <Link to="/shop#bingo" className="shop-btn shop-btn-ghost">More editions</Link>
+            : <Link to="/gift" className="shop-btn shop-btn-ghost">Send another gift</Link>}
         </div>
         <p className="shop-tagline playfair">Where grown folks come out to play.™</p>
       </main>

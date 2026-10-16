@@ -1,6 +1,6 @@
 import { BACKEND_URL } from './eventUtils';
 
-// Shop: Holiday Passes, gift cards and merch pre-orders
+// Shop: Holiday Passes, gift cards, merch pre-orders and printable downloads
 // Holiday Passes appear at 12:00 AM ET on Black Friday (keep in sync with the backend shopCatalog.js)
 export const PASS_RELEASE = '2026-11-27T00:00:00-05:00';
 export const passesLive = (now = new Date()) => now >= new Date(PASS_RELEASE);
@@ -23,6 +23,11 @@ const call = async (path, options = {}) => {
 export const getCatalog = () => call('/catalog');
 export const startCheckout = (body) => call('/checkout', { method: 'POST', body: JSON.stringify(body) });
 export const startMerchCheckout = (body) => call('/checkout/merch', { method: 'POST', body: JSON.stringify(body) });
+export const startDigitalCheckout = (body) => call('/checkout/digital', { method: 'POST', body: JSON.stringify(body) });
+export const getDownloads = (token) => call(`/downloads/${encodeURIComponent(token)}`);
+export const downloadUrl = (token, file) => `${BACKEND_URL}/api/shop/download/${encodeURIComponent(token)}/${encodeURIComponent(file)}`;
+export const unlockSample = (body) => call('/sample', { method: 'POST', body: JSON.stringify(body) });
+export const sampleUrl = () => `${BACKEND_URL}/api/shop/sample/file`;
 export const checkCard = (code) => call(`/card/${encodeURIComponent(String(code).trim())}`);
 export const getShopOrder = (sessionId) => call(`/order/${encodeURIComponent(sessionId)}`);
 

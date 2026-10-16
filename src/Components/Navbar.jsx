@@ -56,7 +56,7 @@ const Navbar = () => {
           <ul className="nav-submenu" aria-label="Events">
             <li><NavLink to="/events" end className="nav-sublink" onClick={closeMenu}>Upcoming Events</NavLink></li>
             <li><NavLink to="/gift" className="nav-sublink" onClick={closeMenu}>{passesLive() ? 'Holiday Pass & Gift Cards' : 'Gift Cards'}</NavLink></li>
-            <li><NavLink to="/shop" className="nav-sublink" onClick={closeMenu}>Merch</NavLink></li>
+            <li><NavLink to="/shop" className="nav-sublink" onClick={closeMenu}>Shop</NavLink></li>
           </ul>
         </li>
         <li><NavLink to="/blog" className={navClass} onClick={closeMenu}>Blog</NavLink></li>
