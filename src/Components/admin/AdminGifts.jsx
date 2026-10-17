@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { shopAdmin, fmtDate, downloadCSV } from '../../Services/adminApi';
 
-// Gifts & merch: Holiday Passes, gift cards and merch pre-orders
+// Gifts & merch: Holiday Passes, gift cards and Printful merch orders
 const money = (c = 0) => `$${(Number(c) / 100).toFixed(Number(c) % 100 ? 2 : 0)}`;
 const KIND = { pass: ['Pass', 'navy'], gift: ['Gift card', 'gold'], bonus: ['Bonus', 'blue'] };
 
@@ -125,7 +125,54 @@ const CardsView = () => {
   );
 };
 
-const STATUSES = [['preorder', 'Pre-order'], ['ordered', 'Ordered in Printful'], ['shipped', 'Shipped'], ['cancelled', 'Cancelled']];
+const STATUSES = [
+  ['paid', 'Paid · not in Printful'],
+  ['draft', 'Draft · confirm in Printful'],
+  ['ordered', 'In production'],
+  ['shipped', 'Shipped'],
+  ['cancelled', 'Cancelled'],
+  ['preorder', 'Pre-order (old)'],
+];
+const STATUS_TONE = { paid: 'err', draft: 'warn', ordered: 'info', shipped: 'ok', cancelled: '', preorder: '' };
+
+const PrintfulPanel = ({ merch, onDone }) => {
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState('');
+  const connect = async () => {
+    setBusy(true);
+    setMsg('');
+    try {
+      const r = await shopAdmin('/printful/connect', { method: 'POST' });
+      setMsg(`Connected to ${r.store?.name || 'your Printful store'}. ${r.products} products are live on /shop, and shipping updates are on.`);
+      onDone();
+    } catch (e) {
+      setMsg(e.message);
+    }
+    setBusy(false);
+  };
+  return (
+    <section className="ga-card" style={{ marginBottom: 18 }}>
+      <div className="ga-card-head">
+        <div>
+          <p className="ga-kicker">Printful</p>
+          <h2 className="ga-card-title">
+            {merch?.connected ? `${merch.products} products on /shop` : 'Not connected yet'}
+          </h2>
+        </div>
+        <button type="button" className="ga-btn" onClick={connect} disabled={busy || !merch?.connected}>
+          {busy ? 'Connecting…' : 'Connect shipping updates'}
+        </button>
+      </div>
+      {!merch?.connected && <p className="ga-note info">Add PRINTFUL_API_KEY in Railway (Variables), let it redeploy, then come back and tap Connect shipping updates.</p>}
+      {merch?.error && <p className="ga-note err">Printful: {merch.error}</p>}
+      {msg && <p className="ga-note info">{msg}</p>}
+      <p className="ga-small ga-muted" style={{ margin: 0 }}>
+        Paid orders land in Printful as drafts. Open Printful → Orders, check the draft, and click Confirm to send it to production.
+        Buyers get their tracking email automatically when it ships.
+      </p>
+    </section>
+  );
+};
 
 const MerchView = () => {
   const [data, setData] = useState(null);
@@ -135,66 +182,61 @@ const MerchView = () => {
 
   const orders = data?.orders || [];
   const live = orders.filter((o) => o.status !== 'cancelled');
-  const byItem = useMemo(() => {
-    const m = new Map();
-    live.forEach((o) => o.items.forEach((i) => {
-      const k = [i.name, i.size, i.color].filter(Boolean).join(' · ');
-      m.set(k, (m.get(k) || 0) + i.quantity);
-    }));
-    return [...m.entries()].sort((a, b) => b[1] - a[1]);
-  }, [live]);
+  const toConfirm = orders.filter((o) => o.status === 'draft').length;
+  const stuck = orders.filter((o) => o.status === 'paid').length;
 
   const setStatus = async (o, status) => {
     try { await shopAdmin(`/merch-orders/${o._id}`, { method: 'PATCH', body: { status } }); load(); } catch (e) { setError(e.message); }
   };
+  const resend = async (o) => {
+    try { await shopAdmin(`/merch-orders/${o._id}/printful`, { method: 'POST' }); load(); } catch (e) { setError(e.message); }
+  };
 
-  // One row per item, ready to place in Printful
-  const exportPrintful = () => downloadCSV(live.flatMap((o) => o.items.map((i) => ({
-    Order: o.orderNumber, Name: o.shipping.name || o.buyerName, Email: o.buyerEmail, Phone: o.buyerPhone,
+  const exportCSV = () => downloadCSV(live.flatMap((o) => o.items.map((i) => ({
+    Order: o.orderNumber, Printful: o.printfulOrderId, Name: o.shipping.name || o.buyerName, Email: o.buyerEmail, Phone: o.buyerPhone,
     Address1: o.shipping.line1, Address2: o.shipping.line2, City: o.shipping.city, State: o.shipping.state, Zip: o.shipping.postalCode, Country: o.shipping.country,
-    Item: i.name, 'Printful product': i.printful, Size: i.size, Color: i.color, Qty: i.quantity, Status: o.status,
-  }))), 'gfc-merch-preorders.csv');
+    Item: i.name, Size: i.size, Color: i.color, Qty: i.quantity, Status: o.status, Tracking: o.tracking?.number || '',
+  }))), 'gfc-merch-orders.csv');
 
   if (error) return <p className="ga-note err">{error}</p>;
-  if (!data) return <div className="ga-loading">Loading pre-orders…</div>;
-  const p = data.merch?.presale;
+  if (!data) return <div className="ga-loading">Loading orders…</div>;
   return (
     <>
       <div className="ga-stats">
-        <div className="ga-stat"><div className="ga-stat-num">{live.length}</div><div className="ga-stat-label">Pre-orders</div></div>
-        <div className="ga-stat"><div className="ga-stat-num">{live.reduce((s, o) => s + o.items.reduce((t, i) => t + i.quantity, 0), 0)}</div><div className="ga-stat-label">Items to make</div></div>
+        <div className="ga-stat"><div className="ga-stat-num">{live.length}</div><div className="ga-stat-label">Orders</div></div>
+        <div className="ga-stat"><div className={`ga-stat-num ${toConfirm ? '' : 'zero'}`}>{toConfirm}</div><div className="ga-stat-label">To confirm in Printful</div></div>
+        <div className="ga-stat"><div className={`ga-stat-num ${stuck ? '' : 'zero'}`}>{stuck}</div><div className="ga-stat-label">Didn't reach Printful</div></div>
         <div className="ga-stat"><div className="ga-stat-num">{money(live.reduce((s, o) => s + o.totalPaidCents, 0))}</div><div className="ga-stat-label">Collected</div></div>
-        <div className="ga-stat"><div className={`ga-stat-num ${data.merch?.open ? '' : 'zero'}`}>{data.merch?.open ? 'Open' : 'Closed'}</div><div className="ga-stat-label">{p ? `Pre-sale ${fmtDate(p.start)} to ${fmtDate(p.end)}` : 'Pre-sale'}</div></div>
       </div>
-      {!data.merch?.items?.length && <p className="ga-note info">No merch is listed yet. Add your Printful items to capstonebackend/utilities/merchCatalog.js and push, and the pre-sale opens on its start date.</p>}
 
-      {byItem.length > 0 && (
-        <section className="ga-card">
-          <p className="ga-kicker">What to order in Printful</p>
-          <ul style={{ margin: 0, paddingLeft: 18 }}>{byItem.map(([k, n]) => <li key={k}><strong>{n}</strong> × {k}</li>)}</ul>
-        </section>
-      )}
+      <PrintfulPanel merch={data.merch} onDone={load} />
 
-      <section className="ga-card" style={{ marginTop: 18 }}>
+      <section className="ga-card">
         <div className="ga-card-head">
-          <h2 className="ga-card-title">Pre-orders</h2>
-          <button type="button" className="ga-btn" onClick={exportPrintful} disabled={!live.length}>↓ CSV for Printful</button>
+          <h2 className="ga-card-title">Merch orders</h2>
+          <button type="button" className="ga-btn" onClick={exportCSV} disabled={!live.length}>↓ CSV</button>
         </div>
-        {orders.length === 0 ? <div className="ga-empty"><div className="ga-empty-big">🛍️</div>No pre-orders yet.</div> : (
+        {orders.length === 0 ? <div className="ga-empty"><div className="ga-empty-big">🛍️</div>No merch orders yet.</div> : (
           <div className="ga-table-wrap">
             <table className="ga-table">
-              <thead><tr><th>Date</th><th>Order</th><th>Buyer</th><th>Items</th><th>Ship to</th><th className="ga-num">Paid</th><th>Status</th></tr></thead>
+              <thead><tr><th>Date</th><th>Order</th><th>Buyer</th><th>Items</th><th>Ship to</th><th className="ga-num">Paid</th><th>Printful</th><th>Status</th></tr></thead>
               <tbody>
                 {orders.map((o) => (
                   <tr key={o._id} className={o.status === 'cancelled' ? 'ga-off' : ''}>
                     <td className="ga-small">{fmtDate(o.createdAt)}</td>
                     <td style={{ fontFamily: 'monospace' }}>{o.orderNumber}</td>
                     <td>{o.buyerName}<div className="ga-small ga-muted">{o.buyerEmail}</div></td>
-                    <td className="ga-small">{o.items.map((i) => `${i.name}${i.size ? ` · ${i.size}` : ''} × ${i.quantity}`).join(', ')}</td>
+                    <td className="ga-small">{o.items.map((i) => [i.name, i.color, i.size].filter(Boolean).join(' · ') + ` × ${i.quantity}`).join(', ')}</td>
                     <td className="ga-small">{o.shipping.city}, {o.shipping.state}</td>
                     <td className="ga-num">{money(o.totalPaidCents)}</td>
+                    <td className="ga-small">
+                      {o.printfulOrderId ? <>#{o.printfulOrderId}</> : (
+                        <button type="button" className="ga-btn ga-btn-sm" onClick={() => resend(o)} title={o.printfulError || ''}>Send to Printful</button>
+                      )}
+                      {o.tracking?.url && <div><a href={o.tracking.url} target="_blank" rel="noreferrer">Track ↗</a></div>}
+                    </td>
                     <td>
-                      <select className="ga-select" value={o.status} onChange={(e) => setStatus(o, e.target.value)} aria-label={`Status for ${o.orderNumber}`}>
+                      <select className={`ga-select ga-tone-${STATUS_TONE[o.status] || 'none'}`} value={o.status} onChange={(e) => setStatus(o, e.target.value)} aria-label={`Status for ${o.orderNumber}`}>
                         {STATUSES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
                       </select>
                     </td>
@@ -216,7 +258,7 @@ const AdminGifts = () => {
       <div className="ga-row" style={{ marginBottom: 16 }}>
         <div className="ga-seg">
           <button type="button" className={view === 'cards' ? 'on' : ''} onClick={() => setView('cards')}>Passes &amp; gift cards</button>
-          <button type="button" className={view === 'merch' ? 'on' : ''} onClick={() => setView('merch')}>Merch pre-orders</button>
+          <button type="button" className={view === 'merch' ? 'on' : ''} onClick={() => setView('merch')}>Merch orders</button>
         </div>
         <span className="ga-spacer" />
         <a className="ga-btn" href="/gift" target="_blank" rel="noreferrer">View gift page ↗</a>

@@ -282,3 +282,10 @@
 }
 .shop-textlink:hover { color: var(--sh-gold-text); }
 .shop-textlink:focus-visible { outline: 3px solid var(--sh-gold); outline-offset: 3px; border-radius: 2px; }
+
+/* Merch (Printful) */
+.shop-hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.shop-btn-ghost-light { background: transparent; color: #fff; border: 1.5px solid rgba(255, 255, 255, 0.7); }
+.shop-btn-ghost-light:hover { border-color: var(--sh-gold); color: var(--sh-gold); }
+.shop-merch { scroll-margin-top: 90px; }
+.shop-product-img img { background: #fff; }

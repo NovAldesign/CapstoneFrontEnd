@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { getCatalog, startMerchCheckout, startDigitalCheckout, unlockSample, sampleUrl, money, longDate } from '../Services/shopApi';
+import { getCatalog, startMerchCheckout, startDigitalCheckout, unlockSample, sampleUrl, money } from '../Services/shopApi';
 import { currentSource } from '../Services/ticketSources';
 import '../Styles/Shop.css';
 
-// /shop — printable Karaoke Bingo downloads and the Grown Folks™ merch pre-sale (made to order through Printful)
+// /shop — printable Karaoke Bingo downloads and Grown Folks™ merch (made to order by Printful)
 
 // Preview image for an edition: "single-rnb" → /shop/bingo/rnb.jpg
 const preview = (id) => `/shop/bingo/${id.replace('single-', '')}.jpg`;
@@ -155,42 +154,59 @@ const BingoShop = ({ digital }) => {
     </section>
   );
 };
+const uniq = (list) => [...new Set(list.filter(Boolean))];
+const priceRange = (variants) => {
+  const prices = variants.map((v) => v.priceCents);
+  const lo = Math.min(...prices);
+  return lo === Math.max(...prices) ? money(lo) : `From ${money(lo)}`;
+};
+
+// One Printful product. Variants carry the size, color, price and photo.
 const ProductCard = ({ item, onAdd }) => {
-  const [size, setSize] = useState(item.sizes[0] ? '' : '');
-  const [color, setColor] = useState(item.colors[0] || '');
+  const colors = uniq(item.variants.map((v) => v.color));
+  const [color, setColor] = useState(colors.length === 1 ? colors[0] : '');
+  const sizes = uniq(item.variants.filter((v) => !color || v.color === color).map((v) => v.size));
+  const [size, setSize] = useState('');
   const [qty, setQty] = useState(1);
   const [note, setNote] = useState('');
+
+  const pick = (c, sz) =>
+    item.variants.find((v) => (!colors.length || v.color === c) && (!sizes.length || v.size === sz)) || null;
+  const variant = pick(color, sizes.length === 1 ? sizes[0] : size);
+  const shown = variant || item.variants.find((v) => color && v.color === color) || null;
+  const image = shown?.image || item.image;
+
   const add = () => {
-    if (item.sizes.length && !size) return setNote('Pick a size.');
-    onAdd({ id: item.id, name: item.name, size, color, quantity: qty, priceCents: item.priceCents });
+    if (colors.length > 1 && !color) return setNote('Pick a color.');
+    if (sizes.length > 1 && !size) return setNote('Pick a size.');
+    if (!variant) return setNote("That combination isn't available.");
+    onAdd({ variantId: variant.id, name: item.name, size: variant.size, color: variant.color, quantity: qty, priceCents: variant.priceCents });
     setNote('Added ✓');
     setTimeout(() => setNote(''), 1800);
   };
+
   return (
     <article className="shop-product">
       <div className="shop-product-img">
-        {item.image ? <img src={item.image} alt={item.name} loading="lazy" /> : <span aria-hidden="true">GFC</span>}
+        {image ? <img src={image} alt={`${item.name}${color ? ` in ${color}` : ''}`} loading="lazy" /> : <span aria-hidden="true">GFC</span>}
       </div>
       <div className="shop-product-body">
         <h3 className="playfair">{item.name}</h3>
-        {item.description && <p className="shop-muted">{item.description}</p>}
-        <p className="shop-tile-price">
-          {money(item.priceCents)}
-          {item.regularCents > item.priceCents && <s>{money(item.regularCents)}</s>}
-        </p>
+        <p className="shop-tile-price">{variant ? money(variant.priceCents) : priceRange(item.variants)}</p>
         <div className="shop-product-opts">
-          {item.sizes.length > 0 && (
-            <label>Size
-              <select value={size} onChange={(e) => { setSize(e.target.value); setNote(''); }}>
+          {colors.length > 1 && (
+            <label>Color
+              <select value={color} onChange={(e) => { setColor(e.target.value); setSize(''); setNote(''); }}>
                 <option value="">Choose</option>
-                {item.sizes.map((s) => <option key={s}>{s}</option>)}
+                {colors.map((c) => <option key={c}>{c}</option>)}
               </select>
             </label>
           )}
-          {item.colors.length > 0 && (
-            <label>Color
-              <select value={color} onChange={(e) => setColor(e.target.value)}>
-                {item.colors.map((c) => <option key={c}>{c}</option>)}
+          {sizes.length > 1 && (
+            <label>Size
+              <select value={size} onChange={(e) => { setSize(e.target.value); setNote(''); }}>
+                <option value="">Choose</option>
+                {sizes.map((sz) => <option key={sz}>{sz}</option>)}
               </select>
             </label>
           )}
@@ -200,7 +216,7 @@ const ProductCard = ({ item, onAdd }) => {
             </select>
           </label>
         </div>
-        <button type="button" className="shop-btn shop-btn-navy" onClick={add}>Add to pre-order</button>
+        <button type="button" className="shop-btn shop-btn-navy" onClick={add}>Add to bag</button>
         {note && <span className="shop-note" aria-live="polite">{note}</span>}
       </div>
     </article>
@@ -220,7 +236,7 @@ const Shop = () => {
   const merch = catalog?.merch;
   const addToBag = (line) =>
     setBag((b) => {
-      const i = b.findIndex((x) => x.id === line.id && x.size === line.size && x.color === line.color);
+      const i = b.findIndex((x) => x.variantId === line.variantId);
       if (i < 0) return [...b, line];
       const next = [...b];
       next[i] = { ...next[i], quantity: Math.min(10, next[i].quantity + line.quantity) };
@@ -228,14 +244,14 @@ const Shop = () => {
     });
 
   const subtotal = useMemo(() => bag.reduce((s, l) => s + l.priceCents * l.quantity, 0), [bag]);
-  const shipping = merch && subtotal >= merch.presale.freeShippingOverCents ? 0 : merch?.presale.shippingCents || 0;
+  const shipping = merch && subtotal >= merch.settings.freeShippingOverCents ? 0 : merch?.settings.shippingCents || 0;
 
   const checkout = async () => {
     setBusy(true);
     setError('');
     try {
       const { url } = await startMerchCheckout({
-        items: bag.map(({ id, size, color, quantity }) => ({ id, size, color, quantity })),
+        items: bag.map(({ variantId, quantity }) => ({ variantId, quantity })),
         source: currentSource(),
       });
       window.location.href = url;
@@ -258,7 +274,10 @@ const Shop = () => {
         <p className="shop-lead">
           Printable Karaoke Bingo for your own game night, plus Grown Folks™ merch.
         </p>
-        <a href="#bingo" className="shop-btn shop-btn-gold">Shop Karaoke Bingo</a>
+        <div className="shop-hero-ctas">
+          <a href="#bingo" className="shop-btn shop-btn-gold">Shop Karaoke Bingo</a>
+          {catalog?.merch?.open && <a href="#merch" className="shop-btn shop-btn-ghost-light">Shop merch</a>}
+        </div>
       </header>
 
       <main className="shop-main">
@@ -267,45 +286,27 @@ const Shop = () => {
 
         {catalog?.digital && <BingoShop digital={catalog.digital} />}
 
-        {merch && (
-          <header className="shop-merch-head">
-            <p className="shop-label">Grown Folks™ merch</p>
-            <h2 className="playfair shop-h2">Wear the room.</h2>
-            <p className="shop-sub">
-              {merch.open
-                ? `Pre-sale is open until ${longDate(merch.presale.end)}. Every piece is made to order after the pre-sale closes. ${merch.presale.shipBy}.`
-                : 'Tees and more are on the way. Pre-orders open soon at a pre-sale price.'}
-            </p>
-          </header>
-        )}
-
-        {merch && !merch.open && (
-          <section className="shop-card shop-center">
-            <h2 className="playfair shop-h2">The drop is coming</h2>
-            <p className="shop-muted">
-              Want first dibs? Join our email list at the bottom of this page and you'll hear the moment pre-orders open.
-              In the meantime, a GFC gift card makes a great gift.
-            </p>
-            <Link to="/gift" className="shop-btn shop-btn-gold">Gift a night out</Link>
-          </section>
-        )}
-
         {merch?.open && (
-          <>
+          <section id="merch" className="shop-merch">
+            <header className="shop-merch-head">
+              <p className="shop-label">Grown Folks™ merch</p>
+              <h2 className="playfair shop-h2">Wear the room.</h2>
+              <p className="shop-sub">{merch.settings.shipNote}</p>
+            </header>
             <div className="shop-products">
               {merch.items.map((item) => <ProductCard key={item.id} item={item} onAdd={addToBag} />)}
             </div>
             <p className="shop-fine shop-center">
-              Free shipping on orders of {money(merch.presale.freeShippingOverCents)}+. Otherwise {money(merch.presale.shippingCents)} flat. US only. Pre-orders are final sale.
+              Free shipping on orders of {money(merch.settings.freeShippingOverCents)}+. Otherwise {money(merch.settings.shippingCents)} flat. US only. Made-to-order items are final sale.
             </p>
-          </>
+          </section>
         )}
 
         {bag.length > 0 && (
-          <aside className="shop-bag" aria-label="Your pre-order">
+          <aside className="shop-bag" aria-label="Your bag">
             <ul>
               {bag.map((l, i) => (
-                <li key={`${l.id}-${l.size}-${l.color}`}>
+                <li key={l.variantId}>
                   <span>{l.name}{l.size ? ` · ${l.size}` : ''}{l.color ? ` · ${l.color}` : ''} × {l.quantity}</span>
                   <span>{money(l.priceCents * l.quantity)}</span>
                   <button type="button" className="shop-x" aria-label={`Remove ${l.name}`} onClick={() => setBag((b) => b.filter((_, j) => j !== i))}>×</button>
@@ -315,7 +316,7 @@ const Shop = () => {
             <p className="shop-order-line"><span>Shipping</span><span>{shipping ? money(shipping) : 'Free'}</span></p>
             <p className="shop-order-line"><span>Total</span><strong>{money(subtotal + shipping)}</strong></p>
             <button type="button" className="shop-btn shop-btn-gold shop-pay" onClick={checkout} disabled={busy}>
-              {busy ? 'Connecting…' : 'Pre-order now'}
+              {busy ? 'Connecting…' : 'Check out'}
             </button>
           </aside>
         )}

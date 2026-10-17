@@ -284,3 +284,9 @@ button.ga-stat:hover { border-color: var(--ga-gold); transform: translateY(-1px)
 @media (max-width: 640px) {
   .ga-event-actions .ga-btn { flex: 1; }
 }
+
+/* Merch order status colors (Gifts & merch → Merch orders) */
+.ga-select.ga-tone-err { border-color: var(--ga-red); color: var(--ga-red); font-weight: 700; }
+.ga-select.ga-tone-warn { border-color: var(--ga-amber); color: var(--ga-amber); font-weight: 700; }
+.ga-select.ga-tone-info { border-color: var(--ga-blue); color: var(--ga-blue); }
+.ga-select.ga-tone-ok { border-color: var(--ga-green); color: var(--ga-green); }

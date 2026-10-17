@@ -52,10 +52,10 @@ const ShopSuccess = ({ kind = 'gift' }) => {
           </>
         ) : kind === 'merch' ? (
           <>
-            <h1 className="playfair">Your pre-order is in.</h1>
+            <h1 className="playfair">Your order is in.</h1>
             <p className="shop-lead-dark">
               {order?.orderNumber ? `Order ${order.orderNumber}. ` : ''}Your receipt is on its way by email.
-              Every piece is made to order after the pre-sale closes, and we'll email tracking when it ships.
+              Every piece is made to order, and we'll email your tracking number when it ships.
             </p>
           </>
         ) : order?.isGift ? (
