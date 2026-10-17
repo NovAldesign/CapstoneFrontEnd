@@ -6,6 +6,7 @@ import AdminSelect from "../Components/AdminSelect.jsx";
 import AdminToday from "../Components/admin/AdminToday.jsx";
 import AdminShowcases from "../Components/admin/AdminShowcases.jsx";
 import AdminLives from "../Components/admin/AdminLives.jsx";
+import EventbriteSync from "../Components/admin/EventbriteSync.jsx";
 import AdminCodes from "../Components/admin/AdminCodes.jsx";
 import { AdminInboxList, AdminPerks, AdminSubscribers, AdminScouts } from "../Components/admin/AdminLists.jsx";
 import AdminPeople from "../Components/admin/AdminPeople.jsx";
@@ -618,6 +619,18 @@ const AdminDashboard = () => {
                 )}
               </section>
 
+              {selectedEvent.eventbriteId && (
+                <EventbriteSync
+                  eventId={selectedEvent._id}
+                  onDone={async () => {
+                    const all = await getAllEvents().catch(() => null);
+                    if (!Array.isArray(all)) return;
+                    setEvents(all);
+                    const fresh = all.find((e) => e._id === selectedEvent._id);
+                    if (fresh) setSelectedEvent(fresh);
+                  }}
+                />
+              )}
               <div className="panel-actions">
                 <button className="gold-fill-btn" onClick={() => handleEditEvent(selectedEvent)}>Edit Event</button>
                 <button className="btn-delete" onClick={() => handleDeleteEvent(selectedEvent._id)}>Delete Event</button>
@@ -625,6 +638,10 @@ const AdminDashboard = () => {
             </div>
           ) : (
             <div className="table-container full-width">
+              <div className="eb-sync-bar">
+                <EventbriteSync onDone={loadData} />
+                <span className="ga-small ga-muted">Added or changed a ticket on Eventbrite and don't see it here or on the site? Tap this.</span>
+              </div>
               <div className="table-toolbar">
                 <div className="ga-seg" role="tablist" aria-label="Which events">
                   {[['upcoming', 'Upcoming'], ['past', 'Past'], ['hidden', 'Drafts & cancelled']].map(([id, label]) => (

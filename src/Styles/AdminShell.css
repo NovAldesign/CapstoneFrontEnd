@@ -308,3 +308,13 @@ button.ga-stat:hover { border-color: var(--ga-gold); transform: translateY(-1px)
 @media (max-width: 640px) {
   .gl-qwrap { padding-left: 0; }
 }
+
+/* Sync tickets from Eventbrite (EventbriteSync.jsx) */
+.eb-sync { margin: 0 0 12px; }
+.eb-sync-bar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 4px 12px; margin: 0 0 12px; }
+.eb-sync-bar .eb-sync { margin: 0; }
+.eb-sync-bar > .ga-small { padding-top: 6px; }
+.eb-sync-results { margin: 10px 0 0; }
+.eb-sync-row + .eb-sync-row { margin-top: 10px; }
+.eb-sync-results ul { margin: 4px 0 0; padding-left: 20px; }
+.eb-sync-results p { margin: 2px 0 0; }
