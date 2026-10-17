@@ -162,6 +162,38 @@ const AdminDashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, eventView, filteredEvents]);
 
+  // ── Event detail navigation ──────────────────────────────────────────
+  // Opening an event adds a browser history step, so the browser's Back button
+  // returns to the event list instead of leaving the dashboard.
+  const openEvent = useCallback((ev) => {
+    if (!ev) return;
+    try {
+      if (window.history.state?.gfcEvent) window.history.replaceState({ ...window.history.state, gfcEvent: ev._id }, '');
+      else window.history.pushState({ ...(window.history.state || {}), gfcEvent: ev._id }, '');
+    } catch { /* history not available */ }
+    setSelectedEvent(ev);
+    window.scrollTo({ top: 0 });
+  }, []);
+  const closeEvent = useCallback(() => {
+    if (window.history.state?.gfcEvent) window.history.back();
+    else setSelectedEvent(null);
+  }, []);
+  useEffect(() => {
+    const onPop = (e) => {
+      const id = e.state?.gfcEvent;
+      if (!id) setSelectedEvent(null);
+      else setSelectedEvent((cur) => (cur?._id === id ? cur : events.find((x) => x._id === id) || null));
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, [events]);
+  // Previous / next event in the list you're looking at (Upcoming, Past, or Drafts)
+  const eventNav = useMemo(() => {
+    if (!selectedEvent) return { list: [], index: -1 };
+    const list = filteredEvents.some((e) => e._id === selectedEvent._id) ? filteredEvents : events;
+    return { list, index: list.findIndex((e) => e._id === selectedEvent._id) };
+  }, [selectedEvent, filteredEvents, events]);
+
   // ── Members Handlers ────────────────────────────────────────────────────
   const calculateAge = (dob) => {
     if (!dob) return 'N/A';
@@ -287,7 +319,7 @@ const AdminDashboard = () => {
         await deleteEvent(id);
         setEvents(prev => prev.filter(ev => ev._id !== id));
         if (editingEvent?._id === id) resetEventForm();
-        if (selectedEvent?._id === id) setSelectedEvent(null);
+        if (selectedEvent?._id === id) closeEvent();
       } catch (err) { console.error(err); }
     }
   };
@@ -511,12 +543,41 @@ const AdminDashboard = () => {
           {selectedEvent ? (
             <div className="event-detail-panel">
               <div className="event-detail-header">
-                <button className="close-btn" onClick={() => setSelectedEvent(null)}>←</button>
+                <button className="close-btn" onClick={closeEvent} aria-label="Back to all events">←</button>
                 <div>
                   <h2 className="playfair">{selectedEvent.name}</h2>
                   <p className="subtitle">{selectedEvent.eventType} · {new Date(selectedEvent.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
                 </div>
               </div>
+              <div className="ev-nav" aria-label="Move between events">
+                <button type="button" className="ga-btn ga-btn-sm" onClick={closeEvent}>← All events</button>
+                <button type="button" className="ga-btn ga-btn-sm" disabled={eventNav.index <= 0}
+                  onClick={() => openEvent(eventNav.list[eventNav.index - 1])}>‹ Previous</button>
+                <button type="button" className="ga-btn ga-btn-sm" disabled={eventNav.index < 0 || eventNav.index >= eventNav.list.length - 1}
+                  onClick={() => openEvent(eventNav.list[eventNav.index + 1])}>Next ›</button>
+                <select className="ga-select ev-nav-jump" aria-label="Jump to an event" value={selectedEvent._id}
+                  onChange={(e) => openEvent(eventNav.list.find((x) => x._id === e.target.value))}>
+                  {eventNav.list.map((x) => (
+                    <option key={x._id} value={x._id}>
+                      {new Date(x.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} · {x.name}
+                    </option>
+                  ))}
+                </select>
+                {eventNav.index >= 0 && <span className="ga-small ga-muted">{eventNav.index + 1} of {eventNav.list.length}</span>}
+              </div>
+              {selectedEvent.eventbriteId && (
+                <EventbriteSync
+                  key={selectedEvent._id}
+                  eventId={selectedEvent._id}
+                  onDone={async () => {
+                    const all = await getAllEvents().catch(() => null);
+                    if (!Array.isArray(all)) return;
+                    setEvents(all);
+                    const fresh = all.find((e) => e._id === selectedEvent._id);
+                    if (fresh) setSelectedEvent(fresh);
+                  }}
+                />
+              )}
               <div className="gold-spacer-v2" />
 
               <div className="stats-grid mini">
@@ -619,18 +680,6 @@ const AdminDashboard = () => {
                 )}
               </section>
 
-              {selectedEvent.eventbriteId && (
-                <EventbriteSync
-                  eventId={selectedEvent._id}
-                  onDone={async () => {
-                    const all = await getAllEvents().catch(() => null);
-                    if (!Array.isArray(all)) return;
-                    setEvents(all);
-                    const fresh = all.find((e) => e._id === selectedEvent._id);
-                    if (fresh) setSelectedEvent(fresh);
-                  }}
-                />
-              )}
               <div className="panel-actions">
                 <button className="gold-fill-btn" onClick={() => handleEditEvent(selectedEvent)}>Edit Event</button>
                 <button className="btn-delete" onClick={() => handleDeleteEvent(selectedEvent._id)}>Delete Event</button>
@@ -674,7 +723,7 @@ const AdminDashboard = () => {
                     const fill = cap > 0 ? Math.round((sold / cap) * 100) : 0;
                     return (
                       <tr key={ev._id} className="admin-row">
-                        <td className="clickable-name" onClick={() => setSelectedEvent(ev)}>
+                        <td className="clickable-name" onClick={() => openEvent(ev)}>
                           {ev.name}
                         </td>
                         <td>{ev.eventType}</td>

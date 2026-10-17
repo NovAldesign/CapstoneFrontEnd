@@ -318,3 +318,8 @@ button.ga-stat:hover { border-color: var(--ga-gold); transform: translateY(-1px)
 .eb-sync-row + .eb-sync-row { margin-top: 10px; }
 .eb-sync-results ul { margin: 4px 0 0; padding-left: 20px; }
 .eb-sync-results p { margin: 2px 0 0; }
+
+/* Event detail: back, previous / next, jump to event */
+.ev-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 4px 0 12px; }
+.ev-nav .ga-btn:disabled { opacity: 0.45; cursor: default; }
+.ev-nav-jump { max-width: 340px; min-width: 0; flex: 1 1 220px; }
