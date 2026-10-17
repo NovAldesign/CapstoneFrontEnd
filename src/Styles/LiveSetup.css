@@ -1,0 +1,44 @@
+/* /live-setup/:id — artist picks their Instagram/TikTok Live (uses Shop.css tokens) */
+.live-main { max-width: 720px; }
+.live-form { display: flex; flex-direction: column; gap: 18px; }
+.live-card { margin: 0 0 18px; min-width: 0; }
+.live-form .live-card { margin: 0; }
+fieldset.live-card { border: 1px solid var(--sh-line); }
+.live-card legend { float: left; width: 100%; padding: 0; }
+.live-card legend + * { clear: both; }
+
+.live-choices { display: grid; gap: 10px; }
+.live-choices-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.live-choice {
+  display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 12px 16px;
+  border: 1.5px solid var(--sh-line); border-radius: 12px; background: #fff;
+  font-weight: 700; color: var(--sh-navy); cursor: pointer;
+}
+.live-choice input { width: 20px; height: 20px; accent-color: var(--sh-navy); flex: none; }
+.live-choice.on { border-color: var(--sh-gold); background: #FFF9EC; box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.2); }
+.live-choice:focus-within { outline: 3px solid var(--sh-gold); outline-offset: 2px; }
+
+.live-field { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; font-size: 13px; font-weight: 700; color: var(--sh-navy); }
+.live-two { margin-top: 16px; }
+
+.live-questions { margin: 6px 0 0; padding-left: 22px; display: flex; flex-direction: column; gap: 14px; }
+.live-questions li { padding-left: 4px; }
+.live-q { display: block; font-size: 15px; line-height: 1.5; color: var(--sh-ink); margin-bottom: 6px; }
+.live-questions input { width: 100%; box-sizing: border-box; }
+.live-questions-read small { display: block; color: var(--sh-muted); font-size: 13px; }
+
+.live-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.live-done { text-align: center; }
+.live-check {
+  width: 56px; height: 56px; margin: 0 auto 10px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--sh-gold); color: var(--sh-navy);
+  font-size: 28px; font-weight: 800;
+}
+.live-when { font-size: 20px; font-weight: 800; color: var(--sh-navy); margin: 0 0 8px; }
+.live-h4 { margin: 20px 0 6px; font-size: 16px; color: var(--sh-navy); }
+.live-steps { margin: 0; padding-left: 22px; line-height: 1.6; color: var(--sh-ink); }
+.live-help { text-align: center; }
+
+@media (max-width: 560px) {
+  .live-choices-row { grid-template-columns: minmax(0, 1fr); }
+}

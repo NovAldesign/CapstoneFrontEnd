@@ -5,6 +5,7 @@ import AdminReviews from "../Components/AdminReviews.jsx";
 import AdminSelect from "../Components/AdminSelect.jsx";
 import AdminToday from "../Components/admin/AdminToday.jsx";
 import AdminShowcases from "../Components/admin/AdminShowcases.jsx";
+import AdminLives from "../Components/admin/AdminLives.jsx";
 import AdminCodes from "../Components/admin/AdminCodes.jsx";
 import { AdminInboxList, AdminPerks, AdminSubscribers, AdminScouts } from "../Components/admin/AdminLists.jsx";
 import AdminPeople from "../Components/admin/AdminPeople.jsx";
@@ -322,6 +323,7 @@ const AdminDashboard = () => {
       { id: 'events', icon: '🎟', label: 'Events' },
       { id: 'guests', icon: '✅', label: 'Guest lists & check-in' },
       { id: 'showcases', icon: '🎤', label: 'Showcases', count: (counts.artists || 0) + (counts.hosts || 0) },
+      { id: 'lives', icon: '🔴', label: 'Lives', count: counts.livesToday },
       { id: 'create-event', icon: '＋', label: editingEvent ? 'Edit event' : 'New event' },
     ] },
     { group: 'Sales', items: [
@@ -350,6 +352,7 @@ const AdminDashboard = () => {
     today: ['Today', 'Everything waiting on you, in one place.'],
     events: ['Events', 'Every event, tickets sold and attendees.'],
     showcases: ['Showcases', 'Lineups, artist, host and live artist applications, ticket codes and payouts.'],
+    lives: ['Lives', 'Instagram and TikTok Lives with your artists and hosts, with the questions.'],
     'create-event': [editingEvent ? 'Edit event' : 'New event', 'Set the details, tickets and photo.'],
     codes: ['Discount codes', 'Create, edit and pause codes. No coding needed.'],
     guests: ['Guest lists & check-in', 'Every ticket from every platform, and the door link for event day.'],
@@ -412,6 +415,7 @@ const AdminDashboard = () => {
       {activeTab === 'guests' && <AdminGuests startEventId={guestEvent} onOpen={setGuestEvent} />}
       {activeTab === 'reports' && <AdminReports openGuests={openGuests} />}
       {activeTab === 'showcases' && <AdminShowcases />}
+      {activeTab === 'lives' && <AdminLives />}
       {activeTab === 'codes' && <AdminCodes events={events} />}
       {activeTab === 'gifts' && <AdminGifts />}
       {activeTab === 'perks' && <AdminPerks />}

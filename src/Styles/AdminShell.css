@@ -290,3 +290,21 @@ button.ga-stat:hover { border-color: var(--ga-gold); transform: translateY(-1px)
 .ga-select.ga-tone-warn { border-color: var(--ga-amber); color: var(--ga-amber); font-weight: 700; }
 .ga-select.ga-tone-info { border-color: var(--ga-blue); color: var(--ga-blue); }
 .ga-select.ga-tone-ok { border-color: var(--ga-green); color: var(--ga-green); }
+
+/* Lives tab (AdminLives.jsx) */
+.gl-list { list-style: none; margin: 0; padding: 0; }
+.gl-person:last-child .ga-person { border-bottom: 0; }
+.gl-editor { display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; margin: 4px 0 14px; background: #FBF8F2; border: 1px solid var(--ga-line); border-radius: 12px; }
+.gl-date { max-width: 260px; }
+.gl-add, .gl-clear { align-self: flex-start; }
+.gl-clear { color: var(--ga-red); margin: -6px 0 12px; }
+.gl-check { display: flex; align-items: center; gap: 8px; font-size: 0.86rem; }
+.gl-qwrap { padding: 4px 4px 14px 56px; }
+.gl-questions { margin: 0 0 10px; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem; line-height: 1.5; }
+.gl-questions small { display: block; color: var(--ga-muted); font-size: 0.8rem; }
+.gl-questions.big { font-size: 1.08rem; gap: 14px; }
+.gl-questions.big small { font-size: 0.9rem; }
+.gl-today { border: 2px solid var(--ga-gold); }
+@media (max-width: 640px) {
+  .gl-qwrap { padding-left: 0; }
+}

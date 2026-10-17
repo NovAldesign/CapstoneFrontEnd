@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { adminApi, fmtDate, timeAgo } from '../../Services/adminApi';
+import { LiveTodayCard } from './AdminLives.jsx';
 
 // Today: everything waiting on you, plus the next events
 const ICONS = {
@@ -46,6 +47,10 @@ const AdminToday = ({ go, onCounts, openGuests }) => {
       <p className="ga-subtitle" style={{ marginTop: -12, marginBottom: 18 }}>
         {waiting === 0 ? "You're all caught up. Nothing is waiting on you." : `${waiting} ${waiting === 1 ? 'thing is' : 'things are'} waiting on you.`}
       </p>
+
+      {(data.livesToday || []).map((p) => (
+        <div key={p.id} style={{ marginBottom: 18 }}><LiveTodayCard p={p} /></div>
+      ))}
 
       <div className="ga-stats">
         {TILES.map((t) => (
