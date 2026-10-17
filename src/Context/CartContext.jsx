@@ -3,7 +3,7 @@ import { currentSource } from "../Services/ticketSources.js";
 import { Link } from "react-router-dom";
 import { BACKEND_URL, parseCleanPrice, formatMoney } from "../Services/eventUtils";
 import { LEGAL } from "../content/legalContent.js";
-import { memberPriceCents, creditCoversEvent, memberToken, isMemberTier } from "../Services/memberPricing.js";
+import { memberPriceCents, memberItemCents, isPlusOne, creditCoversEvent, memberToken, isMemberTier } from "../Services/memberPricing.js";
 import "../Styles/EventListing.css";
 
 const CartContext = createContext(null);
@@ -262,19 +262,29 @@ export const CartProvider = ({ children }) => {
     []
   );
 
-  // Which bag items the code works for
+  // Plus One deal (buy 2, save $8): no codes or bundle discount in the same order.
+  // Artist/tracking codes still count toward the performer's sales.
+  const hasPlusOne = cartItems.some((i) => isPlusOne(i.ticketTypeName));
+  const plusOneBlocksCode = hasPlusOne && Boolean(promoInfo) && !promoInfo.worksWithPlusOne;
+
+  // Which bag items the code works for (for the discount math, nothing on Plus One orders)
   const codeEligible = (item) =>
+    !hasPlusOne &&
     Boolean(promoInfo) &&
     (promoInfo.appliesToAllEvents || (promoInfo.eligibleEventIds || []).includes(item.eventId));
-  const promoApplies = Boolean(promoInfo) && cartItems.some(codeEligible);
+  const promoApplies =
+    Boolean(promoInfo) &&
+    (hasPlusOne
+      ? !plusOneBlocksCode && (promoInfo.appliesToAllEvents || cartItems.some((i) => (promoInfo.eligibleEventIds || []).includes(i.eventId)))
+      : cartItems.some(codeEligible));
 
   // Totals (in cents). Code discount first, then the bundle discount (same as the backend).
   const totals = useMemo(() => {
     const uniqueEventCount = new Set(cartItems.map((i) => i.eventId)).size;
-    const { rate, label } = getDiscount(uniqueEventCount);
+    const { rate, label } = hasPlusOne ? { rate: 0, label: "" } : getDiscount(uniqueEventCount);
     const fullSubtotalInCents = cartItems.reduce((sum, i) => sum + i.priceInCents * i.quantity, 0);
     // Member price first (same as the backend), then codes, bundle, credit, gift card
-    const price = (i) => memberPriceCents(memberWallet, i.priceInCents, i.eventName);
+    const price = (i) => memberItemCents(memberWallet, i);
     const memberSavingsInCents = cartItems.reduce((sum, i) => sum + (i.priceInCents - price(i)) * i.quantity, 0);
     const subtotalInCents = fullSubtotalInCents - memberSavingsInCents;
     let afterCodeInCents;
@@ -294,7 +304,7 @@ export const CartProvider = ({ children }) => {
 
     // One entry per ticket, priced like the backend (code, then bundle), for gift cards and passes
     const units = [];
-    const onceItem = promoInfo?.oncePerOrder ? cartItems.find(codeEligible) : null;
+    const onceItem = !hasPlusOne && promoInfo?.oncePerOrder ? cartItems.find(codeEligible) : null;
     cartItems.forEach((i) => {
       for (let q = 0; q < i.quantity; q++) {
         let cents = price(i);
@@ -399,6 +409,8 @@ export const CartProvider = ({ children }) => {
     promoError,
     promoChecking,
     promoApplies,
+    hasPlusOne,
+    plusOneBlocksCode,
     applyPromoCode,
     removePromoCode,
     giftCode,
@@ -435,7 +447,7 @@ const CartDrawer = () => {
     cartItems, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart,
     checkout, checkoutLoading, itemCount, subtotalInCents, discountInCents,
     totalInCents, discountRate, discountLabel, uniqueEventCount,
-    promoCode, promoInfo, promoError, promoChecking, promoApplies,
+    promoCode, promoInfo, promoError, promoChecking, promoApplies, hasPlusOne, plusOneBlocksCode,
     applyPromoCode, removePromoCode, codeSavingsInCents,
     codeEmail, setCodeEmail,
     giftCode, giftInfo, giftError, removeGiftCode, giftCreditInCents, passUses,
@@ -448,8 +460,9 @@ const CartDrawer = () => {
   const closeBtnRef = useRef(null);
 
   // Nudge toward the next discount level (based on DIFFERENT events)
-  const nudge =
-    uniqueEventCount === 1
+  const nudge = hasPlusOne
+    ? null // the multi-event discount doesn't apply to Plus One orders
+    : uniqueEventCount === 1
       ? "Add a different event and save 5% on your whole order."
       : uniqueEventCount === 2
         ? "Add one more different event and save 10% on your whole order."
@@ -523,10 +536,10 @@ const CartDrawer = () => {
                         </button>
                       </div>
                       <span className="gfc-bag-item-price">
-                        {memberPrice(item.priceInCents, item.eventName) < item.priceInCents && (
+                        {memberItemCents(memberWallet, item) < item.priceInCents && (
                           <s className="gfc-bag-item-was">{formatMoney((item.priceInCents * item.quantity) / 100)}</s>
                         )}
-                        {formatMoney((memberPrice(item.priceInCents, item.eventName) * item.quantity) / 100)}
+                        {formatMoney((memberItemCents(memberWallet, item) * item.quantity) / 100)}
                       </span>
                     </div>
                     <button
@@ -551,6 +564,11 @@ const CartDrawer = () => {
                   </div>
                 )}
                 {discountLabel && <div className="gfc-discount-note">{discountLabel}</div>}
+                {hasPlusOne && (
+                  <div className="gfc-discount-note">
+                    Plus One deal: buy 2, save $8. Other discounts don't combine with it.
+                  </div>
+                )}
 
                 {/* Ticket code */}
                 <div className="gfc-code">
@@ -559,8 +577,12 @@ const CartDrawer = () => {
                       <span>
                         {promoChecking
                           ? `Checking ${promoCode}…`
+                          : plusOneBlocksCode
+                            ? `${promoCode} can't be combined with the Plus One deal. Remove it to keep your Plus One price.`
                           : promoApplies
-                            ? `✓ ${promoCode}: ${promoInfo.description}`
+                            ? hasPlusOne
+                              ? `✓ ${promoCode} (credit only with the Plus One deal)`
+                              : `✓ ${promoCode}: ${promoInfo.description}`
                             : promoInfo
                               ? `${promoCode} doesn't apply to the events in your bag`
                               : promoError || `Code ${promoCode}`}

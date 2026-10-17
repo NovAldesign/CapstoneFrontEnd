@@ -24,6 +24,25 @@ export const memberPriceCents = (wallet, cents, eventName) => {
   return Math.max(0, cents - (wallet.ticketOffCents || 0));
 };
 
+// "Plus One" deal (buy 2, save $8): an Eventbrite ticket type with "Plus One" in its name.
+// MUST match utilities/plusOne.js on the backend.
+export const PLUS_ONE_SAVE_CENTS = 800;
+export const PLUS_ONE_GUESTS = 2;
+export const isPlusOne = (ticketName = "") => /plus\s*-?\s*one/i.test(String(ticketName));
+
+// Best price for a member buying a Plus One: the Plus One price or 2 tickets at member price
+export const plusOneMemberCents = (wallet, plusOneCents, eventName) => {
+  if (!wallet?.memberPricing) return plusOneCents;
+  const regular = Math.round((plusOneCents + PLUS_ONE_SAVE_CENTS) / PLUS_ONE_GUESTS);
+  return Math.min(plusOneCents, PLUS_ONE_GUESTS * memberPriceCents(wallet, regular, eventName));
+};
+
+// Member price for any bag item (Plus One gets the best deal)
+export const memberItemCents = (wallet, item) =>
+  isPlusOne(item.ticketTypeName)
+    ? plusOneMemberCents(wallet, item.priceInCents, item.eventName)
+    : memberPriceCents(wallet, item.priceInCents, item.eventName);
+
 // Is someone logged in as a member on this device?
 export const memberToken = () => {
   try {
