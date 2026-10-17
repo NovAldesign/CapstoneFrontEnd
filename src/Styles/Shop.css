@@ -422,3 +422,8 @@ body:has(.shop-bagbar) .gfc-bag-fab { bottom: 100px; }
 /* keep the back-to-top button clear of the pinned bag */
 body:has(.shop-bagbar) .footer-back-top { bottom: 100px; }
 body:has(.shop-bagbar.is-open) .footer-back-top { display: none; }
+.shop-norefund { margin: 8px 0 0; text-align: center; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; color: var(--sh-gold-text); }
+.shop-agree { display: flex; gap: 10px; align-items: flex-start; margin: 12px 0 4px; padding: 10px 12px; border: 1.5px solid var(--sh-gold); border-radius: 8px; background: #fff; font-size: 13.5px; line-height: 1.45; color: var(--sh-ink); cursor: pointer; text-align: left; }
+.shop-agree input { width: 18px; height: 18px; margin-top: 1px; flex: none; accent-color: var(--sh-navy); }
+.shop-agree a { color: var(--sh-gold-text); }
+.bingo .shop-agree { max-width: 620px; margin: 12px auto 0; }

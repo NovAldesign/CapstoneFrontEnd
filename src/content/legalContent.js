@@ -289,7 +289,7 @@ export const LEGAL_PAGES = {
   refunds: {
     path: "/refund-policy",
     title: "Refund Policy",
-    description: `Refunds, transfers, and cancellations for ${brand} tickets and memberships.`,
+    description: `Refunds, transfers, and cancellations for ${brand} tickets, memberships, and shop purchases.`,
     intro: "We commit to food, seating, and venue costs based on every ticket sold. Our refund rules are firm.",
     sections: [
       {
@@ -320,6 +320,15 @@ export const LEGAL_PAGES = {
           `To cancel, email ${email} before your next billing date.`,
           "We do not refund monthly fees for partial months. Perks end at the end of the month you paid for.",
           "Unused event credit expires when your membership ends. It has no cash value.",
+        ],
+      },
+      {
+        h: "Shop purchases",
+        list: [
+          "Karaoke Bingo printable downloads are non-refundable. Your files are delivered the moment you check out, so we cannot take them back.",
+          "This includes cards bought on their own, in a bundle, or with merch at a discount.",
+          `If your download link does not work, email ${email} with your order number and we will help you get your files.`,
+          "Merch is made to order just for you, so merch sales are final.",
         ],
       },
       {

@@ -40,6 +40,14 @@ const BuyButton = ({ item, busyId, onBuy, gold, bagged, toBag }) =>
     </button>
   );
 
+// Required before any Karaoke Bingo checkout
+const NoRefundCheck = ({ checked, onChange, id }) => (
+  <label className="shop-agree" htmlFor={id}>
+    <input id={id} type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} />
+    <span>I understand Karaoke Bingo downloads are <strong>non-refundable</strong>. My files are delivered right after checkout. <Link to="/refund-policy" target="_blank">Refund Policy</Link></span>
+  </label>
+);
+
 const SampleForm = () => {
   const [form, setForm] = useState({ fullName: '', email: '' });
   const [state, setState] = useState({ busy: false, error: '', done: false });
@@ -85,16 +93,22 @@ const BingoShop = ({ digital, onAdd, inBag, comboPercent }) => {
   const [tab, setTab] = useState('genre');
   const [busyId, setBusyId] = useState('');
   const [error, setError] = useState('');
+  const [agreed, setAgreed] = useState(false);
   const bundles = digital.items.filter((i) => i.kind === 'bundle');
   const featured = bundles.find((b) => b.featured);
   const series = bundles.filter((b) => !b.featured);
   const singles = digital.items.filter((i) => i.group === tab);
 
   const checkoutNow = async ({ id }) => {
+    if (!agreed) {
+      setError('Please check the box to confirm you understand Karaoke Bingo downloads are non-refundable.');
+      document.getElementById('bingo-agree')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
     setBusyId(id);
     setError('');
     try {
-      const { url } = await startDigitalCheckout({ items: [id], source: currentSource() });
+      const { url } = await startDigitalCheckout({ items: [id], source: currentSource(), agreeNoRefund: true });
       window.location.href = url;
     } catch (e) {
       setError(e.message);
@@ -112,6 +126,8 @@ const BingoShop = ({ digital, onAdd, inBag, comboPercent }) => {
         The same game we run at our events. Every edition has 40 unique cards and our host guide.
         Download the PDF, print at home, and play all season.
       </p>
+      <p className="shop-norefund">Instant download · Non-refundable once purchased</p>
+      {!onAdd && <NoRefundCheck id="bingo-agree" checked={agreed} onChange={(v) => { setAgreed(v); setError(''); }} />}
       {onAdd && (
         <p className="shop-combo-note">
           <strong>Save {comboPercent}% on your cards</strong> when you add any Grown Folks™ merch to the same bag. The discount is on the cards only.
@@ -164,7 +180,7 @@ const BingoShop = ({ digital, onAdd, inBag, comboPercent }) => {
           </article>
         ))}
       </div>
-      <p className="shop-fine shop-center">{digital.license} Instant download after checkout. Digital downloads are final sale.</p>
+      <p className="shop-fine shop-center">{digital.license} Instant download after checkout. <strong>All Karaoke Bingo downloads are non-refundable.</strong> <Link to="/refund-policy">Refund Policy</Link></p>
 
       <SampleForm />
     </section>
@@ -289,6 +305,7 @@ const Shop = () => {
   const [error, setError] = useState('');
   const [bag, setBag] = useState([]);
   const [bagOpen, setBagOpen] = useState(false);
+  const [agreed, setAgreed] = useState(false);
   const [busy, setBusy] = useState(false);
   const [tab, setTab] = useState(tabFromHash);
   const [cat, setCat] = useState('all');
@@ -357,7 +374,13 @@ const Shop = () => {
   const shipping = !merchLines.length || !merch || merchSubtotal >= merch.settings.freeShippingOverCents ? 0 : merch.settings.shippingCents;
   const toFree = merchLines.length && merch ? merch.settings.freeShippingOverCents - merchSubtotal : 0;
 
+  const needsAgree = cardLines.length > 0 && !agreed;
   const checkout = async () => {
+    if (needsAgree) {
+      setBagOpen(true);
+      setError('');
+      return;
+    }
     setBusy(true);
     setError('');
     try {
@@ -367,8 +390,9 @@ const Shop = () => {
             items: merchLines.map(({ variantId, quantity }) => ({ variantId, quantity })),
             digital,
             source: currentSource(),
+            ...(digital.length && { agreeNoRefund: true }),
           })
-        : await startDigitalCheckout({ items: digital, source: currentSource() });
+        : await startDigitalCheckout({ items: digital, source: currentSource(), agreeNoRefund: true });
       window.location.href = url;
     } catch (e) {
       setError(e.message);
@@ -438,7 +462,7 @@ const Shop = () => {
               {shown.map((item) => <ProductCard key={item.id} item={item} onAdd={(l) => { addToBag(l); }} />)}
             </div>
             <p className="shop-fine shop-center">
-              {money(merch.settings.shippingCents)} flat shipping under {money(merch.settings.freeShippingOverCents)}. US only. Made-to-order items are final sale.
+              {money(merch.settings.shippingCents)} flat shipping under {money(merch.settings.freeShippingOverCents)}. US only. Made-to-order items are final sale. <Link to="/refund-policy">Refund Policy</Link>
             </p>
             <EventAddOns
               events={upcoming.slice(0, 3)}
@@ -479,6 +503,7 @@ const Shop = () => {
                 ))}
               </ul>
               {combo && <p className="shop-order-line shop-saved"><span>Karaoke Bingo {comboPercent}% off with merch</span><span>−{money(cardSavings)}</span></p>}
+              {cardLines.length > 0 && <NoRefundCheck id="bag-agree" checked={agreed} onChange={setAgreed} />}
               {merchLines.length > 0 && <p className="shop-order-line"><span>Shipping</span><span>{shipping ? money(shipping) : 'Free'}</span></p>}
               {toFree > 0 && <p className="shop-fine">Add {money(toFree)} more in merch for free shipping. Bingo cards don't count toward it.</p>}
               {merchLines.length > 0 && !cardLines.length && (
@@ -499,7 +524,13 @@ const Shop = () => {
               <span>{bagOpen ? 'Hide bag' : 'View bag'}</span>
               <strong>{money(merchSubtotal + cardsSubtotal + shipping)}</strong>
             </button>
-            <button type="button" className="shop-btn shop-btn-gold" onClick={checkout} disabled={busy}>
+            <button
+              type="button"
+              className="shop-btn shop-btn-gold"
+              onClick={checkout}
+              disabled={busy || (bagOpen && needsAgree)}
+              title={needsAgree ? 'Check the non-refundable box first' : undefined}
+            >
               {busy ? 'Connecting…' : 'Check out'}
             </button>
           </div>
