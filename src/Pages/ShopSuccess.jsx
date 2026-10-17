@@ -57,6 +57,9 @@ const ShopSuccess = ({ kind = 'gift' }) => {
               {order?.orderNumber ? `Order ${order.orderNumber}. ` : ''}Your receipt is on its way by email.
               Every piece is made to order, and we'll email your tracking number when it ships.
             </p>
+            {order?.downloadsToken && (
+              <p className="shop-lead-dark">Your Karaoke Bingo cards are ready now. We emailed you the download link too.</p>
+            )}
           </>
         ) : order?.isGift ? (
           <>
@@ -88,10 +91,22 @@ const ShopSuccess = ({ kind = 'gift' }) => {
             <strong>{order.bonus.code}</strong>
           </div>
         )}
+        {order?.ticketCode && (
+          <div className="shop-code-box shop-code-gold shop-ticket-gift">
+            <span>Thank-you gift: {order.ticketPercent || 5}% off your next event tickets</span>
+            <strong>{order.ticketCode}</strong>
+            <Link to={`/events?code=${encodeURIComponent(order.ticketCode)}`} className="shop-textlink">Pick your event</Link>
+          </div>
+        )}
         {order?.type === 'digital' ? (
           <div className="shop-actions shop-actions-stack">
             <Link to={`/downloads/${order.token}`} className="shop-btn shop-btn-gold">Download your cards</Link>
             <Link to="/shop#bingo" className="shop-textlink">Browse more editions</Link>
+          </div>
+        ) : order?.downloadsToken ? (
+          <div className="shop-actions shop-actions-stack">
+            <Link to={`/downloads/${order.downloadsToken}`} className="shop-btn shop-btn-gold">Download your cards</Link>
+            <Link to="/events" className="shop-textlink">See upcoming events</Link>
           </div>
         ) : (
           <div className="shop-actions">

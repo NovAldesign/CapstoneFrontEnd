@@ -289,3 +289,136 @@
 .shop-btn-ghost-light:hover { border-color: var(--sh-gold); color: var(--sh-gold); }
 .shop-merch { scroll-margin-top: 90px; }
 .shop-product-img img { background: #fff; }
+
+/* ==========================================================
+   Shop sections: tabs, merch filters, pinned bag bar
+   ========================================================== */
+.shop-hero-slim { padding: 52px 20px 44px; }
+.shop-hero-slim h1 { margin-bottom: 10px; }
+.shop-hero-slim .shop-lead { margin-bottom: 0; }
+
+.shop-tabs {
+  position: sticky; top: 80px; z-index: 20;
+  background: var(--sh-cream); border-bottom: 1px solid var(--sh-line);
+  scroll-margin-top: 80px;
+}
+.shop-tabs-inner {
+  max-width: 1040px; margin: 0 auto; display: flex; gap: 6px;
+  padding-block: 10px; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+.shop-tabs button {
+  flex: 0 0 auto; display: inline-flex; align-items: center; gap: 8px;
+  font: inherit; font-size: 15px; font-weight: 800; padding: 10px 20px; border-radius: 999px; cursor: pointer;
+  border: 1.5px solid var(--sh-line); background: #fff; color: var(--sh-navy);
+}
+.shop-tabs button span {
+  font-size: 12px; font-weight: 800; min-width: 22px; padding: 2px 7px; border-radius: 999px;
+  background: var(--sh-sand); color: var(--sh-gold-text);
+}
+.shop-tabs button.is-on { background: var(--sh-navy); border-color: var(--sh-navy); color: #fff; }
+.shop-tabs button.is-on span { background: var(--sh-gold); color: var(--sh-navy); }
+.shop-tabs button:focus-visible, .shop-chips button:focus-visible { outline: 3px solid var(--sh-gold); outline-offset: 2px; }
+
+.shop-merch .shop-merch-head { margin: 0 0 16px; padding: 0; border: 0; }
+.shop-chips { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 14px; margin: 0 0 6px; scrollbar-width: none; }
+.shop-chips::-webkit-scrollbar { display: none; }
+.shop-chips button {
+  flex: 0 0 auto; font: inherit; font-size: 14px; font-weight: 700; padding: 8px 16px; border-radius: 999px; cursor: pointer;
+  border: 1.5px solid var(--sh-navy); background: transparent; color: var(--sh-navy); white-space: nowrap;
+}
+.shop-chips button.is-on { background: var(--sh-navy); color: #fff; }
+
+.shop-crosssell {
+  display: block; width: 100%; margin-top: 28px; text-align: left; cursor: pointer;
+  font: inherit; font-size: 15px; color: var(--sh-ink); line-height: 1.5;
+  background: var(--sh-sand); border: 1px dashed var(--sh-gold); border-radius: 14px; padding: 16px 20px;
+}
+.shop-crosssell strong { color: var(--sh-navy); }
+.shop-crosssell span { color: var(--sh-gold-text); font-weight: 800; white-space: nowrap; }
+
+/* Pinned bag */
+.shop-page.has-bag { padding-bottom: 90px; }
+.shop-bagbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+  background: #fff; border-top: 3px solid var(--sh-gold); box-shadow: 0 -10px 30px rgba(0, 33, 71, 0.16);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.shop-bagbar-row, .shop-bagbar-panel {
+  max-width: 1040px; margin: 0 auto; box-sizing: border-box;
+  padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+.shop-bagbar-row { display: flex; align-items: center; gap: 12px; padding-block: 12px; }
+.shop-bagbar-toggle {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; text-align: left;
+  font: inherit; font-size: 15px; font-weight: 700; color: var(--sh-navy); background: none; border: 0; cursor: pointer; padding: 6px 0;
+}
+.shop-bagbar-toggle strong { margin-left: auto; font-size: 18px; }
+.shop-bagbar-count {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 30px; border-radius: 999px;
+  background: var(--sh-navy); color: #fff; font-size: 14px;
+}
+.shop-bagbar .shop-btn { flex-shrink: 0; }
+.shop-bagbar-panel { padding-top: 14px; max-height: 45vh; overflow-y: auto; border-bottom: 1px solid var(--sh-line); }
+.shop-bagbar-panel ul { list-style: none; margin: 0; padding: 0; }
+.shop-bagbar-panel li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--sh-line); font-size: 14px; }
+.shop-bagbar-panel .shop-order-line { margin: 10px 0 4px; font-size: 15px; }
+body:has(.shop-bagbar) .footer-back-top { bottom: 96px; }
+
+@media (max-width: 640px) {
+  .shop-hero-slim { padding: 36px 18px 30px; }
+  .shop-hero-slim h1 { font-size: 32px; }
+  .shop-hero-slim .shop-lead { font-size: 15px; }
+  .shop-tabs { top: 80px; }
+  .shop-tabs button { flex: 1; justify-content: center; padding: 10px 12px; font-size: 14px; }
+  /* Two products per row on phones */
+  .shop-products { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .shop-product-body { padding: 12px; gap: 8px; }
+  .shop-product-body h3 { font-size: 15px; line-height: 1.25; }
+  .shop-product-body .shop-tile-price { font-size: 17px; }
+  .shop-product-opts { flex-wrap: wrap; gap: 8px; }
+  .shop-product-opts label { flex: 1 1 100%; font-size: 12px; }
+  .shop-product-opts select { padding: 8px 10px; font-size: 14px; }
+  .shop-product-body .shop-btn { min-height: 42px; padding: 0 10px; font-size: 12px; }
+  .shop-bagbar-row { gap: 10px; }
+  .shop-bagbar .shop-btn { min-height: 44px; padding: 0 18px; font-size: 13px; }
+}
+
+/* The site-wide overflow-x: hidden on html/body/#root turns off sticky positioning.
+   On the shop, clip instead (same visual result) so the menu and section tabs stay on screen. */
+html:has(.shop-page), html:has(.shop-page) body, #root:has(.shop-page) { overflow-x: clip; }
+
+/* Event ticket add-ons */
+.shop-addons { margin-top: 36px; padding: 24px; background: #fff; border: 1px solid var(--sh-line); border-radius: 16px; }
+.shop-addons .shop-muted { margin-bottom: 16px; }
+.shop-addon-list { display: flex; flex-direction: column; gap: 12px; }
+.shop-addon { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 16px; align-items: center; }
+.shop-addon img { width: 96px; height: 64px; object-fit: cover; border-radius: 8px; background: var(--sh-sand); }
+.shop-addon-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.shop-addon-date { font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sh-gold-text); }
+.shop-addon-name { font-weight: 700; color: var(--sh-navy); text-decoration: none; line-height: 1.3; }
+.shop-addon-name:hover { text-decoration: underline; }
+.shop-addon-price { font-size: 14px; color: var(--sh-muted); }
+.shop-addon .shop-btn { min-height: 42px; padding: 0 18px; font-size: 12px; }
+body:has(.shop-bagbar) .gfc-bag-fab { bottom: 100px; }
+@media (max-width: 640px) {
+  .shop-addons { padding: 18px 16px; }
+  .shop-addon { grid-template-columns: 64px minmax(0, 1fr); gap: 12px; }
+  .shop-addon img { width: 64px; height: 64px; }
+  .shop-addon .shop-btn { grid-column: 1 / -1; width: 100%; }
+}
+
+/* 5% off tickets code on the thank-you page */
+.shop-ticket-gift { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 0 auto 26px; max-width: 460px; }
+.shop-ticket-gift .shop-textlink { margin-top: 4px; }
+
+/* Merch + Karaoke Bingo in one bag: cards 10% off with merch */
+.shop-combo-note { margin: 14px auto 0; max-width: 620px; padding: 12px 16px; border: 1px dashed var(--sh-gold); border-radius: 10px; background: rgba(197, 160, 89, 0.1); font-size: 14px; text-align: center; }
+.shop-btn-inbag { background: transparent; color: var(--sh-navy); border: 1.5px solid var(--sh-navy); opacity: 0.75; cursor: default; }
+.shop-dl-tag { font-style: normal; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #6b7280; margin-left: 4px; }
+.shop-was { color: #8a8f98; font-size: 12px; margin-right: 2px; }
+.shop-saved span:last-child { color: #2f7a4a; font-weight: 700; }
+.shop-bag-nudge { display: block; width: 100%; margin-top: 10px; padding: 10px 12px; border: 1px dashed var(--sh-gold); border-radius: 8px; background: rgba(197, 160, 89, 0.12); color: var(--sh-navy); font: inherit; font-size: 14px; font-weight: 600; text-align: left; cursor: pointer; }
+.shop-bag-nudge:hover { background: rgba(197, 160, 89, 0.22); }
+/* keep the back-to-top button clear of the pinned bag */
+body:has(.shop-bagbar) .footer-back-top { bottom: 100px; }
+body:has(.shop-bagbar.is-open) .footer-back-top { display: none; }
