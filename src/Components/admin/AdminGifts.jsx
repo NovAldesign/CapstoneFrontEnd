@@ -251,6 +251,73 @@ const MerchView = () => {
   );
 };
 
+// Karaoke Bingo downloads, with a dispute report for each order
+const BingoView = () => {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState('');
+  const [report, setReport] = useState(null);
+  const [copied, setCopied] = useState(false);
+  useEffect(() => { shopAdmin('/digital-orders').then(setData).catch((e) => setError(e.message)); }, []);
+
+  const openReport = async (o) => {
+    setCopied(false);
+    try { setReport(await shopAdmin(`/digital-orders/${o.orderNumber}/evidence`)); } catch (e) { setError(e.message); }
+  };
+  const copy = async () => {
+    try { await navigator.clipboard.writeText(report.text); setCopied(true); } catch { setCopied(false); }
+  };
+
+  if (error) return <p className="ga-note err">{error}</p>;
+  if (!data) return <div className="ga-loading">Loading orders…</div>;
+  const orders = data.orders || [];
+  return (
+    <>
+      <div className="ga-stats">
+        <div className="ga-stat"><div className="ga-stat-num">{orders.length}</div><div className="ga-stat-label">Orders</div></div>
+        <div className="ga-stat"><div className="ga-stat-num">{money(data.totalCents || 0)}</div><div className="ga-stat-label">Collected</div></div>
+        <div className="ga-stat"><div className="ga-stat-num">{orders.reduce((s, o) => s + (o.downloads || 0), 0)}</div><div className="ga-stat-label">Downloads</div></div>
+      </div>
+
+      {report && (
+        <section className="ga-card">
+          <div className="ga-card-head">
+            <h2 className="ga-card-title">Dispute report: {report.orderNumber}</h2>
+            <button type="button" className="ga-btn" onClick={copy}>{copied ? 'Copied ✓' : 'Copy'}</button>
+            <button type="button" className="ga-btn" onClick={() => setReport(null)}>Close</button>
+          </div>
+          <p className="ga-small ga-muted">If this buyer disputes the charge, paste this into the Stripe dispute form under "Additional evidence".</p>
+          <pre style={{ whiteSpace: 'pre-wrap', fontSize: 13, background: '#F7F4EC', padding: 14, borderRadius: 8, margin: 0 }}>{report.text}</pre>
+        </section>
+      )}
+
+      <section className="ga-card">
+        <div className="ga-card-head"><h2 className="ga-card-title">Karaoke Bingo orders</h2></div>
+        {orders.length === 0 ? <div className="ga-empty"><div className="ga-empty-big">🎤</div>No bingo orders yet.</div> : (
+          <div className="ga-table-wrap">
+            <table className="ga-table">
+              <thead><tr><th>Date</th><th>Order</th><th>Buyer</th><th>Items</th><th className="ga-num">Paid</th><th className="ga-num">Downloads</th><th>Agreed no-refund</th><th></th></tr></thead>
+              <tbody>
+                {orders.map((o) => (
+                  <tr key={o._id}>
+                    <td className="ga-small">{fmtDate(o.createdAt)}</td>
+                    <td style={{ fontFamily: 'monospace' }}>{o.orderNumber}</td>
+                    <td>{o.buyerName}<div className="ga-small ga-muted">{o.buyerEmail}</div></td>
+                    <td className="ga-small">{o.items.map((i) => i.name.replace('Karaoke Bingo: ', '')).join(', ')}</td>
+                    <td className="ga-num">{money(o.totalPaidCents)}</td>
+                    <td className="ga-num">{o.downloads || 0}</td>
+                    <td className="ga-small">{o.noRefundAgreedAt ? `✓ ${fmtDate(o.noRefundAgreedAt)}` : '—'}</td>
+                    <td><button type="button" className="ga-btn ga-btn-sm" onClick={() => openReport(o)}>Dispute report</button></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+    </>
+  );
+};
+
 const AdminGifts = () => {
   const [view, setView] = useState('cards');
   return (
@@ -259,11 +326,12 @@ const AdminGifts = () => {
         <div className="ga-seg">
           <button type="button" className={view === 'cards' ? 'on' : ''} onClick={() => setView('cards')}>Passes &amp; gift cards</button>
           <button type="button" className={view === 'merch' ? 'on' : ''} onClick={() => setView('merch')}>Merch orders</button>
+          <button type="button" className={view === 'bingo' ? 'on' : ''} onClick={() => setView('bingo')}>Karaoke Bingo</button>
         </div>
         <span className="ga-spacer" />
         <a className="ga-btn" href="/gift" target="_blank" rel="noreferrer">View gift page ↗</a>
       </div>
-      {view === 'cards' ? <CardsView /> : <MerchView />}
+      {view === 'cards' ? <CardsView /> : view === 'merch' ? <MerchView /> : <BingoView />}
     </>
   );
 };
