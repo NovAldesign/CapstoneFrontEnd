@@ -508,6 +508,7 @@ export const LEGAL_PAGES = {
         h: "8. Agreement",
         p: [
           `By checking the agreement box and typing your name on the application, you accept this Performer Agreement, the Code of Conduct, and the Participation Waiver. Questions? Email ${eventsEmail}.`,
+          "Only the artist, host or live artist named in the application may complete and sign it. Your typed signature must be your own first and last name. A manager, friend, family member or anyone else may not fill out or sign the application for you. We may decline or cancel a booking if someone other than the named performer completed or signed it.",
         ],
       },
     ],
@@ -669,7 +670,7 @@ export const LEGAL_FOOTER_LINKS = [
 ];
 
 // Pages that exist but aren't in the footer (linked from their forms)
-export const PERFORMER_AGREEMENT_VERSION = "2026-10-13";
+export const PERFORMER_AGREEMENT_VERSION = "2026-10-18";
 // MUST match SPONSOR_TERMS_VERSION / PERK_TERMS_VERSION in the backend utilities/partnerPortal.js
 export const SPONSOR_AGREEMENT_VERSION = "2026-10-09.2";
 export const PERK_TERMS_VERSION = "2026-10-09";

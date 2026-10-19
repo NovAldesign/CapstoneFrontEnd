@@ -230,6 +230,16 @@ const EMPTY = {
   payoutHandle: '',
   featureConsent: true,
   signatureName: '',
+  selfAttested: false,
+};
+
+// The typed signature has to be the applicant's own legal name (first and last)
+const norm = (v) => String(v || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z]+/g, ' ').trim();
+export const signatureMatches = (sig, first, last) => {
+  const words = norm(sig).split(' ');
+  return Boolean(norm(first) && norm(last)) &&
+    norm(first).split(' ').every((w) => words.includes(w)) &&
+    norm(last).split(' ').every((w) => words.includes(w));
 };
 
 const Perform = ({ role = 'artist' }) => {
@@ -367,6 +377,14 @@ const Perform = ({ role = 'artist' }) => {
       setError('Please type your full name to sign.');
       return;
     }
+    if (!signatureMatches(f.signatureName, f.firstName, f.lastName)) {
+      setError(`Your signature has to match the first and last name on this form (${f.firstName} ${f.lastName}). Only the ${isHost ? 'host' : isVisual ? 'live artist' : 'artist'} can sign.`);
+      return;
+    }
+    if (!f.selfAttested) {
+      setError(`Please confirm you're the ${isHost ? 'host' : isVisual ? 'live artist' : 'artist'} and that you completed and signed this form yourself.`);
+      return;
+    }
     if (uploading) {
       setError('Please wait for your photo to finish uploading.');
       return;
@@ -385,6 +403,7 @@ const Perform = ({ role = 'artist' }) => {
           performanceLinks: links,
           eventName: chosen ? eventLabel(chosen) : 'Any upcoming showcase',
           termsAccepted: true,
+          selfAttested: true,
           agreementVersion: PERFORMER_AGREEMENT_VERSION,
         }),
       });
@@ -686,10 +705,18 @@ const Perform = ({ role = 'artist' }) => {
                         </label>
                       ))}
                     </div>
+                    <label className="group-check perform-self">
+                      <input type="checkbox" name="selfAttested" checked={form.selfAttested} onChange={handleChange} required />
+                      <span>
+                        I am the {isHost ? 'host' : isVisual ? 'live artist' : 'artist'} named in this application. I completed this form and I'm signing it myself.
+                        No one else (a manager, friend or family member) filled it out or signed it for me. <span className="contact-required">*</span>
+                      </span>
+                    </label>
                     <div className="contact-form-row">
                       <div className="contact-input-group">
-                        <label className="contact-label" htmlFor="pf-sign">Type your full name to sign <span className="contact-required">*</span></label>
-                        <input id="pf-sign" name="signatureName" autoComplete="name" value={form.signatureName} onChange={handleChange} required />
+                        <label className="contact-label" htmlFor="pf-sign">Type your full legal name to sign <span className="contact-required">*</span></label>
+                        <input id="pf-sign" name="signatureName" autoComplete="name" value={form.signatureName} onChange={handleChange} required aria-describedby="pf-sign-hint" />
+                        <small id="pf-sign-hint" className="perform-sign-hint">Must match the first and last name above.</small>
                       </div>
                       <div className="contact-input-group">
                         <span className="contact-label">Date</span>

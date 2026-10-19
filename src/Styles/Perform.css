@@ -366,3 +366,14 @@
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.65);
 }
+
+/* "I'm the artist and I'm signing this myself" */
+.perform-self {
+  margin: 18px 0 6px;
+  padding: 14px 16px;
+  border: 1.5px solid #C5A059;
+  border-radius: 10px;
+  background: #FBF6EA;
+  font-weight: 600;
+}
+.perform-sign-hint { display: block; margin-top: 6px; font-size: 13px; color: #5F6672; }
