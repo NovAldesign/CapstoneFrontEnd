@@ -42,10 +42,12 @@
    ============================================= */
 .home-hero-visual {
   height: 90vh;
-  background-image: linear-gradient(rgba(0,33,71,0.5), rgba(0,33,71,0.7)),
-                    url('https://tripleseat.com/wp-content/uploads/2023/09/How-to-Create-a-Special-Group-Dining-Experience-for-Your-Guests-2.jpg');
+  /* Stored on our own site (public/home-hero.jpg) so it can't disappear */
+  background-image: linear-gradient(rgba(0,33,71,0.55), rgba(0,33,71,0.75)),
+                    url('/home-hero.jpg');
+  background-color: #002147;
   background-size: cover;
-  background-position: center 20%;
+  background-position: center 30%;
   position: relative;
   display: flex;
   align-items: center;
@@ -617,7 +619,13 @@
   .story-text h2 { font-size: 2.2rem; }
   .editorial-frame { padding: 40px 24px; }
   .editorial-title { font-size: 1.8rem; }
-  .home-hero-visual { height: 100svh; }
+  .home-hero-visual {
+    height: 100svh;
+    /* A little darker on phones so the words stay easy to read */
+    background-image: linear-gradient(rgba(0,33,71,0.68), rgba(0,33,71,0.85)),
+                      url('/home-hero.jpg');
+    background-position: 55% center;
+  }
   .luxe-title-white { font-size: clamp(3rem, 15vw, 5rem); }
 }
 
