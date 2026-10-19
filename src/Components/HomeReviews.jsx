@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BACKEND_URL } from "../Services/eventUtils";
+import { useSiteStats, rating as fmtRating } from "../Services/siteStats";
 
 const SOURCE_LABEL = {
   google: "via Google",
@@ -24,6 +25,7 @@ const byline = (r) =>
   [r.name, r.event, SOURCE_LABEL[r.source]].filter(Boolean).join(" · ");
 
 const HomeReviews = () => {
+  const stats = useSiteStats();
   const [reviews, setReviews] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(EMPTY);
@@ -91,14 +93,14 @@ const HomeReviews = () => {
           <div className="testimonial-card testimonial-rating-card" aria-label="Platform ratings">
             <div className="platform-block">
               <p className="rating-platform-name">Eventbrite Verified</p>
-              <div className="rating-number">4.8</div>
-              <Stars rating={5} large />
+              <div className="rating-number">{fmtRating(stats.eventbriteRating)}</div>
+              <Stars rating={Math.round(stats.eventbriteRating)} large />
               <p className="rating-label">Average event rating</p>
             </div>
             <div className="platform-block">
               <p className="rating-platform-name">Meetup Verified</p>
-              <div className="rating-number">4.8</div>
-              <Stars rating={5} large />
+              <div className="rating-number">{fmtRating(stats.meetupRating)}</div>
+              <Stars rating={Math.round(stats.meetupRating)} large />
               <p className="rating-label">Average event rating</p>
             </div>
           </div>

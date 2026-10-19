@@ -3,9 +3,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import loginService from '../Services/loginService';
 import memberApi from '../Services/memberApi';
+import { useSiteStats, plus } from '../Services/siteStats';
 import "../Styles/Login.css";
 
 const Login = () => {
+  const siteStats = useSiteStats();
   const [formData, setFormData]       = useState({ email: '', password: '', accessKey: '' });
   const [showAccessKey, setShowAccessKey] = useState(false);
   const [showPassword, setShowPassword]   = useState(false);
@@ -97,7 +99,7 @@ const Login = () => {
 
           <div className="login-left-stats">
             <div className="login-stat">
-              <div className="login-stat-number">2,270+</div>
+              <div className="login-stat-number">{plus(siteStats.communityTotal)}</div>
               <div className="login-stat-label">Community in Atlanta</div>
             </div>
             <div className="login-stat">

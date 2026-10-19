@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import "../Styles/Partnership.css";
 import partnershipService from "../Services/partnershipService.js";
+import { useSiteStats, plus } from "../Services/siteStats";
 
 const tiers = [
   {
@@ -72,6 +73,7 @@ const defaultForm = {
 };
 
 const Partnership = () => {
+  const siteStats = useSiteStats();
   const [params] = useSearchParams();
   const [showForm, setShowForm] = useState(params.get("inquire") === "1");
   const [formData, setFormData] = useState(defaultForm);
@@ -200,7 +202,7 @@ const Partnership = () => {
             <p>Alcohol & Smoke-free environment</p>
           </div>
           <div className="stat-card">
-            <p className="playfair stat-number">2,270+</p>
+            <p className="playfair stat-number">{plus(siteStats.communityTotal)}</p>
             <p>Community in Atlanta</p>
           </div>
         </div>

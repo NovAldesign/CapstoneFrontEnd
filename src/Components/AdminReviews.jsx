@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { BACKEND_URL } from "../Services/eventUtils";
+import AdminSiteStats from "./AdminSiteStats.jsx";
 
 const SOURCES = [
   { value: "google", label: "Google" },
@@ -111,6 +112,8 @@ const AdminReviews = () => {
 
   return (
     <div className="reviews-admin">
+      <AdminSiteStats section="ratings" />
+
       <div className="section-row">
         <h3 className="section-heading">Guest Reviews</h3>
         <button type="button" className="export-btn" onClick={() => setShowAdd((v) => !v)}>

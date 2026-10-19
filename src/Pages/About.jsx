@@ -336,10 +336,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { useSiteStats, PLATFORMS, plus } from '../Services/siteStats';
  
 import '../Styles/About.css';
  
 const About = () => {
+  const stats = useSiteStats();
+  const platforms = PLATFORMS.filter((p) => stats[p.key] > 0);
   return (
     <div className="about-page">
  
@@ -456,12 +459,12 @@ const About = () => {
                 screen readers announce stats cohesively */}
             <dl className="about-stats-grid">
               <div className="about-stat">
-                <dt className="about-stat-number">21</dt>
+                <dt className="about-stat-number">{stats.eventsHosted}</dt>
                 <dd className="about-stat-label">Events Hosted</dd>
                 <dd className="about-stat-desc">Since January 2026</dd>
               </div>
               <div className="about-stat">
-                <dt className="about-stat-number">5</dt>
+                <dt className="about-stat-number">{stats.soldOut}</dt>
                 <dd className="about-stat-label">Sold-Out Events</dd>
                 <dd className="about-stat-desc">Highly Demanded</dd>
               </div>
@@ -471,7 +474,7 @@ const About = () => {
                 <dd className="about-stat-desc">Documented every event night</dd>
               </div>
               <div className="about-stat">
-                <dt className="about-stat-number">2,370+</dt>
+                <dt className="about-stat-number">{plus(stats.communityTotal)}</dt>
                 <dd className="about-stat-label">Community Members</dd>
                 <dd className="about-stat-desc">Across all platforms</dd>
               </div>
@@ -479,18 +482,12 @@ const About = () => {
  
             {/* Platform stats — also use <dl> for semantic key-value pairs */}
             <dl className="about-platform-row">
-              <div className="about-platform">
-                <dt className="about-platform-num">1,722+</dt>
-                <dd className="about-platform-name">TikTok Followers</dd>
-              </div>
-              <div className="about-platform">
-                <dt className="about-platform-num">199+</dt>
-                <dd className="about-platform-name">Meetup Members</dd>
-              </div>
-              <div className="about-platform">
-                <dt className="about-platform-num">259</dt>
-                <dd className="about-platform-name">Email Subscribers</dd>
-              </div>
+              {platforms.map((p) => (
+                <div className="about-platform" key={p.key}>
+                  <dt className="about-platform-num">{plus(stats[p.key])}</dt>
+                  <dd className="about-platform-name">{p.label}</dd>
+                </div>
+              ))}
               <div className="about-platform">
                 <dt className="about-platform-num">35–40</dt>
                 <dd className="about-platform-name">Guests Per Event</dd>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { getAllEvents, createEvent, updateEvent, deleteEvent } from '../Services/eventService';
 import { adminApi, adminLegacy } from '../Services/adminApi';
 import AdminReviews from "../Components/AdminReviews.jsx";
+import AdminSiteStats from "../Components/AdminSiteStats.jsx";
 import AdminSelect from "../Components/AdminSelect.jsx";
 import AdminToday from "../Components/admin/AdminToday.jsx";
 import AdminShowcases from "../Components/admin/AdminShowcases.jsx";
@@ -379,6 +380,7 @@ const AdminDashboard = () => {
       { id: 'blog', icon: '📝', label: 'Blog' },
       { id: 'select', icon: '🎭', label: 'GFC Select™', count: counts.select },
       { id: 'reviews', icon: '⭐', label: 'Reviews', count: counts.reviews },
+      { id: 'site-numbers', icon: '📊', label: 'Site Numbers' },
     ] },
   ];
   const TITLES = {
@@ -402,7 +404,8 @@ const AdminDashboard = () => {
     scouts: ['Industry Scouts', 'Labels, managers and A&R coming to showcases for free.'],
     blog: ['Blog', 'Write, edit and remove posts on The Gathering Table.'],
     select: ['GFC Select™', 'Applications, doors and matching.'],
-    reviews: ['Reviews', 'Guest reviews for the home page.'],
+    reviews: ['Reviews', 'Platform ratings and guest reviews for the home page.'],
+    'site-numbers': ['Site Numbers', 'Followers and stats shown on the website. Update once, it changes everywhere.'],
   };
   const [title, subtitle] = TITLES[activeTab] || TITLES.today;
   const go = (tab) => { setActiveTab(tab); window.scrollTo({ top: 0 }); };
@@ -459,6 +462,7 @@ const AdminDashboard = () => {
       {activeTab === 'people' && <AdminPeople />}
       {activeTab === 'blog' && <AdminBlog />}
       {activeTab === 'reviews' && <AdminReviews />}
+      {activeTab === 'site-numbers' && <AdminSiteStats section="numbers" />}
       {activeTab === 'select' && <AdminSelect />}
 
       {/* ── MEMBERS TAB ──────────────────────────────────────────────── */}

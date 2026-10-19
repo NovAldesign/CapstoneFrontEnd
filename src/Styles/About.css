@@ -375,8 +375,12 @@
 }
 
 .about-platform-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* Lines between boxes come from the 1px gap showing the gold background,
+     so any number of platforms (set in the dashboard) lines up cleanly. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  background: rgba(197, 160, 89, 0.15);
   border: 1px solid rgba(197, 160, 89, 0.2);
   border-top: none;
   margin: 0;  
@@ -385,8 +389,9 @@
 
 /* FIXED: Unified column layouts for secondary platforms rows */
 .about-platform {
+  flex: 1 1 150px;
   padding: 32px 16px;
-  border-right: 1px solid rgba(197, 160, 89, 0.15);
+  background: #002147;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -789,17 +794,9 @@
     border-bottom: 1px solid rgba(197, 160, 89, 0.15);
   }
 
-  .about-platform-row {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .about-platform-row .about-platform:nth-child(2) {
-    border-right: none;
-  }
-
-  .about-platform-row .about-platform:nth-child(1),
-  .about-platform-row .about-platform:nth-child(2) {
-    border-bottom: 1px solid rgba(197, 160, 89, 0.15);
+  /* Two per row; an odd last one stretches across */
+  .about-platform-row .about-platform {
+    flex-basis: calc(50% - 1px);
   }
 }
 
@@ -862,9 +859,12 @@
    RESPONSIVE — 480px
 ═══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
-  .about-stats-grid,
-  .about-platform-row {
+  .about-stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .about-platform-row .about-platform {
+    flex-basis: 100%;
   }
 
   .about-stat {
@@ -876,12 +876,4 @@
     border-bottom: none;
   }
 
-  .about-platform {
-    border-right: none;
-    border-bottom: 1px solid rgba(197, 160, 89, 0.15);
-  }
-
-  .about-platform:last-child {
-    border-bottom: none;
-  }
 }
