@@ -216,7 +216,158 @@ const ApproveDrawer = ({ person, showcases, onClose, onDone }) => {
   );
 };
 
-const PersonRow = ({ p, show, onApprove, onDecline, onPaid, busy }) => {
+// Take someone off a show and save them on the Roster (nothing is deleted)
+const RosterDrawer = ({ person, show, onClose, onDone }) => {
+  const [note, setNote] = useState('');
+  const [cancelLive, setCancelLive] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const booked = person.status === 'approved';
+  const roleWord = person.role === 'host' ? 'host' : person.role === 'visual' ? 'live artist' : 'artist';
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    setError('');
+    try {
+      await adminApi(`/applications/${person.id}/roster`, { method: 'POST', body: { note, cancelLive } });
+      onDone(`${person.artistName} is saved on the Roster${booked && show ? ` and off ${show.name}` : ''}. Book a new ${roleWord} when you're ready.`);
+    } catch (err) {
+      setError(err.message);
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="ga-drawer-back" role="dialog" aria-modal="true" aria-labelledby="roster-title" onClick={onClose}>
+      <form className="ga-drawer" onClick={(e) => e.stopPropagation()} onSubmit={submit}>
+        <div className="ga-drawer-head">
+          <div>
+            <p className="ga-kicker">Save for later</p>
+            <h2 id="roster-title" className="ga-card-title">{person.artistName}</h2>
+          </div>
+          <button type="button" className="ga-x" aria-label="Close" onClick={onClose}>×</button>
+        </div>
+        <div className="ga-drawer-body">
+          {error && <p className="ga-note err">{error}</p>}
+          <p className="ga-note info">
+            {booked && show
+              ? <>This takes {person.artistName} off <strong>{show.name}</strong> ({fmtDay(show.date)}) and opens the {roleWord} spot. </>
+              : <>This moves {person.artistName}'s application out of this show. </>}
+            Everything they sent (contact info, bio, photo, payout and signed agreement) stays saved on the Roster so you can book them again. No email is sent.
+          </p>
+          <label className="ga-field">Note (only you see this)
+            <textarea className="ga-textarea" rows={3} maxLength={300} value={note} onChange={(e) => setNote(e.target.value)}
+              placeholder="e.g. Out for surgery. Hosting after the new year." />
+          </label>
+          {booked && person.code && (
+            <p className="ga-small ga-muted">Their ticket code {person.code} will stop working for this show. Tickets already sold stay on record.</p>
+          )}
+          {person.hasLive && (
+            <label className="ga-check">
+              <input type="checkbox" checked={cancelLive} onChange={(e) => setCancelLive(e.target.checked)} />
+              <span>Take their Live off the schedule too (the details are kept)</span>
+            </label>
+          )}
+        </div>
+        <div className="ga-drawer-foot">
+          <button type="button" className="ga-btn" onClick={onClose}>Cancel</button>
+          <button type="submit" className="ga-btn ga-btn-navy" disabled={saving}>{saving ? 'Saving…' : 'Move to Roster'}</button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+// One person on the Roster: saved for later, or performed before
+const RosterRow = ({ p, onBook, busy }) => {
+  const [open, setOpen] = useState(false);
+  const saved = p.status === 'roster';
+  return (
+    <div className="ga-person">
+      <Avatar p={p} />
+      <div style={{ minWidth: 0 }}>
+        <div className="ga-row" style={{ gap: 8 }}>
+          <span className="ga-person-name">{p.artistName}</span>
+          <span className={`ga-pill ${p.role === 'host' ? 'blue' : p.role === 'visual' ? 'green' : 'gold'}`}>{p.role === 'host' ? 'Host' : p.role === 'visual' ? 'Live art' : 'Artist'}</span>
+          {p.bookedNext && <span className="ga-pill green">Booked {fmtDate(p.bookedNext.date)}</span>}
+        </div>
+        <div className="ga-person-sub">
+          {saved ? (
+            <>
+              Saved {timeAgo(p.rosteredAt)}
+              {p.history?.length > 0 && <> · was booked for {p.history[p.history.length - 1].eventName}</>}
+              {p.rosterNote && <> · <em>{p.rosterNote}</em></>}
+            </>
+          ) : (
+            <>
+              {p.shows.length === 1 ? 'Performed' : `Performed ${p.shows.length} times`} · last {fmtDay(p.shows[0].date)}
+            </>
+          )}
+        </div>
+      </div>
+      <div className="ga-person-actions">
+        <button type="button" className="ga-link" onClick={() => setOpen((o) => !o)} aria-expanded={open}>{open ? 'Hide' : 'Details'}</button>
+        <button type="button" className="ga-btn ga-btn-sm ga-btn-navy" onClick={() => onBook(p)} disabled={busy}>Book for a show</button>
+      </div>
+      {open && (
+        <>
+          {!saved && (
+            <p className="ga-small ga-muted" style={{ gridColumn: '1 / -1', margin: '6px 0 0' }}>
+              Shows: {p.shows.map((s) => `${s.name} (${fmtDate(s.date)})`).join(' · ')}
+            </p>
+          )}
+          <Details p={p} />
+        </>
+      )}
+    </div>
+  );
+};
+
+const RosterView = ({ roster, onBook, busy }) => {
+  const [q, setQ] = useState('');
+  const [role, setRole] = useState('all');
+  const match = (p) =>
+    (role === 'all' || (p.role || 'artist') === role) &&
+    (!q.trim() || [p.artistName, p.name, p.email, p.genres].join(' ').toLowerCase().includes(q.trim().toLowerCase()));
+  const saved = (roster?.saved || []).filter(match);
+  const past = (roster?.past || []).filter(match);
+
+  return (
+    <>
+      <div className="ga-row" style={{ gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
+        <input className="ga-input" style={{ maxWidth: 280 }} type="search" placeholder="Search name, email, sound…" value={q}
+          onChange={(e) => setQ(e.target.value)} aria-label="Search the roster" />
+        <select className="ga-select" style={{ maxWidth: 180 }} value={role} onChange={(e) => setRole(e.target.value)} aria-label="Role">
+          <option value="all">Everyone</option>
+          <option value="host">Hosts</option>
+          <option value="artist">Artists</option>
+          <option value="visual">Live artists</option>
+        </select>
+      </div>
+
+      <section className="ga-card" style={{ marginBottom: 18 }}>
+        <p className="ga-kicker">Saved for later · {saved.length}</p>
+        <h2 className="ga-card-title">On the Roster</h2>
+        <p className="ga-small ga-muted">People you took off a show or saved for a future date. Everything they sent is kept.</p>
+        {saved.length === 0
+          ? <p className="ga-small ga-muted">Nobody saved yet. Use "Move to roster" on anyone in an upcoming lineup.</p>
+          : saved.map((p) => <RosterRow key={p.id} p={p} onBook={onBook} busy={busy} />)}
+      </section>
+
+      <section className="ga-card">
+        <p className="ga-kicker">Performed before · {past.length}</p>
+        <h2 className="ga-card-title">Past artists, hosts and live artists</h2>
+        <p className="ga-small ga-muted">Booking them again makes a new booking, so their past shows stay in their history.</p>
+        {past.length === 0
+          ? <p className="ga-small ga-muted">No one yet.</p>
+          : past.map((p) => <RosterRow key={`${p.id}-past`} p={p} onBook={onBook} busy={busy} />)}
+      </section>
+    </>
+  );
+};
+
+const PersonRow = ({ p, show, onApprove, onDecline, onPaid, onRoster, busy }) => {
   const [open, setOpen] = useState(false);
   const booked = p.status === 'approved';
   const holdBy = show ? new Date(new Date(show.date).getTime() - 7 * 86400000) : null;
@@ -253,6 +404,12 @@ const PersonRow = ({ p, show, onApprove, onDecline, onPaid, busy }) => {
             <button type="button" className="ga-btn ga-btn-sm ga-btn-danger" onClick={() => onDecline(p)} disabled={busy}>Decline</button>
           </>
         )}
+        {onRoster && !show?.past && (
+          <button type="button" className="ga-btn ga-btn-sm" onClick={() => onRoster(p, show)} disabled={busy}
+            title="Off this show, but keep everything they sent">
+            {booked ? 'Move to roster' : 'Save for later'}
+          </button>
+        )}
         {booked && show?.past && (
           p.payoutPaidAt ? (
             <>
@@ -277,6 +434,8 @@ const AdminShowcases = () => {
   const [data, setData] = useState(null);
   const [view, setView] = useState('upcoming');
   const [approving, setApproving] = useState(null);
+  const [rostering, setRostering] = useState(null); // { person, show }
+  const onRoster = (person, show) => setRostering({ person, show });
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState(null);
 
@@ -343,28 +502,33 @@ const AdminShowcases = () => {
           <button type="button" className={view === 'past' ? 'on' : ''} onClick={() => setView('past')}>
             Past{unpaid.length ? ` · $${owedTotal} to pay` : ''}
           </button>
+          <button type="button" className={view === 'roster' ? 'on' : ''} onClick={() => setView('roster')}>
+            Roster{data.roster?.saved?.length ? ` · ${data.roster.saved.length} saved` : ''}
+          </button>
         </div>
         <span className="ga-spacer" />
         <span className="ga-small ga-muted">Pay: ${data.payPerTicket} a ticket, up to ${data.payCap}</span>
       </div>
+
+      {view === 'roster' && <RosterView roster={data.roster} onBook={setApproving} busy={busy} />}
 
       {view === 'upcoming' && data.unassigned?.length > 0 && (
         <section className="ga-card" style={{ marginBottom: 18 }}>
           <p className="ga-kicker">New applications</p>
           <h2 className="ga-card-title">Applied for any showcase</h2>
           {data.unassigned.map((p) => (
-            <PersonRow key={p.id} p={p} onApprove={setApproving} onDecline={decline} onPaid={paid} busy={busy} />
+            <PersonRow key={p.id} p={p} onApprove={setApproving} onDecline={decline} onPaid={paid} onRoster={onRoster} busy={busy} />
           ))}
         </section>
       )}
 
-      {shows.length === 0 && (
+      {view !== 'roster' && shows.length === 0 && (
         <div className="ga-card ga-empty">
           {view === 'upcoming' ? 'No upcoming showcases. Publish one in Events first.' : 'No past showcases in the last 45 days.'}
         </div>
       )}
 
-      {shows.map((s) => {
+      {view !== 'roster' && shows.map((s) => {
         const artistsFull = s.artists.length >= ARTIST_SLOTS;
         const hostFull = s.hosts.length >= 1;
         const visuals = s.visuals || [];
@@ -395,13 +559,13 @@ const AdminShowcases = () => {
               <p className="ga-sub-head">Lineup</p>
               {s.hosts.length + s.artists.length + visuals.length === 0 && <p className="ga-small ga-muted">Nobody booked yet.</p>}
               {[...s.hosts, ...s.artists, ...visuals].map((p) => (
-                <PersonRow key={p.id} p={p} show={s} onApprove={setApproving} onDecline={decline} onPaid={paid} busy={busy} />
+                <PersonRow key={p.id} p={p} show={s} onApprove={setApproving} onDecline={decline} onPaid={paid} onRoster={onRoster} busy={busy} />
               ))}
               {s.applicants.length > 0 && (
                 <>
                   <p className="ga-sub-head">Applied for this show · {s.applicants.length}</p>
                   {s.applicants.map((p) => (
-                    <PersonRow key={p.id} p={p} show={s} onApprove={setApproving} onDecline={decline} onPaid={paid} busy={busy} />
+                    <PersonRow key={p.id} p={p} show={s} onApprove={setApproving} onDecline={decline} onPaid={paid} onRoster={onRoster} busy={busy} />
                   ))}
                 </>
               )}
@@ -409,6 +573,15 @@ const AdminShowcases = () => {
           </section>
         );
       })}
+
+      {rostering && (
+        <RosterDrawer
+          person={rostering.person}
+          show={rostering.show}
+          onClose={() => setRostering(null)}
+          onDone={(text) => { setRostering(null); setNote({ type: 'ok', text }); load(); }}
+        />
+      )}
 
       {approving && (
         <ApproveDrawer
