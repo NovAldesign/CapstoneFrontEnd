@@ -34,6 +34,9 @@ const AdminReviews = () => {
   const [form, setForm] = useState(EMPTY);
   const [showAdd, setShowAdd] = useState(false);
   const [busyId, setBusyId] = useState(null);
+  // Fix a posted review (typos, name, stars, event)
+  const [editingId, setEditingId] = useState(null);
+  const [edit, setEdit] = useState(EMPTY);
   const [error, setError] = useState("");
 
   const load = async () => {
@@ -69,11 +72,29 @@ const AdminReviews = () => {
     try {
       await api(`/admin/${id}`, { method: "PATCH", body: JSON.stringify(updates) });
       await load(); // reload so "only one featured" stays in sync
+      return true;
     } catch (err) {
       alert(err.message);
+      return false;
     } finally {
       setBusyId(null);
     }
+  };
+
+  const startEdit = (r) => {
+    setEditingId(r._id);
+    setEdit({ name: r.name, event: r.event || "", rating: r.rating, text: r.text, source: r.source });
+  };
+
+  const saveEdit = async (e) => {
+    e.preventDefault();
+    const ok = await change(editingId, { ...edit, rating: Number(edit.rating) });
+    if (ok) setEditingId(null);
+  };
+
+  const updateEdit = (e) => {
+    const { name, value } = e.target;
+    setEdit((prev) => ({ ...prev, [name]: value }));
   };
 
   const remove = async (id) => {
@@ -130,11 +151,11 @@ const AdminReviews = () => {
           <div className="reviews-admin-row">
             <label>
               Name (first name or initial)
-              <input className="search-input" name="name" value={form.name} onChange={update} required maxLength={60} />
+              <input className="search-input" name="name" value={form.name} onChange={update} required maxLength={60} placeholder="Tasha M." />
             </label>
             <label>
               Event
-              <input className="search-input" name="event" value={form.event} onChange={update} maxLength={80} placeholder="Game Night" />
+              <input className="search-input" name="event" value={form.event} onChange={update} maxLength={80} placeholder="Karaoke Bingo" />
             </label>
             <label>
               Stars
@@ -155,7 +176,7 @@ const AdminReviews = () => {
           </div>
           <label>
             Review (paste it in)
-            <textarea className="search-input" name="text" value={form.text} onChange={update} rows={5} required maxLength={1500} />
+            <textarea className="search-input" name="text" value={form.text} onChange={update} rows={5} required maxLength={1500} placeholder="Paste the review exactly as the guest wrote it" />
           </label>
           <label className="checkbox-label">
             <input type="checkbox" name="featured" checked={form.featured} onChange={update} />
@@ -203,8 +224,54 @@ const AdminReviews = () => {
               {r.canShare === false && (
                 <div className="dot-red">Guest asked NOT to post this publicly.</div>
               )}
+              {editingId === r._id ? (
+                <form className="reviews-admin-form reviews-admin-edit" onSubmit={saveEdit}>
+                  <div className="reviews-admin-row">
+                    <label>
+                      Name
+                      <input className="search-input" name="name" value={edit.name} onChange={updateEdit} required maxLength={60} />
+                    </label>
+                    <label>
+                      Event
+                      <input className="search-input" name="event" value={edit.event} onChange={updateEdit} maxLength={80} placeholder="Karaoke Bingo" />
+                    </label>
+                    <label>
+                      Stars
+                      <select className="filter-select" name="rating" value={edit.rating} onChange={updateEdit}>
+                        {[5, 4, 3, 2, 1].map((n) => (
+                          <option key={n} value={n}>{"★".repeat(n)}</option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      From
+                      <select className="filter-select" name="source" value={edit.source} onChange={updateEdit}>
+                        {SOURCES.map((s) => (
+                          <option key={s.value} value={s.value}>{s.label}</option>
+                        ))}
+                      </select>
+                    </label>
+                  </div>
+                  <label>
+                    Review
+                    <textarea className="search-input" name="text" value={edit.text} onChange={updateEdit} rows={5} required maxLength={1500} />
+                  </label>
+                  <div className="reviews-admin-actions">
+                    <button type="submit" className="gold-fill-btn" disabled={busyId === r._id}>
+                      {busyId === r._id ? "Saving…" : "Save changes"}
+                    </button>
+                    <button type="button" className="export-btn" disabled={busyId === r._id} onClick={() => setEditingId(null)}>
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              ) : (
+              <>
               <p className="reviews-admin-text">{r.text}</p>
               <div className="reviews-admin-actions">
+                <button type="button" className="export-btn" disabled={busyId === r._id} onClick={() => startEdit(r)}>
+                  Edit
+                </button>
                 {r.status !== "approved" && (
                   <button type="button" className="gold-fill-btn" disabled={busyId === r._id} onClick={() => change(r._id, { status: "approved" })}>
                     Approve
@@ -224,6 +291,8 @@ const AdminReviews = () => {
                   Delete
                 </button>
               </div>
+              </>
+              )}
             </article>
           ))}
         </div>
