@@ -553,7 +553,7 @@ const NextEvent = ({ portal }) => (
   <section className="md-card" aria-labelledby="pp-next-title">
     <h2 id="pp-next-title" className="playfair md-card-title">Let's do it again</h2>
     <p className="md-muted">
-      Game Nights, Karaoke Bingo, Acoustic &amp; Infused and our holiday events are coming up, and we'd love to have you back.
+      Game Nights, Karaoke Bingo, Acoustic &amp; Infused™ and our holiday events are coming up, and we'd love to have you back.
     </p>
     <div className="md-actions">
       <Link to="/partnerships#levels" className="md-btn md-btn-gold">Book your next event</Link>

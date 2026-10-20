@@ -40,7 +40,7 @@ const FAQ_TABS = [
     { q: "Do I have to sing?", a: "Never. Sing from your seat, take the mic, or just mark your card." },
     { q: "How does it work?", a: "Your bingo card is full of songs from the night's theme. When one plays, mark it. Get a bingo, win a prize." },
   ]},
-  { id: "acoustic", label: "Acoustic & Infused", faqs: [
+  { id: "acoustic", label: "Acoustic & Infused™", faqs: [
     { q: "Who's performing?", a: "Atlanta R&B, neo-soul and acoustic artists, each with a 20-minute set. The lineup is on each event page." },
     { q: "How do I support the artists?", a: "Buy your ticket through an artist's link and visit their merch table." },
     { q: "Can I perform?", a: "Yes. Apply at grownfolkscollective.com/perform." },

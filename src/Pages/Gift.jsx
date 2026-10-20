@@ -8,7 +8,7 @@ import '../Styles/Shop.css';
 // /gift: gift cards now; Holiday Passes appear at 12:00 AM ET on Black Friday
 const PASS_FAQ = 'Which events does a Holiday Pass cover?';
 const FAQS = [
-  [PASS_FAQ, 'Game Night, Karaoke Bingo and Acoustic & Infused, through March 31, 2027. Each night on the pass is one ticket. Use them all yourself or bring friends to the same night. Dinners like Friendsgiving and the Holiday Table are not included, but a gift card works for those.'],
+  [PASS_FAQ, 'Game Night, Karaoke Bingo and Acoustic & Infused™, through March 31, 2027. Each night on the pass is one ticket. Use them all yourself or bring friends to the same night. Dinners like Friendsgiving and the Holiday Table are not included, but a gift card works for those.'],
   ['How do they use it?', 'Pick an event at grownfolkscollective.com/events, add tickets to the bag, tap "Have a code or gift card?" and enter the code from the email. Anything left stays on the code for next time.'],
   ['When does the gift arrive?', 'On the date you choose, around 9 AM Eastern. Pick today and it goes out right after you pay. You get a receipt with the code too, just in case.'],
   ['Do gift cards expire?', 'Paid gift cards never expire.'],
@@ -133,7 +133,7 @@ const Gift = () => {
             <section aria-labelledby="passes-title">
               <p className="shop-label">Holiday Pass</p>
               <h2 id="passes-title" className="playfair shop-h2">Prepaid nights out</h2>
-              <p className="shop-sub">Good for Game Night, Karaoke Bingo and Acoustic &amp; Infused through Mar 31, 2027.</p>
+              <p className="shop-sub">Good for Game Night, Karaoke Bingo and Acoustic &amp; Infused™ through Mar 31, 2027.</p>
               <div className="shop-grid">
                 {passes.map((p) => (
                   <button

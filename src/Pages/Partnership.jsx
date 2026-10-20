@@ -56,17 +56,17 @@ const tiers = [
       "Presenting Partner for every event in the series",
       "Your logo on every flyer for the run",
       "A Live on our social media featuring your brand (optional, great for smaller brands)",
-      "Pick your series: Game Night, Karaoke Bingo, Acoustic & Infused or a Recess Talks™ season",
+      "Pick your series: Game Night, Karaoke Bingo, Acoustic & Infused™ or a Recess Talks™ season",
     ],
   },
 ];
 
 // Sponsor one part of the night (one sponsor per moment, per event)
-const ACOUSTIC = "Acoustic & Infused (Live Music Showcase)";
+const ACOUSTIC = "Acoustic & Infused™ (Live Music Showcase)";
 const moments = [
   {
     id: "stage",
-    series: "Acoustic & Infused",
+    series: "Acoustic & Infused™",
     event: ACOUSTIC,
     label: "Stage Sponsor",
     price: "$375",
@@ -81,7 +81,7 @@ const moments = [
   },
   {
     id: "toast",
-    series: "Acoustic & Infused",
+    series: "Acoustic & Infused™",
     event: ACOUSTIC,
     label: "First Toast Sponsor",
     price: "$400",
@@ -96,15 +96,15 @@ const moments = [
   },
 ];
 const momentLabel = (m) => `${m.series}: ${m.label}`;
-const SERIES = [{ name: "Acoustic & Infused", tag: "Live music showcase" }];
+const SERIES = [{ name: "Acoustic & Infused™", tag: "Live music showcase" }];
 
 // Our staple events (keep in sync with EVENTS in models/donationSchema.js)
 const eventOptions = [
   "Game Night",
   "Karaoke Bingo",
-  "Acoustic & Infused (Live Music Showcase)",
+  "Acoustic & Infused™ (Live Music Showcase)",
   "Recess Talks™",
-  "GFC Select",
+  "GFC Select™",
 ];
 
 const defaultForm = {
@@ -344,7 +344,7 @@ const Partnership = () => {
 
       {/* ACOUSTIC & INFUSED: sponsor one part of the night */}
       <section className="moments-section" aria-labelledby="moments-heading">
-        <span className="location-tag">Acoustic &amp; Infused · Live Music Showcase</span>
+        <span className="location-tag">Acoustic &amp; Infused™ · Live Music Showcase</span>
         <h2 className="playfair section-title" id="moments-heading">Sponsor a Moment</h2>
         <p className="narrative-body moments-lead">
           Want to support Atlanta artists in a way people will remember? Cover one part of the night and we'll make sure

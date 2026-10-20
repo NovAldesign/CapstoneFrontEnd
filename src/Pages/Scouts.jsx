@@ -44,7 +44,7 @@ const FAQS = [
     a: "Yes. Your ticket is on us for every showcase you pick. It's for you only. Bringing someone? They can grab a ticket on the event page.",
   },
   {
-    q: 'What is Acoustic & Infused?',
+    q: 'What is Acoustic & Infused™?',
     a: "Our live music showcase for grown folks 30+. Each night features 3 Atlanta singers and musicians (R&B, soul, jazz, and acoustic), a host, and live art capturing the sound of the room, all in an intimate, alcohol-free venue.",
   },
   {
@@ -164,7 +164,7 @@ const Scouts = () => {
         <title>Industry Scouts | Discover Atlanta Talent Live | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="A&R, artist managers, label reps, and booking agents: join the Grown Folks™ Collective scout list and get a free ticket to Acoustic & Infused, our live music showcase featuring Atlanta's rising artists."
+          content="A&R, artist managers, label reps, and booking agents: join the Grown Folks™ Collective scout list and get a free ticket to Acoustic & Infused™, our live music showcase featuring Atlanta's rising artists."
         />
         <link rel="canonical" href="https://www.grownfolkscollective.com/scouts" />
       </Helmet>
@@ -177,7 +177,7 @@ const Scouts = () => {
             <h1 className="contact-hero-title">Scout the Room</h1>
             <div className="contact-gold-spacer" aria-hidden="true"></div>
             <p className="contact-hero-lead">
-              Label reps, managers, A&amp;R, booking agents, and producers: Acoustic &amp; Infused puts Atlanta's rising
+              Label reps, managers, A&amp;R, booking agents, and producers: Acoustic &amp; Infused™ puts Atlanta's rising
               singers, musicians, and live artists on one stage, in a room that came to listen. Join our scout list and
               your seat is on us.
             </p>

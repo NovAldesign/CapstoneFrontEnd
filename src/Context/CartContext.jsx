@@ -612,7 +612,7 @@ const CartDrawer = () => {
                           ? giftCreditInCents > 0
                             ? `✓ ${giftInfo.description}`
                             : giftInfo.kind === "pass"
-                              ? "Your Holiday Pass works for Game Night, Karaoke Bingo and Acoustic & Infused"
+                              ? "Your Holiday Pass works for Game Night, Karaoke Bingo and Acoustic & Infused™"
                               : giftInfo.description
                           : giftError || `Checking ${giftCode}…`}
                       </span>
@@ -671,7 +671,7 @@ const CartDrawer = () => {
                     )}
                     {creditBalanceInCents > 0 && creditEligibleInCents === 0 && (
                       <p className="gfc-member-box-note">
-                        Event credit works on Game Night, Karaoke Bingo and Acoustic &amp; Infused tickets.
+                        Event credit works on Game Night, Karaoke Bingo and Acoustic &amp; Infused™ tickets.
                       </p>
                     )}
                   </div>

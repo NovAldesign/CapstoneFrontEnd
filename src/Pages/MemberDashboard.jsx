@@ -64,7 +64,7 @@ const CreditCard = ({ member, credit }) => {
       )}
 
       <p className="md-note">
-        Works on Game Nights, Karaoke Bingo and Acoustic &amp; Infused, and can cover the whole ticket.
+        Works on Game Nights, Karaoke Bingo and Acoustic &amp; Infused™, and can cover the whole ticket.
         Food events get your member discount instead. Unused credit rolls over one month, then expires,
         and your oldest credit is always used first.
       </p>

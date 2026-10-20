@@ -69,7 +69,7 @@ const OnOurStagePage = () => {
         <title>On Our Stage | Atlanta Artists, Hosts & Live Artists | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="Meet the Atlanta singers, musicians, hosts, and live artists who perform at Acoustic & Infused, the Grown Folks™ Collective live music showcase for grown folks 30+."
+          content="Meet the Atlanta singers, musicians, hosts, and live artists who perform at Acoustic & Infused™, the Grown Folks™ Collective live music showcase for grown folks 30+."
         />
         <link rel="canonical" href="https://www.grownfolkscollective.com/on-our-stage" />
       </Helmet>
@@ -77,7 +77,7 @@ const OnOurStagePage = () => {
       <header className="contact-hero">
         <div className="contact-hero-inner">
           <div className="contact-hero-left">
-            <span className="contact-eyebrow">Acoustic &amp; Infused</span>
+            <span className="contact-eyebrow">Acoustic &amp; Infused™</span>
             <h1 className="contact-hero-title">On Our Stage</h1>
             <div className="contact-gold-spacer" aria-hidden="true"></div>
             <p className="contact-hero-lead">
