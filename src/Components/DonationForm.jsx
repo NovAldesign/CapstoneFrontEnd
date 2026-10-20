@@ -16,9 +16,9 @@ const KINDS = [
 const EVENTS = [
   'Game Night',
   'Karaoke Bingo',
-  'Acoustic & Infused (Live Music Showcase)',
+  'Acoustic & Infused™ (Live Music Showcase)',
   'Recess Talks™',
-  'GFC Select',
+  'GFC Select™',
   'Any event',
 ];
 const DELIVERY = ["I'll drop it off", 'Please pick it up', "I'll ship it", "Let's talk"];
