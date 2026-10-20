@@ -4,6 +4,7 @@ import { adminApi, adminLegacy } from '../Services/adminApi';
 import AdminReviews from "../Components/AdminReviews.jsx";
 import AdminSiteStats from "../Components/AdminSiteStats.jsx";
 import AdminRecess from "../Components/admin/AdminRecess.jsx";
+import AdminDonations from "../Components/admin/AdminDonations.jsx";
 import AdminSelect from "../Components/AdminSelect.jsx";
 import AdminToday from "../Components/admin/AdminToday.jsx";
 import AdminShowcases from "../Components/admin/AdminShowcases.jsx";
@@ -369,6 +370,7 @@ const AdminDashboard = () => {
     { group: 'Partnerships', items: [
       { id: 'partners', icon: '🤝', label: 'Partners', count: counts.partners },
       { id: 'perks', icon: '💳', label: 'Member Perks', count: counts.perks },
+      { id: 'donations', icon: '🎁', label: 'Donations' },
       { id: 'private', icon: '🥂', label: 'Private events', count: counts.hosting },
       { id: 'groups', icon: '🎉', label: 'Group bookings', count: counts.groups },
     ] },
@@ -396,6 +398,7 @@ const AdminDashboard = () => {
     gifts: ['Gifts & merch', 'Holiday Passes, gift cards and merch pre-orders.'],
     reports: ['Reports', 'Tickets, revenue, who showed up and where tickets came from.'],
     partners: ['Partners', 'Sponsor inquiries and partner portal progress.'],
+    donations: ['Donations', 'Products and equipment offered for gift bags, giveaways and events.'],
     perks: ['Member Perks', 'Businesses offering discounts to members.'],
     private: ['Private events', 'Hosting requests from the /host page.'],
     groups: ['Group bookings', 'Birthdays, celebrations and groups.'],
@@ -458,6 +461,7 @@ const AdminDashboard = () => {
       {activeTab === 'codes' && <AdminCodes events={events} />}
       {activeTab === 'gifts' && <AdminGifts />}
       {activeTab === 'perks' && <AdminPerks />}
+      {activeTab === 'donations' && <AdminDonations />}
       {activeTab === 'partners' && <AdminPartners />}
       {['private', 'groups', 'messages'].includes(activeTab) && <AdminInboxList kind={activeTab} />}
       {activeTab === 'subscribers' && <AdminSubscribers />}

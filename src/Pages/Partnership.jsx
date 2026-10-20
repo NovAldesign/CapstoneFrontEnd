@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import "../Styles/Partnership.css";
 import partnershipService from "../Services/partnershipService.js";
+import DonationForm from "../Components/DonationForm.jsx";
 import { useSiteStats, plus } from "../Services/siteStats";
 
 const tiers = [
@@ -50,14 +51,13 @@ const tiers = [
   },
 ];
 
+// Our staple events (keep in sync with EVENTS in models/donationSchema.js)
 const eventOptions = [
-  "The Exchange - Interactive Social Experience",
-  "Intentional Conversations Over Mocktails",
-  "Game Nights / Spades Tournament",
+  "Game Night",
   "Karaoke Bingo",
-  "Golf Simulations / Bowling",
-  "Cookout / Field Day",
-  "Group Travel / Retreats",
+  "Acoustic & Infused (Live Music Showcase)",
+  "Recess Talks",
+  "GFC Select",
 ];
 
 const defaultForm = {
@@ -76,6 +76,7 @@ const Partnership = () => {
   const siteStats = useSiteStats();
   const [params] = useSearchParams();
   const [showForm, setShowForm] = useState(params.get("inquire") === "1");
+  const [showDonate, setShowDonate] = useState(params.get("donate") === "1");
   const [formData, setFormData] = useState(defaultForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState(null);
@@ -105,6 +106,14 @@ const Partnership = () => {
     }, 50);
   };
   const handleTierSelect = (tierLabel) => openForm(tierLabel);
+
+  const openDonate = (e) => {
+    e?.preventDefault();
+    setShowDonate(true);
+    setTimeout(() => {
+      document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" });
+    }, 50);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -182,6 +191,12 @@ const Partnership = () => {
               <span className="partner-path-text">Give our members a discount and bring new regulars through your door. Free to join.</span>
               <span className="partner-path-cta">Offer a perk →</span>
             </Link>
+            <a href="#donate" className="partner-path" onClick={openDonate}>
+              <span className="partner-path-tag">For anyone</span>
+              <span className="playfair partner-path-title">Donate Products or Equipment</span>
+              <span className="partner-path-text">Stock our gift bags, giveaways and game nights, or help us gear up with sound, lights and supplies.</span>
+              <span className="partner-path-cta">Offer a donation ↓</span>
+            </a>
           </div>
         </div>
       </header>
@@ -537,6 +552,50 @@ const Partnership = () => {
         </div>
       </section>
       )}
+
+      {/* DONATIONS: products for gift bags and giveaways, equipment for events */}
+      <section className="donate-section" id="donate" aria-labelledby="donate-heading">
+        <div className="donate-inner">
+          <span className="location-tag">Give to the Collective</span>
+          <h2 className="playfair section-title" id="donate-heading">Donate Products or Equipment</h2>
+          <p className="narrative-body donate-lead">
+            Every gift bag, prize and piece of equipment helps us create more joy and real connection for Atlanta's
+            grown folks. If you have something that helps GFC grow and brings our people together, we'd love to hear from you.
+          </p>
+          <div className="donate-cols">
+            <div className="donate-card">
+              <h3 className="donate-card-title">What we can use</h3>
+              <ul>
+                <li>Products for gift bags and giveaways</li>
+                <li>Prizes for game nights and Karaoke Bingo</li>
+                <li>Sound: speakers, mics, a mixer or a karaoke machine</li>
+                <li>Lighting and stage decor</li>
+                <li>Games: cards, tables and board games</li>
+                <li>Art and coloring supplies: easels, canvases, coloring books</li>
+                <li>Non-alcoholic drinks</li>
+              </ul>
+            </div>
+            <div className="donate-card donate-card-navy">
+              <h3 className="donate-card-title">How we say thank you</h3>
+              <ul>
+                <li>A shout-out at the event</li>
+                <li>A tag on our social media</li>
+                <li>A mention in our newsletter</li>
+              </ul>
+              <p className="donate-card-note">Prefer to stay anonymous? Just uncheck the box on the form.</p>
+            </div>
+          </div>
+          {showDonate ? (
+            <div className="donate-form-wrap">
+              <DonationForm source={params.get("src") ? `partnerships?src=${params.get("src")}` : "partnerships"} />
+            </div>
+          ) : (
+            <button type="button" className="gold-submit-btn donate-open-btn" onClick={openDonate}>
+              Offer a Donation
+            </button>
+          )}
+        </div>
+      </section>
     </div>
   );
 };
