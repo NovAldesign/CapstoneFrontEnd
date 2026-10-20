@@ -129,7 +129,7 @@ const InterestForm = ({ source }) => {
   if (done) {
     return (
       <div className="recess-interest-done" role="status">
-        <strong>You're on the list, {name.split(' ')[0]}! 🖍️</strong>
+        <strong>You're on the list, {name.split(' ')[0]}!</strong>
         <span>We'll email you as soon as the first talk, speaker and tickets are set.</span>
       </div>
     );
@@ -289,7 +289,7 @@ const Recess = () => {
         {done ? (
           <div className="contact-form-container group-success" role="status">
             <span className="contact-form-eyebrow">Application Received</span>
-            <h2 className="contact-form-title">Thank you, {form.firstName}! 🖍️</h2>
+            <h2 className="contact-form-title">Thank you, {form.firstName}!</h2>
             <p className="contact-form-subhead">
               We received your talk idea, <strong>“{form.talkTitle}”</strong>. We emailed you a confirmation and we'll reach
               out if it's a fit for an upcoming month.

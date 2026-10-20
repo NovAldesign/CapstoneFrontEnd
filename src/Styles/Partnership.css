@@ -529,3 +529,36 @@
 .partner-checkbox-label input[type="checkbox"] { flex-shrink: 0 !important; }
 .input-group .donate-toggle-opt input { width: auto !important; padding: 0 !important; border: none !important; flex: none !important; }
 .input-group .donate-toggle-opt span { white-space: nowrap; }
+
+/* Four sponsor levels: 4 across on wide screens, 2 on tablets */
+.tier-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 20px !important; max-width: 1280px !important; padding: 0 20px !important; }
+.tier-item { padding: 40px 26px !important; }
+.tier-price-note { margin: -6px 0 0; color: #7A5A1E; font-weight: 700; font-size: 0.85rem; }
+@media (max-width: 1150px) { .tier-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
+@media (max-width: 680px) { .tier-grid { grid-template-columns: 1fr !important; } }
+
+/* Acoustic & Infused: Sponsor a Moment */
+.moments-section { background: #002147; padding: 90px 5% 100px; text-align: center; margin-bottom: 100px; }
+.moments-section .section-title { color: #fff !important; }
+.moments-lead { color: #C9D1DD !important; max-width: 720px; margin: 0 auto 44px; }
+.moments-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; max-width: 1150px; margin: 0 auto; text-align: left; }
+.moment-card { background: #fff; border-top: 5px solid #C5A059; padding: 34px 26px; display: flex; flex-direction: column; }
+.moment-icon { font-size: 1.8rem; margin-bottom: 10px; }
+.moment-price { color: #002147; margin: 8px 0 6px; font-size: 2rem; }
+.moment-price span { font-size: 1rem; color: #7A5A1E; font-family: 'Montserrat', sans-serif; font-weight: 600; }
+.moment-covers { color: #002147; font-weight: 700; margin: 0 0 16px; line-height: 1.5; }
+.moment-features { list-style: none; padding: 0; margin: 0 0 26px; flex: 1; }
+.moment-features li { font-size: 0.85rem; padding: 8px 0; border-bottom: 1px solid #eee; color: #555; line-height: 1.45; }
+.moment-btn { margin-top: auto !important; padding: 15px !important; font-size: 0.75rem !important; }
+@media (max-width: 980px) { .moments-grid { grid-template-columns: 1fr; max-width: 520px; } .moments-section { padding: 70px 16px 80px; } }
+.moments-group + .moments-group { margin-top: 56px; }
+.moments-group-title { color: #C5A059; font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; margin: 0 0 18px; }
+.moments-group-title span { display: block; color: #C9D1DD; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
+.moments-grid-one { grid-template-columns: minmax(0, 380px); justify-content: center; }
+.moments-group + .moments-group { margin-top: 56px; }
+.moments-group-title { color: #C5A059; font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; margin: 0 0 18px; }
+.moments-group-title span { display: block; color: #C9D1DD; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
+.moments-grid-one { grid-template-columns: minmax(0, 380px); justify-content: center; }
+/* Two moments: center them */
+.moments-grid { grid-template-columns: repeat(2, minmax(0, 420px)); justify-content: center; }
+@media (max-width: 980px) { .moments-grid { grid-template-columns: 1fr; } }

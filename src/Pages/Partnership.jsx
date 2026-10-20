@@ -8,48 +8,95 @@ import { useSiteStats, plus } from "../Services/siteStats";
 
 const tiers = [
   {
-    id: "bronze",
-    label: "Bronze",
+    id: "friend",
+    label: "Friend of GFC",
     price: "$150 / event",
-    description: "Get your name in the room. Perfect for testing the waters.",
+    description: "Get your name in front of our community.",
     features: [
-      "Logo & brand mention during the selected event",
-      "Mentioned in event-specific social preview posts",
-      "Tagged in the event recap video",
-      "Newsletter mention in the post-event wrap-up",
+      "Shout-out on all our social media platforms",
+      "Mention in our newsletter",
+      "Your logo on our website as a sponsor",
     ],
   },
   {
-    id: "silver",
-    label: "Silver",
-    price: "$500 / event",
+    id: "featured",
+    label: "Featured Partner",
+    price: "$350 / event",
     featured: true,
-    description: "Show up, stand out, and engage directly with attendees.",
+    description: "Show up in the room and on every listing.",
     features: [
-      "Everything in Bronze",
-      "Dedicated table presence at the event venue",
-      "Physical signage placed at the venue",
-      "Product sampling (you provide, we handle logistics)",
-      "Dedicated social feature highlighting your brand before the event",
-      "Newsletter spotlight feature in that event cycle",
+      "Everything in Friend of GFC",
+      "Your logo on the event flyer",
+      "Your logo on every platform we post the event on (Eventbrite, Meetup and more)",
+      "A table or display at the event",
+      "Product sampling or an item in our gift bags",
     ],
   },
   {
-    id: "gold",
-    label: "Gold",
-    price: "$1,200 / event",
-    elite: true,
-    description: "Full-on brand integration and exclusive category presence.",
+    id: "presenting",
+    label: "Presenting Partner",
+    price: "$750 / event",
+    description: "Put your name on the night.",
     features: [
-      "Everything in Silver",
-      "Branded standalone activation space at the event",
-      "Custom high-quality b-roll content from the venue",
-      "Short video interview feature integrated into event recap content",
-      "100% industry category exclusivity for that specific event",
-      "Priority consideration for a permanent/multi-event partnership",
+      "Everything in Featured Partner",
+      "\u201c[Event] presented by [Your Brand]\u201d on the flyer, event page and every listing",
+      "A 2-minute welcome from the mic",
+      "The only brand in your category that night",
+      "2 tickets to the event",
+    ],
+  },
+  {
+    id: "series",
+    label: "Series Partner",
+    price: "$1,800 / 3 events",
+    priceNote: "or $3,000 for 6 events",
+    elite: true,
+    description: "Our best value: present a whole run of events.",
+    features: [
+      "Presenting Partner for every event in the series",
+      "Your logo on every flyer for the run",
+      "A Live on our social media featuring your brand (optional, great for smaller brands)",
+      "Pick your series: Game Night, Karaoke Bingo, Acoustic & Infused or a Recess Talks season",
     ],
   },
 ];
+
+// Sponsor one part of the night (one sponsor per moment, per event)
+const ACOUSTIC = "Acoustic & Infused (Live Music Showcase)";
+const moments = [
+  {
+    id: "stage",
+    series: "Acoustic & Infused",
+    event: ACOUSTIC,
+    label: "Stage Sponsor",
+    price: "$375",
+    covers: "Pays our 3 artists, our host and our live visual artist.",
+    features: [
+      "\u201cTonight's artists are paid thanks to [Your Brand]\u201d as the host introduces the performers",
+      "Your logo on the event flyer and every platform we post the event on",
+      "Shout-out on all our social media platforms",
+      "Mention in our newsletter",
+      "Your logo on our website as a sponsor",
+    ],
+  },
+  {
+    id: "toast",
+    series: "Acoustic & Infused",
+    event: ACOUSTIC,
+    label: "First Toast Sponsor",
+    price: "$400",
+    covers: "Treats the whole room to the first toast of the night.",
+    features: [
+      "The host leads the first toast, \u201cbrought to you by [Your Brand]\u201d",
+      "A non-alcoholic drink brand can pour its own product for the toast",
+      "Your logo on the event flyer and every platform we post the event on",
+      "Shout-out on all our social media platforms and in our newsletter",
+      "Your logo on our website as a sponsor",
+    ],
+  },
+];
+const momentLabel = (m) => `${m.series}: ${m.label}`;
+const SERIES = [{ name: "Acoustic & Infused", tag: "Live music showcase" }];
 
 // Our staple events (keep in sync with EVENTS in models/donationSchema.js)
 const eventOptions = [
@@ -98,8 +145,14 @@ const Partnership = () => {
   };
 
   // The inquiry form stays hidden until someone picks a level (or asks to talk)
-  const openForm = (tierLabel = "") => {
+  const openForm = (tierLabel = "", event = "") => {
     if (tierLabel) setFormData((prev) => ({ ...prev, tierRequested: tierLabel }));
+    if (event) {
+      setFormData((prev) => ({
+        ...prev,
+        eventsInterested: prev.eventsInterested.includes(event) ? prev.eventsInterested : [...prev.eventsInterested, event],
+      }));
+    }
     setShowForm(true);
     setTimeout(() => {
       document.getElementById("partner-form")?.scrollIntoView({ behavior: "smooth" });
@@ -233,6 +286,7 @@ const Partnership = () => {
             <div key={tier.id} className="tier-item">
               <span className="tier-label">{tier.label}</span>
               <h3 className="playfair">{tier.price}</h3>
+              {tier.priceNote && <p className="tier-price-note">{tier.priceNote}</p>}
               <p
                 className="narrative-body"
                 style={{ minHeight: "60px", fontSize: "0.95rem" }}
@@ -286,6 +340,36 @@ const Partnership = () => {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* ACOUSTIC & INFUSED: sponsor one part of the night */}
+      <section className="moments-section" aria-labelledby="moments-heading">
+        <span className="location-tag">Acoustic &amp; Infused · Live Music Showcase</span>
+        <h2 className="playfair section-title" id="moments-heading">Sponsor a Moment</h2>
+        <p className="narrative-body moments-lead">
+          Want to support Atlanta artists in a way people will remember? Cover one part of the night and we'll make sure
+          the room knows it was you. One sponsor per moment, per show.
+        </p>
+        {SERIES.map((series) => (
+        <div key={series.name} className="moments-group">
+        {SERIES.length > 1 && <h3 className="moments-group-title">{series.name} <span>{series.tag}</span></h3>}
+        <div className={`moments-grid ${moments.filter((m) => m.series === series.name).length === 1 ? "moments-grid-one" : ""}`}>
+          {moments.filter((m) => m.series === series.name).map((m) => (
+            <div key={m.id} className="moment-card">
+              <span className="tier-label">{m.label}</span>
+              <h3 className="playfair moment-price">{m.price} <span>/ {m.per || "show"}</span></h3>
+              <p className="moment-covers">{m.covers}</p>
+              <ul className="moment-features">
+                {m.features.map((f) => <li key={f}>{f}</li>)}
+              </ul>
+              <button type="button" className="gold-submit-btn moment-btn" onClick={() => openForm(momentLabel(m), m.event)}>
+                Sponsor This Moment
+              </button>
+            </div>
+          ))}
+        </div>
+        </div>
+        ))}
       </section>
 
       {!showForm && (
@@ -401,6 +485,11 @@ const Partnership = () => {
                 {tiers.map((t) => (
                   <option key={t.id} value={t.label}>
                     {t.label} — {t.price}
+                  </option>
+                ))}
+                {moments.map((m) => (
+                  <option key={m.id} value={momentLabel(m)}>
+                    {momentLabel(m)} — {m.price}
                   </option>
                 ))}
                 <option value="Not sure">Not sure yet / Want to customize</option>
