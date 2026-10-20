@@ -40,6 +40,7 @@ const PAGES = {
     ],
     faq: [
       ['How many people can you host?', 'Packages cover up to 32–60 guests depending on the game. Bigger group? Add guests in blocks of 20, or ask us about running two games side by side.'],
+      ['Can we do it during the workday?', 'Yes. We host daytime, lunchtime and evening events, and the price is the same at any time of day.'],
       ['Where does the event happen?', 'At your office, a clubhouse or a venue you choose anywhere in metro Atlanta. Travel is included within 25 miles of East Atlanta, with a small travel fee beyond that.'],
       ['Is any alcohol served?', 'No. Every event includes a signature mocktail bar, with one drink named after your company. You can add a sparkling Töst toast for $8 per guest.'],
       ['How far ahead should we book?', 'Two to three weeks is ideal. Weekday dates (Monday to Thursday) have the most availability and the best rate.'],
@@ -56,7 +57,7 @@ const PAGES = {
     eyebrow: 'Office Holiday Parties · Atlanta',
     h1: 'An Office Holiday Party Everyone Will Actually Enjoy',
     lead:
-      "Skip the open bar. Book a hosted, alcohol-free holiday party with games, a signature holiday mocktail and a toast to your team's year. We bring everything and run the whole night.",
+      "Skip the open bar. Book a hosted, alcohol-free holiday party with games, a signature holiday mocktail and a toast to your team's year. Daytime, lunchtime or evening: we bring everything and run the whole party.",
     holiday: true,
     ideasTitle: '5 holiday party ideas your team will talk about',
     ideas: [
@@ -76,6 +77,7 @@ const PAGES = {
     faq: [
       ['When should we book?', 'Now. December weekdays fill first. Book a December date by Oct 31 and save $150.'],
       ['Can you host at our office?', 'Yes. We set up in your office, a clubhouse or a venue you choose anywhere in metro Atlanta.'],
+      ['Can we have a daytime or lunch party?', 'Yes. We host daytime, lunchtime and evening parties, and the price is the same at any time of day. A lunch party lets your whole team celebrate during work hours.'],
       ['How long is the party?', 'Two hours (2.5 for the mystery), and you can add extra hours.'],
       ['Do you bring the drinks?', 'Yes. A signature holiday mocktail bar is included, and you can upgrade to a sparkling Töst toast.'],
       ['Can we add employee gifts?', 'Yes. GFC merch gifts start at $10 per guest and can be ready for the party.'],
