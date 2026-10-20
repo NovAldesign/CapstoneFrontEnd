@@ -3,6 +3,7 @@ import { getAllEvents, createEvent, updateEvent, deleteEvent } from '../Services
 import { adminApi, adminLegacy } from '../Services/adminApi';
 import AdminReviews from "../Components/AdminReviews.jsx";
 import AdminSiteStats from "../Components/AdminSiteStats.jsx";
+import AdminRecess from "../Components/admin/AdminRecess.jsx";
 import AdminSelect from "../Components/AdminSelect.jsx";
 import AdminToday from "../Components/admin/AdminToday.jsx";
 import AdminShowcases from "../Components/admin/AdminShowcases.jsx";
@@ -377,6 +378,7 @@ const AdminDashboard = () => {
       { id: 'members', icon: '👥', label: 'Members' },
       { id: 'subscribers', icon: '📬', label: 'Subscribers' },
       { id: 'scouts', icon: '🔎', label: 'Industry Scouts' },
+      { id: 'recess', icon: '🖍️', label: 'Recess Talks' },
       { id: 'blog', icon: '📝', label: 'Blog' },
       { id: 'select', icon: '🎭', label: 'GFC Select™', count: counts.select },
       { id: 'reviews', icon: '⭐', label: 'Reviews', count: counts.reviews },
@@ -401,6 +403,7 @@ const AdminDashboard = () => {
     messages: ['Messages', 'Notes from the contact form.'],
     members: ['Members', 'Memberships and their status.'],
     subscribers: ['Subscribers', 'Your newsletter list.'],
+    recess: ['Recess Talks', 'Speaker applications and the interest list for /recess.'],
     scouts: ['Industry Scouts', 'Labels, managers and A&R coming to showcases for free.'],
     blog: ['Blog', 'Write, edit and remove posts on The Gathering Table.'],
     select: ['GFC Select™', 'Applications, doors and matching.'],
@@ -459,6 +462,7 @@ const AdminDashboard = () => {
       {['private', 'groups', 'messages'].includes(activeTab) && <AdminInboxList kind={activeTab} />}
       {activeTab === 'subscribers' && <AdminSubscribers />}
       {activeTab === 'scouts' && <AdminScouts />}
+      {activeTab === 'recess' && <AdminRecess />}
       {activeTab === 'people' && <AdminPeople />}
       {activeTab === 'blog' && <AdminBlog />}
       {activeTab === 'reviews' && <AdminReviews />}

@@ -1,0 +1,117 @@
+/* Recess Talks (/recess). Builds on Contact.css, GroupBooking.css and Perform.css. */
+
+.recess-tagline {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  color: #C5A059;
+  font-size: clamp(1.3rem, 2.6vw, 1.8rem);
+  margin: 6px 0 0;
+  line-height: 1.2;
+}
+
+/* Interest list band */
+.recess-band {
+  background: #C5A059;
+  padding: 44px 10%;
+}
+.recess-band-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 32px;
+  align-items: center;
+}
+.recess-band-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: #002147;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin: 0 0 8px;
+}
+.recess-band-text {
+  color: #002147;
+  margin: 0;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+.recess-interest-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 10px;
+}
+.recess-interest-form input {
+  border: 1px solid rgba(0, 33, 71, 0.25);
+  background: #fff;
+  color: #002147;
+  padding: 14px 16px;
+  font-size: 1rem;
+  border-radius: 2px;
+  min-width: 0;
+}
+.recess-interest-form input:focus { outline: 2px solid #002147; outline-offset: 1px; }
+.recess-interest-form .contact-submit-btn {
+  width: auto;
+  margin: 0;
+  padding: 14px 22px;
+  background: #002147;
+  color: #fff;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+.recess-interest-form .contact-submit-btn:hover { background: #0E2E5C; }
+.recess-interest-error { grid-column: 1 / -1; margin: 0; }
+.recess-interest-done {
+  background: #fff;
+  color: #002147;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-left: 4px solid #002147;
+}
+.recess-trap { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }
+
+/* Topics */
+.recess-topics {
+  list-style: none;
+  margin: 0 0 40px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.recess-topics li {
+  background: #fff;
+  border: 1px solid #E6DFD0;
+  border-top: 3px solid #C5A059;
+  padding: 18px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.recess-topics strong { color: #002147; font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; }
+.recess-topics span { color: #4A556B; font-size: 0.95rem; line-height: 1.5; }
+
+.recess-who { color: #4A556B; line-height: 1.6; margin: 10px 0 6px; }
+
+/* Sponsors */
+.recess-sponsor {
+  background: #002147;
+  padding: 56px 10%;
+  text-align: center;
+}
+.recess-sponsor-inner { max-width: 720px; margin: 0 auto; }
+.recess-sponsor .recess-band-title { color: #fff; }
+.recess-sponsor .recess-band-text { color: #C9D1DD; margin-bottom: 22px; }
+.recess-sponsor-btn { display: inline-block; width: auto; padding: 16px 30px; text-decoration: none; }
+
+@media (max-width: 860px) {
+  .recess-band-inner { grid-template-columns: 1fr; gap: 18px; }
+}
+@media (max-width: 560px) {
+  .recess-band { padding: 36px 16px; }
+  .recess-interest-form { grid-template-columns: 1fr; }
+  .recess-interest-form .contact-submit-btn { width: 100%; }
+  .recess-sponsor { padding: 44px 16px; }
+}
