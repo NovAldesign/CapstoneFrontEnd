@@ -10,7 +10,13 @@ const SOURCES = [
   { value: "other", label: "Other" },
 ];
 
-const EMPTY = { name: "", event: "", rating: 5, text: "", source: "google", featured: false };
+const EMPTY = { name: "", event: "", rating: 5, text: "", source: "google", featured: false, date: "" };
+
+// Review date as YYYY-MM-DD (Eastern), for the date box
+const ymd = (d) => (d ? new Date(d).toLocaleDateString("en-CA", { timeZone: "America/New_York" }) : "");
+const today = () => ymd(new Date());
+const shownDate = (r) =>
+  new Date(r.date || r.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "America/New_York" });
 
 const authHeaders = () => ({
   "Content-Type": "application/json",
@@ -83,7 +89,7 @@ const AdminReviews = () => {
 
   const startEdit = (r) => {
     setEditingId(r._id);
-    setEdit({ name: r.name, event: r.event || "", rating: r.rating, text: r.text, source: r.source });
+    setEdit({ name: r.name, event: r.event || "", rating: r.rating, text: r.text, source: r.source, date: ymd(r.date || r.createdAt) });
   };
 
   const saveEdit = async (e) => {
@@ -173,6 +179,10 @@ const AdminReviews = () => {
                 ))}
               </select>
             </label>
+            <label>
+              Date of review
+              <input className="search-input" type="date" name="date" value={form.date} max={today()} onChange={update} />
+            </label>
           </div>
           <label>
             Review (paste it in)
@@ -217,7 +227,7 @@ const AdminReviews = () => {
                 </span>
                 {r.featured && <span className="luxe-badge">★ Featured</span>}
                 <span className="td-muted">
-                  {" "}· {r.source} · {new Date(r.createdAt).toLocaleDateString()}
+                  {" "}· {r.source} · {shownDate(r)}
                 </span>
               </div>
               {r.email && <div className="td-muted">{r.email}</div>}
@@ -250,6 +260,10 @@ const AdminReviews = () => {
                           <option key={s.value} value={s.value}>{s.label}</option>
                         ))}
                       </select>
+                    </label>
+                    <label>
+                      Date of review
+                      <input className="search-input" type="date" name="date" value={edit.date} max={today()} onChange={updateEdit} required />
                     </label>
                   </div>
                   <label>

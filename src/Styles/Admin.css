@@ -432,7 +432,7 @@
 .reviews-admin-form { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
 .reviews-admin-form label { display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.8rem; color: var(--text-muted, #888); }
 .reviews-admin-form .checkbox-label { flex-direction: row; align-items: center; }
-.reviews-admin-row { display: grid; grid-template-columns: 2fr 2fr 1fr 1fr; gap: 1rem; }
+.reviews-admin-row { display: grid; grid-template-columns: 2fr 2fr 1fr 1fr 1.3fr; gap: 1rem; }
 .reviews-admin-form textarea { resize: vertical; font: inherit; }
 .reviews-admin-form .gold-fill-btn { align-self: flex-start; }
 .reviews-admin-list { display: flex; flex-direction: column; gap: 1rem; }
@@ -567,7 +567,7 @@
 .gfc-admin .site-stats-card .td-muted { color: var(--ga-muted, #5B6577); }
 .gfc-admin .reviews-admin-form label { color: var(--ga-navy, #0E2340); font-size: 0.85rem; font-weight: 700; }
 .gfc-admin .reviews-admin-form .checkbox-label { font-weight: 500; }
-.gfc-admin .reviews-admin-form input, .gfc-admin .reviews-admin-form select, .gfc-admin .reviews-admin-form textarea { font-weight: 400; }
+.gfc-admin .reviews-admin-form input, .gfc-admin .reviews-admin-form select, .gfc-admin .reviews-admin-form textarea { font-weight: 400; min-width: 0; width: 100%; box-sizing: border-box; }
 .gfc-admin .reviews-admin .empty-hint { color: var(--ga-muted, #5B6577); }
 .gfc-admin .reviews-admin .admin-tab { background: #fff; border: 1px solid var(--ga-line, #E6DFD0); color: var(--ga-navy, #0E2340); border-radius: 999px; padding: 6px 14px; font-size: 0.82rem; font-weight: 600; cursor: pointer; }
 .gfc-admin .reviews-admin .admin-tab.active { background: var(--ga-navy, #0E2340); border-color: var(--ga-navy, #0E2340); color: #fff; }
