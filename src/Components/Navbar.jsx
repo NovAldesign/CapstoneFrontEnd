@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import loginService from "../Services/loginService";
 import "../Styles/Navbar.css";
 import logo from "../assets/gfc-logo-nav.png";
@@ -35,6 +35,9 @@ const Navbar = () => {
 
   const navClass = ({ isActive }) =>
     isActive ? "btn active" : "btn";
+  // Top menu item stays highlighted on any page in its dropdown
+  const { pathname } = useLocation();
+  const groupClass = (re) => () => navClass({ isActive: re.test(pathname) });
 
   return (
     <nav className="gfc-navbar">
@@ -48,49 +51,61 @@ const Navbar = () => {
 
       {/* NAV LINKS */}
       <ul className={`nav-links ${menuOpen ? "nav-links-open" : ""}`}>
-        <li><NavLink to="/" end className={navClass} onClick={closeMenu}>Home</NavLink></li>
         <li className="nav-dropdown">
-          <NavLink to="/events" className={navClass} onClick={closeMenu} aria-haspopup="true">
+          <NavLink to="/events" className={groupClass(/^\/(events|recess|select)/)} onClick={closeMenu} aria-haspopup="true">
             Events <span className="nav-caret" aria-hidden="true">▾</span>
           </NavLink>
           <ul className="nav-submenu" aria-label="Events">
             <li><NavLink to="/events" end className="nav-sublink" onClick={closeMenu}>Upcoming Events</NavLink></li>
-            <li><NavLink to="/recess" className="nav-sublink" onClick={closeMenu}>Recess Talks</NavLink></li>
+            <li><NavLink to="/recess" className="nav-sublink" onClick={closeMenu}>Recess Talks™</NavLink></li>
             <li><NavLink to="/select" className="nav-sublink" onClick={closeMenu}>GFC Select™</NavLink></li>
-            <li><NavLink to="/gift" className="nav-sublink" onClick={closeMenu}>{passesLive() ? 'Holiday Pass & Gift Cards' : 'Gift Cards'}</NavLink></li>
-            <li><NavLink to="/shop" className="nav-sublink" onClick={closeMenu}>Shop</NavLink></li>
           </ul>
         </li>
-        <li><NavLink to="/blog" className={navClass} onClick={closeMenu}>Blog</NavLink></li>
-        {/* <li><NavLink to="/travel" className={navClass} onClick={closeMenu}>Travel</NavLink></li> */}
-        {/* <li><NavLink to="/ic-dinners" className={navClass} onClick={closeMenu}>IC Dinners</NavLink></li>*/}
+        <li className="nav-dropdown">
+          <NavLink to="/celebrate" className={groupClass(/^\/(celebrate|host)/)} onClick={closeMenu} aria-haspopup="true">
+            Celebrate <span className="nav-caret" aria-hidden="true">▾</span>
+          </NavLink>
+          <ul className="nav-submenu" aria-label="Celebrate">
+            <li><NavLink to="/celebrate" end className="nav-sublink" onClick={closeMenu}>Birthdays &amp; Groups</NavLink></li>
+            <li><NavLink to="/host" className="nav-sublink" onClick={closeMenu}>Private &amp; Corporate Events</NavLink></li>
+          </ul>
+        </li>
         <li><NavLink to="/membership" className={navClass} onClick={closeMenu}>Membership</NavLink></li>
         <li className="nav-dropdown">
-          <NavLink to="/partnerships" className={navClass} onClick={closeMenu} aria-haspopup="true">
-            Partnerships <span className="nav-caret" aria-hidden="true">▾</span>
+          <NavLink to="/gift" className={groupClass(/^\/(gift|shop)/)} onClick={closeMenu} aria-haspopup="true">
+            Shop <span className="nav-caret" aria-hidden="true">▾</span>
           </NavLink>
-          <ul className="nav-submenu" aria-label="Partnerships">
-            <li><NavLink to="/partnerships" end className="nav-sublink" onClick={closeMenu}>Sponsor an Event</NavLink></li>
-            <li><NavLink to="/partnerships/perks" className="nav-sublink" onClick={closeMenu}>Offer a Member Perk</NavLink></li>
+          <ul className="nav-submenu" aria-label="Shop">
+            <li><NavLink to="/gift" className="nav-sublink" onClick={closeMenu}>{passesLive() ? 'Holiday Pass & Gift Cards' : 'Gift Cards'}</NavLink></li>
+            <li><NavLink to="/shop" className="nav-sublink" onClick={closeMenu}>Merch</NavLink></li>
           </ul>
         </li>
         <li className="nav-dropdown">
-          <NavLink to="/perform" className={navClass} onClick={closeMenu} aria-haspopup="true">
-            Perform <span className="nav-caret" aria-hidden="true">▾</span>
+          <NavLink to="/perform" className={groupClass(/^\/(perform|partnerships|scouts|on-our-stage)/)} onClick={closeMenu} aria-haspopup="true">
+            Get Involved <span className="nav-caret" aria-hidden="true">▾</span>
           </NavLink>
-          <ul className="nav-submenu" aria-label="Perform">
-            {PERFORM_PAGES.map((p) => (
+          <ul className="nav-submenu nav-submenu-wide" aria-label="Get Involved">
+            <li className="nav-subhead" aria-hidden="true">Perform</li>
+            {PERFORM_PAGES.filter((p) => p.to !== '/scouts').map((p) => (
               <li key={p.to}><NavLink to={p.to} end className="nav-sublink" onClick={closeMenu}>{p.label}</NavLink></li>
             ))}
+            <li><Link to="/recess#speak" className="nav-sublink" onClick={closeMenu}>Speak at Recess Talks™</Link></li>
+            <li className="nav-subhead" aria-hidden="true">Partner</li>
+            <li><NavLink to="/partnerships" end className="nav-sublink" onClick={closeMenu}>Sponsor an Event</NavLink></li>
+            <li><NavLink to="/partnerships/perks" className="nav-sublink" onClick={closeMenu}>Offer a Member Perk</NavLink></li>
+            <li><Link to="/partnerships?donate=1#donate" className="nav-sublink" onClick={closeMenu}>Donate</Link></li>
+            <li className="nav-subhead" aria-hidden="true">More</li>
+            <li><NavLink to="/scouts" className="nav-sublink" onClick={closeMenu}>Industry Scouts</NavLink></li>
             <li><NavLink to="/on-our-stage" className="nav-sublink" onClick={closeMenu}>On Our Stage</NavLink></li>
           </ul>
         </li>
         <li className="nav-dropdown">
-          <NavLink to="/about" className={navClass} onClick={closeMenu} aria-haspopup="true">
+          <NavLink to="/about" className={groupClass(/^\/(about|blog|contact)/)} onClick={closeMenu} aria-haspopup="true">
             About <span className="nav-caret" aria-hidden="true">▾</span>
           </NavLink>
           <ul className="nav-submenu" aria-label="About">
             <li><NavLink to="/about" end className="nav-sublink" onClick={closeMenu}>About Us</NavLink></li>
+            <li><NavLink to="/blog" className="nav-sublink" onClick={closeMenu}>Blog</NavLink></li>
             <li><NavLink to="/contact" className="nav-sublink" onClick={closeMenu}>Contact Us</NavLink></li>
           </ul>
         </li>

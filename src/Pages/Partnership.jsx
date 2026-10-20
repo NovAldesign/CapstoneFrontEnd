@@ -56,7 +56,7 @@ const tiers = [
       "Presenting Partner for every event in the series",
       "Your logo on every flyer for the run",
       "A Live on our social media featuring your brand (optional, great for smaller brands)",
-      "Pick your series: Game Night, Karaoke Bingo, Acoustic & Infused or a Recess Talks season",
+      "Pick your series: Game Night, Karaoke Bingo, Acoustic & Infused or a Recess Talks™ season",
     ],
   },
 ];
@@ -103,7 +103,7 @@ const eventOptions = [
   "Game Night",
   "Karaoke Bingo",
   "Acoustic & Infused (Live Music Showcase)",
-  "Recess Talks",
+  "Recess Talks™",
   "GFC Select",
 ];
 

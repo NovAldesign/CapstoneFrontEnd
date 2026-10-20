@@ -328,3 +328,18 @@
 @media (max-width: 1100px) {
   .nav-right-auth { display: none !important; }
 }
+
+/* Small group labels inside a dropdown (Get Involved) */
+.nav-subhead {
+  padding: 12px 20px 4px;
+  color: #C5A059;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.nav-subhead:first-child { padding-top: 6px; }
+.nav-submenu-wide { min-width: 250px; }
+@media (max-width: 1100px) {
+  .nav-subhead { padding: 12px 0 2px; }
+}

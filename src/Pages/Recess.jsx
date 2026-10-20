@@ -52,7 +52,7 @@ const FAQS = [
   },
   {
     q: 'Do I need to be "into" self-help?',
-    a: 'Not at all. Come curious. Recess Talks are warm, interactive and a little playful, never a lecture. You can color, listen, share or just soak it in.',
+    a: 'Not at all. Come curious. Recess Talks™ are warm, interactive and a little playful, never a lecture. You can color, listen, share or just soak it in.',
   },
   {
     q: 'Who is it for?',
@@ -214,10 +214,10 @@ const Recess = () => {
   return (
     <div className="contact-page perform-page recess-page">
       <Helmet>
-        <title>Recess Talks | Play, Joy & Inner-Child Healing in Atlanta | Grown Folks™ Collective</title>
+        <title>Recess Talks™ | Play, Joy & Inner-Child Healing in Atlanta | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="Recess Talks is a monthly Saturday speaker series in Atlanta on play, joy and inner-child healing. Authors and experts, coloring while you listen, coffee and a light breakfast. Starting January 2027. Join the list or apply to speak."
+          content="Recess Talks™ is a monthly Saturday speaker series in Atlanta on play, joy and inner-child healing. Authors and experts, coloring while you listen, coffee and a light breakfast. Starting January 2027. Join the list or apply to speak."
         />
         <link rel="canonical" href="https://www.grownfolkscollective.com/recess" />
       </Helmet>
@@ -227,7 +227,7 @@ const Recess = () => {
         <div className="contact-hero-inner">
           <div className="contact-hero-left">
             <span className="contact-eyebrow">Coming January 2027 · Atlanta · 30+</span>
-            <h1 className="contact-hero-title">Recess Talks</h1>
+            <h1 className="contact-hero-title">Recess Talks<sup className="recess-tm">™</sup></h1>
             <p className="recess-tagline">Remember recess? It's time for another one.</p>
             <div className="contact-gold-spacer" aria-hidden="true"></div>
             <p className="contact-hero-lead">

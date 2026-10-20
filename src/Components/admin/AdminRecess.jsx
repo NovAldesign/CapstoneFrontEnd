@@ -125,7 +125,7 @@ const AdminRecess = () => {
   }, []);
   useEffect(load, [load]);
 
-  if (!data) return error ? <p className="ga-note err">{error}</p> : <div className="ga-loading">Loading Recess Talks…</div>;
+  if (!data) return error ? <p className="ga-note err">{error}</p> : <div className="ga-loading">Loading Recess Talks™…</div>;
 
   const speakers = filter === 'all' ? data.speakers : data.speakers.filter((s) => s.status === filter);
   const count = (id) => data.speakers.filter((s) => s.status === id).length;
