@@ -2,6 +2,7 @@
 // MUST match the member pricing section of utilities/memberCredit.js on the backend
 // (the backend re-checks everything at checkout).
 //  - Active members: $5 off every ticket (Founding $7), friends' tickets too
+//  - Not on group tickets ("Group of 5" etc.): those are already deeply discounted
 //  - Food events: 10% off instead (Founding 15%)
 //  - Event credit: Game Night, Karaoke Bingo and Acoustic & Infused only
 
@@ -30,6 +31,21 @@ export const PLUS_ONE_SAVE_CENTS = 800;
 export const PLUS_ONE_GUESTS = 2;
 export const isPlusOne = (ticketName = "") => /plus\s*-?\s*one/i.test(String(ticketName));
 
+// Group tickets ("Group of 5", "Table of 4", "4-Pack") are already deeply discounted:
+// no member pricing. MUST match groupSize() in utilities/plusOne.js on the backend.
+const GROUP_PATTERNS = [
+  /\b(?:group|table|party|crew|squad)\s+(?:of|for)\s+(\d{1,2})\b/i,
+  /\b(\d{1,2})\s*-?\s*(?:pack|person|people|guests)\b/i,
+];
+export const groupSize = (ticketName = "") => {
+  for (const re of GROUP_PATTERNS) {
+    const m = String(ticketName).match(re);
+    if (m && Number(m[1]) >= 2 && Number(m[1]) <= 50) return Number(m[1]);
+  }
+  return 0;
+};
+export const isGroupTicket = (ticketName = "") => !isPlusOne(ticketName) && groupSize(ticketName) > 0;
+
 // Best price for a member buying a Plus One: the Plus One price or 2 tickets at member price
 export const plusOneMemberCents = (wallet, plusOneCents, eventName) => {
   if (!wallet?.memberPricing) return plusOneCents;
@@ -37,9 +53,11 @@ export const plusOneMemberCents = (wallet, plusOneCents, eventName) => {
   return Math.min(plusOneCents, PLUS_ONE_GUESTS * memberPriceCents(wallet, regular, eventName));
 };
 
-// Member price for any bag item (Plus One gets the best deal)
+// Member price for any bag item (Plus One gets the best deal, group tickets stay at group price)
 export const memberItemCents = (wallet, item) =>
-  isPlusOne(item.ticketTypeName)
+  isGroupTicket(item.ticketTypeName)
+    ? item.priceInCents
+    : isPlusOne(item.ticketTypeName)
     ? plusOneMemberCents(wallet, item.priceInCents, item.eventName)
     : memberPriceCents(wallet, item.priceInCents, item.eventName);
 

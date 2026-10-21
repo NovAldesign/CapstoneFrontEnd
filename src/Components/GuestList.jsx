@@ -3,7 +3,7 @@ import { guestSourceLine, sourceColor, sourceLabel } from '../Services/ticketSou
 import '../Styles/CheckIn.css';
 
 // One guest list for the door and the dashboard.
-// api: { load(refresh), checkIn(key, count), addGuest(body), removeGuest?(id) }
+// api: { load(refresh), checkIn(key, count), addGuest(body), removeGuest?(id), resendTicket?(orderId, to) }
 // admin: shows emails, phones, prices, export and remove.
 
 const WALKIN_SOURCES = [
@@ -88,7 +88,7 @@ const AddGuest = ({ admin, onAdd, onClose }) => {
   );
 };
 
-const GuestRow = ({ g, admin, busy, onSet, onRemove }) => {
+const GuestRow = ({ g, admin, busy, onSet, onRemove, onResend }) => {
   const [open, setOpen] = useState(false);
   const allIn = g.checkedIn >= g.tickets;
   const some = g.checkedIn > 0 && !allIn;
@@ -124,6 +124,17 @@ const GuestRow = ({ g, admin, busy, onSet, onRemove }) => {
           {admin && g.phone && <div><span>Phone</span><a href={`tel:${g.phone}`}>{g.phone}</a></div>}
           {admin && <div><span>Paid</span>{money(g.paidCents)}</div>}
           {g.notes && <div><span>Notes</span>{g.notes}</div>}
+          {admin && g.source === 'website' && g.orderId && (
+            <div>
+              <span>Ticket email</span>
+              {g.ticketEmailError ? <b style={{ color: '#9B2335' }}>Didn't send ({g.ticketEmailError})</b>
+                : g.ticketEmailSentAt ? `Sent ${new Date(g.ticketEmailSentAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}`
+                : 'No record'}
+            </div>
+          )}
+          {admin && g.source === 'website' && g.orderId && onResend && (
+            <button type="button" className="gl-btn gl-btn-sm" onClick={() => onResend(g)}>Resend ticket email</button>
+          )}
           {admin && g.manual && onRemove && (
             <button type="button" className="gl-link-danger" onClick={() => onRemove(g)}>Remove this guest</button>
           )}
@@ -284,6 +295,15 @@ const GuestList = ({ api, admin = false, title, doorUrl }) => {
         <ul className="gl-list">
           {shown.map((g) => (
             <GuestRow key={g.key} g={g} admin={admin} busy={busyKey === g.key} onSet={setCount}
+              onResend={api.resendTicket ? async (x) => {
+                const to = window.prompt(`Send ${x.name.split(' ')[0]}'s ticket email to:`, x.email || '');
+                if (to === null) return;
+                try {
+                  const r = await api.resendTicket(x.orderId, to.trim());
+                  flash(`Ticket email sent to ${r.sentTo}`);
+                  load();
+                } catch (e) { setError(e.message); }
+              } : null}
               onRemove={api.removeGuest ? async (x) => {
                 if (!window.confirm(`Remove ${x.name} from this guest list?`)) return;
                 try { await api.removeGuest(x.id); load(); } catch (e) { setError(e.message); }

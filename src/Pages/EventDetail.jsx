@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { isPlusOne, plusOneMemberCents } from '../Services/memberPricing';
+import { isPlusOne, plusOneMemberCents, isGroupTicket, groupSize } from '../Services/memberPricing';
 import { formatEventDate, formatEventTime } from "../Services/eventService";
 import {
   loadEventById,
@@ -338,7 +338,10 @@ const EventDetail = () => {
                       {isPlusOne(tier.name) && (
                         <span className="gfc-tier-note">Admits 2 · Buy 2, save $8 · Other discounts don't combine</span>
                       )}
-                      {memberWallet?.memberPricing && parseCleanPrice(tier) > 0 && (
+                      {isGroupTicket(tier.name) && (
+                        <span className="gfc-tier-note">Admits {groupSize(tier.name)} · Group price · Member pricing doesn't apply</span>
+                      )}
+                      {memberWallet?.memberPricing && parseCleanPrice(tier) > 0 && !isGroupTicket(tier.name) && (
                         <span className="gfc-tier-member">
                           {isPlusOne(tier.name) ? "Your member price for 2: " : "Your member price: "}
                           {formatMoney(
