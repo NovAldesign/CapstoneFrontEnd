@@ -47,6 +47,7 @@ const CheckIn = () => {
         return r;
       },
       removeGuest: (id) => adminApi(`/events/${eventId}/guests/${id}`, { method: 'DELETE' }),
+      resendTicket: (orderId, to) => adminApi(`/orders/${orderId}/resend-ticket`, { method: 'POST', body: { to } }),
     };
   }, [eventId, key]);
 

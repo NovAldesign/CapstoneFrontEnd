@@ -101,6 +101,9 @@ const GuestRow = ({ g, admin, busy, onSet, onRemove, onResend }) => {
           {g.tickets} {g.tickets === 1 ? 'ticket' : 'tickets'}{g.ticketName ? ` · ${g.ticketName}` : ''} · {guestSourceLine(g)}
         </span>
         {allIn && <span className="gl-meta gl-in-time">✓ In{g.checkedInAt ? ` at ${time(g.checkedInAt)}` : ''}</span>}
+        {admin && g.source === 'website' && g.ticketEmailError && (
+          <span className="gl-meta" style={{ color: '#9B2335', fontWeight: 700 }}>Ticket email didn't send. Tap to resend.</span>
+        )}
       </button>
       <div className="gl-actions">
         {g.tickets > 1 ? (
