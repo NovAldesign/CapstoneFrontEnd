@@ -5,12 +5,9 @@ import { BACKEND_URL } from '../Services/eventUtils';
 import '../Styles/Shop.css';
 import '../Styles/LiveSetup.css';
 
-// /live-setup/:id?t=TOKEN — a booked artist picks their Live date and platform.
+// /live-setup/:id?t=TOKEN — a booked artist picks their Live date. All Lives are on TikTok now.
 // The questions stay on the page, in their confirmation email, and in the dashboard.
-const PLATFORMS = [
-  { id: 'instagram', label: 'Instagram' },
-  { id: 'tiktok', label: 'TikTok' },
-];
+const PLATFORM_LABELS = { instagram: 'Instagram', tiktok: 'TikTok' }; // older Lives may still say Instagram
 
 const liveApi = async (id, token, body) => {
   const res = await fetch(`${BACKEND_URL}/api/lives/${id}?t=${encodeURIComponent(token)}`, {
@@ -40,12 +37,12 @@ const LiveSetup = () => {
   const load = (data) => {
     setInfo(data);
     const a = data.answers;
-    const platform = a.platform || '';
+    const platform = 'tiktok';
     setForm({
       date: a.customRequest ? 'other' : a.date || '',
       customRequest: a.customRequest,
       platform,
-      handle: a.handle || (platform ? data.handles[platform] : '') || '',
+      handle: (a.platform === 'tiktok' && a.handle) || data.handles.tiktok || '',
       phone: a.phone,
       plug: a.plug,
       extraQuestion: a.extraQuestion,
@@ -58,14 +55,12 @@ const LiveSetup = () => {
   }, [id, token]);
 
   const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
-  const pickPlatform = (p) =>
-    setForm((f) => ({ ...f, platform: p, handle: f.handle && f.platform === p ? f.handle : info.handles[p] || f.handle }));
 
   const submit = async (e) => {
     e.preventDefault();
     setError('');
     if (!form.date) return setError('Pick a date for your Live.');
-    if (!form.platform) return setError('Pick Instagram or TikTok.');
+    if (!form.handle.trim()) return setError('Add your TikTok handle so we can invite you.');
     setSaving(true);
     try {
       const data = await liveApi(id, token, form);
@@ -81,7 +76,7 @@ const LiveSetup = () => {
 
   const confirmed = info?.status === 'confirmed' && info.answers.date;
   const showForm = info && form && !info.past && (editing || (!done && !confirmed && info.status !== 'needs-date'));
-  const platformName = PLATFORMS.find((p) => p.id === info?.answers.platform)?.label || '';
+  const platformName = PLATFORM_LABELS[info?.answers.platform] || 'TikTok';
 
   return (
     <div className="shop-page">
@@ -158,19 +153,12 @@ const LiveSetup = () => {
             </fieldset>
 
             <fieldset className="shop-card live-card">
-              <legend className="playfair shop-h3">2. Instagram or TikTok?</legend>
-              <div className="live-choices live-choices-row">
-                {PLATFORMS.map((p) => (
-                  <label key={p.id} className={`live-choice ${form.platform === p.id ? 'on' : ''}`}>
-                    <input type="radio" name="platform" value={p.id} checked={form.platform === p.id} onChange={() => pickPlatform(p.id)} />
-                    <span>{p.label}</span>
-                  </label>
-                ))}
-              </div>
+              <legend className="playfair shop-h3">2. Your TikTok</legend>
+              <p className="shop-fine">Our Lives happen on TikTok, on @grownfolkscollective.</p>
               {form.platform && (
                 <div className="shop-fields live-two">
                   <label>
-                    Your {PLATFORMS.find((p) => p.id === form.platform).label} handle
+                    Your TikTok handle
                     <input value={form.handle} onChange={set('handle')} maxLength={80} placeholder="@yourname" required />
                     <small>So we can invite you into the Live.</small>
                   </label>

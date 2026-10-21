@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { adminApi, fmtDay } from '../../Services/adminApi';
 
-// Lives: Instagram/TikTok Lives with booked artists, hosts and live artists.
+// Lives: TikTok Lives with booked artists, hosts and live artists (older ones may say Instagram).
 // Set date choices + questions → copy their private link → they confirm → questions are here on the day.
 const PLATFORM = { instagram: 'Instagram', tiktok: 'TikTok' };
 const ROLE = { host: 'Host', visual: 'Live art', artist: 'Artist' };
@@ -77,8 +77,8 @@ const LiveEditor = ({ p, maxOptions, maxQuestions, onSaved, onCancel }) => {
   const [questions, setQuestions] = useState((l.questions.length ? l.questions : p.defaultQuestions).join('\n'));
   const [setMine, setSetMine] = useState(l.status === 'needs-date');
   const [date, setDate] = useState(l.dateValue || '');
-  const [platform, setPlatform] = useState(l.platform || '');
-  const [handle, setHandle] = useState(l.handle || (l.platform ? p[l.platform] : '') || '');
+  const [platform, setPlatform] = useState('tiktok');
+  const [handle, setHandle] = useState((l.platform === 'tiktok' && l.handle) || p.tiktok || '');
   const [email, setEmail] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -143,9 +143,7 @@ const LiveEditor = ({ p, maxOptions, maxQuestions, onSaved, onCancel }) => {
           </label>
           <label className="ga-field">
             Platform
-            <select className="ga-select" value={platform} onChange={(e) => { setPlatform(e.target.value); if (!handle) setHandle(p[e.target.value] || ''); }}>
-              <option value="">Pick one</option>
-              <option value="instagram">Instagram</option>
+            <select className="ga-select" value={platform} onChange={(e) => setPlatform(e.target.value)}>
               <option value="tiktok">TikTok</option>
             </select>
           </label>
@@ -272,7 +270,7 @@ const AdminLives = () => {
   return (
     <div className="ga-stack">
       <p className="ga-subtitle" style={{ marginTop: -12 }}>
-        Set up a Live, copy their link into your email, and they pick the date and platform. They get a confirmation with the questions,
+        Set up a Live, copy their link into your email, and they pick the date (all Lives are on TikTok). They get a confirmation with the questions,
         and on the day everything is right here (and on Today).
       </p>
       {today.map((p) => <LiveTodayCard key={p.id} p={p} />)}
