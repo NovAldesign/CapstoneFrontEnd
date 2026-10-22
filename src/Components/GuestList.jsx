@@ -88,6 +88,9 @@ const AddGuest = ({ admin, onAdd, onClose }) => {
   );
 };
 
+// Website order id: sent by the server, or read from the row key ("web:<orderId>:<line>")
+const webOrderId = (g) => g.orderId || (String(g.key || '').startsWith('web:') ? String(g.key).split(':')[1] : '');
+
 const GuestRow = ({ g, admin, busy, onSet, onRemove, onResend }) => {
   const [open, setOpen] = useState(false);
   const allIn = g.checkedIn >= g.tickets;
@@ -127,7 +130,7 @@ const GuestRow = ({ g, admin, busy, onSet, onRemove, onResend }) => {
           {admin && g.phone && <div><span>Phone</span><a href={`tel:${g.phone}`}>{g.phone}</a></div>}
           {admin && <div><span>Paid</span>{money(g.paidCents)}</div>}
           {g.notes && <div><span>Notes</span>{g.notes}</div>}
-          {admin && g.source === 'website' && g.orderId && (
+          {admin && webOrderId(g) && (
             <div>
               <span>Ticket email</span>
               {g.ticketEmailError ? <b style={{ color: '#9B2335' }}>Didn't send ({g.ticketEmailError})</b>
@@ -135,7 +138,7 @@ const GuestRow = ({ g, admin, busy, onSet, onRemove, onResend }) => {
                 : 'No record'}
             </div>
           )}
-          {admin && g.source === 'website' && g.orderId && onResend && (
+          {admin && webOrderId(g) && onResend && (
             <button type="button" className="gl-btn gl-btn-sm" onClick={() => onResend(g)}>Resend ticket email</button>
           )}
           {admin && g.manual && onRemove && (
@@ -302,7 +305,7 @@ const GuestList = ({ api, admin = false, title, doorUrl }) => {
                 const to = window.prompt(`Send ${x.name.split(' ')[0]}'s ticket email to:`, x.email || '');
                 if (to === null) return;
                 try {
-                  const r = await api.resendTicket(x.orderId, to.trim());
+                  const r = await api.resendTicket(webOrderId(x), to.trim());
                   flash(`Ticket email sent to ${r.sentTo}`);
                   load();
                 } catch (e) { setError(e.message); }
