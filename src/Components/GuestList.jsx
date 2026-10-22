@@ -3,7 +3,7 @@ import { guestSourceLine, sourceColor, sourceLabel } from '../Services/ticketSou
 import '../Styles/CheckIn.css';
 
 // One guest list for the door and the dashboard.
-// api: { load(refresh), checkIn(key, count), addGuest(body), removeGuest?(id), resendTicket?(orderId, to) }
+// api: { load(refresh), checkIn(key, count), addGuest(body), removeGuest?(id), resendTicket?(orderId, to), creditCode?({ key, code, tickets, name }) }
 // admin: shows emails, phones, prices, export and remove.
 
 const WALKIN_SOURCES = [
@@ -91,7 +91,7 @@ const AddGuest = ({ admin, onAdd, onClose }) => {
 // Website order id: sent by the server, or read from the row key ("web:<orderId>:<line>")
 const webOrderId = (g) => g.orderId || (String(g.key || '').startsWith('web:') ? String(g.key).split(':')[1] : '');
 
-const GuestRow = ({ g, admin, busy, onSet, onRemove, onResend }) => {
+const GuestRow = ({ g, admin, busy, onSet, onRemove, onResend, onCredit }) => {
   const [open, setOpen] = useState(false);
   const allIn = g.checkedIn >= g.tickets;
   const some = g.checkedIn > 0 && !allIn;
@@ -130,6 +130,13 @@ const GuestRow = ({ g, admin, busy, onSet, onRemove, onResend }) => {
           {admin && g.phone && <div><span>Phone</span><a href={`tel:${g.phone}`}>{g.phone}</a></div>}
           {admin && <div><span>Paid</span>{money(g.paidCents)}</div>}
           {g.notes && <div><span>Notes</span>{g.notes}</div>}
+          {admin && onCredit && (
+            <div>
+              <span>Artist code</span>
+              {g.code ? <b>{g.code}{g.codeCredited ? ' (credited)' : ''}</b> : 'None'}{' '}
+              <button type="button" className="gl-btn gl-btn-sm" onClick={() => onCredit(g)}>{g.code ? 'Change' : 'Add code'}</button>
+            </div>
+          )}
           {admin && webOrderId(g) && (
             <div>
               <span>Ticket email</span>
@@ -301,6 +308,18 @@ const GuestList = ({ api, admin = false, title, doorUrl }) => {
         <ul className="gl-list">
           {shown.map((g) => (
             <GuestRow key={g.key} g={g} admin={admin} busy={busyKey === g.key} onSet={setCount}
+              onCredit={api.creditCode ? async (x) => {
+                const entered = window.prompt(
+                  `Credit ${x.name.split(' ')[0]}'s ${x.tickets} ${x.tickets === 1 ? 'ticket' : 'tickets'} to which code? (Leave blank to remove the code.)`,
+                  x.code || ''
+                );
+                if (entered === null) return;
+                try {
+                  await api.creditCode({ key: x.key, code: entered.trim(), tickets: x.tickets, name: x.name });
+                  flash(entered.trim() ? `Credited to ${entered.trim().toUpperCase()}` : 'Code removed');
+                  load();
+                } catch (e) { setError(e.message); }
+              } : null}
               onResend={api.resendTicket ? async (x) => {
                 const to = window.prompt(`Send ${x.name.split(' ')[0]}'s ticket email to:`, x.email || '');
                 if (to === null) return;
