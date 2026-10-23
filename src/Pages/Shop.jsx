@@ -340,13 +340,34 @@ const EventAddOns = ({ events, title, sub }) => {
   );
 };
 
+// The shop bag is saved in the browser for a day
+const SHOP_BAG_KEY = 'gfc_shop_bag';
+const loadShopBag = () => {
+  try {
+    if (window.location.pathname.startsWith('/shop/success')) return [];
+    const saved = JSON.parse(localStorage.getItem(SHOP_BAG_KEY) || 'null');
+    if (!saved || !Array.isArray(saved.items) || Date.now() - (saved.savedAt || 0) > 24 * 60 * 60 * 1000) return [];
+    return saved.items;
+  } catch {
+    return [];
+  }
+};
+
 const tabFromHash = () => (typeof window !== 'undefined' && window.location.hash === '#bingo' ? 'bingo' : 'merch');
 
 const Shop = () => {
   const { slug = '' } = useParams();
   const [catalog, setCatalog] = useState(null);
   const [error, setError] = useState('');
-  const [bag, setBag] = useState([]);
+  const [bag, setBag] = useState(loadShopBag);
+  // Keep the shop bag when moving between /shop and product pages
+  useEffect(() => {
+    try {
+      localStorage.setItem(SHOP_BAG_KEY, JSON.stringify({ savedAt: Date.now(), items: bag }));
+    } catch {
+      /* storage unavailable: the bag still works on this page */
+    }
+  }, [bag]);
   const [bagOpen, setBagOpen] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [busy, setBusy] = useState(false);
