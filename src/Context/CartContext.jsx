@@ -281,7 +281,9 @@ export const CartProvider = ({ children }) => {
   // Totals (in cents). Code discount first, then the bundle discount (same as the backend).
   const totals = useMemo(() => {
     const uniqueEventCount = new Set(cartItems.map((i) => i.eventId)).size;
-    const { rate, label } = hasPlusOne ? { rate: 0, label: "" } : getDiscount(uniqueEventCount);
+    // Welcome codes (WELCOME5, WELCOMEBACK10) don't combine with the bundle discount
+    const noBundle = Boolean(promoInfo?.noBundle) && promoApplies;
+    const { rate, label } = hasPlusOne || noBundle ? { rate: 0, label: "" } : getDiscount(uniqueEventCount);
     const fullSubtotalInCents = cartItems.reduce((sum, i) => sum + i.priceInCents * i.quantity, 0);
     // Member price first (same as the backend), then codes, bundle, credit, gift card
     const price = (i) => memberItemCents(memberWallet, i);
