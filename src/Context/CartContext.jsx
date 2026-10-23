@@ -3,10 +3,15 @@ import { currentSource } from "../Services/ticketSources.js";
 import { Link } from "react-router-dom";
 import { BACKEND_URL, parseCleanPrice, formatMoney } from "../Services/eventUtils";
 import { LEGAL } from "../content/legalContent.js";
+import { getCatalog } from "../Services/shopApi";
+import { productPath, lowestPriceCents } from "../Services/shopLinks";
 import { memberPriceCents, memberItemCents, isPlusOne, creditCoversEvent, memberToken, isMemberTier } from "../Services/memberPricing.js";
 import "../Styles/EventListing.css";
 
 const CartContext = createContext(null);
+
+// A Social Pass member's pricing, to show non-members what they would save. MUST match memberCredit.js.
+const SOCIAL_PREVIEW = { memberPricing: true, ticketOffCents: 500, foodPercent: 10 };
 
 const STORAGE_KEY = "gfc_event_cart";
 const CODE_KEY = "gfc_ticket_code";
@@ -77,6 +82,8 @@ const getDiscount = (uniqueEventCount) => {
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(loadSaved);
+  // "Gift a ticket": a gift card for a friend in the same order (null = off)
+  const [giftAdd, setGiftAdd] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [promoCode, setPromoCode] = useState(loadCode);
@@ -362,6 +369,10 @@ export const CartProvider = ({ children }) => {
       alert(`Enter your email in the bag to use ${promoInfo.code}.`);
       return;
     }
+    if (giftAdd && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(giftAdd.recipientEmail || "").trim())) {
+      alert("Enter your friend's email so we can send their gift, or turn off the gift.");
+      return;
+    }
     setCheckoutLoading(true);
     try {
       const token = memberToken();
@@ -374,6 +385,7 @@ export const CartProvider = ({ children }) => {
           cartItems: cartItems.filter((i) => !isMemberTier({ name: i.ticketTypeName })),
           promoCode: promoApplies ? promoInfo.code : undefined,
           giftCode: giftInfo && totals.giftCreditInCents > 0 ? giftInfo.code : undefined,
+          giftAdd: giftAdd && giftAdd.amountCents > 0 ? giftAdd : undefined,
           agreedToTerms: true,
           termsVersion: LEGAL.waiverVersion,
           source: currentSource(),
@@ -423,6 +435,8 @@ export const CartProvider = ({ children }) => {
     useMemberCredit,
     setUseMemberCredit,
     memberPrice: (cents, eventName) => memberPriceCents(memberWallet, cents, eventName),
+    giftAdd,
+    setGiftAdd,
     ...totals,
   };
 
@@ -455,7 +469,37 @@ const CartDrawer = () => {
     giftCode, giftInfo, giftError, removeGiftCode, giftCreditInCents, passUses,
     memberWallet, useMemberCredit, setUseMemberCredit, memberPrice,
     fullSubtotalInCents, memberSavingsInCents, memberCreditInCents, creditBalanceInCents, creditEligibleInCents,
+    giftAdd, setGiftAdd,
   } = useCart();
+  const giftAddCents = giftAdd?.amountCents || 0;
+  const grandTotalInCents = totalInCents + giftAddCents;
+
+  // What a Social Pass member would save on this exact bag (shown to non-members)
+  const memberWouldSaveCents = memberWallet
+    ? 0
+    : cartItems.reduce((sum, i) => sum + (i.priceInCents - memberItemCents(SOCIAL_PREVIEW, i)) * i.quantity, 0);
+
+  // "Wear it to the event": two merch pieces from the shop (they ship; shop checkout is separate)
+  const [merchPicks, setMerchPicks] = useState([]);
+  useEffect(() => {
+    if (!isCartOpen || merchPicks.length) return;
+    let live = true;
+    getCatalog()
+      .then((c) => {
+        if (!live || !c?.merch?.open) return;
+        const items = (c.merch.items || []).filter((i) => Number.isFinite(lowestPriceCents(i)));
+        // One wearable and one other piece when we have both
+        const wear = items.find((i) => /tee|shirt|hoodie|sweatshirt|crewneck/i.test(i.name));
+        const other = items.find((i) => i !== wear && !/tee|shirt|hoodie|sweatshirt|crewneck/i.test(i.name));
+        setMerchPicks([wear, other].filter(Boolean).concat(items.filter((i) => i !== wear && i !== other)).slice(0, 2));
+      })
+      .catch(() => {});
+    return () => { live = false; };
+  }, [isCartOpen, merchPicks.length]);
+
+  // Gift amount choices: one ticket at the price in the bag, or a set amount
+  const ticketPriceCents = cartItems.length ? Math.max(...cartItems.map((i) => (isPlusOne(i.ticketTypeName) ? 0 : i.priceInCents))) : 0;
+  const giftChoices = [...new Set([ticketPriceCents, 2500, 5000, 7500, 10000].filter((c) => c >= 1000 && c <= 20000))];
   const [codeInput, setCodeInput] = useState("");
   const [showCodeBox, setShowCodeBox] = useState(false);
   const [agreed, setAgreed] = useState(false);
@@ -683,6 +727,77 @@ const CartDrawer = () => {
                   </p>
                 )}
 
+                {memberWouldSaveCents > 0 && (
+                  <div className="gfc-upsell gfc-upsell-member">
+                    <strong>Members save {formatMoney(memberWouldSaveCents / 100)} on this bag</strong>
+                    <span>Plus $40 in event credit every month with the Social Pass ($39.99/mo).</span>
+                    <Link to="/membership" onClick={() => setIsCartOpen(false)}>See membership →</Link>
+                  </div>
+                )}
+
+                {/* Gift a ticket: a gift card for a friend, in this same order */}
+                <div className="gfc-upsell gfc-upsell-gift">
+                  <label className="gfc-gift-toggle">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(giftAdd)}
+                      onChange={(e) =>
+                        setGiftAdd(e.target.checked ? { amountCents: giftChoices[0] || 2500, recipientName: "", recipientEmail: "", fromName: "", message: "", sendAt: "" } : null)
+                      }
+                    />
+                    <span><strong>Gift a ticket to a friend.</strong> We'll email them a GFC gift card for any event.</span>
+                  </label>
+                  {giftAdd && (
+                    <div className="gfc-gift-fields">
+                      <label htmlFor="gfc-gift-amount">Amount
+                        <select
+                          id="gfc-gift-amount"
+                          value={giftAdd.amountCents}
+                          onChange={(e) => setGiftAdd({ ...giftAdd, amountCents: Number(e.target.value) })}
+                        >
+                          {giftChoices.map((c) => (
+                            <option key={c} value={c}>
+                              {c === ticketPriceCents ? `One ticket (${formatMoney(c / 100)})` : formatMoney(c / 100)}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <label htmlFor="gfc-gift-name">Friend's name
+                        <input id="gfc-gift-name" value={giftAdd.recipientName} onChange={(e) => setGiftAdd({ ...giftAdd, recipientName: e.target.value })} autoComplete="off" />
+                      </label>
+                      <label htmlFor="gfc-gift-email">Friend's email
+                        <input id="gfc-gift-email" type="email" value={giftAdd.recipientEmail} onChange={(e) => setGiftAdd({ ...giftAdd, recipientEmail: e.target.value })} autoComplete="off" />
+                      </label>
+                      <label htmlFor="gfc-gift-from">From
+                        <input id="gfc-gift-from" value={giftAdd.fromName} onChange={(e) => setGiftAdd({ ...giftAdd, fromName: e.target.value })} placeholder="Your name" autoComplete="name" />
+                      </label>
+                      <label htmlFor="gfc-gift-date">Send it on
+                        <input id="gfc-gift-date" type="date" value={giftAdd.sendAt} min={new Date().toISOString().slice(0, 10)} onChange={(e) => setGiftAdd({ ...giftAdd, sendAt: e.target.value })} />
+                      </label>
+                      <label htmlFor="gfc-gift-msg" className="wide">Message (optional)
+                        <textarea id="gfc-gift-msg" rows={2} maxLength={300} value={giftAdd.message} onChange={(e) => setGiftAdd({ ...giftAdd, message: e.target.value })} />
+                      </label>
+                      <p className="gfc-gift-fine">Leave the date empty to send it right after checkout.</p>
+                    </div>
+                  )}
+                </div>
+
+                {merchPicks.length > 0 && (
+                  <div className="gfc-upsell gfc-upsell-merch">
+                    <strong>Wear it to the event</strong>
+                    <div className="gfc-merch-picks">
+                      {merchPicks.map((m) => (
+                        <Link key={m.id} to={productPath(m)} className="gfc-merch-pick" onClick={() => setIsCartOpen(false)}>
+                          {m.image && <img src={m.image} alt="" loading="lazy" />}
+                          <span>{m.name}</span>
+                          <em>from {formatMoney(lowestPriceCents(m) / 100)}</em>
+                        </Link>
+                      ))}
+                    </div>
+                    <span className="gfc-gift-fine">Merch is made to order and ships to you. It checks out separately in the shop.</span>
+                  </div>
+                )}
+
                 <div className="gfc-total-row muted">
                   <span>Subtotal</span>
                   <span>${(fullSubtotalInCents / 100).toFixed(2)}</span>
@@ -717,9 +832,15 @@ const CartDrawer = () => {
                     <span>− ${(giftCreditInCents / 100).toFixed(2)}</span>
                   </div>
                 )}
+                {giftAddCents > 0 && (
+                  <div className="gfc-total-row">
+                    <span>Gift card{giftAdd.recipientName ? ` for ${giftAdd.recipientName}` : ""}</span>
+                    <span>${(giftAddCents / 100).toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="gfc-total-row grand">
                   <span>Total</span>
-                  <span>${(totalInCents / 100).toFixed(2)}</span>
+                  <span>${(grandTotalInCents / 100).toFixed(2)}</span>
                 </div>
                 <label className="gfc-agree">
                   <input

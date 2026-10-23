@@ -10,6 +10,16 @@ const ShopSuccess = ({ kind = 'gift' }) => {
   const sessionId = params.get('session_id') || '';
   const [order, setOrder] = useState(null);
 
+  // Paid: empty the saved shop bag
+  useEffect(() => {
+    if (kind !== 'merch' || !sessionId) return;
+    try {
+      localStorage.removeItem('gfc_shop_bag');
+    } catch {
+      /* nothing saved */
+    }
+  }, [kind, sessionId]);
+
   useEffect(() => {
     if (!sessionId) return;
     let tries = 0;
