@@ -27,6 +27,7 @@ const SOCIALS = [
 
 // The fixed buttons under the events, in order.
 const BUTTONS = [
+  { label: "Get $5 off your first ticket", to: "/join" },
   { label: "See all events", to: "/events" },
   { label: "GFC Select™: a private evening for 30+ singles", to: "/select" },
   { label: "Become a member", to: "/membership" },

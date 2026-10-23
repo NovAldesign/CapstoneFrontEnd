@@ -25,6 +25,8 @@ import { useCart } from "../Context/CartContext";
 import PriceTag from "../Components/PriceTag";
 import "../Styles/EventListing.css";
 import MeetTheArtists from "../Components/MeetTheArtists";
+import NewsletterOffer from "../Components/NewsletterOffer.jsx";
+import "../Styles/Join.css";
 
 // Google Calendar link (dates in UTC, e.g. 20261024T220000Z)
 const calendarUrl = (event) => {
@@ -439,6 +441,14 @@ const EventDetail = () => {
               Members save on every ticket and get monthly event credit.{" "}
               <Link to="/login">Log in</Link> or <Link to="/membership">learn more</Link>
             </p>
+          )}
+
+          {!memberWallet && !past && (
+            <div className="gfc-nl-offer">
+              <h3 className="playfair">Not ready to buy?</h3>
+              <p>Join our list and we'll email you $5 off your first ticket.</p>
+              <NewsletterOffer compact source={`event:${event._id || event.eventbriteId}`} idPrefix="ev-nl" />
+            </div>
           )}
 
           <button className="gfc-btn-outline full" onClick={handleShare}>
