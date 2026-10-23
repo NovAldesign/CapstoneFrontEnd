@@ -90,6 +90,7 @@ function App() {
             <Route path="/gift/success" element={<ShopSuccess kind="gift" />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/shop/success" element={<ShopSuccess kind="merch" />} />
+            <Route path="/shop/:slug" element={<Shop />} />
             <Route path="/downloads/:token" element={<Downloads />} />
             <Route path="/live-setup/:id" element={<LiveSetup />} />
             <Route path="/celebrate" element={<GroupBooking />} />
