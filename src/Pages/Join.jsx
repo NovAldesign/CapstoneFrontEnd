@@ -7,7 +7,8 @@ import { isFoodEvent } from '../Services/memberPricing';
 import '../Styles/Join.css';
 
 // /join — the one link for DMs, bios and QR codes: $5 off a first ticket for joining the newsletter
-const PHOTO = 'https://res.cloudinary.com/vyarbhlp/image/upload/v1789087406/grown-folks-collective-group-photo-navygold.jpg';
+const PHOTO = '/join-karaoke-bingo-group.jpg'; // Karaoke Bingo crew
+const OG_IMAGE = 'https://www.grownfolkscollective.com/join-og.jpg';
 
 const Join = () => {
   const [params] = useSearchParams();
@@ -27,7 +28,7 @@ const Join = () => {
         <meta name="description" content="Join the Grown Folks™ Collective list and get $5 off your first ticket: game nights, Karaoke Bingo and live music for Atlanta's 30+ crowd, all alcohol-free." />
         <link rel="canonical" href="https://www.grownfolkscollective.com/join" />
         <meta property="og:title" content="Get $5 off your first Grown Folks™ night" />
-        <meta property="og:image" content={PHOTO} />
+        <meta property="og:image" content={OG_IMAGE} />
       </Helmet>
 
       <section className="join-hero">
@@ -38,6 +39,10 @@ const Join = () => {
             Game nights, Karaoke Bingo and live music for grown folks who want good people and a real night out.
             Join our list and we'll email you $5 off your first ticket.
           </p>
+          <figure className="join-photo">
+            <img src={PHOTO} alt="A big, smiling group of Grown Folks Collective guests together at Karaoke Bingo" width="1600" height="1200" />
+            <figcaption>The crew at Karaoke Bingo</figcaption>
+          </figure>
           <ul className="join-points">
             <li>Hear about new events before they fill up</li>
             <li>One or two emails a month, never spam</li>
@@ -48,10 +53,6 @@ const Join = () => {
           <NewsletterOffer source={src ? `join:${src}` : 'join'} idPrefix="join" />
         </div>
       </section>
-
-      <figure className="join-photo">
-        <img src={PHOTO} alt="Grown Folks Collective guests gathered together at Aromas Tea Bar" loading="lazy" />
-      </figure>
 
       {events.length > 0 && (
         <section className="join-events" aria-labelledby="join-events-title">
