@@ -45,7 +45,7 @@ const Join = () => {
           </figure>
           <ul className="join-points">
             <li>Hear about new events before they fill up</li>
-            <li>One or two emails a month, never spam</li>
+            <li>A weekly newsletter with what's coming up, never spam</li>
             <li>Unsubscribe with one click</li>
           </ul>
         </div>
