@@ -42,11 +42,31 @@ const calendarUrl = (event) => {
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
 };
 
+// Ticket types people can see (not hidden, not member-only)
+const visibleTiersFor = (event) =>
+  (event.tiers || []).filter((t) => getTierStatus(t) !== "hidden" && !/member/i.test(t.name || ""));
+
+// The next upcoming event like this one: same series name first ("Karaoke Bingo", "Acoustic & Infused"), then same category
+const seriesName = (e) => String(e?.title || e?.name || "").split(/[:|(]/)[0].trim().toLowerCase();
+const findNextSimilar = (event, upcoming = []) => {
+  const later = upcoming
+    .filter((e) => new Date(e.date) > new Date(event.date) && visibleTiersFor(e).some((t) => getTierStatus(t) === "available"))
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
+  const series = seriesName(event);
+  const cat = getCategory(event)?.id;
+  return (
+    later.find((e) => series && seriesName(e) === series) ||
+    later.find((e) => cat && cat !== "other" && getCategory(e)?.id === cat) ||
+    null
+  );
+};
+
 const EventDetail = () => {
   const { slug } = useParams();
   const { addToCart, memberWallet, memberPrice } = useCart();
   const [event, setEvent] = useState(null);
   const [moreEvents, setMoreEvents] = useState([]);
+  const [allUpcoming, setAllUpcoming] = useState([]);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [lineup, setLineup] = useState([]); // showcase artists, for Google event data
@@ -64,7 +84,11 @@ const EventDetail = () => {
       .finally(() => setLoading(false));
 
     loadUpcomingEvents()
-      .then((all) => setMoreEvents(all.filter((e) => String(e._id) !== id && String(e.eventbriteId) !== id).slice(0, 3)))
+      .then((all) => {
+        const others = all.filter((e) => String(e._id) !== id && String(e.eventbriteId) !== id);
+        setAllUpcoming(others);
+        setMoreEvents(others.slice(0, 3));
+      })
       .catch(() => setMoreEvents([]));
   }, [slug]);
 
@@ -107,6 +131,16 @@ const EventDetail = () => {
   const price = getPriceDisplay(event.tiers);
   const spotsLeft = getSpotsLeft(event.tiers);
   const directions = getDirectionsUrl(loc);
+
+  // Full or nearly full: point people to the next event like this one
+  const soldOut = !past && visibleTiersFor(event).length > 0 && visibleTiersFor(event).every((t) => getTierStatus(t) !== "available");
+  const nearlyFull = !past && spotsLeft !== null && spotsLeft > 0 && spotsLeft <= 10;
+  const nextSimilar = soldOut || nearlyFull ? findNextSimilar(event, allUpcoming) : null;
+  const nextTier = nextSimilar
+    ? (nextSimilar.tiers || [])
+        .filter((t) => getTierStatus(t) === "available" && !/member/i.test(t.name || "") && !isPlusOne(t.name) && !isGroupTicket(t.name))
+        .sort((a, b) => parseCleanPrice(a) - parseCleanPrice(b))[0] || null
+    : null;
   const visibleTiers = event.tiers
     .filter((t) => getTierStatus(t) !== "hidden")
     .sort((a, b) => parseCleanPrice(a) - parseCleanPrice(b));
@@ -319,6 +353,20 @@ const EventDetail = () => {
           <PriceTag display={price} size="lg" />
           {spotsLeft !== null && spotsLeft > 0 && spotsLeft <= 10 && (
             <p className="gfc-spots-alert">Only {spotsLeft} spot{spotsLeft === 1 ? "" : "s"} left</p>
+          )}
+          {nextSimilar && (
+            <div className="gfc-next-up">
+              <span>
+                {soldOut ? "This one is sold out. " : "This one is almost full. "}
+                Next up: <Link to={eventPath(nextSimilar)}>{nextSimilar.title}</Link> on {formatShortDate(nextSimilar.date)}.
+                {!soldOut && " Grab both and save 5% on your order."}
+              </span>
+              {nextTier && (
+                <button type="button" className="gfc-btn-outline small" onClick={() => addToCart(nextSimilar, nextTier)}>
+                  Add {nextSimilar.title.split(/[:|(]/)[0].trim()} ({formatShortDate(nextSimilar.date)}) to bag
+                </button>
+              )}
+            </div>
           )}
 
           {!past && (

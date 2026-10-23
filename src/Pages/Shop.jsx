@@ -4,15 +4,13 @@ import { Helmet } from 'react-helmet-async';
 import { getCatalog, startMerchCheckout, startDigitalCheckout, unlockSample, sampleUrl, money } from '../Services/shopApi';
 import { currentSource } from '../Services/ticketSources';
 import { useCart } from '../Context/CartContext';
-import { loadUpcomingEvents, getTierStatus, parseCleanPrice, formatShortDate, eventPath, slugify } from '../Services/eventUtils';
+import { loadUpcomingEvents, getTierStatus, parseCleanPrice, formatShortDate, eventPath } from '../Services/eventUtils';
 import { isMemberTier } from '../Services/memberPricing';
+import { productSlug, productPath, lowestPriceCents } from '../Services/shopLinks';
 import '../Styles/Shop.css';
 
 // /shop — printable Karaoke Bingo downloads and Grown Folks™ merch (made to order by Printful)
 
-// Every product has its own page: /shop/<name>, e.g. /shop/gfc-classic-tee
-export const productSlug = (item) => slugify(String(item?.name || '').replace(/&/g, ' and '));
-export const productPath = (item) => `/shop/${productSlug(item)}`;
 
 // Preview image for an edition: "single-rnb" → /shop/bingo/rnb.jpg
 const preview = (id) => `/shop/bingo/${id.replace('single-', '')}.jpg`;
@@ -449,6 +447,17 @@ const Shop = () => {
   const shipping = !merchLines.length || !merch || merchSubtotal >= merch.settings.freeShippingOverCents ? 0 : merch.settings.shippingCents;
   const toFree = merchLines.length && merch ? merch.settings.freeShippingOverCents - merchSubtotal : 0;
 
+  // One item that closes the free-shipping gap: the cheapest one that gets them there
+  const shipSuggest = useMemo(() => {
+    if (!(toFree > 0) || !merch?.items) return null;
+    const inBagNames = new Set(merchLines.map((l) => l.name));
+    const options = merch.items
+      .filter((i) => !inBagNames.has(i.name) && Number.isFinite(lowestPriceCents(i)))
+      .sort((a, b) => lowestPriceCents(a) - lowestPriceCents(b));
+    return options.find((i) => lowestPriceCents(i) >= toFree) || options[options.length - 1] || null;
+  }, [toFree, merch, merchLines]);
+  const shipSuggestVariant = shipSuggest && shipSuggest.variants.length === 1 ? shipSuggest.variants[0] : null;
+
   const needsAgree = cardLines.length > 0 && !agreed;
   const checkout = async () => {
     if (needsAgree) {
@@ -602,6 +611,21 @@ const Shop = () => {
               {cardLines.length > 0 && <NoRefundCheck id="bag-agree" checked={agreed} onChange={setAgreed} />}
               {merchLines.length > 0 && <p className="shop-order-line"><span>Shipping</span><span>{shipping ? money(shipping) : 'Free'}</span></p>}
               {toFree > 0 && <p className="shop-fine">Add {money(toFree)} more in merch for free shipping. Bingo cards don't count toward it.</p>}
+              {shipSuggest && (
+                shipSuggestVariant ? (
+                  <button
+                    type="button"
+                    className="shop-bag-nudge"
+                    onClick={() => addToBag({ variantId: shipSuggestVariant.id, name: shipSuggest.name, size: shipSuggestVariant.size, color: shipSuggestVariant.color, quantity: 1, priceCents: shipSuggestVariant.priceCents })}
+                  >
+                    Add {shipSuggest.name} ({money(shipSuggestVariant.priceCents)}){shipSuggestVariant.priceCents >= toFree ? ' and get free shipping' : ' to get closer to free shipping'} →
+                  </button>
+                ) : (
+                  <Link className="shop-bag-nudge" to={productPath(shipSuggest)} onClick={() => setBagOpen(false)}>
+                    {lowestPriceCents(shipSuggest) >= toFree ? 'Get free shipping:' : 'Get closer to free shipping:'} add {shipSuggest.name} (from {money(lowestPriceCents(shipSuggest))}) →
+                  </Link>
+                )
+              )}
               {merchLines.length > 0 && !cardLines.length && (
                 <button type="button" className="shop-bag-nudge" onClick={() => { setBagOpen(false); showTab('bingo'); }}>
                   🎤 Add Karaoke Bingo cards and save {comboPercent}% on them →

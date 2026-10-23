@@ -521,3 +521,34 @@
 @media (max-width: 640px) {
   .gfc-pass-banner { flex-direction: column; align-items: flex-start; gap: 8px; }
 }
+
+/* ── BAG UPSELLS: member savings, gift a ticket, merch ── */
+.gfc-upsell {
+  display: flex; flex-direction: column; gap: 6px;
+  border: 1px solid var(--gfc-line); border-radius: 8px; background: #fff;
+  padding: 10px 12px; margin-bottom: 12px; font-size: 13px; color: var(--gfc-navy);
+}
+.gfc-upsell strong { font-size: 13.5px; }
+.gfc-upsell a { color: #7a5a1e; font-weight: 700; text-decoration: none; }
+.gfc-upsell a:hover { text-decoration: underline; }
+.gfc-upsell-member { background: var(--gfc-gold-soft); border-color: var(--gfc-gold); }
+.gfc-gift-toggle { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; line-height: 1.45; }
+.gfc-gift-toggle input { margin-top: 3px; }
+.gfc-gift-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+.gfc-gift-fields label { display: flex; flex-direction: column; gap: 3px; font-size: 12px; font-weight: 700; min-width: 0; }
+.gfc-gift-fields label.wide { grid-column: 1 / -1; }
+.gfc-gift-fields input, .gfc-gift-fields select, .gfc-gift-fields textarea {
+  font: inherit; font-weight: 400; font-size: 14px; padding: 7px 8px; border: 1px solid #ccc; border-radius: 6px; min-width: 0; width: 100%; box-sizing: border-box;
+}
+.gfc-gift-fine { font-size: 11.5px; color: var(--gfc-muted); margin: 0; grid-column: 1 / -1; }
+.gfc-merch-picks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.gfc-upsell .gfc-merch-pick { display: flex; flex-direction: column; gap: 3px; color: var(--gfc-navy); font-weight: 600; font-size: 12.5px; line-height: 1.3; }
+.gfc-merch-pick img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 6px; background: #f3efe6; }
+.gfc-merch-pick em { font-style: normal; color: var(--gfc-muted); font-weight: 400; }
+
+/* ── EVENT PAGE: next similar event when this one is full ── */
+.gfc-next-up {
+  border: 1px dashed var(--gfc-gold); background: var(--gfc-gold-soft); border-radius: 8px;
+  padding: 12px 14px; margin: 14px 0; font-size: 14px; color: var(--gfc-navy); display: flex; flex-direction: column; gap: 8px;
+}
+.gfc-next-up a { color: var(--gfc-navy); font-weight: 700; }
