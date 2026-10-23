@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BACKEND_URL } from '../Services/eventUtils';
+import SelectInterest from './SelectInterest';
 import { SMS_CONSENT_TEXT, SMS_CONSENT_VERSION } from '../content/legalContent.js';
 
 // "$5 off your first ticket" newsletter signup. Saves to /api/subscribers;
@@ -11,6 +12,7 @@ const NewsletterOffer = ({ compact = false, source = 'join', idPrefix = 'nl' }) 
   const [email, setEmail] = useState('');
   const [smsOptIn, setSmsOptIn] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [select, setSelect] = useState({ checked: false, gender: '' }); // GFC Select™ interest
   const [status, setStatus] = useState('idle'); // idle | sending | done | already
   const [error, setError] = useState('');
 
@@ -32,6 +34,8 @@ const NewsletterOffer = ({ compact = false, source = 'join', idPrefix = 'nl' }) 
           smsConsentText: smsOptIn ? SMS_CONSENT_TEXT : '',
           smsConsentVersion: smsOptIn ? SMS_CONSENT_VERSION : '',
           source,
+          selectInterest: !compact && select.checked,
+          selectGender: !compact && select.checked ? select.gender : '',
         }),
       });
       const result = await res.json().catch(() => ({}));
@@ -49,14 +53,14 @@ const NewsletterOffer = ({ compact = false, source = 'join', idPrefix = 'nl' }) 
   if (status === 'done') {
     return (
       <div className="nl-offer-done" role="status">
-        <strong>You're in!</strong> Check your inbox for your welcome code. It should arrive in a minute or two.
+        <strong>You're in!</strong> Check your inbox for your welcome code. It should arrive in a minute or two.{select.checked ? " You're on the GFC Select™ list too." : ''}
       </div>
     );
   }
   if (status === 'already') {
     return (
       <div className="nl-offer-done" role="status">
-        <strong>You're already on our list.</strong> Look for our welcome email in your inbox, or reply to any of our emails and we'll help.
+        <strong>You're already on our list.</strong>{select.checked ? " We added you to the GFC Select™ list." : ''} Look for our welcome email in your inbox, or reply to any of our emails and we'll help.
       </div>
     );
   }
@@ -83,6 +87,7 @@ const NewsletterOffer = ({ compact = false, source = 'join', idPrefix = 'nl' }) 
               <input id={`${idPrefix}-phone`} type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} autoComplete="tel" />
             </label>
           )}
+          <SelectInterest idPrefix={idPrefix} checked={select.checked} gender={select.gender} onChange={setSelect} />
         </>
       )}
       <button type="submit" disabled={status === 'sending'}>

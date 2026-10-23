@@ -184,8 +184,8 @@ const AdminSelectDoors = () => {
   };
 
   const exportCsv = () => {
-    const rows = [["First name", "Email", "Phone", "Man/Woman", "OK to text", "Newsletter", "Applying with", "Joined"]].concat(
-      list.map((p) => [p.firstName, p.email, p.phone, p.gender, p.textOk ? "yes" : "", p.newsletter ? "yes" : "", p.friendName || "", new Date(p.createdAt).toLocaleDateString()])
+    const rows = [["First name", "Email", "Phone", "Man/Woman", "OK to text", "Newsletter", "Applying with", "Signed up from", "Joined"]].concat(
+      list.map((p) => [p.firstName, p.email, p.phone, p.gender, p.textOk ? "yes" : "", p.newsletter ? "yes" : "", p.friendName || "", p.source || "", new Date(p.createdAt).toLocaleDateString()])
     );
     const csv = rows.map((r) => r.map((c) => `"${String(c ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
     const a = document.createElement("a");
@@ -264,7 +264,7 @@ const AdminSelectDoors = () => {
         {showList && (
           <table className="admin-table sel-adm-table">
             <thead>
-              <tr><th>Name</th><th>Email</th><th>Phone</th><th>Man/Woman</th><th>Newsletter</th><th>With</th><th>Joined</th></tr>
+              <tr><th>Name</th><th>Email</th><th>Phone</th><th>Man/Woman</th><th>Newsletter</th><th>With</th><th>From</th><th>Joined</th></tr>
             </thead>
             <tbody>
               {list.map((p) => (
@@ -275,6 +275,7 @@ const AdminSelectDoors = () => {
                   <td>{p.gender || "—"}</td>
                   <td>{p.newsletter ? "Yes" : "—"}</td>
                   <td>{p.friendName || "—"}</td>
+                  <td>{p.source || "—"}</td>
                   <td>{new Date(p.createdAt).toLocaleDateString()}</td>
                 </tr>
               ))}
