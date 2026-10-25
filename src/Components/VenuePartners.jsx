@@ -5,7 +5,7 @@ import "../Styles/VenuePartners.css";
 export const VENUE_PARTNERS = [
   {
     name: "Aromas Tea Bar",
-    detail: "The Koncept House\nHome of Acoustic & Infused™",
+    detail: "The Koncept House\nHome of Acoustic & Infused™,\nGame Night and Karaoke Bingo",
     logo: "/partners/aromas-tea-bar.jpg",
   },
 ];

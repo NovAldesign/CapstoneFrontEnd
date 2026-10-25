@@ -24,11 +24,11 @@
 }
 
 .venue-partners-card {
-  width: 300px;
+  width: 240px;
   max-width: 100%;
   background: #F7F4EE;
   border: 1px solid var(--gold, #C5A059);
-  padding: 20px 24px 24px;
+  padding: 16px 18px 18px;
   display: flex;
   flex-direction: column;
 }
@@ -42,16 +42,16 @@
 
 .venue-partners-card img {
   display: block;
-  width: 100%;
+  width: 82%;
   height: auto;
-  margin: 0 auto 14px;
+  margin: 0 auto 12px;
 }
 
 .venue-partners-name {
   padding-top: 16px;
   border-top: 1px solid #E8DFCC;
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--navy, #0E2340);
 }
