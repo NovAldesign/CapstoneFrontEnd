@@ -26,9 +26,9 @@
 .venue-partners-card {
   width: 300px;
   max-width: 100%;
-  background: #FFFFFF;
+  background: #F7F4EE;
   border: 1px solid var(--gold, #C5A059);
-  padding: 32px 28px 24px;
+  padding: 20px 24px 24px;
   display: flex;
   flex-direction: column;
 }
@@ -42,9 +42,9 @@
 
 .venue-partners-card img {
   display: block;
-  width: 78%;
+  width: 100%;
   height: auto;
-  margin: 0 auto 18px;
+  margin: 0 auto 14px;
 }
 
 .venue-partners-name {

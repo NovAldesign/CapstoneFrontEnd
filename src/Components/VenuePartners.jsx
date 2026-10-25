@@ -6,7 +6,7 @@ export const VENUE_PARTNERS = [
   {
     name: "Aromas Tea Bar",
     detail: "The Koncept House\nHome of Acoustic & Infused™",
-    logo: "/partners/aromas-tea-bar.svg",
+    logo: "/partners/aromas-tea-bar.jpg",
   },
 ];
 
