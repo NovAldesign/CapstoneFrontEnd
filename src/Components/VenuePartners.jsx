@@ -5,8 +5,8 @@ import "../Styles/VenuePartners.css";
 export const VENUE_PARTNERS = [
   {
     name: "Aromas Tea Bar",
-    detail: "The Koncept House · Home of Acoustic & Infused™",
-    logo: "/partners/aromas-tea-bar.jpg",
+    detail: "The Koncept House\nHome of Acoustic & Infused™",
+    logo: "/partners/aromas-tea-bar.svg",
   },
 ];
 
@@ -19,7 +19,7 @@ export default function VenuePartners({ title = "Our Venue Partners", compact = 
         {VENUE_PARTNERS.map((p) => {
           const card = (
             <>
-              <img src={p.logo} alt={`${p.name} logo`} width="600" height="441" loading="lazy" />
+              <img src={p.logo} alt={`${p.name} logo`} loading="lazy" />
               <span className="venue-partners-name">{p.name}</span>
               {p.detail && <span className="venue-partners-detail">{p.detail}</span>}
             </>
