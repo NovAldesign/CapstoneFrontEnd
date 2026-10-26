@@ -5,6 +5,7 @@ import "../Styles/Partnership.css";
 import partnershipService from "../Services/partnershipService.js";
 import DonationForm from "../Components/DonationForm.jsx";
 import { useSiteStats, plus } from "../Services/siteStats";
+import VenuePartners from "../Components/VenuePartners.jsx";
 
 const tiers = [
   {
@@ -274,6 +275,11 @@ const Partnership = () => {
             <p>Community in Atlanta</p>
           </div>
         </div>
+      </section>
+
+      {/* VENUE PARTNERS */}
+      <section className="venue-partners-section" aria-label="Venue partners">
+        <VenuePartners />
       </section>
 
       {/* TIERS SHOWCASE */}

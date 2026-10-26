@@ -42,6 +42,20 @@ export const PACKAGES = [
   },
 ];
 
+// Booking specials, one at a time by date (Eastern). Same list in the backend:
+// utilities/hostingSpecials.js (it tells the team which savings apply).
+export const HOSTING_SPECIALS = [
+  { id: 'holiday', title: 'Holiday Booking Special', amount: 150, covers: 'a December event', endsLabel: 'Oct 31',
+    endsAt: '2026-10-31T23:59:59-04:00' },
+  { id: 'newyear', title: 'New Year Booking Special', amount: 125, covers: 'a January or February event', endsLabel: 'Nov 30',
+    startsAt: '2026-11-01T00:00:00-04:00', endsAt: '2026-11-30T23:59:59-05:00' },
+];
+export const currentSpecial = (now = new Date()) =>
+  HOSTING_SPECIALS.find((s) => (!s.startsAt || now >= new Date(s.startsAt)) && now <= new Date(s.endsAt)) || null;
+
+// Join the planner list (corporate footer signup): $99 off a first hosted event, book within 90 days
+export const PLANNER_SAVINGS = 99;
+
 // Weekday prices are above. Fri–Sun dates cost this much more.
 export const WEEKEND_EXTRA = 100;
 

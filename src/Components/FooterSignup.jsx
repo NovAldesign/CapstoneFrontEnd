@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BACKEND_URL } from '../Services/eventUtils';
+import SelectInterest from './SelectInterest';
 import { SMS_CONSENT_TEXT, SMS_CONSENT_VERSION } from '../content/legalContent.js';
 
 // ── Newsletter signup (saves to /api/subscribers) ──
@@ -8,6 +9,7 @@ const FooterSignup = ({ corporate = false }) => {
   const [email, setEmail] = useState('');
   const [smsOptIn, setSmsOptIn] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [select, setSelect] = useState({ checked: false, gender: '' }); // GFC Select™ interest
   const [status, setStatus] = useState('idle'); // idle | sending | done | already
   const [error, setError] = useState('');
 
@@ -37,6 +39,8 @@ const FooterSignup = ({ corporate = false }) => {
           smsConsentText: smsOptIn ? SMS_CONSENT_TEXT : '',
           smsConsentVersion: smsOptIn ? SMS_CONSENT_VERSION : '',
           source: corporate ? 'corporate' : 'footer',
+          selectInterest: !corporate && select.checked,
+          selectGender: !corporate && select.checked ? select.gender : '',
         }),
       });
       const result = await response.json().catch(() => ({}));
@@ -60,11 +64,11 @@ const FooterSignup = ({ corporate = false }) => {
     return (
       <div className="footer-signup-success" role="status">
         <div className="footer-signup-success-title">
-          {status === 'done' ? "You're on the list! ✨" : "You're already on the list! ✨"}
+          {status === 'done' ? "You're on the list!" : "You're already on the list!"}
         </div>
         <p>{corporate
-          ? "We'll send hosting ideas and open dates about once a month. Talk soon."
-          : "We'll let you know first when new events drop. See you soon."}</p>
+          ? "Check your email for your $99 savings code. We'll send hosting ideas and open dates about once a month."
+          : `We'll let you know first when new events drop.${select.checked ? " You're on the GFC Select™ list too." : ''} See you soon.`}</p>
       </div>
     );
   }
@@ -120,6 +124,10 @@ const FooterSignup = ({ corporate = false }) => {
         </div>
       )}
 
+      {!corporate && (
+        <SelectInterest idPrefix="footer" checked={select.checked} gender={select.gender} onChange={setSelect} />
+      )}
+
       {error && <p className="footer-signup-error" role="alert">{error}</p>}
       <p className="footer-signup-note">
         No spam. Unsubscribe anytime. By joining, you agree to our{' '}
@@ -139,8 +147,8 @@ const FooterSignupSection = ({ corporate = false }) => (
           <div className="footer-block-label">For Planners</div>
           <h2 id="footer-signup-title" className="footer-signup-title">Fresh ideas for your residents and team</h2>
           <p className="footer-signup-sub">
-            For property managers, HR and team leads. Seasonal event ideas, holiday booking dates and
-            first pick of open weekday dates, about once a month.
+            For property managers, HR and team leads. Sign up and save $99 on your first hosted event, plus
+            seasonal event ideas, booking specials and first pick of open weekday dates, about once a month.
           </p>
         </>
       ) : (

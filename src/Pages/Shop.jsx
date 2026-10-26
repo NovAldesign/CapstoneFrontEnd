@@ -1,14 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { getCatalog, startMerchCheckout, startDigitalCheckout, unlockSample, sampleUrl, money } from '../Services/shopApi';
 import { currentSource } from '../Services/ticketSources';
 import { useCart } from '../Context/CartContext';
 import { loadUpcomingEvents, getTierStatus, parseCleanPrice, formatShortDate, eventPath } from '../Services/eventUtils';
 import { isMemberTier } from '../Services/memberPricing';
+import { productSlug, productPath, lowestPriceCents } from '../Services/shopLinks';
 import '../Styles/Shop.css';
 
 // /shop — printable Karaoke Bingo downloads and Grown Folks™ merch (made to order by Printful)
+
 
 // Preview image for an edition: "single-rnb" → /shop/bingo/rnb.jpg
 const preview = (id) => `/shop/bingo/${id.replace('single-', '')}.jpg`;
@@ -140,7 +142,7 @@ const BingoShop = ({ digital, onAdd, inBag, comboPercent }) => {
           <Stack ids={BUNDLE_PREVIEWS[featured.id]} alt="Karaoke Bingo cards from three editions" />
           <div className="bingo-featured-body">
             <span className="bingo-badge">Best value</span>
-            <h3 className="playfair">The Complete Collection</h3>
+            <h3 className="playfair"><Link to={productPath(featured)} className="shop-name-link">The Complete Collection</Link></h3>
             <p className="shop-muted">{featured.description}</p>
             <p className="bingo-math">All 16 editions for {money(featured.priceCents)}. That's under $4 an edition.</p>
             {btn(featured, true)}
@@ -153,7 +155,7 @@ const BingoShop = ({ digital, onAdd, inBag, comboPercent }) => {
           <article key={b.id} className="bingo-tile">
             <Stack ids={BUNDLE_PREVIEWS[b.id]} alt={`Cards from the ${b.name}`} />
             <div className="bingo-tile-body">
-              <h3 className="playfair">{b.name.replace('Karaoke Bingo: ', '')}</h3>
+              <h3 className="playfair"><Link to={productPath(b)} className="shop-name-link">{b.name.replace('Karaoke Bingo: ', '')}</Link></h3>
               <p className="shop-muted">{b.description}</p>
               {btn(b)}
             </div>
@@ -173,7 +175,7 @@ const BingoShop = ({ digital, onAdd, inBag, comboPercent }) => {
           <article key={item.id} className="bingo-tile bingo-single">
             <div className="bingo-thumb"><img src={preview(item.id)} alt={`A ${item.name} card`} loading="lazy" /></div>
             <div className="bingo-tile-body">
-              <h3 className="playfair">{item.name.replace('Karaoke Bingo: ', '')}</h3>
+              <h3 className="playfair"><Link to={productPath(item)} className="shop-name-link">{item.name.replace('Karaoke Bingo: ', '')}</Link></h3>
               <p className="shop-muted">{item.description}</p>
               {btn(item)}
             </div>
@@ -186,6 +188,43 @@ const BingoShop = ({ digital, onAdd, inBag, comboPercent }) => {
     </section>
   );
 };
+// One Karaoke Bingo edition or bundle on its own page
+const BingoFocus = ({ item, onAdd, inBag }) => {
+  const [agreed, setAgreed] = useState(false);
+  const [busyId, setBusyId] = useState('');
+  const [error, setError] = useState('');
+  const ids = BUNDLE_PREVIEWS[item.id];
+  const checkoutNow = async ({ id }) => {
+    if (!agreed) return setError('Please check the box to confirm you understand Karaoke Bingo downloads are non-refundable.');
+    setBusyId(id);
+    setError('');
+    try {
+      const { url } = await startDigitalCheckout({ items: [id], source: currentSource(), agreeNoRefund: true });
+      window.location.href = url;
+    } catch (e) {
+      setError(e.message);
+      setBusyId('');
+    }
+  };
+  return (
+    <article className="shop-product shop-product-focus">
+      <div className="shop-product-img">
+        {ids ? <Stack ids={ids} alt={`Cards from ${item.name}`} /> : <img src={preview(item.id)} alt={`A ${item.name} card`} />}
+      </div>
+      <div className="shop-product-body">
+        <p className="shop-label">Printable Karaoke Bingo</p>
+        <h1 className="playfair">{item.name.replace('Karaoke Bingo: ', '')}</h1>
+        <p className="shop-tile-price">{money(item.priceCents)}</p>
+        <p className="shop-muted">{item.description}</p>
+        <p className="shop-norefund">Instant download · 40 unique cards per edition · host guide included · non-refundable</p>
+        {!onAdd && <NoRefundCheck id="focus-agree" checked={agreed} onChange={(v) => { setAgreed(v); setError(''); }} />}
+        <BuyButton item={item} busyId={busyId} onBuy={onAdd || checkoutNow} gold bagged={inBag?.has(item.id)} toBag={Boolean(onAdd)} />
+        {error && <p className="shop-error" role="alert">{error}</p>}
+      </div>
+    </article>
+  );
+};
+
 // Merch filter chips, from the product name in Printful (order matters: "Long Sleeve Tee" is a long sleeve)
 const CATEGORIES = [
   ['hoodie', 'Hoodies', /hoodie|sweatshirt|crewneck/i],
@@ -205,7 +244,7 @@ const priceRange = (variants) => {
 };
 
 // One Printful product. Variants carry the size, color, price and photo.
-const ProductCard = ({ item, onAdd }) => {
+const ProductCard = ({ item, onAdd, focus = false }) => {
   const colors = uniq(item.variants.map((v) => v.color));
   const [color, setColor] = useState(colors.length === 1 ? colors[0] : '');
   const sizes = uniq(item.variants.filter((v) => !color || v.color === color).map((v) => v.size));
@@ -229,12 +268,13 @@ const ProductCard = ({ item, onAdd }) => {
   };
 
   return (
-    <article className="shop-product">
+    <article className={`shop-product${focus ? ' shop-product-focus' : ''}`}>
       <div className="shop-product-img">
-        {image ? <img src={image} alt={`${item.name}${color ? ` in ${color}` : ''}`} loading="lazy" /> : <span aria-hidden="true">GFC</span>}
+        {image ? <img src={image} alt={`${item.name}${color ? ` in ${color}` : ''}`} loading={focus ? 'eager' : 'lazy'} /> : <span aria-hidden="true">GFC</span>}
       </div>
       <div className="shop-product-body">
-        <h3 className="playfair">{item.name}</h3>
+        {focus ? <h1 className="playfair">{item.name}</h1> : <h3 className="playfair"><Link to={productPath(item)} className="shop-name-link">{item.name}</Link></h3>}
+        {focus && item.description && <p className="shop-muted">{item.description}</p>}
         <p className="shop-tile-price">{variant ? money(variant.priceCents) : priceRange(item.variants)}</p>
         <div className="shop-product-opts">
           {colors.length > 1 && (
@@ -298,12 +338,34 @@ const EventAddOns = ({ events, title, sub }) => {
   );
 };
 
+// The shop bag is saved in the browser for a day
+const SHOP_BAG_KEY = 'gfc_shop_bag';
+const loadShopBag = () => {
+  try {
+    if (window.location.pathname.startsWith('/shop/success')) return [];
+    const saved = JSON.parse(localStorage.getItem(SHOP_BAG_KEY) || 'null');
+    if (!saved || !Array.isArray(saved.items) || Date.now() - (saved.savedAt || 0) > 24 * 60 * 60 * 1000) return [];
+    return saved.items;
+  } catch {
+    return [];
+  }
+};
+
 const tabFromHash = () => (typeof window !== 'undefined' && window.location.hash === '#bingo' ? 'bingo' : 'merch');
 
 const Shop = () => {
+  const { slug = '' } = useParams();
   const [catalog, setCatalog] = useState(null);
   const [error, setError] = useState('');
-  const [bag, setBag] = useState([]);
+  const [bag, setBag] = useState(loadShopBag);
+  // Keep the shop bag when moving between /shop and product pages
+  useEffect(() => {
+    try {
+      localStorage.setItem(SHOP_BAG_KEY, JSON.stringify({ savedAt: Date.now(), items: bag }));
+    } catch {
+      /* storage unavailable: the bag still works on this page */
+    }
+  }, [bag]);
   const [bagOpen, setBagOpen] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -331,6 +393,17 @@ const Shop = () => {
 
   const merch = catalog?.merch;
   const hasMerch = Boolean(merch?.open);
+
+  // /shop/<product>: that product goes up top, its tab opens below
+  const focusMerch = slug && hasMerch ? (merch.items || []).find((i) => productSlug(i) === slug) : null;
+  const focusBingo = slug && !focusMerch ? (catalog?.digital?.items || []).find((i) => productSlug(i) === slug) : null;
+  const focusItem = focusMerch || focusBingo;
+  useEffect(() => {
+    if (focusMerch) setTab('merch');
+    if (focusBingo) setTab('bingo');
+    if (focusItem) window.scrollTo({ top: 0 });
+  }, [slug, Boolean(focusItem)]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const activeTab = hasMerch ? tab : 'bingo';
   const showTab = (t) => {
     setTab(t);
@@ -374,6 +447,17 @@ const Shop = () => {
   const shipping = !merchLines.length || !merch || merchSubtotal >= merch.settings.freeShippingOverCents ? 0 : merch.settings.shippingCents;
   const toFree = merchLines.length && merch ? merch.settings.freeShippingOverCents - merchSubtotal : 0;
 
+  // One item that closes the free-shipping gap: the cheapest one that gets them there
+  const shipSuggest = useMemo(() => {
+    if (!(toFree > 0) || !merch?.items) return null;
+    const inBagNames = new Set(merchLines.map((l) => l.name));
+    const options = merch.items
+      .filter((i) => !inBagNames.has(i.name) && Number.isFinite(lowestPriceCents(i)))
+      .sort((a, b) => lowestPriceCents(a) - lowestPriceCents(b));
+    return options.find((i) => lowestPriceCents(i) >= toFree) || options[options.length - 1] || null;
+  }, [toFree, merch, merchLines]);
+  const shipSuggestVariant = shipSuggest && shipSuggest.variants.length === 1 ? shipSuggest.variants[0] : null;
+
   const needsAgree = cardLines.length > 0 && !agreed;
   const checkout = async () => {
     if (needsAgree) {
@@ -404,15 +488,36 @@ const Shop = () => {
   return (
     <div className={`shop-page${bag.length ? ' has-bag' : ''}`}>
       <Helmet>
-        <title>Shop: Grown Folks™ Merch &amp; Printable Karaoke Bingo | Grown Folks™ Collective</title>
-        <meta name="description" content="Grown Folks™ Collective merch, made to order, plus printable Karaoke Bingo: 16 editions, 40 unique cards each, host guide included." />
+        {focusItem ? (
+          <title>{`${focusItem.name} | Grown Folks™ Collective Shop`}</title>
+        ) : (
+          <title>Shop: Grown Folks™ Merch &amp; Printable Karaoke Bingo | Grown Folks™ Collective</title>
+        )}
+        <meta
+          name="description"
+          content={focusItem
+            ? (focusItem.description || `${focusItem.name} from the Grown Folks™ Collective shop.`)
+            : 'Grown Folks™ Collective merch, made to order, plus printable Karaoke Bingo: 16 editions, 40 unique cards each, host guide included.'}
+        />
+        {focusItem && <link rel="canonical" href={`https://www.grownfolkscollective.com${productPath(focusItem)}`} />}
       </Helmet>
 
-      <header className="shop-hero shop-hero-slim">
-        <p className="shop-kicker">The Grown Folks™ shop</p>
-        <h1 className="playfair">Bring the party home.</h1>
-        <p className="shop-lead">Grown Folks™ merch, made to order, and printable Karaoke Bingo for your own game night.</p>
-      </header>
+      {focusItem ? (
+        <section className="shop-focus" aria-label={focusItem.name}>
+          <Link to="/shop" className="shop-back">← All products</Link>
+          {focusMerch
+            ? <ProductCard item={focusMerch} focus onAdd={(l) => { addToBag(l); setBagOpen(true); }} />
+            : <BingoFocus item={focusBingo} onAdd={hasMerch ? addCard : null} inBag={inBag} />}
+          <p className="shop-focus-more">More from the shop below</p>
+        </section>
+      ) : (
+        <header className="shop-hero shop-hero-slim">
+          <p className="shop-kicker">The Grown Folks™ shop</p>
+          <h1 className="playfair">Bring the party home.</h1>
+          <p className="shop-lead">Grown Folks™ merch, made to order, and printable Karaoke Bingo for your own game night.</p>
+          {slug && catalog && <p className="shop-muted">We couldn't find that product. Here's everything in the shop.</p>}
+        </header>
+      )}
 
       {hasMerch && (
         <nav id="shop-tabs" className="shop-tabs" aria-label="Shop sections">
@@ -506,6 +611,21 @@ const Shop = () => {
               {cardLines.length > 0 && <NoRefundCheck id="bag-agree" checked={agreed} onChange={setAgreed} />}
               {merchLines.length > 0 && <p className="shop-order-line"><span>Shipping</span><span>{shipping ? money(shipping) : 'Free'}</span></p>}
               {toFree > 0 && <p className="shop-fine">Add {money(toFree)} more in merch for free shipping. Bingo cards don't count toward it.</p>}
+              {shipSuggest && (
+                shipSuggestVariant ? (
+                  <button
+                    type="button"
+                    className="shop-bag-nudge"
+                    onClick={() => addToBag({ variantId: shipSuggestVariant.id, name: shipSuggest.name, size: shipSuggestVariant.size, color: shipSuggestVariant.color, quantity: 1, priceCents: shipSuggestVariant.priceCents })}
+                  >
+                    Add {shipSuggest.name} ({money(shipSuggestVariant.priceCents)}){shipSuggestVariant.priceCents >= toFree ? ' and get free shipping' : ' to get closer to free shipping'} →
+                  </button>
+                ) : (
+                  <Link className="shop-bag-nudge" to={productPath(shipSuggest)} onClick={() => setBagOpen(false)}>
+                    {lowestPriceCents(shipSuggest) >= toFree ? 'Get free shipping:' : 'Get closer to free shipping:'} add {shipSuggest.name} (from {money(lowestPriceCents(shipSuggest))}) →
+                  </Link>
+                )
+              )}
               {merchLines.length > 0 && !cardLines.length && (
                 <button type="button" className="shop-bag-nudge" onClick={() => { setBagOpen(false); showTab('bingo'); }}>
                   🎤 Add Karaoke Bingo cards and save {comboPercent}% on them →

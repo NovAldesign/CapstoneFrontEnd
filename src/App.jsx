@@ -39,6 +39,7 @@ import Recess from "./Pages/Recess.jsx";
 import OnOurStagePage from "./Pages/OnOurStagePage.jsx";
 import Legal from "./Pages/Legal.jsx";
 import Links from "./Pages/Links.jsx";
+import Join from "./Pages/Join.jsx";
 import Go from "./Pages/Go.jsx";
 import Host from "./Pages/Host.jsx";
 import HostLanding from "./Pages/HostLanding.jsx";
@@ -90,6 +91,7 @@ function App() {
             <Route path="/gift/success" element={<ShopSuccess kind="gift" />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/shop/success" element={<ShopSuccess kind="merch" />} />
+            <Route path="/shop/:slug" element={<Shop />} />
             <Route path="/downloads/:token" element={<Downloads />} />
             <Route path="/live-setup/:id" element={<LiveSetup />} />
             <Route path="/celebrate" element={<GroupBooking />} />
@@ -114,6 +116,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/links" element={<Links />} />
+            <Route path="/join" element={<Join />} />
             <Route path="/go/:code" element={<Go />} />
 
             {/* Policies */}

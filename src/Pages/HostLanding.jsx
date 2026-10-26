@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { PACKAGES, WEEKEND_EXTRA, perGuest } from '../content/hostingPackages';
+import { PACKAGES, WEEKEND_EXTRA, perGuest, currentSpecial } from '../content/hostingPackages';
 import '../Styles/Contact.css';
 import '../Styles/GroupBooking.css';
 import '../Styles/Host.css';
@@ -75,7 +75,7 @@ const PAGES = {
       ['Gifts handled', 'Add GFC merch gifts from $10 per guest, like mugs, socks and tumblers.'],
     ],
     faq: [
-      ['When should we book?', 'Now. December weekdays fill first. Book a December date by Oct 31 and save $150.'],
+      ['When should we book?', 'Now. December weekdays fill first, so book as early as you can.'],
       ['Can you host at our office?', 'Yes. We set up in your office, a clubhouse or a venue you choose anywhere in metro Atlanta.'],
       ['Can we have a daytime or lunch party?', 'Yes. We host daytime, lunchtime and evening parties, and the price is the same at any time of day. A lunch party lets your whole team celebrate during work hours.'],
       ['How long is the party?', 'Two hours (2.5 for the mystery), and you can add extra hours.'],
@@ -90,7 +90,7 @@ const money = (n) => `$${n.toLocaleString('en-US')}`;
 const HostLanding = ({ page }) => {
   const p = PAGES[page];
   const bookLink = `/host?type=corporate&src=${p.src}`;
-  const showHolidayDeal = new Date() <= new Date('2026-10-31T23:59:59-04:00');
+  const special = currentSpecial();
 
   // Lets Google show the questions and answers right in search results
   const faqSchema = {
@@ -167,10 +167,10 @@ const HostLanding = ({ page }) => {
         </div>
       </header>
 
-      {p.holiday && (
+      {(p.holiday || special) && (
         <div className="host-holiday" role="note">
-          {showHolidayDeal ? (
-            <><strong>Holiday Booking Special:</strong> book a December event by Oct 31 and save $150.</>
+          {special ? (
+            <><strong>{special.title}:</strong> book {special.covers} by {special.endsLabel} and save ${special.amount}.</>
           ) : (
             <><strong>December is filling up.</strong> Weekday dates go first, so book early.</>
           )}

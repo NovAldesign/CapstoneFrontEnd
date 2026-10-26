@@ -5,7 +5,7 @@ import { BACKEND_URL } from '../Services/eventUtils';
 import '../Styles/Contact.css';
 import '../Styles/GroupBooking.css';
 import '../Styles/Host.css';
-import { PACKAGES, WEEKEND_EXTRA, perGuest, RESIDENT_PACKAGE } from '../content/hostingPackages';
+import { PACKAGES, WEEKEND_EXTRA, perGuest, RESIDENT_PACKAGE, currentSpecial, PLANNER_SAVINGS } from '../content/hostingPackages';
 
 // ── Play. Sip. Toast. — GFC hosts at apartment communities, offices and teams ──
 // Prices live in content/hostingPackages.js (shared with the landing pages).
@@ -73,6 +73,7 @@ const EMPTY_FORM = {
   toastUpgrade: false,
   frequency: 'One-time event',
   notes: '',
+  savingsCode: '',
 };
 
 const formatPhone = (value) => {
@@ -84,15 +85,16 @@ const formatPhone = (value) => {
 
 const Host = () => {
   const [searchParams] = useSearchParams();
-  const [formData, setFormData] = useState(EMPTY_FORM);
+  // A planner signup code from the welcome email link (?code=PLAN99...)
+  const [formData, setFormData] = useState(() => ({ ...EMPTY_FORM, savingsCode: (searchParams.get('code') || '').toUpperCase().slice(0, 30) }));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const feedbackRef = useRef(null);
   const formRef = useRef(null);
 
-  // Holiday special: book a December event by Oct 31
-  const showHoliday = new Date() <= new Date('2026-10-31T23:59:59-04:00');
+  // Booking special running now (content/hostingPackages.js)
+  const special = currentSpecial();
 
   // Links like /host?type=corporate or /host#companies open the right section
   useEffect(() => {
@@ -224,9 +226,9 @@ const Host = () => {
         </div>
       </header>
 
-      {showHoliday && (
+      {special && (
         <div className="host-holiday" role="note">
-          <strong>Holiday Booking Special:</strong> book a December event by Oct 31 and save $150.
+          <strong>{special.title}:</strong> book {special.covers} by {special.endsLabel} and save ${special.amount}.
         </div>
       )}
 
@@ -380,7 +382,7 @@ const Host = () => {
           {submitted ? (
             <div className="group-success" role="status">
               <span className="contact-form-eyebrow">Request Received</span>
-              <h2 className="contact-form-title">Cheers, {formData.firstName}! 🥂</h2>
+              <h2 className="contact-form-title">Cheers, {formData.firstName}!</h2>
               <p className="contact-form-subhead">
                 We just emailed you a copy of your request. We'll reach out within 1 business
                 day to plan your date, your guests and your signature mocktail.
@@ -510,7 +512,7 @@ const Host = () => {
                   <div className="group-checks">
                     <label className="group-check">
                       <input type="checkbox" name="toastUpgrade" checked={formData.toastUpgrade} onChange={handleChange} />
-                      <span>Add the Töst sparkling toast upgrade 🥂</span>
+                      <span>Add the Töst sparkling toast upgrade</span>
                     </label>
                   </div>
 
@@ -521,6 +523,18 @@ const Host = () => {
                     <textarea id="h-notes" name="notes" className="contact-textarea" rows="3" maxLength={1500}
                       placeholder="e.g. holiday resident party, indoor clubhouse, budget, theme ideas"
                       value={formData.notes} onChange={handleChange} />
+                  </div>
+
+                  <div className="contact-input-group">
+                    <label className="contact-label" htmlFor="h-code">
+                      Savings code <span className="contact-label-optional">(Optional)</span>
+                    </label>
+                    <input id="h-code" name="savingsCode" type="text" maxLength={30}
+                      autoComplete="off" placeholder="From your planner welcome email"
+                      value={formData.savingsCode} onChange={handleChange} />
+                    <small className="contact-label-optional">
+                      Joined our planner list? Your ${PLANNER_SAVINGS} code goes here. One savings per booking: we'll apply whichever saves you more.
+                    </small>
                   </div>
                 </fieldset>
 

@@ -438,7 +438,7 @@ const About = () => {
                 We didn't start with a business plan. We started with a game night in a small Decatur restaurant and 36 people who showed up because they were tired of sitting at home. It sold out. Then we did it again. Sold out again.
               </p>
               <p className="about-body">
-                Through word of mouth and absolute necessity, we built a community of over 1,600 people — with zero advertising, zero paid promotion, and zero compromise on our values. Our guests drive from Monroe, Smyrna, Fayetteville, Lawrenceville, and Douglasville to be in our room on a Saturday night. Not because there's nothing else to do. Because this is the room built for them.
+                Through word of mouth and absolute necessity, we built a community of over {Number(stats.communityTotal || 0).toLocaleString('en-US')} people — with zero advertising, zero paid promotion, and zero compromise on our values. Our guests drive from Monroe, Smyrna, Fayetteville, Lawrenceville, and Douglasville to be in our room on a Saturday night. Not because there's nothing else to do. Because this is the room built for them.
               </p>
             </div>
           </div>
@@ -513,7 +513,7 @@ const About = () => {
                 <div className="about-value-number" aria-hidden="true">01</div>
                 <h3 className="about-value-title">Intentionality</h3>
                 <p className="about-value-body">
-                  Every event is curated. Every guest is considered. We cap attendance at 35 to 40 people not because we can't grow, but because intimacy is the point.
+                  Every event is curated. Every guest is considered. We cap attendance at 35 to 45 people not because we can't grow, but because intimacy is the point.
                 </p>
               </article>
               <article className="about-value-card">

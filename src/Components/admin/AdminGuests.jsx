@@ -31,6 +31,7 @@ const AdminGuests = ({ startEventId = '', onOpen }) => {
     },
     removeGuest: (id) => adminApi(`/events/${openId}/guests/${id}`, { method: 'DELETE' }),
     resendTicket: (orderId, to) => adminApi(`/orders/${orderId}/resend-ticket`, { method: 'POST', body: { to } }),
+    creditCode: (body) => adminApi(`/events/${openId}/credit-code`, { method: 'POST', body }),
   } : null), [openId]);
 
   if (openId && api) {

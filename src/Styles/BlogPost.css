@@ -469,3 +469,40 @@
     margin: -22px -18px 18px;
   }
 }
+
+/* ---------- Event stories (photos, pull quotes, details box) ---------- */
+.editorial-body-content .gfc-lede { font-size: 1.45rem; line-height: 1.5; color: #0b1c3d; font-weight: 600; }
+.editorial-body-content .gfc-pull {
+  font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 1.7rem; line-height: 1.35;
+  color: #0b1c3d; text-align: center; margin: 36px auto; max-width: 30ch;
+  padding: 18px 0; border-top: 1px solid #C5A059; border-bottom: 1px solid #C5A059;
+}
+.editorial-body-content .gfc-photo { margin: 0 0 28px; }
+.editorial-body-content .gfc-photo img {
+  display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 8px;
+}
+.editorial-body-content .gfc-photo-wide img { aspect-ratio: 4 / 3; }
+.editorial-body-content .gfc-photo figcaption { font-size: 0.9rem; color: #6b6f76; margin-top: 8px; font-style: italic; text-align: center; }
+.editorial-body-content .gfc-photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 32px 0 8px; }
+.editorial-body-content .gfc-photo-pair .gfc-photo { margin-bottom: 16px; }
+.editorial-body-content .gfc-details {
+  background: #0b1c3d; color: #fff; border-radius: 10px; padding: 28px 30px 24px; margin: 40px 0;
+}
+.editorial-body-content .gfc-details h3 { color: #C5A059; margin: 0 0 14px; font-size: 1.1rem; letter-spacing: .12em; text-transform: uppercase; }
+.editorial-body-content .gfc-details dl { display: grid; grid-template-columns: max-content 1fr; gap: 10px 20px; margin: 0; font-size: 1.05rem; }
+.editorial-body-content .gfc-details dt { color: #C5A059; font-weight: 700; }
+.editorial-body-content .gfc-details dd { margin: 0; color: #fff; }
+.editorial-body-content .gfc-details-cta { margin: 24px 0 0; }
+.editorial-body-content a.gfc-button {
+  display: inline-block; background: #C5A059; color: #0b1c3d; text-decoration: none; font-weight: 700;
+  padding: 13px 28px; border-radius: 6px; letter-spacing: .02em;
+}
+.editorial-body-content a.gfc-button:hover { background: #fff; color: #0b1c3d; }
+.editorial-body-content .gfc-handles { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+@media (max-width: 600px) {
+  .editorial-body-content .gfc-photo-pair { gap: 10px; }
+  .editorial-body-content .gfc-pull { font-size: 1.4rem; }
+  .editorial-body-content .gfc-details { padding: 22px 18px 20px; }
+  .editorial-body-content .gfc-details dl { grid-template-columns: 1fr; gap: 2px; }
+  .editorial-body-content .gfc-details dd { margin-bottom: 10px; }
+}
