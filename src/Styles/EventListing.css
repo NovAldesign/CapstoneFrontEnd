@@ -553,3 +553,8 @@
   padding: 12px 14px; margin: 14px 0; font-size: 14px; color: var(--gfc-navy); display: flex; flex-direction: column; gap: 8px;
 }
 .gfc-next-up a { color: var(--gfc-navy); font-weight: 700; }
+
+/* Long event names in the "Next up" button wrap inside the box instead of spilling out */
+.gfc-next-up .gfc-btn-outline {
+  white-space: normal; text-align: center; line-height: 1.4; width: 100%; box-sizing: border-box; max-width: 100%;
+}
