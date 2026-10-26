@@ -316,14 +316,14 @@
 .gfc-drawer {
   width: 100%; max-width: 420px; height: 100%; height: 100dvh; max-height: 100dvh; background: #fff; display: flex; flex-direction: column;
   padding: 28px; box-sizing: border-box; box-shadow: -10px 0 35px rgba(0,0,0,0.15);
-  overflow: hidden;
+  overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y;
 }
 .gfc-drawer-head {
   display: flex; justify-content: space-between; align-items: center;
   border-bottom: 1px solid #eee; padding-bottom: 14px; margin-bottom: 20px;
 }
 .gfc-drawer-head h3 { margin: 0; color: var(--gfc-navy); font-size: 22px; }
-.gfc-drawer-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; gap: 14px; }
+.gfc-drawer-body { flex: 0 0 auto; display: flex; flex-direction: column; gap: 14px; }
 .gfc-drawer-empty { text-align: center; color: #777; padding: 40px 0; }
 .gfc-bag-item { border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 14px; background: #fcfcfc; }
 .gfc-bag-item-name { font-weight: 700; color: var(--gfc-navy); font-size: 14px; }
@@ -333,7 +333,7 @@
 .gfc-qty { display: inline-flex; align-items: center; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
 .gfc-qty button { background: #fff; border: none; width: 30px; height: 30px; cursor: pointer; font-size: 16px; color: var(--gfc-navy); }
 .gfc-qty span { min-width: 28px; text-align: center; font-weight: 700; font-size: 14px; }
-.gfc-drawer-foot { flex: 0 0 auto; max-height: 60dvh; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; border-top: 1px solid #eee; padding-top: 18px; margin-top: 18px; padding-bottom: env(safe-area-inset-bottom); }
+.gfc-drawer-foot { flex: 0 0 auto; border-top: 1px solid #eee; padding-top: 18px; margin-top: 18px; padding-bottom: max(8px, env(safe-area-inset-bottom)); }
 .gfc-discount-note {
   background: #f0faf7; color: var(--gfc-green); border: 1px solid #b2f5ea; border-radius: 6px;
   padding: 8px 12px; font-size: 12px; font-weight: 700; text-align: center; margin-bottom: 12px;
