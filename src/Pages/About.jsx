@@ -513,7 +513,7 @@ const About = () => {
                 <div className="about-value-number" aria-hidden="true">01</div>
                 <h3 className="about-value-title">Intentionality</h3>
                 <p className="about-value-body">
-                  Every event is curated. Every guest is considered. We cap attendance at 35 to 40 people not because we can't grow, but because intimacy is the point.
+                  Every event is curated. Every guest is considered. We cap attendance at 35 to 45 people not because we can't grow, but because intimacy is the point.
                 </p>
               </article>
               <article className="about-value-card">
