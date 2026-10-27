@@ -238,8 +238,8 @@ const LivePerson = ({ p, maxOptions, maxQuestions, onChange }) => {
           </div>
         </div>
         <div className="ga-person-actions">
-          {l.status && (
-            <label className="ga-check gl-done" title="Check when the Live is finished. It moves to Archived.">
+          {(l.status || l.completedAt || p.event) && (
+            <label className="ga-check gl-done" title="Check when the Live is finished (or was done outside the dashboard). It moves to Archived.">
               <input type="checkbox" checked={Boolean(l.completedAt)} onChange={(e) => markDone(e.target.checked)} />
               Done
             </label>
