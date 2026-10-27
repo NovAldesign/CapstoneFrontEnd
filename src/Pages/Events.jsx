@@ -29,7 +29,7 @@ const FAQ_TABS = [
     { q: "Is alcohol served?", a: "No. Every GFC event is alcohol-free. Venues offer mocktails, tea and coffee to buy." },
     { q: "Any ticket deals?", a: "Early Bird tickets are our best price (6 per event, ending 14 days before). Book 2 different events in one order and save 5%, or 3 or more and save 10%." },
     { q: "Can I buy tickets the day of or at the door?", a: "Yes. Tickets are sold online right up to the day of the event, and at the door as long as seats are left. Our rooms are small, so grab yours ahead of time to guarantee your spot." },
-    { q: "Is there parking?", a: "Yes, and it's free at our venues, including Aromas Tea Bar at The Koncept House and Mint Coffeehouse." },
+    { q: "Is there parking?", a: "Yes, and it's free at our venues, including Aromas Tea Bar (located at The Koncept House) and Mint Coffeehouse." },
     { q: "Refunds and transfers?", a: "Tickets are final, but you can transfer yours up to 24 hours before by emailing community@grownfolkscollective.com. If we cancel, you get a full refund." },
   ]},
   { id: "games", label: "Game Nights", faqs: [

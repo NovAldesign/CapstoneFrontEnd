@@ -91,7 +91,7 @@ const ARTIST_FAQS = [
   },
   {
     q: 'Where are the showcases?',
-    a: 'Intimate, alcohol-free venues around Atlanta, like Aromas Tea Bar – The Koncept House. Each showcase features 3 artists with 20-minute sets.',
+    a: 'Intimate, alcohol-free venues around Atlanta, like Aromas Tea Bar, located at The Koncept House. Each showcase features 3 artists with 20-minute sets.',
   },
 ];
 
