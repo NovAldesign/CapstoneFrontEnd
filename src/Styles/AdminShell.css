@@ -323,3 +323,7 @@ button.ga-stat:hover { border-color: var(--ga-gold); transform: translateY(-1px)
 .ev-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 4px 0 12px; }
 .ev-nav .ga-btn:disabled { opacity: 0.45; cursor: default; }
 .ev-nav-jump { max-width: 340px; min-width: 0; flex: 1 1 220px; }
+
+/* Lives: "Done" check that archives a finished Live */
+.gl-done { display: inline-flex; align-items: center; gap: 6px; font-size: 0.86rem; font-weight: 600; padding: 4px 10px; border: 1px solid var(--ga-line, #D9D2C3); border-radius: 4px; cursor: pointer; }
+.gl-done input { width: 18px; height: 18px; accent-color: #0E2340; }

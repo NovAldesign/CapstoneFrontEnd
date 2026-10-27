@@ -89,6 +89,7 @@ const LiveEditor = ({ p, maxOptions, maxQuestions, onSaved, onCancel }) => {
     if (!handle || handle === suggested(platform)) setHandle(suggested(pl));
   };
   const [email, setEmail] = useState(true);
+  const [sendInvite, setSendInvite] = useState(!l.status || l.status === 'invited' && !l.inviteSentAt);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -103,8 +104,9 @@ const LiveEditor = ({ p, maxOptions, maxQuestions, onSaved, onCancel }) => {
     try {
       const body = { options: opts, questions: qs, platform, handle };
       if (setMine) Object.assign(body, { date, sendConfirmation: email });
+      else body.sendInvite = sendInvite;
       const r = await adminApi(`/lives/${p.id}`, { method: 'POST', body });
-      onSaved(r.person, r.emailSent);
+      onSaved(r.person, r.emailSent, r.inviteSent);
     } catch (err) {
       setError(err.message);
     }
@@ -154,6 +156,12 @@ const LiveEditor = ({ p, maxOptions, maxQuestions, onSaved, onCancel }) => {
       </label>
       <button type="button" className="ga-link" onClick={() => setQuestions(p.defaultQuestions.join('\n'))}>Reset to starter questions</button>
 
+      {!setMine && (
+        <label className="ga-check gl-check">
+          <input type="checkbox" checked={sendInvite} onChange={(e) => setSendInvite(e.target.checked)} />
+          Email them their link now (the platform, date choices and questions){l.inviteSentAt ? ' · already sent once' : ''}
+        </label>
+      )}
       <label className="ga-check gl-check">
         <input type="checkbox" checked={setMine} onChange={(e) => setSetMine(e.target.checked)} />
         I'll set the date myself (they gave me a time, or none of the dates worked)
@@ -199,7 +207,16 @@ const LivePerson = ({ p, maxOptions, maxQuestions, onChange }) => {
     }
   };
 
-  const pill = {
+  const markDone = async (done) => {
+    try {
+      const r = await adminApi(`/lives/${p.id}/done`, { method: 'POST', body: { done } });
+      onChange(r.person);
+    } catch (err) {
+      setMsg(err.message);
+    }
+  };
+
+  const pill = l.completedAt ? <span className="ga-pill">Archived</span> : {
     confirmed: <span className="ga-pill green">Confirmed</span>,
     invited: <span className="ga-pill amber">Waiting on them</span>,
     'needs-date': <span className="ga-pill red">Needs a new date</span>,
@@ -221,7 +238,13 @@ const LivePerson = ({ p, maxOptions, maxQuestions, onChange }) => {
           </div>
         </div>
         <div className="ga-person-actions">
-          {l.status && <CopyLink link={l.link} />}
+          {l.status && (
+            <label className="ga-check gl-done" title="Check when the Live is finished. It moves to Archived.">
+              <input type="checkbox" checked={Boolean(l.completedAt)} onChange={(e) => markDone(e.target.checked)} />
+              Done
+            </label>
+          )}
+          {l.status && !l.completedAt && <CopyLink link={l.link} />}
           {l.status === 'confirmed' && (
             <button type="button" className="ga-btn ga-btn-sm" onClick={() => setOpen((o) => !o)}>{open ? 'Hide questions' : 'Questions'}</button>
           )}
@@ -239,12 +262,12 @@ const LivePerson = ({ p, maxOptions, maxQuestions, onChange }) => {
             maxOptions={maxOptions}
             maxQuestions={maxQuestions}
             onCancel={() => setEditing(false)}
-            onSaved={(person, emailSent) => {
+            onSaved={(person, emailSent, inviteSent) => {
               onChange(person);
               setEditing(false);
-              setMsg(person.live.status === 'invited' && !l.status
-                ? 'Saved. Tap "Copy their link" and paste it into your email to them.'
-                : emailSent ? 'Saved and their confirmation email went out.' : 'Saved.');
+              setMsg(inviteSent ? 'Saved and their Live link was emailed to them (a copy went to events@).'
+                : emailSent ? 'Saved and their confirmation email went out (a copy went to events@).'
+                : person.live.status === 'invited' && !l.status ? 'Saved. Tap "Copy their link" to send it yourself.' : 'Saved.');
             }}
           />
           {l.status && <button type="button" className="ga-link gl-clear" onClick={clear}>Clear this Live</button>}
@@ -257,6 +280,7 @@ const LivePerson = ({ p, maxOptions, maxQuestions, onChange }) => {
 const AdminLives = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
+  const [showArchived, setShowArchived] = useState(false);
 
   const load = useCallback(() => {
     adminApi('/lives').then(setData).catch((e) => setError(e.message));
@@ -269,7 +293,10 @@ const AdminLives = () => {
   const update = (person) =>
     setData((d) => ({ ...d, people: d.people.map((x) => (x.id === person.id ? person : x)) }));
   const now = Date.now();
-  const { people, maxOptions, maxQuestions } = data;
+  const { people: everyone, maxOptions, maxQuestions } = data;
+  const archived = everyone.filter((p) => p.live.completedAt)
+    .sort((a, b) => new Date(b.live.completedAt) - new Date(a.live.completedAt));
+  const people = everyone.filter((p) => !p.live.completedAt);
   const today = people.filter((p) => p.live.today && p.live.status === 'confirmed');
   const groups = [
     ['Coming up', people.filter((p) => p.live.status === 'confirmed' && !p.live.today && new Date(p.live.date).getTime() > now)
@@ -277,16 +304,21 @@ const AdminLives = () => {
     ['Needs a new date', people.filter((p) => p.live.status === 'needs-date')],
     ['Waiting on them', people.filter((p) => p.live.status === 'invited')],
     ['Not set up yet', people.filter((p) => !p.live.status && p.event && new Date(p.event.date).getTime() > now)],
-    ['Done', people.filter((p) => p.live.status === 'confirmed' && !p.live.today && new Date(p.live.date).getTime() <= now)],
+    ['Finished, not checked off', people.filter((p) => p.live.status === 'confirmed' && !p.live.today && new Date(p.live.date).getTime() <= now)],
   ];
 
   return (
     <div className="ga-stack">
       <p className="ga-subtitle" style={{ marginTop: -12 }}>
-        Set up a Live, copy their link into your email, and they pick the date. Choose TikTok, Instagram or Facebook for each Live. They get a confirmation with the questions,
-        and on the day everything is right here (and on Today).
+        Set up a Live and choose TikTok, Instagram or Facebook. They're emailed their link automatically, pick a date, and get a confirmation
+        with the questions (events@ gets a copy of every email). On the day everything is right here and on Today. Check <strong>Done</strong> when it's finished to archive it.
       </p>
-      {today.map((p) => <LiveTodayCard key={p.id} p={p} />)}
+      {today.map((p) => (
+        <div key={p.id}>
+          <LiveTodayCard p={p} />
+          <ul className="gl-list"><LivePerson p={p} maxOptions={maxOptions} maxQuestions={maxQuestions} onChange={update} /></ul>
+        </div>
+      ))}
       {groups.map(([title, list]) => list.length > 0 && (
         <section key={title} className="ga-card">
           <div className="ga-card-head">
@@ -297,7 +329,20 @@ const AdminLives = () => {
           </ul>
         </section>
       ))}
-      {people.length === 0 && (
+      {archived.length > 0 && (
+        <section className="ga-card">
+          <div className="ga-card-head">
+            <h2 className="ga-card-title">Archived <span className="ga-small ga-muted">({archived.length})</span></h2>
+            <button type="button" className="ga-btn ga-btn-sm" onClick={() => setShowArchived((v) => !v)}>{showArchived ? 'Hide' : 'Show'}</button>
+          </div>
+          {showArchived && (
+            <ul className="gl-list">
+              {archived.map((p) => <LivePerson key={p.id} p={p} maxOptions={maxOptions} maxQuestions={maxQuestions} onChange={update} />)}
+            </ul>
+          )}
+        </section>
+      )}
+      {people.length === 0 && archived.length === 0 && (
         <div className="ga-empty"><div className="ga-empty-big">🔴</div>No booked artists for upcoming showcases yet.</div>
       )}
     </div>
