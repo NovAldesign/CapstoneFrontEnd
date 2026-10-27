@@ -10,6 +10,7 @@ import AdminToday from "../Components/admin/AdminToday.jsx";
 import AdminShowcases from "../Components/admin/AdminShowcases.jsx";
 import AdminLives from "../Components/admin/AdminLives.jsx";
 import EventbriteSync from "../Components/admin/EventbriteSync.jsx";
+import EbTicketFixer from "../Components/admin/EbTicketFixer.jsx";
 import AdminCodes from "../Components/admin/AdminCodes.jsx";
 import { AdminInboxList, AdminPerks, AdminSubscribers, AdminScouts } from "../Components/admin/AdminLists.jsx";
 import AdminPeople from "../Components/admin/AdminPeople.jsx";
@@ -702,6 +703,9 @@ const AdminDashboard = () => {
               <div className="eb-sync-bar">
                 <EventbriteSync onDone={loadData} />
                 <span className="ga-small ga-muted">Added or changed a ticket on Eventbrite and don't see it here or on the site? Tap this.</span>
+              </div>
+              <div className="eb-sync-bar">
+                <EbTicketFixer onDone={loadData} />
               </div>
               <div className="table-toolbar">
                 <div className="ga-seg" role="tablist" aria-label="Which events">

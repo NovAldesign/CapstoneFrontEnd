@@ -316,6 +316,14 @@ button.ga-stat:hover { border-color: var(--ga-gold); transform: translateY(-1px)
 .eb-sync-bar > .ga-small { padding-top: 6px; }
 .eb-sync-results { margin: 10px 0 0; }
 .eb-sync-row + .eb-sync-row { margin-top: 10px; }
+.eb-fix { width: 100%; }
+.eb-fix-panel { margin-top: 10px; padding: 14px 16px; background: #F7F4EE; border: 1px solid #E4DCCB; border-radius: 8px; max-width: 760px; }
+.eb-fix-row { padding: 10px 0; border-top: 1px solid #E4DCCB; }
+.eb-fix-row ul { margin: 6px 0 4px 18px; padding: 0; font-size: 14px; }
+.eb-fix-row ul.err { color: #9B2C2C; }
+.eb-fix-panel .gold-fill-btn { margin-top: 12px; }
+.eb-fix-faq { margin-top: 14px; }
+.eb-fix-faq textarea { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px; padding: 8px; border: 1px solid #D8CFBC; border-radius: 6px; }
 .eb-sync-results ul { margin: 4px 0 0; padding-left: 20px; }
 .eb-sync-results p { margin: 2px 0 0; }
 
