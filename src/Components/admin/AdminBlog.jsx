@@ -55,7 +55,37 @@ const uploadImage = async (file) => {
   return out.secure_url;
 };
 
-const ImageField = ({ label, hint, value, onChange }) => {
+// Fit any picture into an exact size without cropping it: the whole picture sits in the
+// middle, and a soft blurred copy of it fills any leftover space. Returns a JPEG file.
+const fitImage = (file, w, h) => new Promise((resolve, reject) => {
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#0E2340';
+    ctx.fillRect(0, 0, w, h);
+    const cover = Math.max(w / img.width, h / img.height);
+    const fit = Math.min(w / img.width, h / img.height);
+    if (fit < cover - 0.001) {
+      // Background: the same picture, filled, blurred and dimmed
+      ctx.save();
+      ctx.filter = 'blur(28px) brightness(0.55)';
+      const bw = img.width * cover * 1.1, bh = img.height * cover * 1.1;
+      ctx.drawImage(img, (w - bw) / 2, (h - bh) / 2, bw, bh);
+      ctx.restore();
+    }
+    const fw = img.width * fit, fh = img.height * fit;
+    ctx.drawImage(img, (w - fw) / 2, (h - fh) / 2, fw, fh);
+    URL.revokeObjectURL(url);
+    c.toBlob((b) => (b ? resolve(new File([b], 'image.jpg', { type: 'image/jpeg' })) : reject(new Error("That picture couldn't be resized."))), 'image/jpeg', 0.9);
+  };
+  img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("That picture couldn't be opened. Try a JPG or PNG.")); };
+  img.src = url;
+});
+
+const ImageField = ({ label, hint, value, onChange, fit }) => {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
   const pick = async (e) => {
@@ -63,7 +93,7 @@ const ImageField = ({ label, hint, value, onChange }) => {
     e.target.value = '';
     if (!file) return;
     setBusy(true); setErr('');
-    try { onChange(await uploadImage(file)); } catch (x) { setErr(x.message); }
+    try { onChange(await uploadImage(fit ? await fitImage(file, fit[0], fit[1]) : file)); } catch (x) { setErr(x.message); }
     setBusy(false);
   };
   return (
@@ -77,7 +107,7 @@ const ImageField = ({ label, hint, value, onChange }) => {
       </div>
       {hint && <small>{hint}</small>}
       {err && <small style={{ color: '#b42318' }}>{err}</small>}
-      {value && <img src={value} alt="" style={{ marginTop: 8, maxWidth: 180, maxHeight: 140, borderRadius: 6, objectFit: 'cover' }} />}
+      {value && <img src={value} alt="" style={{ marginTop: 8, maxWidth: 180, maxHeight: 140, borderRadius: 6, objectFit: 'contain' }} />}
     </div>
   );
 };
@@ -178,7 +208,7 @@ const PostDrawer = ({ editing, onClose, onSaved }) => {
               <small>{f.publishedAt > today() ? 'Scheduled: goes live at 12:00 AM that day.' : 'Live on the blog now.'}</small>
             </label>
           </div>
-          <ImageField label="Cover picture" hint="Wide picture at the top of the post (1600 × 900 works best)." value={f.imageUrl} onChange={set('imageUrl')} />
+          <ImageField label="Cover picture" hint="Wide picture at the top of the post. Any size works: uploads are fitted to 1600 × 900 without cutting anything off." value={f.imageUrl} onChange={set('imageUrl')} fit={[1600, 900]} />
           <div className="ga-form-grid">
             <label className="ga-field">Picture description <small>(for screen readers)</small>
               <input className="ga-input" value={f.imageAlt} onChange={set('imageAlt')} maxLength={200} />
@@ -187,7 +217,7 @@ const PostDrawer = ({ editing, onClose, onSaved }) => {
               <input className="ga-input" value={f.imageCaption} onChange={set('imageCaption')} maxLength={200} />
             </label>
           </div>
-          <ImageField label="Pinterest picture (optional)" hint="Tall picture for the Save to Pinterest button (1000 × 1500)." value={f.pinImageUrl} onChange={set('pinImageUrl')} />
+          <ImageField label="Pinterest picture (optional)" hint="Tall picture for the Save to Pinterest button. Uploads are fitted to 1000 × 1500 without cutting anything off." value={f.pinImageUrl} onChange={set('pinImageUrl')} fit={[1000, 1500]} />
           <label className="ga-check">
             <input type="checkbox" checked={f.affiliate} onChange={set('affiliate')} />
             This post has affiliate links (shows the “we may earn a commission” note at the top)
