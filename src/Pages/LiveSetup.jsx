@@ -5,9 +5,9 @@ import { BACKEND_URL } from '../Services/eventUtils';
 import '../Styles/Shop.css';
 import '../Styles/LiveSetup.css';
 
-// /live-setup/:id?t=TOKEN — a booked artist picks their Live date. All Lives are on TikTok now.
+// /live-setup/:id?t=TOKEN — a booked artist picks their Live date. The platform (TikTok, Instagram or Facebook) is set in the dashboard.
 // The questions stay on the page, in their confirmation email, and in the dashboard.
-const PLATFORM_LABELS = { instagram: 'Instagram', tiktok: 'TikTok' }; // older Lives may still say Instagram
+const PLATFORM_LABELS = { tiktok: 'TikTok', instagram: 'Instagram', facebook: 'Facebook' };
 
 const liveApi = async (id, token, body) => {
   const res = await fetch(`${BACKEND_URL}/api/lives/${id}?t=${encodeURIComponent(token)}`, {
@@ -37,12 +37,12 @@ const LiveSetup = () => {
   const load = (data) => {
     setInfo(data);
     const a = data.answers;
-    const platform = 'tiktok';
+    const platform = PLATFORM_LABELS[a.platform] ? a.platform : 'tiktok';
     setForm({
       date: a.customRequest ? 'other' : a.date || '',
       customRequest: a.customRequest,
       platform,
-      handle: (a.platform === 'tiktok' && a.handle) || data.handles.tiktok || '',
+      handle: a.handle || (platform === 'facebook' ? '' : data.handles[platform]) || '',
       phone: a.phone,
       plug: a.plug,
       extraQuestion: a.extraQuestion,
@@ -60,7 +60,7 @@ const LiveSetup = () => {
     e.preventDefault();
     setError('');
     if (!form.date) return setError('Pick a date for your Live.');
-    if (!form.handle.trim()) return setError('Add your TikTok handle so we can invite you.');
+    if (!form.handle.trim()) return setError(`Add your ${PLATFORM_LABELS[form.platform] || 'TikTok'} ${form.platform === 'facebook' ? 'name' : 'handle'} so we can invite you.`);
     setSaving(true);
     try {
       const data = await liveApi(id, token, form);
@@ -111,7 +111,7 @@ const LiveSetup = () => {
                 <h2 className="playfair shop-h3">You're set!</h2>
                 <p className="live-when">{info.answers.dateLabel}</p>
                 <p className="shop-muted">
-                  On {platformName}, with @grownfolkscollective. {done?.emailSent !== false ? 'We emailed you a confirmation with everything below.' : ''}
+                  On {platformName}, with {info?.answers.platform === 'facebook' ? 'the Grown Folks Collective Page' : '@grownfolkscollective'}. {done?.emailSent !== false ? 'We emailed you a confirmation with everything below.' : ''}
                 </p>
               </>
             ) : (
@@ -153,13 +153,13 @@ const LiveSetup = () => {
             </fieldset>
 
             <fieldset className="shop-card live-card">
-              <legend className="playfair shop-h3">2. Your TikTok</legend>
-              <p className="shop-fine">Our Lives happen on TikTok, on @grownfolkscollective.</p>
+              <legend className="playfair shop-h3">2. Your {platformName}</legend>
+              <p className="shop-fine">This Live is on {platformName}, on {info?.answers.platform === 'facebook' ? 'the Grown Folks Collective Page' : '@grownfolkscollective'}.</p>
               {form.platform && (
                 <div className="shop-fields live-two">
                   <label>
-                    Your TikTok handle
-                    <input value={form.handle} onChange={set('handle')} maxLength={80} placeholder="@yourname" required />
+                    Your {platformName} {form.platform === 'facebook' ? 'name or profile link' : 'handle'}
+                    <input value={form.handle} onChange={set('handle')} maxLength={120} placeholder={form.platform === 'facebook' ? 'Name or facebook.com/…' : '@yourname'} required />
                     <small>So we can invite you into the Live.</small>
                   </label>
                   <label>
@@ -234,7 +234,7 @@ const LiveSetup = () => {
             {info.answers.plug && <p className="shop-muted"><strong>You'd like to plug:</strong> {info.answers.plug}</p>}
             <h3 className="live-h4">How to join</h3>
             <ol className="live-steps">
-              <li>Follow @grownfolkscollective on {platformName} if you haven't yet.</li>
+              <li>Follow {info.answers.platform === 'facebook' ? 'the Grown Folks Collective Page' : '@grownfolkscollective'} on {platformName} if you haven't yet.</li>
               <li>Open {platformName} a few minutes before start time and join our Live when it starts.</li>
               <li>Vaughn will invite you in. Accept and you're on!</li>
             </ol>

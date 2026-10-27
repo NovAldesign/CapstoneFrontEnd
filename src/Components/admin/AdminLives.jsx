@@ -1,12 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { adminApi, fmtDay } from '../../Services/adminApi';
 
-// Lives: TikTok Lives with booked artists, hosts and live artists (older ones may say Instagram).
+// Lives: TikTok, Instagram or Facebook Lives with booked artists, hosts and live artists.
 // Set date choices + questions → copy their private link → they confirm → questions are here on the day.
-const PLATFORM = { instagram: 'Instagram', tiktok: 'TikTok' };
+const PLATFORM = { tiktok: 'TikTok', instagram: 'Instagram', facebook: 'Facebook' };
 const ROLE = { host: 'Host', visual: 'Live art', artist: 'Artist' };
 const profileUrl = (platform, handle) =>
-  handle ? (platform === 'tiktok' ? `https://www.tiktok.com/@${handle}` : `https://www.instagram.com/${handle}/`) : '';
+  handle
+    ? platform === 'tiktok' ? `https://www.tiktok.com/@${handle}`
+      : platform === 'facebook' ? `https://www.facebook.com/${handle}`
+      : `https://www.instagram.com/${handle}/`
+    : '';
 
 const Avatar = ({ p }) =>
   p.headshotUrl ? (
@@ -77,8 +81,13 @@ const LiveEditor = ({ p, maxOptions, maxQuestions, onSaved, onCancel }) => {
   const [questions, setQuestions] = useState((l.questions.length ? l.questions : p.defaultQuestions).join('\n'));
   const [setMine, setSetMine] = useState(l.status === 'needs-date');
   const [date, setDate] = useState(l.dateValue || '');
-  const [platform, setPlatform] = useState('tiktok');
-  const [handle, setHandle] = useState((l.platform === 'tiktok' && l.handle) || p.tiktok || '');
+  const [platform, setPlatform] = useState(l.platform || 'tiktok');
+  const suggested = (pl) => (pl === 'tiktok' ? p.tiktok : pl === 'instagram' ? p.instagram : '') || '';
+  const [handle, setHandle] = useState(l.handle || suggested(l.platform || 'tiktok'));
+  const pickPlatform = (pl) => {
+    setPlatform(pl);
+    if (!handle || handle === suggested(platform)) setHandle(suggested(pl));
+  };
   const [email, setEmail] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -92,8 +101,8 @@ const LiveEditor = ({ p, maxOptions, maxQuestions, onSaved, onCancel }) => {
     if (setMine && (!date || !platform)) return setError('Pick the date and platform.');
     setSaving(true);
     try {
-      const body = { options: opts, questions: qs };
-      if (setMine) Object.assign(body, { date, platform, handle, sendConfirmation: email });
+      const body = { options: opts, questions: qs, platform, handle };
+      if (setMine) Object.assign(body, { date, sendConfirmation: email });
       const r = await adminApi(`/lives/${p.id}`, { method: 'POST', body });
       onSaved(r.person, r.emailSent);
     } catch (err) {
@@ -104,6 +113,20 @@ const LiveEditor = ({ p, maxOptions, maxQuestions, onSaved, onCancel }) => {
 
   return (
     <div className="gl-editor">
+      <div className="ga-form-grid">
+        <label className="ga-field">
+          Platform
+          <select className="ga-select" value={platform} onChange={(e) => pickPlatform(e.target.value)}>
+            <option value="tiktok">TikTok</option>
+            <option value="instagram">Instagram</option>
+            <option value="facebook">Facebook</option>
+          </select>
+        </label>
+        <label className="ga-field">
+          Their {PLATFORM[platform]} {platform === 'facebook' ? 'name or profile link' : 'handle'}
+          <input className="ga-input" value={handle} onChange={(e) => setHandle(e.target.value)} placeholder={platform === 'facebook' ? 'Name or facebook.com/…' : '@name'} />
+        </label>
+      </div>
       <div className="ga-field">
         Date choices they can pick from <small>Atlanta time. Weekday evenings work best.</small>
         {options.map((v, i) => (
@@ -133,7 +156,7 @@ const LiveEditor = ({ p, maxOptions, maxQuestions, onSaved, onCancel }) => {
 
       <label className="ga-check gl-check">
         <input type="checkbox" checked={setMine} onChange={(e) => setSetMine(e.target.checked)} />
-        I'll set the date myself (they replied by email, or none of the dates worked)
+        I'll set the date myself (they gave me a time, or none of the dates worked)
       </label>
       {setMine && (
         <div className="ga-form-grid">
@@ -141,19 +164,9 @@ const LiveEditor = ({ p, maxOptions, maxQuestions, onSaved, onCancel }) => {
             Live date and time
             <input type="datetime-local" className="ga-input" value={date} onChange={(e) => setDate(e.target.value)} />
           </label>
-          <label className="ga-field">
-            Platform
-            <select className="ga-select" value={platform} onChange={(e) => setPlatform(e.target.value)}>
-              <option value="tiktok">TikTok</option>
-            </select>
-          </label>
-          <label className="ga-field">
-            Their handle
-            <input className="ga-input" value={handle} onChange={(e) => setHandle(e.target.value)} placeholder="@name" />
-          </label>
           <label className="ga-check gl-check">
             <input type="checkbox" checked={email} onChange={(e) => setEmail(e.target.checked)} />
-            Email them the confirmation
+            Email them the confirmation (date, how to join and all the questions)
           </label>
         </div>
       )}
@@ -270,7 +283,7 @@ const AdminLives = () => {
   return (
     <div className="ga-stack">
       <p className="ga-subtitle" style={{ marginTop: -12 }}>
-        Set up a Live, copy their link into your email, and they pick the date (all Lives are on TikTok). They get a confirmation with the questions,
+        Set up a Live, copy their link into your email, and they pick the date. Choose TikTok, Instagram or Facebook for each Live. They get a confirmation with the questions,
         and on the day everything is right here (and on Today).
       </p>
       {today.map((p) => <LiveTodayCard key={p.id} p={p} />)}
