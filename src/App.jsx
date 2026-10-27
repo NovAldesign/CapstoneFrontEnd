@@ -117,6 +117,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/links" element={<Links />} />
             <Route path="/join" element={<Join />} />
+            <Route path="/play" element={<Join />} />
             <Route path="/go/:code" element={<Go />} />
 
             {/* Policies */}

@@ -6,7 +6,8 @@ import { loadUpcomingEvents, eventPath, formatShortDate } from '../Services/even
 import { isFoodEvent } from '../Services/memberPricing';
 import '../Styles/Join.css';
 
-// /join — the one link for DMs, bios and QR codes: $5 off a first ticket for joining the newsletter
+// /join and /play — the one link for DMs, bios and QR codes: $5 off a first ticket for joining
+// Come Out & Play, the GFC newsletter. Add ?src=ig (or fb, tiktok…) to see where signups came from.
 const PHOTO = '/join-karaoke-bingo-group.jpg'; // Karaoke Bingo crew
 const OG_IMAGE = 'https://www.grownfolkscollective.com/join-og.jpg';
 
@@ -24,20 +25,20 @@ const Join = () => {
   return (
     <div className="join-page">
       <Helmet>
-        <title>Get $5 Off Your First Night | Grown Folks™ Collective</title>
-        <meta name="description" content="Join the Grown Folks™ Collective list and get $5 off your first ticket: game nights, Karaoke Bingo and live music for Atlanta's 30+ crowd, all alcohol-free." />
+        <title>Join Come Out & Play: $5 Off Your First Ticket | Grown Folks™ Collective</title>
+        <meta name="description" content="Join Come Out & Play, the Grown Folks™ Collective newsletter, and get $5 off your first ticket: game nights, Karaoke Bingo and live music for Atlanta's 30+ crowd, all alcohol-free." />
         <link rel="canonical" href="https://www.grownfolkscollective.com/join" />
-        <meta property="og:title" content="Get $5 off your first Grown Folks™ night" />
+        <meta property="og:title" content="Join Come Out & Play and get $5 off your first ticket" />
         <meta property="og:image" content={OG_IMAGE} />
       </Helmet>
 
       <section className="join-hero">
         <div className="join-copy">
           <p className="join-kicker">Atlanta · 30+ · Alcohol-free</p>
-          <h1 className="playfair">Get $5 off your first Grown Folks™ night.</h1>
+          <h1 className="playfair">Join Come Out &amp; Play and get $5 off your first ticket.</h1>
           <p className="join-lead">
             Game nights, Karaoke Bingo and live music for grown folks who want good people and a real night out.
-            Join our list and we'll email you $5 off your first ticket.
+            Come Out &amp; Play is our newsletter. Join and we'll email you $5 off your first ticket.
           </p>
           <figure className="join-photo">
             <img src={PHOTO} alt="A big, smiling group of Grown Folks Collective guests together at Karaoke Bingo" width="1600" height="1200" />
@@ -45,7 +46,7 @@ const Join = () => {
           </figure>
           <ul className="join-points">
             <li>Hear about new events before they fill up</li>
-            <li>A weekly newsletter with what's coming up, never spam</li>
+            <li>Come Out &amp; Play every week: what's coming up, never spam</li>
             <li>Unsubscribe with one click</li>
           </ul>
         </div>
