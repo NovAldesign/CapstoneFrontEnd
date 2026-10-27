@@ -61,7 +61,7 @@ const LINKS = {
   fb: "https://www.facebook.com/groups/grownfolksatl",
 
   // Platform sales decks
-  pitch: "https://claude.ai/artifact/X9L2NLmhnfk81aNMocRVb4", // Business Platform Pitch (any business)
+  pitch: "/pitch/business-platform-pitch.pdf", // Business Platform Pitch (any business), PDF on our own site
   "events-pitch": "https://claude.ai/artifact/6gpXu2bHSZ5o2GHeobsLGq", // White-Label Event Platform
 };
 
@@ -83,7 +83,8 @@ const Go = () => {
   const { search } = useLocation();
   const known = LINKS[code.toLowerCase()];
   const target = known || "/events";
-  const external = /^https?:\/\//.test(target);
+  // Outside links and files (like the pitch PDF) need a full page load, not an in-app route
+  const external = /^https?:\/\//.test(target) || /\.pdf($|\?)/i.test(target);
 
   useEffect(() => {
     const counted = known ? countClick(code.toLowerCase(), search) : Promise.resolve();
