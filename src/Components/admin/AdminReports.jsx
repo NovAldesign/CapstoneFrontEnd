@@ -61,6 +61,7 @@ const AdminReports = ({ openGuests }) => {
     return { from: ymd(a), to: ymd(b) };
   }, [range, custom]);
 
+  const [clicks, setClicks] = useState([]);
   const load = useCallback(() => {
     setLoading(true);
     setError('');
@@ -68,6 +69,9 @@ const AdminReports = ({ openGuests }) => {
       .then(setData)
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
+    adminApi(`/link-clicks?from=${dates.from}&to=${dates.to}`)
+      .then((r) => setClicks(r.links || []))
+      .catch(() => setClicks([]));
   }, [dates]);
   useEffect(load, [load]);
 
@@ -174,6 +178,22 @@ const AdminReports = ({ openGuests }) => {
                 </table>
               </div>
             )}
+          </section>
+
+          <section className="ga-card" style={{ marginTop: 18 }}>
+            <p className="ga-kicker">Short links</p>
+            <h2 className="ga-card-title" style={{ marginBottom: 12 }}>Short link clicks</h2>
+            {clicks.length ? (
+              <Bars unit="clicks" rows={clicks.map((c) => ({
+                key: `${c.code}|${c.src}`,
+                label: `/go/${c.code}${c.src ? ` · ${c.src}` : ''}`,
+                value: c.clicks,
+                extra: c.lastAt ? `last ${new Date(c.lastAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}` : '',
+              }))} />
+            ) : <p className="ga-muted">No clicks in this range yet.</p>}
+            <p className="ga-small ga-muted" style={{ marginTop: 10 }}>
+              Counts each visit to a grownfolkscollective.com/go/ link once. Add ?src=name to a link (like /go/pitch?src=lawncare) to see who opened it.
+            </p>
           </section>
 
           {codes.length > 0 && (

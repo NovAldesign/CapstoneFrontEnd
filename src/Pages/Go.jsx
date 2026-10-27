@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { Navigate, useLocation, useParams } from "react-router-dom";
+import { BACKEND_URL } from "../Services/eventUtils";
 
 // ── Short links: grownfolkscollective.com/go/oct10 ──
 // Easy to say, type and share. Anything after ? is kept, so
 // /go/oct30?code=ARIA and /go/oct10?src=threads still work.
 // To add a link: add a line below ("code": "where it goes").
+// Every click is counted (Dashboard → Reports → Short link clicks). Add ?src=name to see who opened it.
 const LINKS = {
   // Upcoming events
   oct10: "/events/grown-folks-game-night-spades-spades-and-more-spades-30-6aa645349e0da510aa0c0ea7",
@@ -57,17 +59,39 @@ const LINKS = {
     review: "https://g.page/r/CeZCCIN0CITtEBM/review",
   discord: "https://discord.gg/yZG48Q4tgJ",
   fb: "https://www.facebook.com/groups/grownfolksatl",
+
+  // Platform sales decks
+  pitch: "https://claude.ai/artifact/X9L2NLmhnfk81aNMocRVb4", // Business Platform Pitch (any business)
+  "events-pitch": "https://claude.ai/artifact/6gpXu2bHSZ5o2GHeobsLGq", // White-Label Event Platform
+};
+
+// Count the click (once per visit), then go. Never blocks the redirect for long.
+const countClick = (code, search) => {
+  const key = `go:${code}${search}`;
+  try { if (sessionStorage.getItem(key)) return Promise.resolve(); sessionStorage.setItem(key, "1"); } catch { /* private mode */ }
+  const src = new URLSearchParams(search).get("src") || "";
+  return fetch(`${BACKEND_URL}/api/go/${encodeURIComponent(code)}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ src }),
+    keepalive: true,
+  }).catch(() => {});
 };
 
 const Go = () => {
   const { code = "" } = useParams();
   const { search } = useLocation();
-  const target = LINKS[code.toLowerCase()] || "/events";
+  const known = LINKS[code.toLowerCase()];
+  const target = known || "/events";
   const external = /^https?:\/\//.test(target);
 
   useEffect(() => {
-    if (external) window.location.replace(target);
-  }, [external, target]);
+    const counted = known ? countClick(code.toLowerCase(), search) : Promise.resolve();
+    if (external) {
+      // Give the count a moment to send before leaving the site
+      Promise.race([counted, new Promise((r) => setTimeout(r, 700))]).then(() => window.location.replace(target));
+    }
+  }, [external, target, known, code, search]);
 
   if (external) return null;
   return <Navigate to={target + search} replace />;
