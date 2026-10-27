@@ -50,9 +50,17 @@ const LiveSetup = () => {
     });
   };
 
+  // ?approve=1 comes from the "Yes, this time works" button in their email
+  const approving = params.get('approve') === '1';
+  const [approvedNow, setApprovedNow] = useState(false);
   useEffect(() => {
-    liveApi(id, token).then(load).catch((e) => setError(e.message));
-  }, [id, token]);
+    const go = approving
+      ? fetch(`${BACKEND_URL}/api/lives/${id}/approve?t=${encodeURIComponent(token)}`, { method: 'POST' })
+          .then(async (r) => { const d = await r.json().catch(() => ({})); if (!r.ok) throw new Error(d.error || 'Something went wrong.'); setApprovedNow(true); return d; })
+          .catch(() => liveApi(id, token))
+      : liveApi(id, token);
+    go.then(load).catch((e) => setError(e.message));
+  }, [id, token, approving]);
 
   const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
 
@@ -108,7 +116,7 @@ const LiveSetup = () => {
             {confirmed ? (
               <>
                 <div className="live-check" aria-hidden="true">✓</div>
-                <h2 className="playfair shop-h3">You're set!</h2>
+                <h2 className="playfair shop-h3">{approvedNow ? 'Thank you! Your time is confirmed.' : "You're set!"}</h2>
                 <p className="live-when">{info.answers.dateLabel}</p>
                 <p className="shop-muted">
                   On {platformName}, with {info?.answers.platform === 'facebook' ? 'the Grown Folks Collective Page' : '@grownfolkscollective'}. {done?.emailSent !== false ? 'We emailed you a confirmation with everything below.' : ''}

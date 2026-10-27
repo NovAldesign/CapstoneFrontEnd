@@ -89,6 +89,7 @@ const LiveEditor = ({ p, maxOptions, maxQuestions, onSaved, onCancel }) => {
     if (!handle || handle === suggested(platform)) setHandle(suggested(pl));
   };
   const [email, setEmail] = useState(true);
+  const [artistChose, setArtistChose] = useState(Boolean(l.artistChose));
   const [sendInvite, setSendInvite] = useState(!l.status || l.status === 'invited' && !l.inviteSentAt);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -103,7 +104,7 @@ const LiveEditor = ({ p, maxOptions, maxQuestions, onSaved, onCancel }) => {
     setSaving(true);
     try {
       const body = { options: opts, questions: qs, platform, handle };
-      if (setMine) Object.assign(body, { date, sendConfirmation: email });
+      if (setMine) Object.assign(body, { date, sendConfirmation: email, artistChose });
       else body.sendInvite = sendInvite;
       const r = await adminApi(`/lives/${p.id}`, { method: 'POST', body });
       onSaved(r.person, r.emailSent, r.inviteSent);
@@ -173,6 +174,10 @@ const LiveEditor = ({ p, maxOptions, maxQuestions, onSaved, onCancel }) => {
             <input type="datetime-local" className="ga-input" value={date} onChange={(e) => setDate(e.target.value)} />
           </label>
           <label className="ga-check gl-check">
+            <input type="checkbox" checked={artistChose} onChange={(e) => setArtistChose(e.target.checked)} />
+            Date was chosen by the artist (their email asks them to approve the time and add it to their calendar)
+          </label>
+          <label className="ga-check gl-check">
             <input type="checkbox" checked={email} onChange={(e) => setEmail(e.target.checked)} />
             Email them the confirmation (date, how to join and all the questions)
           </label>
@@ -217,7 +222,9 @@ const LivePerson = ({ p, maxOptions, maxQuestions, onChange }) => {
   };
 
   const pill = l.completedAt ? <span className="ga-pill">Archived</span> : {
-    confirmed: <span className="ga-pill green">Confirmed</span>,
+    confirmed: l.artistChose && !l.approvedAt
+      ? <span className="ga-pill amber">Waiting for their OK</span>
+      : <span className="ga-pill green">{l.artistChose ? 'Approved by artist' : 'Confirmed'}</span>,
     invited: <span className="ga-pill amber">Waiting on them</span>,
     'needs-date': <span className="ga-pill red">Needs a new date</span>,
   }[l.status] || <span className="ga-pill">Not set up</span>;
