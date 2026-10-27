@@ -844,9 +844,9 @@ const AdminDashboard = () => {
                     onChange={(e) => updateTicket(index, 'name', e.target.value)} required />
                 </label>
                 <label className="ga-field">Price ($)
-                  <input className="ga-input" type="number" min="0" step="0.01" placeholder="25.00"
-                    value={ticket.price === '' || ticket.price == null ? '' : ticket.price / 100}
-                    onChange={(e) => updateTicket(index, 'price', e.target.value === '' ? '' : Math.round(Number(e.target.value) * 100))} required />
+                  <input className="ga-input" type="number" min="0" step="0.01" placeholder="25"
+                    value={ticket.price === '' || ticket.price == null ? '' : ticket.price}
+                    onChange={(e) => updateTicket(index, 'price', e.target.value === '' ? '' : Math.round(Number(e.target.value) * 100) / 100)} required />
                 </label>
                 <label className="ga-field">How many
                   <input className="ga-input" type="number" min="0" placeholder="e.g. 36" value={ticket.quantity || ''}
