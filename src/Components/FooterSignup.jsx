@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { BACKEND_URL } from '../Services/eventUtils';
+import { useCart } from '../Context/CartContext';
 import SelectInterest from './SelectInterest';
 import { SMS_CONSENT_TEXT, SMS_CONSENT_VERSION } from '../content/legalContent.js';
 
 // ── Newsletter signup (saves to /api/subscribers) ──
 const FooterSignup = ({ corporate = false }) => {
+  const { applyPromoCode, setCodeEmail } = useCart();
+  const [codeAdded, setCodeAdded] = useState('');
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [smsOptIn, setSmsOptIn] = useState(false);
@@ -53,6 +56,12 @@ const FooterSignup = ({ corporate = false }) => {
         }
         throw new Error(result.error || 'Something went wrong. Please try again.');
       }
+      // Put their welcome code in the bag now, so it's there at checkout
+      if (result.code && !corporate) {
+        applyPromoCode(result.code);
+        setCodeEmail(email.trim());
+        setCodeAdded(result.code);
+      }
       setStatus('done');
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');
@@ -68,7 +77,7 @@ const FooterSignup = ({ corporate = false }) => {
         </div>
         <p>{corporate
           ? "Check your email for your $99 savings code. We'll send hosting ideas and open dates about once a month."
-          : `Check your email for your welcome code. We'll let you know first when new events drop.${select.checked ? " You're on the GFC Select™ list too." : ''} See you soon.`}</p>
+          : `${codeAdded ? `Your code ${codeAdded} is already in your bag, so it comes off at checkout. We also emailed it to you.` : 'Check your email for your welcome code.'} We'll let you know first when new events drop.${select.checked ? " You're on the GFC Select™ list too." : ''} See you soon.`}</p>
       </div>
     );
   }

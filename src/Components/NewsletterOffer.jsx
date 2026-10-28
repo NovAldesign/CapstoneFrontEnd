@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BACKEND_URL } from '../Services/eventUtils';
+import { useCart } from '../Context/CartContext';
 import SelectInterest from './SelectInterest';
 import { SMS_CONSENT_TEXT, SMS_CONSENT_VERSION } from '../content/legalContent.js';
 
@@ -15,6 +16,8 @@ const NewsletterOffer = ({ compact = false, source = 'join', idPrefix = 'nl' }) 
   const [select, setSelect] = useState({ checked: false, gender: '' }); // GFC Select™ interest
   const [status, setStatus] = useState('idle'); // idle | sending | done | already
   const [error, setError] = useState('');
+  const [codeAdded, setCodeAdded] = useState('');
+  const { applyPromoCode, setCodeEmail } = useCart();
 
   const submit = async (e) => {
     e.preventDefault();
@@ -43,6 +46,12 @@ const NewsletterOffer = ({ compact = false, source = 'join', idPrefix = 'nl' }) 
         if (/already subscribed/i.test(result.error || '')) return setStatus('already');
         throw new Error(result.error || 'Something went wrong. Please try again.');
       }
+      // Put their welcome code in the bag now, so it's there at checkout
+      if (result.code) {
+        applyPromoCode(result.code);
+        setCodeEmail(email.trim());
+        setCodeAdded(result.code);
+      }
       setStatus('done');
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');
@@ -53,7 +62,9 @@ const NewsletterOffer = ({ compact = false, source = 'join', idPrefix = 'nl' }) 
   if (status === 'done') {
     return (
       <div className="nl-offer-done" role="status">
-        <strong>You're in!</strong> Check your inbox for your welcome code. It should arrive in a minute or two.{select.checked ? " You're on the GFC Select™ list too." : ''}
+        <strong>You're in!</strong> {codeAdded
+          ? `Your code ${codeAdded} is already in your bag, so it comes off at checkout. We also emailed it to you.`
+          : 'Check your inbox for your welcome code. It should arrive in a minute or two.'}{select.checked ? " You're on the GFC Select™ list too." : ''}
       </div>
     );
   }
