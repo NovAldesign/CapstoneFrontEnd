@@ -78,6 +78,7 @@ const AdminDashboard = () => {
   const [counts, setCounts]                 = useState({});
   const [guestEvent, setGuestEvent]         = useState('');
   const [membership, setMembership]         = useState([]);
+  const [pickedMembers, setPickedMembers]   = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
   const [loading, setLoading]               = useState(true);
   const [memberSearch, setMemberSearch]     = useState('');
@@ -205,14 +206,30 @@ const AdminDashboard = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Remove this member from the GFC database?")) {
+    if (window.confirm("Remove this member from the GFC database? This can't be undone.")) {
       try {
         await adminLegacy(`/membership/${id}`, { method: 'DELETE' });
         setMembership(prev => prev.filter(item => item._id !== id));
+        setPickedMembers(prev => prev.filter(x => x !== id));
         if (selectedMember?._id === id) setSelectedMember(null);
-      } catch (err) { console.error(err); }
+      } catch (err) { window.alert(err.message); }
     }
   };
+
+  // Delete several at once: the checked rows, or every test account
+  const bulkDeleteMembers = async (body, label) => {
+    if (!window.confirm(`Delete ${label}? This can't be undone.`)) return;
+    try {
+      const { deleted = [], blocked = [] } = await adminLegacy('/membership/bulk-delete', { method: 'POST', body });
+      setMembership(prev => prev.filter(m => !deleted.includes(m._id)));
+      setPickedMembers([]);
+      if (selectedMember && deleted.includes(selectedMember._id)) setSelectedMember(null);
+      const msg = [`Deleted ${deleted.length}.`];
+      if (blocked.length) msg.push(`Not deleted (still paying in Stripe, cancel there first): ${blocked.map(b => b.name).join(', ')}.`);
+      window.alert(msg.join(' '));
+    } catch (err) { window.alert(err.message); }
+  };
+  const togglePicked = (id) => setPickedMembers(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
   const exportMembers = () => {
     const data = filteredMembers.map(m => ({
@@ -493,15 +510,42 @@ const AdminDashboard = () => {
                 <button type="button" className="ga-btn" onClick={exportMembers}>↓ CSV ({filteredMembers.length})</button>
               </div>
             </div>
+            {(pickedMembers.length > 0 || membership.some(m => m.isTest)) && (
+              <div className="ga-row" style={{ gap: 8, marginBottom: 10 }}>
+                {pickedMembers.length > 0 && (
+                  <button type="button" className="ga-btn ga-btn-sm ga-btn-danger"
+                    onClick={() => bulkDeleteMembers({ ids: pickedMembers }, `${pickedMembers.length} member${pickedMembers.length === 1 ? '' : 's'}`)}>
+                    Delete selected ({pickedMembers.length})
+                  </button>
+                )}
+                {membership.some(m => m.isTest) && (
+                  <button type="button" className="ga-btn ga-btn-sm"
+                    onClick={() => bulkDeleteMembers({ allTest: true }, `all ${membership.filter(m => m.isTest).length} test accounts`)}>
+                    Delete all test accounts ({membership.filter(m => m.isTest).length})
+                  </button>
+                )}
+                {pickedMembers.length > 0 && (
+                  <button type="button" className="ga-link" onClick={() => setPickedMembers([])}>Clear</button>
+                )}
+              </div>
+            )}
             <div className="ga-table-wrap">
               <table className="ga-table">
-                <thead><tr><th>Name</th><th>Email</th><th>Tier</th><th>Status</th><th>Joined</th></tr></thead>
+                <thead><tr>
+                  <th style={{ width: 32 }}>
+                    <input type="checkbox" aria-label="Select all shown"
+                      checked={filteredMembers.length > 0 && filteredMembers.every(m => pickedMembers.includes(m._id))}
+                      onChange={(e) => setPickedMembers(e.target.checked ? filteredMembers.map(m => m._id) : [])} />
+                  </th>
+                  <th>Name</th><th>Email</th><th>Tier</th><th>Status</th><th>Joined</th></tr></thead>
                 <tbody>
                   {filteredMembers.length === 0 && (
-                    <tr><td colSpan={5} className="ga-empty">No members match.</td></tr>
+                    <tr><td colSpan={6} className="ga-empty">No members match.</td></tr>
                   )}
                   {filteredMembers.map((member) => (
                     <tr key={member._id}>
+                      <td><input type="checkbox" aria-label={`Select ${member.firstName} ${member.lastName}`}
+                        checked={pickedMembers.includes(member._id)} onChange={() => togglePicked(member._id)} /></td>
                       <td><button type="button" className="ga-link" style={{ fontWeight: 600, textDecoration: 'none', color: 'var(--ga-navy)' }}
                         onClick={() => setSelectedMember(member)}>{member.firstName} {member.lastName}</button>
                         {member.isTest && <span className="ga-pill amber" style={{ marginLeft: 6 }}>Test</span>}</td>

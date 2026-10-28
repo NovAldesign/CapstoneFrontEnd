@@ -38,7 +38,7 @@ const download = (name, text) => {
   URL.revokeObjectURL(url);
 };
 
-const Speaker = ({ s, onSaved }) => {
+const Speaker = ({ s, onSaved, onDeleted }) => {
   const [open, setOpen] = useState(false);
   const [notes, setNotes] = useState(s.adminNotes || '');
   const [saving, setSaving] = useState(false);
@@ -53,6 +53,19 @@ const Speaker = ({ s, onSaved }) => {
     } catch (e) {
       setError(e.message);
     } finally {
+      setSaving(false);
+    }
+  };
+
+  const remove = async () => {
+    if (!window.confirm(`Delete ${s.firstName} ${s.lastName}'s application? This can't be undone.`)) return;
+    setSaving(true);
+    setError('');
+    try {
+      await api(`/admin/speakers/${s._id}`, { method: 'DELETE' });
+      onDeleted(s._id);
+    } catch (e) {
+      setError(e.message);
       setSaving(false);
     }
   };
@@ -109,6 +122,10 @@ const Speaker = ({ s, onSaved }) => {
             </dd>
           </dl>
           {error && <p className="ga-note err">{error}</p>}
+          <div className="ga-row" style={{ marginTop: 10 }}>
+            <span className="ga-spacer" />
+            <button type="button" className="ga-btn ga-btn-sm ga-btn-danger" disabled={saving} onClick={remove}>Delete application</button>
+          </div>
         </div>
       )}
     </div>
@@ -130,6 +147,14 @@ const AdminRecess = () => {
   const speakers = filter === 'all' ? data.speakers : data.speakers.filter((s) => s.status === filter);
   const count = (id) => data.speakers.filter((s) => s.status === id).length;
   const saved = (s) => setData((d) => ({ ...d, speakers: d.speakers.map((x) => (x._id === s._id ? s : x)) }));
+  const removed = (id) => setData((d) => ({ ...d, speakers: d.speakers.filter((x) => x._id !== id) }));
+  const removeInterest = async (p) => {
+    if (!window.confirm(`Remove ${p.email} from the interest list?`)) return;
+    try {
+      await api(`/admin/interest/${p._id}`, { method: 'DELETE' });
+      setData((d) => ({ ...d, interest: d.interest.filter((x) => x._id !== p._id) }));
+    } catch (e) { window.alert(e.message); }
+  };
 
   const exportList = () =>
     download('recess-talks-interest-list.csv', csv([
@@ -157,7 +182,7 @@ const AdminRecess = () => {
         </div>
         {speakers.length === 0
           ? <p className="ga-small ga-muted">{data.speakers.length ? 'Nobody here.' : 'No applications yet. Share grownfolkscollective.com/recess with authors, professors and experts.'}</p>
-          : speakers.map((s) => <Speaker key={s._id} s={s} onSaved={saved} />)}
+          : speakers.map((s) => <Speaker key={s._id} s={s} onSaved={saved} onDeleted={removed} />)}
       </section>
 
       <section className="ga-card">
@@ -175,13 +200,14 @@ const AdminRecess = () => {
         ) : (
           <div className="ga-table-wrap">
             <table className="ga-table">
-              <thead><tr><th>Name</th><th>Email</th><th>Signed up</th></tr></thead>
+              <thead><tr><th>Name</th><th>Email</th><th>Signed up</th><th aria-label="Remove" /></tr></thead>
               <tbody>
                 {data.interest.map((p) => (
                   <tr key={p._id}>
                     <td>{p.name}</td>
                     <td><a href={`mailto:${p.email}`}>{p.email}</a></td>
                     <td>{fmtDate(p.createdAt, { month: 'short', day: 'numeric' })}</td>
+                    <td><button type="button" className="ga-link" onClick={() => removeInterest(p)}>Remove</button></td>
                   </tr>
                 ))}
               </tbody>
