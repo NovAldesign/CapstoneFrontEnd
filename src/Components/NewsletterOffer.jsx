@@ -95,7 +95,7 @@ const NewsletterOffer = ({ compact = false, source = 'join', idPrefix = 'nl' }) 
       </button>
       {error && <p className="nl-offer-error" role="alert">{error}</p>}
       <p className="nl-offer-fine">
-        For your first GFC ticket, any event without food. Unsubscribe anytime.
+        For your first GFC ticket, any event without food. Good for 14 days. Unsubscribe anytime.
       </p>
     </form>
   );
