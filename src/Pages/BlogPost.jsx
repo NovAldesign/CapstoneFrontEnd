@@ -3,6 +3,11 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { SMS_CONSENT_TEXT, SMS_CONSENT_VERSION } from '../content/legalContent.js';
 import AffiliateNote from '../Components/AffiliateNote';
+import NewsletterOffer from '../Components/NewsletterOffer';
+
+// A post can place the Come Out & Play signup anywhere by including this marker in its content
+const SIGNUP_MARKER = /<div data-gfc-signup(?:="[^"]*")?><\/div>/g;
+import '../Styles/Join.css';
 import '../Styles/BlogPost.css';
 
 const API_BASE = 
@@ -179,10 +184,19 @@ const BlogPost = () => {
           )}
 
           {/* Article Body Content */}
-          <div 
-            className="editorial-body-content"
-            dangerouslySetInnerHTML={{ __html: article.content }} 
-          />
+          {String(article.content || '').split(SIGNUP_MARKER).map((part, i, all) => (
+            <React.Fragment key={i}>
+              <div className="editorial-body-content" dangerouslySetInnerHTML={{ __html: part }} />
+              {i < all.length - 1 && (
+                <aside className="blog-signup" aria-label="Join Come Out & Play">
+                  <p className="blog-signup-kicker">Come Out &amp; Play</p>
+                  <h3>$5 off your first ticket</h3>
+                  <p>Join our free newsletter for $5 off your first ticket, plus first dibs on every night out.</p>
+                  <NewsletterOffer compact source={`blog:${article.slug}`} idPrefix={`blog-nl-${i}`} />
+                </aside>
+              )}
+            </React.Fragment>
+          ))}
 
           {/* Full-Width Navy Banner */}
           <div className="editorial-cta-card">
@@ -197,12 +211,12 @@ const BlogPost = () => {
 
           {/* Expanded Newsletter & SMS Signup */}
           <section className="newsletter-section">
-            <h3>Get the next post in your inbox</h3>
-            <p>New stories on connection, community, and belonging — plus a heads-up before events sell out.</p>
+            <h3>Join Come Out &amp; Play</h3>
+            <p>Our free newsletter: new stories, first dibs on every night out, and $5 off your first ticket.</p>
             
             {subscribed ? (
               <div className="subscribe-success">
-                Thanks for joining! Welcome to the table.
+                Thanks for joining! Check your inbox for your welcome code.
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="newsletter-form-expanded">

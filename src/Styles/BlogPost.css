@@ -512,3 +512,13 @@
 .editorial-body-content .gfc-photo-tall img { aspect-ratio: 2 / 3; }
 .editorial-body-content .gfc-disclosure { font-size: 0.9rem; color: #6b6f76; font-style: italic; }
 .editorial-body-content .gfc-for-two { background: #FBF7EE; border-left: 4px solid #C5A059; padding: 10px 14px; border-radius: 4px; }
+
+/* Come Out & Play signup placed inside a post */
+.blog-signup { margin: 34px 0; padding: 26px 26px 22px; background: #0E2340; color: #F4F1EA; border-radius: 12px; border: 2px solid #C5A059; }
+.blog-signup .blog-signup-kicker { margin: 0 0 6px; font-size: 12px; font-weight: 800; letter-spacing: .28em; text-transform: uppercase; color: #C5A059; }
+.blog-signup h3 { margin: 0 0 8px; font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 30px; color: #C5A059; }
+.blog-signup > p { margin: 0 0 14px; color: #C9D1DD; }
+.blog-signup .nl-offer-form label { color: #F4F1EA; }
+.blog-signup .nl-offer-form button { background: #C5A059; color: #0E2340; }
+.blog-signup .nl-offer-fine, .blog-signup .nl-offer-check small { color: #C9D1DD; }
+.blog-signup .nl-offer-error { color: #ffb4b4; }
