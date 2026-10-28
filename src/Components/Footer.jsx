@@ -118,7 +118,7 @@ const Footer = ({ variant = 'default' }) => {
           <div className="footer-wordmark">GFC</div>
           <p className="footer-slogan">Where grown folks come out to play.<sup>™</sup></p>
           <p className="footer-tagline">
-            Ending the social isolation epidemic —<br />
+            Ending social isolation,<br />
             one event at a time.
           </p>
           <p className="footer-location">
@@ -159,6 +159,10 @@ const Footer = ({ variant = 'default' }) => {
 
           <a href="/perform" className="footer-contact-link">
             Perform With Us
+          </a>
+
+          <a href="/join" className="footer-contact-link">
+            Come Out &amp; Play Newsletter
           </a>
         </div>
         )}

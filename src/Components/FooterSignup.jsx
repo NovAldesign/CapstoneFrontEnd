@@ -68,7 +68,7 @@ const FooterSignup = ({ corporate = false }) => {
         </div>
         <p>{corporate
           ? "Check your email for your $99 savings code. We'll send hosting ideas and open dates about once a month."
-          : `We'll let you know first when new events drop.${select.checked ? " You're on the GFC Select™ list too." : ''} See you soon.`}</p>
+          : `Check your email for your welcome code. We'll let you know first when new events drop.${select.checked ? " You're on the GFC Select™ list too." : ''} See you soon.`}</p>
       </div>
     );
   }
@@ -153,10 +153,10 @@ const FooterSignupSection = ({ corporate = false }) => (
         </>
       ) : (
         <>
-          <div className="footer-block-label">Stay in the Loop</div>
-          <h2 id="footer-signup-title" className="footer-signup-title">Get first dibs on new events</h2>
+          <div className="footer-block-label">Our Newsletter</div>
+          <h2 id="footer-signup-title" className="footer-signup-title">Join Come Out &amp; Play and get $5 off your first ticket</h2>
           <p className="footer-signup-sub">
-            Game nights, dinners, and trips for Atlanta's 30+ crowd. Hear about them before tickets sell out.
+            Game nights, live music and Karaoke Bingo for Atlanta's 30+ crowd. Hear about them first, before tickets sell out.
           </p>
         </>
       )}
