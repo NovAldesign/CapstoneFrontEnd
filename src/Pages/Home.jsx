@@ -9,10 +9,10 @@ const Home = () => {
     <div className="home-wrapper">
       {/* Meta Data for SEO */}
       <Helmet>
-        <title>Grown Folks™ Collective | Atlanta's 30+ Social Community</title>
+        <title>Grown Folks™ Collective | Atlanta's Home for Real Connection, 30+</title>
         <meta
           name="description"
-          content="Grown Folks™ Collective is Atlanta's third space for adults 30+ who want more fun and joy in their lives. Game nights, dinners, and group travel built for genuine connection."
+          content="A hosted third space for adults 30+ in Atlanta. Curated nights of live music and play where strangers become regulars and regulars become friends."
         />
       </Helmet>
  
