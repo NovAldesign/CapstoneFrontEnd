@@ -693,7 +693,7 @@ const Perform = ({ role = 'artist' }) => {
                   <fieldset className="contact-fieldset">
                     <legend className="contact-form-divider">{R.agreementLegend}</legend>
                     <p className="perform-note">
-                      Grown Folks™ Collective is a social club offering you a stage to showcase your talent.
+                      Grown Folks™ Collective is a hosted, alcohol-free space for adults 30+, offering you a stage to showcase your talent.
                       Please read the <a href="/performer-agreement" target="_blank" rel="noopener noreferrer">Performer Agreement</a>.
                       If booked, I agree to: <span className="contact-required">*</span>
                     </p>

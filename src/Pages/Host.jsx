@@ -361,7 +361,7 @@ const Host = () => {
       {/* ── WHY GFC ── */}
       <section className="host-section" aria-labelledby="host-why">
         <span className="contact-form-eyebrow">Why Grown Folks™ Collective</span>
-        <h2 className="host-h2" id="host-why">Atlanta's alcohol-free social club, now at your place.</h2>
+        <h2 className="host-h2" id="host-why">The room Atlanta's grown folks connect in, now at your place.</h2>
         <div className="host-why">
           {WHY.map(([title, text]) => (
             <div className="host-why-item" key={title}>

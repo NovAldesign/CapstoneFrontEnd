@@ -103,7 +103,7 @@ const Gift = () => {
         <title>{hasPasses ? 'Gift a Night Out: Holiday Passes & Gift Cards' : 'Gift a Night Out: Gift Cards'} | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="Give a night out in Atlanta. Gift cards for Game Night, Karaoke Bingo and live music with Grown Folks™ Collective, an alcohol-free social club for 30+."
+          content="Give a night out in Atlanta. Gift cards for Game Night, Karaoke Bingo and live music with Grown Folks™ Collective, an alcohol-free night out for 30+."
         />
       </Helmet>
 

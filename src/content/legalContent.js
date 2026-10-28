@@ -443,7 +443,7 @@ export const LEGAL_PAGES = {
     path: "/performer-agreement",
     title: "Performer Agreement",
     description: `The agreement for artists, MCs, DJs, live artists, and other performers at ${brand} events.`,
-    intro: `${brand} is a social club for adults 30 and older. Our showcases give artists, MCs, DJs, comedians, live painters and sketch artists, and other performers ("you") a stage and an audience. This agreement applies when you apply, are booked, or perform at a GFC event. You accept it when you check the agreement box on our application.`,
+    intro: `${brand} is a hosted, alcohol-free community space for adults 30 and older. Our showcases give artists, MCs, DJs, comedians, live painters and sketch artists, and other performers ("you") a stage and an audience. This agreement applies when you apply, are booked, or perform at a GFC event. You accept it when you check the agreement box on our application.`,
     sections: [
       {
         h: "1. What this is",

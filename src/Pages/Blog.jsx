@@ -35,7 +35,7 @@ const Blog = () => {
     <div className="blog-index-page">
       <Helmet>
         <title>The Gathering Table Blog | Grown Folks™ Collective</title>
-        <meta name="description" content="Stories and notes on ending social isolation, one game night at a time, from Grown Folks™ Collective, Atlanta's social club for adults 30+." />
+        <meta name="description" content="Stories and notes on ending social isolation, one game night at a time, from Grown Folks™ Collective, a hosted, alcohol-free space for adults 30+ in Atlanta." />
       </Helmet>
       <div className="blog-main-wrapper">
         {/* Left-Justified Header */}
