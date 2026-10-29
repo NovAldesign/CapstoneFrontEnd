@@ -967,3 +967,14 @@
 
 /* Event flyers are 2:1 (Eventbrite size): show the whole flyer, no cropping */
 .hx-next-card img { aspect-ratio: 2 / 1; object-fit: contain; background: var(--navy, #002147); }
+
+/* First-night panel (stands in for a photo) */
+.hx-first-panel { position: relative; display: flex; flex-direction: column; justify-content: center; gap: 10px; aspect-ratio: 4 / 5; padding: 48px 44px; box-sizing: border-box; background: radial-gradient(circle at 80% 15%, rgba(197,160,89,0.22), transparent 55%), linear-gradient(160deg, #001730 0%, #002147 65%, #0b2d57 100%); color: #FDFBFA; box-shadow: 18px 18px 0 var(--gold, #C5A059); }
+.hx-first-panel::before { content: ""; position: absolute; inset: 16px; border: 1px solid rgba(197,160,89,0.55); pointer-events: none; }
+.hx-first-panel-kicker { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold, #C5A059); margin-bottom: 18px; }
+.hx-first-panel-line { font-size: clamp(2.2rem, 3.6vw, 3.3rem); line-height: 1.08; }
+.hx-gold { color: var(--gold, #C5A059); font-style: italic; }
+.hx-first-panel-rule { width: 80px; height: 2px; background: var(--gold, #C5A059); margin: 22px 0 14px; }
+.hx-first-panel-tag { font-family: 'Playfair Display', serif; font-style: italic; color: rgba(253,251,250,0.85); font-size: 1.05rem; }
+@media (max-width: 760px) { .hx-first-panel { aspect-ratio: auto; padding: 44px 30px; box-shadow: 10px 10px 0 var(--gold, #C5A059); } }
+@media (min-width: 761px) { .hx-first-panel { aspect-ratio: 1 / 1; } }

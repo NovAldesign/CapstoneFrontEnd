@@ -558,3 +558,8 @@
 .gfc-next-up .gfc-btn-outline {
   white-space: normal; text-align: center; line-height: 1.4; width: 100%; box-sizing: border-box; max-width: 100%;
 }
+
+/* Filtered by a signature night (from Home page cards) */
+.gfc-results-anchor { scroll-margin-top: 100px; }
+.gfc-night-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin: 0 0 20px; padding: 14px 18px; background: #FDFBFA; border-left: 3px solid #C5A059; color: #002147; font-size: 1rem; }
+.gfc-empty .gfc-btn-outline { margin-left: 10px; }

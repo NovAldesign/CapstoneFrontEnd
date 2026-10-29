@@ -179,6 +179,19 @@ export const CATEGORIES = [
 ];
 export const OTHER_CATEGORY = { id: "other", label: "Experiences" };
 
+// Signature nights, matched by title. Used by /events?night=... links from the Home page.
+export const NIGHTS = [
+  { id: "game-night", label: "Game Night", re: /game night|spades|domino|uno\b/i, not: /karaoke/i },
+  { id: "karaoke-bingo", label: "Karaoke Bingo", re: /karaoke/i },
+  { id: "acoustic-infused", label: "Acoustic & Infused™", re: /acoustic|infused/i },
+];
+export const matchesNight = (event = {}, nightId) => {
+  const n = NIGHTS.find((x) => x.id === nightId);
+  if (!n) return true;
+  const text = event.title || event.name || "";
+  return n.re.test(text) && !(n.not && n.not.test(text));
+};
+
 // Matches the eventType choices in your eventSchema.js
 const EVENT_TYPE_MAP = {
   "Game Night": "game-night",

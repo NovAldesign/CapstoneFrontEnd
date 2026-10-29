@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { formatEventDate, formatEventTime } from "../Services/eventService";
@@ -10,6 +10,8 @@ import {
   parseCleanPrice,
   getTierStatus,
   matchesWhen,
+  matchesNight,
+  NIGHTS,
   eventPath,
   truncate,
   CATEGORIES,
@@ -206,6 +208,9 @@ const Events = () => {
   const type = params.get("type") || "all";
   const when = params.get("when") || "all";
   const sort = params.get("sort") || "date";
+  const night = params.get("night") || "";
+  const nightInfo = NIGHTS.find((n) => n.id === night);
+  const resultsRef = useRef(null);
 
   const setParam = (key, value, fallback) => {
     const next = new URLSearchParams(params);
@@ -236,6 +241,7 @@ const Events = () => {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     const list = events.filter((e) => {
+      if (nightInfo && !matchesNight(e, night)) return false;
       if (type !== "all" && getCategory(e).id !== type) return false;
       if (!matchesWhen(e, when)) return false;
       if (!q) return true;
@@ -250,9 +256,16 @@ const Events = () => {
       return [...list].sort((a, b) => lowestAvailablePrice(a) - lowestAvailablePrice(b));
     }
     return list;
-  }, [events, search, type, when, sort]);
+  }, [events, search, type, when, sort, night, nightInfo]);
 
-  const hasFilters = search || type !== "all" || when !== "all";
+  const hasFilters = search || type !== "all" || when !== "all" || nightInfo;
+
+  // Coming from a Home page card: jump straight to that night's events
+  useEffect(() => {
+    if (!loading && nightInfo && resultsRef.current) {
+      resultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [loading, nightInfo]);
 
   return (
     <div className="events-page-wrapper">
@@ -287,6 +300,14 @@ const Events = () => {
           <span className="gold-label">Upcoming</span>
           <h2 className="playfair section-title-navy">Find Your Next Night Out</h2>
         </div>
+
+        <div ref={resultsRef} className="gfc-results-anchor" />
+        {nightInfo && (
+          <div className="gfc-night-filter" role="status">
+            <span>Showing <strong>{nightInfo.label}</strong> nights</span>
+            <button className="gfc-link-btn" onClick={() => setParam("night", "", "")}>See all events</button>
+          </div>
+        )}
 
         {/* SEARCH + FILTERS */}
         <div className="gfc-toolbar" role="search">
@@ -391,6 +412,12 @@ const Events = () => {
           <div className="gfc-empty">
             <p>Our next gathering is being planned. Join the collective to be the first to know.</p>
             <Link to="/membership" className="gfc-btn-primary">Join the Collective</Link>
+          </div>
+        ) : filtered.length === 0 && nightInfo && !search && type === "all" && when === "all" ? (
+          <div className="gfc-empty">
+            <p>The next {nightInfo.label} isn't on the calendar yet. Join Come Out &amp; Play and you'll hear first, plus $5 off your first ticket.</p>
+            <Link to="/play" className="gfc-btn-primary">Join Come Out &amp; Play</Link>
+            <button className="gfc-btn-outline" onClick={() => setParam("night", "", "")}>See all events</button>
           </div>
         ) : filtered.length === 0 ? (
           <div className="gfc-empty">

@@ -11,18 +11,21 @@ const NIGHTS = [
   {
     need: "New to Atlanta?",
     night: "Game Night",
+    href: "/events?night=game-night",
     feel: "Pull up a chair and you'll have a spades partner by the second hand.",
     facts: "Spades, dominoes and Uno · from $25",
   },
   {
     need: "Your friends got busy?",
     night: "Karaoke Bingo",
+    href: "/events?night=karaoke-bingo",
     feel: "A whole room singing the songs you grew up on. Nobody stays a stranger.",
     facts: "Bingo cards, big hooks, prizes · from $25",
   },
   {
     need: "Miss live music without the bar?",
     night: "Acoustic & Infused™",
+    href: "/events?night=acoustic-infused",
     feel: "Atlanta's best local artists, right in front of you, while a painter creates live beside the stage. By the last set, the whole room is on its feet.",
     facts: "Live music, live art, dancing · from $30",
   },
@@ -189,8 +192,12 @@ const Home = () => {
       {/* 5. YOUR FIRST NIGHT */}
       <section className="hx-first" aria-labelledby="hx-first-title">
         <div className="hx-wrap hx-first-grid">
-          <div className="hx-first-photo">
-            <img src="https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?auto=format&fit=crop&q=80&w=1000" alt="Four friends laughing and high-fiving around a table" loading="lazy" />
+          <div className="hx-first-panel" aria-hidden="true">
+            <span className="hx-first-panel-kicker">Grown Folks™ Collective</span>
+            <span className="playfair hx-first-panel-line">Walk in a stranger.</span>
+            <span className="playfair hx-first-panel-line hx-gold">Leave with names.</span>
+            <span className="hx-first-panel-rule"></span>
+            <span className="hx-first-panel-tag">Where grown folks come out to play.™</span>
           </div>
           <div>
             <p className="hx-eyebrow">Never been?</p>
