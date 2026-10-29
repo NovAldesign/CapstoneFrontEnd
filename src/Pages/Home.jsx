@@ -12,21 +12,21 @@ const NIGHTS = [
     need: "New to Atlanta?",
     night: "Game Night",
     href: "/events?night=game-night",
-    feel: "Pull up a chair and you'll have a spades partner by the second hand.",
+    feel: "Game night in Atlanta, hosted right. Pull up a chair and you'll have a spades partner by the second hand.",
     facts: "Spades, dominoes and Uno · from $25",
   },
   {
     need: "Your friends got busy?",
     night: "Karaoke Bingo",
     href: "/events?night=karaoke-bingo",
-    feel: "A whole room singing the songs you grew up on. Nobody stays a stranger.",
+    feel: "Karaoke meets bingo, Atlanta style. A whole room singing the songs you grew up on, and nobody stays a stranger.",
     facts: "Bingo cards, big hooks, prizes · from $25",
   },
   {
     need: "Miss live music without the bar?",
     night: "Acoustic & Infused™",
     href: "/events?night=acoustic-infused",
-    feel: "Atlanta's best local artists, right in front of you, while a painter creates live beside the stage. By the last set, the whole room is on its feet.",
+    feel: "Live music in Atlanta without the bar scene. The city's best local artists, right in front of you, while a painter creates live beside the stage. By the last set, the whole room is on its feet.",
     facts: "Live music, live art, dancing · from $30",
   },
 ];
@@ -58,6 +58,45 @@ const COMING = [
   },
 ];
 
+
+const SITE = "https://www.grownfolkscollective.com";
+const ORG_SCHEMA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE}/#organization`,
+      name: "Grown Folks™ Collective",
+      alternateName: ["Grown Folks Collective", "GFC"],
+      url: `${SITE}/`,
+      logo: `${SITE}/favicon.png`,
+      image: `${SITE}/og-default.jpg`,
+      slogan: "Where grown folks come out to play.",
+      description:
+        "A hosted, alcohol-free third space for adults 30+ in Atlanta. Live music, game nights, Karaoke Bingo and conversation, built to end social isolation one event at a time.",
+      email: "hello@grownfolkscollective.com",
+      telephone: "+1-270-380-8896",
+      areaServed: { "@type": "City", name: "Atlanta", containedInPlace: { "@type": "State", name: "Georgia" } },
+      knowsAbout: ["Atlanta events for adults 30+", "Game nights", "Live music", "Karaoke Bingo", "Alcohol-free events", "Making friends as an adult"],
+      sameAs: [
+        "https://instagram.com/grownfolkscollective",
+        "https://tiktok.com/@grownfolkscollective",
+        "https://facebook.com/grownfolkscollectiveatl",
+        "https://threads.net/@grownfolkscollective",
+        "https://www.youtube.com/@grownfolkscollective",
+        "https://linkedin.com/company/grownfolkscollective",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE}/#website`,
+      url: `${SITE}/`,
+      name: "Grown Folks™ Collective",
+      publisher: { "@id": `${SITE}/#organization` },
+    },
+  ],
+};
+
 const dayLabel = (d) =>
   new Date(d).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "America/New_York" });
 
@@ -72,11 +111,25 @@ const NextNights = () => {
     return () => { live = false; };
   }, []);
   if (!events || events.length === 0) return null;
+  const listSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Upcoming Grown Folks™ Collective events in Atlanta",
+    itemListElement: events.map((e, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${SITE}${eventPath(e)}`,
+      name: e.title || e.name,
+    })),
+  };
   return (
     <section className="hx-next" aria-labelledby="hx-next-title">
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(listSchema)}</script>
+      </Helmet>
       <div className="hx-wrap">
         <p className="hx-eyebrow">On the calendar</p>
-        <h2 id="hx-next-title" className="playfair hx-h2">Your next night out</h2>
+        <h2 id="hx-next-title" className="playfair hx-h2">Your next night out in Atlanta</h2>
         <div className="hx-next-grid">
           {events.map((e) => {
             const price = getPriceDisplay(e.tiers || []);
@@ -103,19 +156,21 @@ const Home = () => {
   return (
     <div className="home-wrapper">
       <Helmet>
-        <title>Grown Folks™ Collective | Atlanta's Home for Real Connection, 30+</title>
+        <title>Atlanta Events for Adults 30+ | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="A hosted third space for adults 30+ in Atlanta. Curated nights of live music and play where strangers become regulars and regulars become friends."
+          content="Atlanta events for adults 30+: live music, game nights and Karaoke Bingo in a hosted, alcohol-free space where strangers become regulars and regulars become friends."
         />
+        <link rel="canonical" href="https://www.grownfolkscollective.com/" />
+        <script type="application/ld+json">{JSON.stringify(ORG_SCHEMA)}</script>
       </Helmet>
 
       {/* 1. HERO: the problem, then the answer */}
       <section className="home-hero-visual" aria-label="Welcome">
         <div className="hero-dark-overlay">
           <div className="hero-content-luxe">
-            <span className="location-tag-gold">Atlanta · 30+ · Alcohol-free</span>
-            <h1 className="playfair luxe-title-white hx-hero-title">Another weekend in the house? Not anymore.</h1>
+            <h1 className="location-tag-gold hx-hero-h1">Atlanta events for adults 30+ · Alcohol-free</h1>
+            <p className="playfair luxe-title-white hx-hero-title">Another weekend in the house? Not anymore.</p>
             <p className="hero-slogan">Where grown folks come out to play.<sup>™</sup></p>
             <div className="gold-spacer-v2" aria-hidden="true"></div>
             <p className="narrative-lead-white">
@@ -153,7 +208,7 @@ const Home = () => {
             {NIGHTS.map((n) => (
               <Link key={n.night} to={n.href || "/events"} className="hx-night-card">
                 <span className="hx-night-need">{n.need}</span>
-                <span className="playfair hx-night-name">{n.night}</span>
+                <h3 className="playfair hx-night-name">{n.night}</h3>
                 <span className="hx-night-feel">{n.feel}</span>
                 <span className="hx-night-facts">{n.facts}</span>
               </Link>
