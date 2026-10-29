@@ -23,8 +23,8 @@ const NIGHTS = [
   {
     need: "Miss live music without the bar?",
     night: "Acoustic & Infused™",
-    feel: "Sit close to the stage, hear every note, and a room that actually listens.",
-    facts: "Atlanta artists, live painting · from $30",
+    feel: "Atlanta's best local artists, right in front of you, while a painter creates live beside the stage. By the last set, the whole room is on its feet.",
+    facts: "Live music, live art, dancing · from $30",
   },
 ];
 
