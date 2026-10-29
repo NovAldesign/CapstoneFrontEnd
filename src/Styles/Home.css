@@ -964,3 +964,6 @@
   .hx-coming-card { padding: 30px 22px; }
   .hx-coming-btn { width: 100%; justify-content: center; box-sizing: border-box; }
 }
+
+/* Event flyers are 2:1 (Eventbrite size): show the whole flyer, no cropping */
+.hx-next-card img { aspect-ratio: 2 / 1; object-fit: contain; background: var(--navy, #002147); }

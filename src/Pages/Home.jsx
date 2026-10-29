@@ -190,7 +190,7 @@ const Home = () => {
       <section className="hx-first" aria-labelledby="hx-first-title">
         <div className="hx-wrap hx-first-grid">
           <div className="hx-first-photo">
-            <img src="/home/game-night-crew.jpg" style={{objectPosition:"40% center"}} alt="A group of Grown Folks Collective guests smiling together at Game Night" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?auto=format&fit=crop&q=80&w=1000" alt="Four friends laughing and high-fiving around a table" loading="lazy" />
           </div>
           <div>
             <p className="hx-eyebrow">Never been?</p>
