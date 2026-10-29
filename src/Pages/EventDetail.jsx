@@ -27,6 +27,7 @@ import "../Styles/EventListing.css";
 import MeetTheArtists from "../Components/MeetTheArtists";
 import NewsletterOffer from "../Components/NewsletterOffer.jsx";
 import "../Styles/Join.css";
+import { faqsForEvent, faqSchema, REFUND_TEXT } from "../content/eventFaqs";
 
 // Google Calendar link (dates in UTC, e.g. 20261024T220000Z)
 const calendarUrl = (event) => {
@@ -161,6 +162,7 @@ const EventDetail = () => {
     ended: "https://schema.org/SoldOut",
   };
   const publicTiers = visibleTiers.filter((t) => !/member/i.test(t.name || ""));
+  const faqs = faqsForEvent(event);
   const eventSchema = {
     "@context": "https://schema.org",
     "@type": "Event",
@@ -222,6 +224,7 @@ const EventDetail = () => {
         <meta property="og:url" content={pageUrl} />
         <meta property="og:type" content="event" />
         <script type="application/ld+json">{JSON.stringify(eventSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqSchema(faqs))}</script>
       </Helmet>
 
          {/* HERO: event graphic shown whole (it already has the title, date and logo) */}
@@ -327,26 +330,23 @@ const EventDetail = () => {
 
           <MeetTheArtists eventId={event._id} onLoaded={setLineup} />
 
-          {event.faqs?.length > 0 && (
-            <section className="gfc-detail-section">
-              <h2 className="playfair">Good to Know</h2>
-              <div className="gfc-faqs">
-                {event.faqs.map((faq, i) => (
-                  <details key={faq._id || i} className="gfc-faq">
-                    <summary>{faq.question}</summary>
-                    <p>{faq.answer}</p>
-                  </details>
-                ))}
-              </div>
-            </section>
-          )}
+          <section className="gfc-detail-section">
+            <h2 className="playfair">Good to Know</h2>
+            <div className="gfc-faqs">
+              {faqs.map((faq) => (
+                <details key={faq.q} className="gfc-faq">
+                  <summary>{faq.q}</summary>
+                  <p>{faq.a}</p>
+                  {faq.link && <Link to={faq.link.to} className="gfc-faq-link">{faq.link.label} →</Link>}
+                </details>
+              ))}
+            </div>
+          </section>
 
-          {event.refundPolicy && (
-            <section className="gfc-detail-section">
-              <h2 className="playfair">Refund Policy</h2>
-              <p className="gfc-policy">{event.refundPolicy}</p>
-            </section>
-          )}
+          <section className="gfc-detail-section">
+            <h2 className="playfair">Refund Policy</h2>
+            <p className="gfc-policy">{REFUND_TEXT}</p>
+          </section>
         </div>
 
         {/* RIGHT: TICKETS */}

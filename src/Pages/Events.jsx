@@ -22,49 +22,10 @@ import PriceTag from "../Components/PriceTag";
 import { passesLive } from "../Services/shopApi";
 import "../Styles/Events.css";
 import "../Styles/EventListing.css";
+import { FAQ_TABS, faqSchema } from "../content/eventFaqs";
 
-// ── FAQS: one tab per event series + general (also given to Google as FAQ data) ──
-const FAQ_TABS = [
-  { id: "general", label: "General", faqs: [
-    { q: "Who are GFC events for?", a: "Grown folks 30 and up. We may ask for ID at the door." },
-    { q: "Can I come by myself?", a: "Yes. Come solo, as a couple, or with friends and coworkers. Solo folks never stay solo for long." },
-    { q: "Is alcohol served?", a: "No. Every GFC event is alcohol-free. Venues offer mocktails, tea and coffee to buy." },
-    { q: "Any ticket deals?", a: "Early Bird tickets are our best price (6 per event, ending 14 days before). Book 2 different events in one order and save 5%, or 3 or more and save 10%." },
-    { q: "Can I buy tickets the day of or at the door?", a: "Yes. Tickets are sold online right up to the day of the event, and at the door as long as seats are left. Our rooms are small, so grab yours ahead of time to guarantee your spot." },
-    { q: "Is there parking?", a: "Yes, and it's free at our venues, including Aromas Tea Bar (located at The Koncept House) and Mint Coffeehouse." },
-    { q: "Refunds and transfers?", a: "Tickets are final, but you can transfer yours up to 24 hours before by emailing community@grownfolkscollective.com. If we cancel, you get a full refund." },
-  ]},
-  { id: "games", label: "Game Nights", faqs: [
-    { q: "I've never played spades. Can I come?", a: "Absolutely. Beginners are welcome and we'll teach you." },
-    { q: "What games do you play?", a: "Spades, dominoes, Uno, Taboo, Mad Gab, chess and more." },
-    { q: "Do I need a partner?", a: "No. Tables rotate, so you'll play with new people all night." },
-  ]},
-  { id: "karaoke", label: "Karaoke Bingo", faqs: [
-    { q: "Do I have to sing?", a: "Never. Sing from your seat, take the mic, or just mark your card." },
-    { q: "How does it work?", a: "Your bingo card is full of songs from the night's theme. When one plays, mark it. Get a bingo, win a prize." },
-  ]},
-  { id: "acoustic", label: "Acoustic & Infused™", faqs: [
-    { q: "Who's performing?", a: "Atlanta R&B, neo-soul and acoustic artists, each with a 20-minute set. The lineup is on each event page." },
-    { q: "How do I support the artists?", a: "Buy your ticket through an artist's link and visit their merch table." },
-    { q: "Can I perform?", a: "Yes. Apply at grownfolkscollective.com/perform." },
-  ]},
-  { id: "dinners", label: "Holiday Tables", faqs: [
-    { q: "Is dinner included?", a: "Yes, dinner is included in your ticket." },
-    { q: "Can you handle dietary needs?", a: "Email community@grownfolkscollective.com at least 5 days before and we'll do our best." },
-    { q: "Why do sales close early?", a: "We plan the food around the headcount, so sales close 5 days before each dinner." },
-  ]},
-  { id: "reunion", label: "Family Reunion", faqs: [
-    { q: "Where is it?", a: "The location is emailed to ticket holders before the event." },
-    { q: "How do I enter the grill-off?", a: "Buy a Grill Master ticket. Setup, supplies and judging details come by email." },
-    { q: "What games will there be?", a: "Tabletop games, spades, dominoes, Jenga, kickball and more." },
-  ]},
-];
-
-const FAQ_SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: FAQ_TABS.flatMap((t) => t.faqs).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
-};
+// FAQs live in content/eventFaqs.js (shared with each event page)
+const FAQ_SCHEMA = faqSchema(FAQ_TABS.flatMap((t) => t.faqs));
 
 // ── FAQ TABS + STAY CONNECTED ───────────────────────────────
 const EventFaqs = () => {
@@ -109,6 +70,7 @@ const EventFaqs = () => {
             <details key={f.q} className="gfc-faq">
               <summary>{f.q}</summary>
               <p>{f.a}</p>
+              {f.link && <Link to={f.link.to} className="gfc-faq-link">{f.link.label} →</Link>}
             </details>
           ))}
         </div>
