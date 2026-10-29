@@ -59,6 +59,26 @@ const WHY = [
 
 const money = (n) => `$${n.toLocaleString('en-US')}`;
 
+// Tells Google exactly what we offer companies and apartment communities
+const HOST_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Play. Sip. Toast.™ Hosted Corporate & Resident Events',
+  serviceType: 'Corporate and apartment resident event hosting',
+  description:
+    'Hosted, alcohol-free game nights, Spades tournaments, Karaoke Bingo and a live-action mystery for companies and apartment communities in metro Atlanta, with a signature mocktail bar, a photographer and a live toast.',
+  areaServed: { '@type': 'City', name: 'Atlanta, GA' },
+  provider: { '@type': 'Organization', name: 'Grown Folks™ Collective', url: 'https://www.grownfolkscollective.com/', telephone: '+1-470-256-7729' },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Play. Sip. Toast.™ packages',
+    itemListElement: PACKAGES.flatMap((pkg) => [
+      { '@type': 'Offer', name: `${pkg.short} (companies)`, price: pkg.corporate, priceCurrency: 'USD' },
+      { '@type': 'Offer', name: `${pkg.short} (apartment communities)`, price: pkg.residents, priceCurrency: 'USD' },
+    ]),
+  },
+};
+
 const EMPTY_FORM = {
   firstName: '',
   lastName: '',
@@ -179,21 +199,23 @@ const Host = () => {
   return (
     <div className="contact-page group-page host-page">
       <Helmet>
-        <title>Resident &amp; Corporate Event Hosting in Atlanta | Play. Sip. Toast. | Grown Folks™ Collective</title>
+        <title>Corporate &amp; Resident Event Hosting in Atlanta | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="Play. Sip. Toast. Alcohol-free resident and corporate events in Atlanta, hosted by Grown Folks™ Collective: game nights, Spades tournaments and Karaoke Bingo with a signature mocktail bar and a toast to your community's wins."
+          content="Hosted, alcohol-free corporate and apartment resident events in Atlanta: game nights, Spades tournaments, Karaoke Bingo and a live-action mystery, with a signature mocktail bar and a toast to your people's wins. We plan it, run it and bring everything."
         />
+        <link rel="canonical" href="https://www.grownfolkscollective.com/host" />
+        <script type="application/ld+json">{JSON.stringify(HOST_SCHEMA)}</script>
       </Helmet>
 
       {/* ── HERO ── */}
       <header className="contact-hero">
         <div className="contact-hero-inner">
           <div className="contact-hero-left">
-            <span className="contact-eyebrow">Resident &amp; Corporate Event Hosting · Atlanta</span>
-            <h1 className="contact-hero-title host-title">
+            <h1 className="contact-eyebrow seo-eyebrow-h1">Corporate &amp; Resident Event Hosting in Atlanta</h1>
+            <p className="contact-hero-title host-title">
               Play. Sip. <em>Toast.</em><span className="host-tm">™</span>
-            </h1>
+            </p>
             <div className="contact-gold-spacer" aria-hidden="true"></div>
             <p className="contact-hero-lead">
               An alcohol-free celebration social for your apartment community, office
@@ -267,7 +289,7 @@ const Host = () => {
           ))}
         </div>
         <div className="host-rp-extras">
-          <p className="contact-info-label">Only with the mixer</p>
+          <p className="contact-info-label">Only with the open house</p>
           <ul>
             {RESIDENT_PACKAGE.mixerExtras.map((x) => <li key={x}>{x}</li>)}
           </ul>
@@ -324,6 +346,13 @@ const Host = () => {
             Weekend dates are limited, since GFC hosts its own public events most Friday and
             Saturday nights. Serving metro Atlanta. Travel is included within 25 miles of East
             Atlanta, with a small travel fee beyond that. Have a bigger group or a custom idea? Ask us.
+          </p>
+          <p className="host-fine host-more-links">
+            Planning something specific?{' '}
+            <Link to="/corporate-team-building-atlanta">Team building</Link> ·{' '}
+            <Link to="/office-holiday-party-atlanta">Office holiday parties</Link> ·{' '}
+            <Link to="/employee-appreciation-events-atlanta">Employee appreciation</Link> ·{' '}
+            <Link to="/apartment-resident-events-atlanta">Apartment resident events</Link>
           </p>
         </div>
 

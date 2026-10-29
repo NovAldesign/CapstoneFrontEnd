@@ -782,3 +782,5 @@
     padding: 18px;
   }
 }
+/* SEO: small gold eyebrow that is the page's H1 */
+h1.seo-eyebrow-h1 { font-family: 'Montserrat', sans-serif; line-height: 1.5; margin-top: 0; }

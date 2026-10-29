@@ -162,10 +162,10 @@ const GroupBooking = () => {
   return (
     <div className="contact-page group-page">
       <Helmet>
-        <title>Celebrate With Us | Grown Folks™ Collective</title>
+        <title>Birthday &amp; Group Outings in Atlanta for Adults 30+ | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="Celebrate with Grown Folks™ Collective. Bring your crew to Karaoke Bingo, game nights, cookouts, and more, with group pricing, reserved tables, and special moments."
+          content="Plan a birthday, reunion or group night out in Atlanta for adults 30+. Bring your crew to Karaoke Bingo, game nights, live music or a summer cookout, with group pricing, reserved tables and special moments."
         />
       </Helmet>
 
@@ -173,13 +173,13 @@ const GroupBooking = () => {
       <header className="contact-hero">
         <div className="contact-hero-inner">
           <div className="contact-hero-left">
-            <span className="contact-eyebrow">Celebrate With Us</span>
-            <h1 className="contact-hero-title">Bring Your Crew</h1>
+            <h1 className="contact-eyebrow seo-eyebrow-h1">Birthday &amp; Group Outings in Atlanta</h1>
+            <p className="contact-hero-title">Bring Your Crew</p>
             <div className="contact-gold-spacer" aria-hidden="true"></div>
             <p className="contact-hero-lead">
               Birthdays, anniversaries, reunions, or just a night out with your
-              people. Celebrate with us at Karaoke Bingo, game nights, cookouts,
-              and more. Tell us about your group and we'll help create a moment
+              people. Celebrate with us at Karaoke Bingo, game nights, live music,
+              and summer cookouts. Tell us about your group and we'll help create a moment
               to remember.
             </p>
           </div>

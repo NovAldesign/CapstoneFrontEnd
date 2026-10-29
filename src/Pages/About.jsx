@@ -340,6 +340,23 @@ import { useSiteStats, PLATFORMS, plus } from '../Services/siteStats';
  
 import '../Styles/About.css';
  
+// Tells Google who runs GFC and when it started
+const ABOUT_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  url: "https://www.grownfolkscollective.com/about",
+  mainEntity: {
+    "@type": "Organization",
+    "@id": "https://www.grownfolkscollective.com/#organization",
+    name: "Grown Folks™ Collective",
+    url: "https://www.grownfolkscollective.com/",
+    foundingDate: "2026-01",
+    foundingLocation: { "@type": "Place", name: "Atlanta, Georgia" },
+    founder: { "@type": "Person", name: "La'Von \"Vaughn\" Williams", jobTitle: "Chief Playmaker" },
+    slogan: "Where grown folks come out to play.",
+  },
+};
+
 const About = () => {
   const stats = useSiteStats();
   const platforms = PLATFORMS.filter((p) => stats[p.key] > 0);
@@ -349,7 +366,7 @@ const About = () => {
  
       {/* Meta Data for SEO */}
       <Helmet>
-        <title>About Us | Grown Folks™ Collective</title>
+        <title>About Grown Folks™ Collective | Atlanta Third Space for Adults 30+</title>
         {/* ─── ADA FIX #2: Language attribute ──────────────────────────────
             WCAG 3.1.1 – Language of Page (Level A)
             Set lang on <html> in your index.html / root: <html lang="en">
@@ -358,6 +375,8 @@ const About = () => {
           name="description"
           content="Discover the story of Grown Folks™ Collective. Built in Atlanta for adults 30+, we're a third space to end social isolation and bring more fun and joy into your life through genuine, alcohol-free connection."
         />
+        <link rel="canonical" href="https://www.grownfolkscollective.com/about" />
+        <script type="application/ld+json">{JSON.stringify(ABOUT_SCHEMA)}</script>
       </Helmet>
  
       {/* HERO */}
@@ -527,7 +546,7 @@ const About = () => {
                 <div className="about-value-number" aria-hidden="true">03</div>
                 <h3 className="about-value-title">Joy</h3>
                 <p className="about-value-body">
-                  We're not a mixer and we're not a party. We're a place to laugh, play, compete, and leave lighter than you came. Fun isn't extra here. It's why we gather.
+                  We're not a bar and we're not a party. We're a place to laugh, play, compete, and leave lighter than you came. Fun isn't extra here. It's why we gather.
                 </p>
               </article>
               <article className="about-value-card">
@@ -613,7 +632,7 @@ const About = () => {
                       This makes the attribution semantically correct.      */}
                   <cite>
                     <span className="about-founder-name">Vaughn</span>
-                    <span className="about-founder-title">Founder, Grown Folks™ Collective</span>
+                    <span className="about-founder-title">Founder &amp; Chief Playmaker, Grown Folks™ Collective</span>
                   </cite>
                 </figcaption>
               </figure>

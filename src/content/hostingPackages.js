@@ -75,7 +75,7 @@ export const RESIDENT_PACKAGE = {
     },
     {
       label: 'Event 2',
-      title: 'Leasing Mixer',
+      title: 'Leasing Open House',
       text: 'Your highest-energy format (Game Night or Karaoke Bingo), opened to prospects. The leasing office invites everyone who\'s toured or applied; current residents come too. Prospects see what living there actually feels like, and your team gives tours between rounds.',
     },
   ],
@@ -85,6 +85,6 @@ export const RESIDENT_PACKAGE = {
     'A live toast to new neighbors, with your move-in special announced to the room',
     'Pro photos for your listings and socials',
   ],
-  math: 'The math: one vacant unit costs more than this package every single month. If the mixer fills even one unit sooner, it\'s paid for itself.',
+  math: 'The math: one vacant unit costs more than this package every single month. If the open house fills even one unit sooner, it\'s paid for itself.',
   frequency: 'Resident Package (2 events a month)',
 };

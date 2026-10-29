@@ -270,11 +270,12 @@ const Events = () => {
   return (
     <div className="events-page-wrapper">
       <Helmet>
-        <title>Events | Grown Folks™ Collective</title>
+        <title>Things to Do in Atlanta for Adults 30+ | Upcoming Events | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="Upcoming game nights, dinners, conversations, and travel for Atlanta adults 30+. Alcohol-free, low-key, and built for real connection and a little more joy."
+          content="Upcoming game nights, Karaoke Bingo and live music in Atlanta for adults 30+. Hosted, alcohol-free nights out where you can come solo, bring your person or bring your crew."
         />
+        <link rel="canonical" href="https://www.grownfolkscollective.com/events" />
         <script type="application/ld+json">{JSON.stringify(FAQ_SCHEMA)}</script>
       </Helmet>
 
@@ -282,13 +283,13 @@ const Events = () => {
       <header className="page-hero-visual">
         <div className="hero-dark-overlay">
           <div className="hero-content-luxe">
-            <span className="location-tag-gold">Atlanta · 30+</span>
-            <h1 className="playfair luxe-title-white">
-              Curated<br />Gatherings.
-            </h1>
+            <h1 className="location-tag-gold seo-gold-h1">Things to do in Atlanta for adults 30+</h1>
+            <p className="playfair luxe-title-white">
+              Your Next<br />Night Out.
+            </p>
             <div className="gold-spacer-v2" aria-hidden="true"></div>
             <p className="narrative-lead-white">
-              Game nights, dinners, and adventures for grown folks who want a few more sparks of joy.
+              Game nights, Karaoke Bingo and live music for grown folks who want good people and a real night out. Alcohol-free, hosted and easy to walk into.
             </p>
           </div>
         </div>

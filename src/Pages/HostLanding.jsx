@@ -83,13 +83,92 @@ const PAGES = {
       ['Can we add employee gifts?', 'Yes. GFC merch gifts start at $10 per guest and can be ready for the party.'],
     ],
   },
+
+  appreciation: {
+    path: '/employee-appreciation-events-atlanta',
+    src: 'seo-appreciation',
+    title: 'Employee Appreciation Event Ideas in Atlanta | Grown Folks™ Collective',
+    description:
+      'Hosted, alcohol-free employee appreciation events in Atlanta: Spades tournaments, game nights, Karaoke Bingo or a live-action mystery, with a mocktail named after your company and a live toast to your team’s wins.',
+    eyebrow: 'Employee Appreciation Events · Atlanta',
+    h1: 'Employee Appreciation Events Your Team Will Remember',
+    lead:
+      "Say thank you with a night your team actually talks about. We host the game, pour a signature mocktail named after your company, and raise a toast to every win your people shared. You show up and get the credit.",
+    ideasTitle: '5 employee appreciation ideas that beat another gift card',
+    ideasEyebrow: 'Appreciation Ideas',
+    ideas: [
+      ['The Wins Toast', "Your team shares their wins ahead of time, and we raise a glass to every one of them live. It's the part people remember."],
+      ['Spades Tournament', 'Brackets, scorekeeping and a trophy for the winning pair. Mix departments and watch new friendships form.'],
+      ['Karaoke Bingo', 'Sing-along bingo with full sound, mics and prizes. The loudest, most-shared hour of the year.'],
+      ['The Case of the Missing Toast', 'A live-action mystery where your team works together to find who stole the toast.'],
+      ['Lunchtime Game Night', 'Spades, dominoes and Uno during work hours, so every shift gets to celebrate.'],
+    ],
+    whyTitle: 'Why it works',
+    why: [
+      ['Everyone feels seen', 'The live toast names real wins from real people, not a generic "great job, team."'],
+      ['Everyone is included', 'Alcohol-free by design, so non-drinkers and early-morning folks enjoy it as much as everyone else.'],
+      ['Zero planning for you', 'We bring the games, the mocktail bar, the host and the photographer. Setup and breakdown included.'],
+      ['Photos you can use', 'An edited gallery within 48 hours, ready for your newsletter, careers page and social media.'],
+    ],
+    bestFor: [
+      'Employee Appreciation Day',
+      'Nurses, teachers and staff appreciation weeks',
+      'Milestones and record quarters',
+      'New team welcomes',
+      'Client appreciation nights',
+    ],
+    faq: [
+      ['When is Employee Appreciation Day?', 'The first Friday in March. In 2027 it falls on Friday, March 5. Weekday dates around it go fast, so book early.'],
+      ['Can we do it during the workday?', 'Yes. We host daytime, lunchtime and evening events, and the price is the same at any time of day.'],
+      ['How many people can you host?', 'Packages cover up to 32–60 guests depending on the game. Bigger group? Add guests in blocks of 20.'],
+      ['Where does the event happen?', 'At your office, a clubhouse or a venue you choose anywhere in metro Atlanta. Travel is included within 25 miles of East Atlanta, with a small travel fee beyond that.'],
+      ['Is any alcohol served?', 'No. Every event includes a signature mocktail bar with one drink named after your company. You can add a sparkling Töst toast for $8 per guest.'],
+      ['Can we add gifts?', 'Yes. GFC merch gifts start at $10 per guest.'],
+    ],
+  },
+
+  residents: {
+    path: '/apartment-resident-events-atlanta',
+    src: 'seo-residents',
+    audience: 'residents',
+    title: 'Apartment Resident Events in Atlanta | Hosted & Alcohol-Free | Grown Folks™ Collective',
+    description:
+      'Hosted resident events for Atlanta apartment communities: game nights, Spades tournaments, Karaoke Bingo and a live-action mystery in your clubhouse, with a mocktail named after your property. Built to help residents renew.',
+    eyebrow: 'Apartment Resident Events · Atlanta',
+    h1: 'Resident Events Your Residents Actually Show Up For',
+    lead:
+      "Residents who know their neighbors renew. We bring a hosted game night, Spades tournament or Karaoke Bingo to your clubhouse, with a signature mocktail named after your property and a toast to your residents' wins. Your team just opens the doors.",
+    whyTitle: 'Why property teams book us',
+    why: [
+      ['Built for renewals', 'Neighbors become friends, and people who have friends where they live stay longer.'],
+      ['No liability', 'Alcohol-free by design. No bartender, and every resident is included.'],
+      ['We promote it for you', 'A branded flyer for your resident portal and lobby, plus an attendance count for your report.'],
+      ['Content for your listings', 'An edited photo gallery within 48 hours, made for your website, social media and tours.'],
+    ],
+    bestFor: [
+      'Monthly resident nights',
+      'New resident welcomes',
+      'Renewal season',
+      'Leasing open houses for prospects',
+      'Holiday resident parties',
+    ],
+    faq: [
+      ['Where does the event happen?', 'In your clubhouse or amenity space anywhere in metro Atlanta. Travel is included within 25 miles of East Atlanta, with a small travel fee beyond that.'],
+      ['How many residents can you host?', 'Packages cover up to 32–60 guests depending on the game. Bigger turnout expected? Add guests in blocks of 20.'],
+      ['Is any alcohol served?', 'No. Every event includes a signature mocktail bar with one drink named after your property.'],
+      ['Do you help get residents there?', 'Yes. We send a branded flyer to share with residents, and you get an attendance count after the event.'],
+      ['Can it be a monthly program?', 'Yes. The Resident Package is two events a month, one for current residents and one leasing open house for prospects, with a 3-month minimum on weekday dates. You can also run a monthly, biweekly or weekly series and save 10–20% per event.'],
+      ['How far ahead should we book?', 'Two to three weeks is ideal. Weekday dates (Monday to Thursday) have the most availability and the best rate.'],
+    ],
+  },
 };
 
 const money = (n) => `$${n.toLocaleString('en-US')}`;
 
 const HostLanding = ({ page }) => {
   const p = PAGES[page];
-  const bookLink = `/host?type=corporate&src=${p.src}`;
+  const res = p.audience === 'residents';
+  const bookLink = `/host?type=${res ? 'residents' : 'corporate'}&src=${p.src}`;
   const special = currentSpecial();
 
   // Lets Google show the questions and answers right in search results
@@ -106,7 +185,7 @@ const HostLanding = ({ page }) => {
     '@context': 'https://schema.org',
     '@type': 'Service',
     name: p.h1,
-    serviceType: page === 'holiday' ? 'Office holiday party' : 'Corporate team building',
+    serviceType: { holiday: 'Office holiday party', appreciation: 'Employee appreciation event', residents: 'Apartment resident event' }[page] || 'Corporate team building',
     areaServed: { '@type': 'City', name: 'Atlanta, GA' },
     provider: {
       '@type': 'LocalBusiness',
@@ -125,7 +204,7 @@ const HostLanding = ({ page }) => {
     offers: PACKAGES.map((pkg) => ({
       '@type': 'Offer',
       name: pkg.name,
-      price: pkg.corporate,
+      price: res ? pkg.residents : pkg.corporate,
       priceCurrency: 'USD',
     })),
   };
@@ -158,8 +237,8 @@ const HostLanding = ({ page }) => {
             <p className="contact-info-label">Play. Sip. Toast.™ includes</p>
             <ul className="group-perks-list">
               <li>A hosted game, start to finish</li>
-              <li>Signature mocktail bar, one drink named after your company</li>
-              <li>A live toast to your team's wins</li>
+              <li>Signature mocktail bar, one drink named after your {res ? 'property' : 'company'}</li>
+              <li>A live toast to your {res ? "residents'" : "team's"} wins</li>
               <li>Setup, breakdown and a branded flyer</li>
               <li>Photos within 48 hours</li>
             </ul>
@@ -180,7 +259,7 @@ const HostLanding = ({ page }) => {
       {/* ── IDEAS (holiday page) ── */}
       {p.ideas && (
         <section className="host-section" aria-labelledby="hl-ideas">
-          <span className="contact-form-eyebrow">Holiday Party Ideas</span>
+          <span className="contact-form-eyebrow">{p.ideasEyebrow || 'Holiday Party Ideas'}</span>
           <h2 className="host-h2" id="hl-ideas">{p.ideasTitle}</h2>
           <ol className="host-landing-ideas">
             {p.ideas.map(([name, text]) => (
@@ -215,7 +294,7 @@ const HostLanding = ({ page }) => {
       {/* ── PACKAGES ── */}
       <section className={`host-section${p.ideas ? '' : ' host-section-alt'}`} aria-labelledby="hl-packages">
         <span className="contact-form-eyebrow">Packages</span>
-        <h2 className="host-h2" id="hl-packages">Corporate packages</h2>
+        <h2 className="host-h2" id="hl-packages">{res ? 'Resident event packages' : 'Corporate packages'}</h2>
         <div className="host-packages">
           {PACKAGES.map((pkg) => (
             <article className={`host-card${pkg.badge ? ' featured' : ''}`} key={pkg.name}>
@@ -223,13 +302,13 @@ const HostLanding = ({ page }) => {
               <p className="host-card-eyebrow">Play. Sip. Toast.</p>
               <h3 className="host-card-title">{pkg.short}</h3>
               <p className="host-card-price">
-                {money(pkg.corporate)}
+                {money(res ? pkg.residents : pkg.corporate)}
                 <span> Mon–Thu</span>
               </p>
-              <p className="host-card-weekend">{money(pkg.corporate + WEEKEND_EXTRA)} Fri–Sun</p>
+              <p className="host-card-weekend">{money((res ? pkg.residents : pkg.corporate) + WEEKEND_EXTRA)} Fri–Sun</p>
               <p className="host-card-guests">
                 {pkg.guests}
-                <span className="host-card-perguest">from {money(perGuest(pkg.corporate, pkg))}/guest</span>
+                <span className="host-card-perguest">from {money(perGuest(res ? pkg.residents : pkg.corporate, pkg))}/guest</span>
               </p>
               <p className="host-card-blurb">{pkg.blurb}</p>
               <Link to={bookLink} className="host-card-btn host-card-link">Request this package</Link>
@@ -238,7 +317,11 @@ const HostLanding = ({ page }) => {
         </div>
         <p className="host-fine host-landing-fine">
           Serving metro Atlanta. Travel is included within 25 miles of East Atlanta.
-          Hosting an apartment community instead? <Link to="/host#apartments">See The Resident Package</Link>.
+          {res ? (
+            <>Want two events a month? <Link to="/host#apartments">See The Resident Package</Link>.</>
+          ) : (
+            <>Hosting an apartment community instead? <Link to="/apartment-resident-events-atlanta">See resident events</Link>.</>
+          )}
         </p>
       </section>
 

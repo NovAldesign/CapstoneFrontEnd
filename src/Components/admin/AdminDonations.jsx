@@ -132,7 +132,7 @@ const AdminDonations = () => {
           <p className="ga-kicker">In-kind · {list.length}</p>
           <h2 className="ga-card-title">Donation offers</h2>
         </div>
-        <a className="ga-btn ga-btn-sm" href="/partnerships?donate=1#donate" target="_blank" rel="noreferrer">View the form</a>
+        <a className="ga-btn ga-btn-sm" href="/donate" target="_blank" rel="noreferrer">View the form</a>
       </div>
       <div className="ga-seg" role="tablist" aria-label="Filter donations" style={{ marginBottom: 10 }}>
         <button type="button" className={filter === 'all' ? 'on' : ''} onClick={() => setFilter('all')}>All</button>
@@ -143,7 +143,7 @@ const AdminDonations = () => {
         ))}
       </div>
       {shown.length === 0
-        ? <p className="ga-small ga-muted">{list.length ? 'Nothing here.' : 'No donation offers yet. Share grownfolkscollective.com/partnerships?donate=1 with local businesses.'}</p>
+        ? <p className="ga-small ga-muted">{list.length ? 'Nothing here.' : 'No donation offers yet. Share grownfolkscollective.com/donate with local businesses.'}</p>
         : shown.map((d) => <Donation key={d._id} d={d} onSaved={saved} />)}
     </section>
   );

@@ -72,7 +72,7 @@ const TIERS = [
       '$5 off every GFC ticket',
       '10% off food events like our Cookout, Friendsgiving, and holiday dinners',
       '48-hour early access to tickets + priority waitlist for sold-out events',
-      'Early doors member mixer at every event',
+      'Early doors: member-only time before every event',
       'Private member group chat',
       'Birthday bonus: $25 extra event credit in your birthday month',
       '10% off AMC Performance Company shows',

@@ -633,3 +633,4 @@
   margin: 0 0 6px;
 }
 .host-series-h2 { margin-top: 64px; }
+.host-more-links a { color: inherit; font-weight: 700; }

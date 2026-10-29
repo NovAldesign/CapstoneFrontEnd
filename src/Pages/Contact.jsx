@@ -20,7 +20,7 @@ const EVENT_TYPES = [
   'Birthday Celebration',
   'Private Dinner',
   'Team Building',
-  'Social Mixer',
+  'Social Night',
   'Other',
 ];
 

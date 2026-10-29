@@ -93,7 +93,7 @@ const Navbar = () => {
             <li className="nav-subhead" aria-hidden="true">Partner</li>
             <li><NavLink to="/partnerships" end className="nav-sublink" onClick={closeMenu}>Sponsor an Event</NavLink></li>
             <li><NavLink to="/partnerships/perks" className="nav-sublink" onClick={closeMenu}>Offer a Member Perk</NavLink></li>
-            <li><Link to="/partnerships?donate=1#donate" className="nav-sublink" onClick={closeMenu}>Donate</Link></li>
+            <li><Link to="/donate" className="nav-sublink" onClick={closeMenu}>Donate</Link></li>
             <li className="nav-subhead" aria-hidden="true">More</li>
             <li><NavLink to="/scouts" className="nav-sublink" onClick={closeMenu}>Industry Scouts</NavLink></li>
             <li><NavLink to="/on-our-stage" className="nav-sublink" onClick={closeMenu}>On Our Stage</NavLink></li>

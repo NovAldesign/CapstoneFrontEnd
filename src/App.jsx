@@ -18,6 +18,7 @@ import Blog from "./Pages/Blog.jsx";
 import BlogPost from "./Pages/BlogPost.jsx";
 import Membership from "./Pages/Membership.jsx";
 import Partnerships from "./Pages/Partnership.jsx";
+import Donate from "./Pages/Donate.jsx";
 import MemberPerks from "./Pages/MemberPerks.jsx";
 import About from "./Pages/About.jsx";
 import Contact from "./Pages/Contact.jsx";
@@ -98,6 +99,8 @@ function App() {
             <Route path="/host" element={<Host />} />
             <Route path="/corporate-team-building-atlanta" element={<HostLanding page="teamBuilding" />} />
             <Route path="/office-holiday-party-atlanta" element={<HostLanding page="holiday" />} />
+            <Route path="/employee-appreciation-events-atlanta" element={<HostLanding page="appreciation" />} />
+            <Route path="/apartment-resident-events-atlanta" element={<HostLanding page="residents" />} />
             <Route path="/perform" element={<Perform key="artist" />} />
             <Route path="/perform/host" element={<Perform key="host" role="host" />} />
             <Route path="/perform/art" element={<Perform key="visual" role="visual" />} />
@@ -112,6 +115,7 @@ function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/partnerships" element={<Partnerships />} />
+            <Route path="/donate" element={<Donate />} />
             <Route path="/partnerships/perks" element={<MemberPerks />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />

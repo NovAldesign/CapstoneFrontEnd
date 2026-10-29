@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import "../Styles/Partnership.css";
 import partnershipService from "../Services/partnershipService.js";
-import DonationForm from "../Components/DonationForm.jsx";
 import { useSiteStats, plus } from "../Services/siteStats";
 import VenuePartners from "../Components/VenuePartners.jsx";
 
@@ -96,6 +95,28 @@ const moments = [
     ],
   },
 ];
+// Tells Google what sponsors can buy
+const SPONSOR_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Event sponsorship with Grown Folks™ Collective",
+  serviceType: "Event sponsorship",
+  description:
+    "Sponsor alcohol-free game nights, Karaoke Bingo and live music showcases for Atlanta adults 30+. Logo placement, social media shout-outs, newsletter mentions, on-site tables and presenting rights.",
+  areaServed: { "@type": "City", name: "Atlanta, GA" },
+  audience: { "@type": "PeopleAudience", suggestedMinAge: 30, geographicArea: { "@type": "City", name: "Atlanta" } },
+  provider: { "@type": "Organization", name: "Grown Folks™ Collective", url: "https://www.grownfolkscollective.com/" },
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Partnership levels",
+    itemListElement: [
+      { "@type": "Offer", name: "Friend of GFC (per event)", price: 150, priceCurrency: "USD" },
+      { "@type": "Offer", name: "Featured Partner (per event)", price: 350, priceCurrency: "USD" },
+      { "@type": "Offer", name: "Presenting Partner (per event)", price: 750, priceCurrency: "USD" },
+      { "@type": "Offer", name: "Series Partner (3 events)", price: 1800, priceCurrency: "USD" },
+    ],
+  },
+};
 const momentLabel = (m) => `${m.series}: ${m.label}`;
 const SERIES = [{ name: "Acoustic & Infused™", tag: "Live music showcase" }];
 
@@ -124,7 +145,6 @@ const Partnership = () => {
   const siteStats = useSiteStats();
   const [params] = useSearchParams();
   const [showForm, setShowForm] = useState(params.get("inquire") === "1");
-  const [showDonate, setShowDonate] = useState(params.get("donate") === "1");
   const [formData, setFormData] = useState(defaultForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState(null);
@@ -161,13 +181,6 @@ const Partnership = () => {
   };
   const handleTierSelect = (tierLabel) => openForm(tierLabel);
 
-  const openDonate = (e) => {
-    e?.preventDefault();
-    setShowDonate(true);
-    setTimeout(() => {
-      document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" });
-    }, 50);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -200,25 +213,33 @@ const Partnership = () => {
     }
   };
 
+  // Old donation links (/partnerships?donate=1) now go to the donate page
+  if (params.get("donate") === "1") {
+    const src = params.get("src");
+    return <Navigate to={src ? `/donate?src=${encodeURIComponent(src)}` : "/donate"} replace />;
+  }
+
   return (
     <div className="partnership-page">
       <Helmet>
-        <title>Partner With Us | Grown Folks™ Collective</title>
+        <title>Sponsor an Atlanta Event | Reach Adults 30+ | Grown Folks™ Collective</title>
         <meta
           name="description"
-          content="Sponsor or co-host an event with Grown Folks™ Collective, Atlanta's alcohol-free social community for adults 30+, or offer our members a discount for free. Partnerships start at $150 per event."
+          content="Put your brand in the room with Atlanta adults 30+. Sponsor a Game Night, Karaoke Bingo or live music showcase from $150 per event, present a whole series, donate products, or offer our community a perk for free."
         />
+        <link rel="canonical" href="https://www.grownfolkscollective.com/partnerships" />
+        <script type="application/ld+json">{JSON.stringify(SPONSOR_SCHEMA)}</script>
       </Helmet>
 
       {/* HERO & NARRATIVE */}
       <header className="partner-hero">
         <div className="mission-narrative">
-          <span className="location-tag">Atlanta &amp; Surrounding Cities</span>
-          <h1 className="playfair luxe-title">
+          <h1 className="location-tag seo-tag-h1">Atlanta Event Sponsorships for Brands</h1>
+          <p className="playfair luxe-title">
             Partner With
             <br />
             the Collective
-          </h1>
+          </p>
           <div className="gold-spacer-bar"></div>
           <p className="narrative-lead">
             We bring together Atlanta adults 30+ who are intentional about how
@@ -245,12 +266,12 @@ const Partnership = () => {
               <span className="partner-path-text">Give our members a discount and bring new regulars through your door. Free to join.</span>
               <span className="partner-path-cta">Offer a perk →</span>
             </Link>
-            <a href="#donate" className="partner-path" onClick={openDonate}>
+            <Link to="/donate" className="partner-path">
               <span className="partner-path-tag">For anyone</span>
               <span className="playfair partner-path-title">Donate Products or Equipment</span>
               <span className="partner-path-text">Stock our gift bags, giveaways and game nights, or help us gear up with sound, lights and supplies.</span>
-              <span className="partner-path-cta">Offer a donation ↓</span>
-            </a>
+              <span className="partner-path-cta">Offer a donation →</span>
+            </Link>
           </div>
         </div>
       </header>
@@ -648,47 +669,16 @@ const Partnership = () => {
       </section>
       )}
 
-      {/* DONATIONS: products for gift bags and giveaways, equipment for events */}
-      <section className="donate-section" id="donate" aria-labelledby="donate-heading">
+      {/* DONATIONS live on /donate */}
+      <section className="donate-section donate-teaser" aria-labelledby="donate-heading">
         <div className="donate-inner">
           <span className="location-tag">Give to the Collective</span>
           <h2 className="playfair section-title" id="donate-heading">Donate Products or Equipment</h2>
           <p className="narrative-body donate-lead">
-            Every gift bag, prize and piece of equipment helps us create more joy and real connection for Atlanta's
-            grown folks. If you have something that helps GFC grow and brings our people together, we'd love to hear from you.
+            Gift bag products, prizes, sound gear or non-alcoholic drinks. Every donation gets your name in the room
+            with a shout-out at the event, a social media tag and a newsletter mention.
           </p>
-          <div className="donate-cols">
-            <div className="donate-card">
-              <h3 className="donate-card-title">What we can use</h3>
-              <ul>
-                <li>Products for gift bags and giveaways</li>
-                <li>Prizes for game nights and Karaoke Bingo</li>
-                <li>Sound: speakers, mics, a mixer or a karaoke machine</li>
-                <li>Lighting and stage decor</li>
-                <li>Games: cards, tables and board games</li>
-                <li>Art and coloring supplies: easels, canvases, coloring books</li>
-                <li>Non-alcoholic drinks</li>
-              </ul>
-            </div>
-            <div className="donate-card donate-card-navy">
-              <h3 className="donate-card-title">How we say thank you</h3>
-              <ul>
-                <li>A shout-out at the event</li>
-                <li>A tag on our social media</li>
-                <li>A mention in our newsletter</li>
-              </ul>
-              <p className="donate-card-note">Prefer to stay anonymous? Just uncheck the box on the form.</p>
-            </div>
-          </div>
-          {showDonate ? (
-            <div className="donate-form-wrap">
-              <DonationForm source={params.get("src") ? `partnerships?src=${params.get("src")}` : "partnerships"} />
-            </div>
-          ) : (
-            <button type="button" className="gold-submit-btn donate-open-btn" onClick={openDonate}>
-              Offer a Donation
-            </button>
-          )}
+          <Link to="/donate" className="gold-submit-btn donate-open-btn">Offer a Donation</Link>
         </div>
       </section>
     </div>
