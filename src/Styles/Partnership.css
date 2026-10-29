@@ -575,3 +575,4 @@ h1.seo-tag-h1 { font-family: 'Montserrat', sans-serif; font-size: 0.8rem; line-h
 .donate-faq-item { border-bottom: 1px solid #E6DFD0; padding: 16px 0; }
 .donate-faq-item summary { cursor: pointer; font-weight: 700; color: #002147; }
 .donate-faq-item p { margin: 10px 0 0; color: #4A556B; line-height: 1.7; }
+.partner-faq-link { display: inline-block; margin-top: 10px; font-weight: 700; color: #002147; text-decoration: none; border-bottom: 2px solid #C5A059; }

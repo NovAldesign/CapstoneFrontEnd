@@ -117,6 +117,23 @@ const SPONSOR_SCHEMA = {
     ],
   },
 };
+// Questions sponsors ask (also given to Google as FAQ data)
+const sponsorFaq = (community) => [
+  ["Who will see my brand?", `Atlanta adults 30+ in our community of ${community} across social media, our newsletter and our events. Our rooms are alcohol-free and built for conversation, so guests are present and paying attention.`],
+  ["How much does it cost to sponsor an event?", "Friend of GFC is $150 per event, Featured Partner is $350 and Presenting Partner is $750. Series Partners present a whole run: $1,800 for 3 events or $3,000 for 6. You can also sponsor one moment of a live music showcase from $375."],
+  ["Can I sponsor just one event?", "Yes. Many partners start with a single event to see the fit firsthand, then build from there."],
+  ["Which events can I sponsor?", "Game Night, Karaoke Bingo, Acoustic & Infused™ live music showcases, Recess Talks™ and GFC Select™. Series Partners pick a run of Game Night, Karaoke Bingo, Acoustic & Infused™ or a Recess Talks™ season."],
+  ["Can my brand be the only one in its category?", "Yes. Presenting Partners are the only brand in their category that night, and the event is billed as presented by your brand on the flyer, event page and every listing."],
+  ["Can we sample products or add items to gift bags?", "Yes. Featured Partners and above get a table or display at the event plus product sampling or an item in our gift bags."],
+  ["Can a non-alcoholic drink brand pour at the event?", "Yes. As First Toast Sponsor at Acoustic & Infused™, a non-alcoholic drink brand can pour its own product for the toast that opens the night."],
+  ["I own a local business. Is there a free way to partner?", "Yes. Offer our community a perk, like a discount at your business. It's free to join with no contract."],
+  ["Can I donate products instead of sponsoring?", "Yes. Gift bag products, prizes, equipment and non-alcoholic drinks are welcome, and every donation gets a shout-out at the event, a social media tag and a newsletter mention. Grown Folks™ Collective is a business, not a nonprofit, so donations aren't tax-deductible."],
+  ["How do I get started?", "Pick a level and send the short form. We'll reply within 48 hours."],
+];
+const SPONSOR_FAQ_LINKS = {
+  "I own a local business. Is there a free way to partner?": { to: "/partnerships/perks", label: "Offer a perk" },
+  "Can I donate products instead of sponsoring?": { to: "/donate", label: "Offer a donation" },
+};
 const momentLabel = (m) => `${m.series}: ${m.label}`;
 const SERIES = [{ name: "Acoustic & Infused™", tag: "Live music showcase" }];
 
@@ -213,6 +230,8 @@ const Partnership = () => {
     }
   };
 
+  const faq = sponsorFaq(plus(siteStats.communityTotal));
+
   // Old donation links (/partnerships?donate=1) now go to the donate page
   if (params.get("donate") === "1") {
     const src = params.get("src");
@@ -229,6 +248,11 @@ const Partnership = () => {
         />
         <link rel="canonical" href="https://www.grownfolkscollective.com/partnerships" />
         <script type="application/ld+json">{JSON.stringify(SPONSOR_SCHEMA)}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
+        })}</script>
       </Helmet>
 
       {/* HERO & NARRATIVE */}
@@ -668,6 +692,20 @@ const Partnership = () => {
         </div>
       </section>
       )}
+
+      {/* FAQ */}
+      <section className="donate-faq" aria-labelledby="partner-faq-heading">
+        <div className="donate-inner">
+          <h2 className="playfair section-title" id="partner-faq-heading">Sponsor Questions</h2>
+          {faq.map(([q, a]) => (
+            <details key={q} className="donate-faq-item">
+              <summary>{q}</summary>
+              <p>{a}</p>
+              {SPONSOR_FAQ_LINKS[q] && <Link to={SPONSOR_FAQ_LINKS[q].to} className="partner-faq-link">{SPONSOR_FAQ_LINKS[q].label} →</Link>}
+            </details>
+          ))}
+        </div>
+      </section>
 
       {/* DONATIONS live on /donate */}
       <section className="donate-section donate-teaser" aria-labelledby="donate-heading">

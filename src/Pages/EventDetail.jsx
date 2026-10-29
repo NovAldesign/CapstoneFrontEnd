@@ -132,6 +132,9 @@ const EventDetail = () => {
   const loc = event.location || {};
   const category = getCategory(event);
   const price = getPriceDisplay(event.tiers);
+  // Eventbrite can mark a paid event "free" (e.g. free scout tickets), so only show it when every ticket is free
+  const allFree = (event.tiers || []).length > 0 && event.tiers.every((t) => parseCleanPrice(t) === 0);
+  const highlights = (event.highlights || []).filter((h) => !/^free admission$/i.test(String(h).trim()) || allFree);
   const spotsLeft = getSpotsLeft(event.tiers);
   const directions = getDirectionsUrl(loc);
 
@@ -294,9 +297,9 @@ const EventDetail = () => {
             </div>
           </dl>
 
-          {event.highlights?.length > 0 && (
+          {highlights.length > 0 && (
             <ul className="gfc-highlights" aria-label="Event highlights">
-              {event.highlights.map((h, i) => (
+              {highlights.map((h, i) => (
                 <li key={i}>{h}</li>
               ))}
             </ul>

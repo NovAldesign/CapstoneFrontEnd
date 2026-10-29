@@ -59,6 +59,24 @@ const WHY = [
 
 const money = (n) => `$${n.toLocaleString('en-US')}`;
 
+// Questions companies and property teams ask (also given to Google as FAQ data)
+const HOST_FAQ = [
+  ['What kinds of events do you host?', 'Hosted game nights, Spades tournaments, Karaoke Bingo and a live-action mystery for companies, teams and apartment communities across metro Atlanta. Every event includes a signature mocktail bar and a live toast to your people\'s wins.'],
+  ['How much does a hosted event cost?', `Corporate packages start at ${money(Math.min(...PACKAGES.map((p) => p.corporate)))} and apartment community packages start at ${money(Math.min(...PACKAGES.map((p) => p.residents)))} for a weekday event. Fri–Sun dates are ${money(WEEKEND_EXTRA)} more. Every package lists what's included and how many guests it covers.`],
+  ['How many people can you host?', 'Packages cover up to 32–60 guests depending on the game. Bigger group? Add guests in blocks of 20, or ask us about running two games side by side.'],
+  ['Where does the event happen?', 'At your office, clubhouse or a venue you choose anywhere in metro Atlanta. Travel is included within 25 miles of East Atlanta, with a small travel fee beyond that.'],
+  ['Can we do it during the workday?', 'Yes. We host daytime, lunchtime and evening events, and the price is the same at any time of day.'],
+  ['Is any alcohol served?', 'No. Every event includes a signature mocktail bar with one drink named after your company or property. No bartender and no liability, and everyone is included. You can add a sparkling Töst toast for $8 per guest.'],
+  ['What do we need to do?', 'Open the doors. We bring the games, the mocktail bar, the host and a photographer, handle setup and breakdown, send a branded flyer to promote it, and give you an attendance count afterward.'],
+  ['How far ahead should we book?', 'Two to three weeks is ideal. Weekday dates (Monday to Thursday) have the most availability and the best rate.'],
+  ['Can it be a recurring program?', 'Yes. A monthly, biweekly or weekly series saves 10–20% per event with a 3-month minimum. Apartment communities can also choose The Resident Package: two events a month, one for current residents and one leasing open house for prospects.'],
+];
+const HOST_FAQ_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: HOST_FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+};
+
 // Tells Google exactly what we offer companies and apartment communities
 const HOST_SCHEMA = {
   '@context': 'https://schema.org',
@@ -206,6 +224,7 @@ const Host = () => {
         />
         <link rel="canonical" href="https://www.grownfolkscollective.com/host" />
         <script type="application/ld+json">{JSON.stringify(HOST_SCHEMA)}</script>
+        <script type="application/ld+json">{JSON.stringify(HOST_FAQ_SCHEMA)}</script>
       </Helmet>
 
       {/* ── HERO ── */}
@@ -403,6 +422,20 @@ const Host = () => {
           260+ tickets sold to our game nights, Karaoke Bingo, live music and dinners.{' '}
           <Link to="/events">See our public events →</Link>
         </p>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section className="host-section host-section-alt" aria-labelledby="host-faq">
+        <span className="contact-form-eyebrow">Questions</span>
+        <h2 className="host-h2" id="host-faq">Frequently asked questions</h2>
+        <div className="host-faq">
+          {HOST_FAQ.map(([q, a]) => (
+            <details key={q}>
+              <summary>{q}</summary>
+              <p>{a}</p>
+            </details>
+          ))}
+        </div>
       </section>
 
       {/* ── FORM ── */}

@@ -11,7 +11,7 @@ const MemberPerks = () => (
       <title>Offer a Member Perk | Grown Folks™ Collective</title>
       <meta
         name="description"
-        content="Atlanta business owners: offer Grown Folks™ Collective members an exclusive discount. Free to join, no contract. Get featured to Atlanta adults 30+ who love to support local."
+        content="Atlanta business owners: offer Grown Folks™ Collective members a special discount. Free to join, no contract. Get featured to Atlanta adults 30+ who love to support local."
       />
       <link rel="canonical" href="https://www.grownfolkscollective.com/partnerships/perks" />
     </Helmet>
@@ -22,7 +22,7 @@ const MemberPerks = () => (
         <h1 className="playfair perks-hero-title">Offer a Member Perk</h1>
         <div className="perks-hero-bar" aria-hidden="true" />
         <p className="perks-hero-lead">
-          Give Grown Folks™ Collective members an exclusive discount and bring new regulars through your
+          Give Grown Folks™ Collective members a special discount and bring new regulars through your
           door. Our members are Atlanta adults 30+ who love to support local. No fee, no contract.
         </p>
         <a href="#perk-form" className="perks-hero-btn">Get Started</a>
