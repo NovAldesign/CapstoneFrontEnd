@@ -563,3 +563,15 @@
 .gfc-results-anchor { scroll-margin-top: 100px; }
 .gfc-night-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin: 0 0 20px; padding: 14px 18px; background: #FDFBFA; border-left: 3px solid #C5A059; color: #002147; font-size: 1rem; }
 .gfc-empty .gfc-btn-outline { margin-left: 10px; }
+
+/* More Upcoming Events: show the whole flyer, no cropping */
+.gfc-more-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.gfc-more-card { display: flex !important; flex-direction: column; align-items: stretch !important; gap: 0 !important; padding: 0 !important; overflow: hidden; background: #fff; border: 1px solid #ece4d3; border-radius: 10px; text-decoration: none; transition: transform .25s ease, box-shadow .25s ease; }
+.gfc-more-card:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(0, 33, 71, 0.14); }
+.gfc-more-media { display: block; aspect-ratio: 2 / 1; background: #002147; }
+.gfc-more-card .gfc-more-media img { width: 100%; height: 100%; object-fit: contain; border-radius: 0; display: block; }
+.gfc-more-body { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px 20px; flex: 1; }
+.gfc-more-body strong { font-family: 'Playfair Display', serif; font-size: 1.2rem; line-height: 1.3; color: var(--gfc-navy); font-weight: 700; }
+.gfc-more-cta { margin-top: auto; padding-top: 10px; font-size: 0.85rem; font-weight: 700; color: var(--gfc-gold); letter-spacing: 0.04em; }
+@media (max-width: 900px) { .gfc-more-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .gfc-more-grid { grid-template-columns: 1fr; } }

@@ -464,11 +464,14 @@ const EventDetail = () => {
           <div className="gfc-more-grid">
             {moreEvents.map((e) => (
               <Link key={e._id || e.eventbriteId} to={eventPath(e)} className="gfc-more-card">
-                <img src={e.image} alt="" loading="lazy" />
-                <div>
+                <span className="gfc-more-media">
+                  <img src={e.image} alt="" loading="lazy" />
+                </span>
+                <span className="gfc-more-body">
                   <span className="gfc-card-when">{formatEventDate(e.date)}</span>
                   <strong>{e.title}</strong>
-                </div>
+                  <span className="gfc-more-cta">View event →</span>
+                </span>
               </Link>
             ))}
           </div>
