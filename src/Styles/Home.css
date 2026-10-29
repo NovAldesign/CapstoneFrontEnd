@@ -943,3 +943,24 @@
   .home-hero-visual .hero-dark-overlay { padding: 0 20px; }
   .hx-hero-ctas { flex-direction: column; }
 }
+
+/* Coming January 2027: GFC Select and Recess Talks */
+.hx-nights-grid { grid-template-columns: repeat(3, 1fr); }
+.hx-coming { padding: 96px 0; background: linear-gradient(160deg, #001730 0%, #002147 60%, #0b2d57 100%); border-top: 3px solid var(--gold, #C5A059); border-bottom: 3px solid var(--gold, #C5A059); }
+.hx-coming-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 28px; }
+.hx-coming-card { display: flex; flex-direction: column; gap: 12px; padding: 38px 34px; border: 1px solid rgba(197,160,89,0.5); background: rgba(255,255,255,0.03); color: #FDFBFA; }
+.hx-coming-need { font-weight: 700; color: rgba(253,251,250,0.9); }
+.hx-coming-name { font-size: 2.2rem; line-height: 1.1; margin: 0; color: var(--gold, #C5A059); }
+.hx-coming-facts { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #FDFBFA; padding-top: 14px; border-top: 1px solid rgba(197,160,89,0.35); }
+.hx-coming-links { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 8px; }
+.hx-coming-btn { display: inline-flex; padding: 14px 24px; background: var(--gold, #C5A059); color: var(--navy, #002147); font-weight: 800; font-size: 0.82rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: 1px solid var(--gold, #C5A059); transition: background .2s, color .2s; }
+.hx-coming-btn:hover { background: transparent; color: var(--gold, #C5A059); }
+.hx-coming-link { color: #FDFBFA; font-weight: 700; text-decoration: none; border-bottom: 1px solid rgba(197,160,89,0.7); padding-bottom: 2px; }
+.hx-coming-link:hover { color: var(--gold, #C5A059); }
+@media (max-width: 1000px) { .hx-nights-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 760px) {
+  .hx-coming { padding: 64px 0; }
+  .hx-coming-grid, .hx-nights-grid { grid-template-columns: 1fr; }
+  .hx-coming-card { padding: 30px 22px; }
+  .hx-coming-btn { width: 100%; justify-content: center; box-sizing: border-box; }
+}

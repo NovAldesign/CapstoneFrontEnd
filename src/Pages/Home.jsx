@@ -26,12 +26,32 @@ const NIGHTS = [
     feel: "Sit close to the stage, hear every note, and a room that actually listens.",
     facts: "Atlanta artists, live painting · from $30",
   },
+];
+
+// Launching January 2027
+const COMING = [
   {
+    kicker: "For singles 30+",
+    need: "Done with the apps?",
+    name: "GFC Select™",
+    body: "A private masquerade evening for Atlanta singles. Twenty women and twenty men, every guest vetted, camera-free and confidential. No swiping, no speed-dating bells. Just a real room where everyone came to meet someone.",
+    facts: "40 seats · By invitation · January 2027",
+    links: [
+      { to: "/select/ladies", label: "For the ladies" },
+      { to: "/select/gentlemen", label: "For the gentlemen" },
+      { to: "/select/invitation", label: "Open your invitation →", primary: true },
+    ],
+  },
+  {
+    kicker: "For curious minds",
     need: "Want to learn something new?",
-    night: "Recess Talks™",
-    feel: "A great talk over breakfast and mocktails, then the conversation keeps going.",
-    facts: "Professors and local voices · starts January",
-    href: "/recess",
+    name: "Recess Talks™",
+    body: "One Saturday morning a month, a professor, author or local voice gives a talk worth getting up for. Coffee and a light breakfast, something to color while you listen, and conversation that keeps going after.",
+    facts: "Monthly Saturdays · Starts January 2027",
+    links: [
+      { to: "/recess#speak", label: "Apply to speak" },
+      { to: "/recess#list", label: "Join the list →", primary: true },
+    ],
   },
 ];
 
@@ -113,7 +133,7 @@ const Home = () => {
           <div><strong>{stats.soldOut}</strong><span>sold-out nights</span></div>
           <div><strong>{plus(stats.communityTotal)}</strong><span>grown folks in our community</span></div>
           <div><strong>{stats.eventsHosted}</strong><span>nights hosted</span></div>
-          <div><strong>Monroe to Buford</strong><span>guests drive in for this</span></div>
+          <div><strong>Metro ATL</strong><span>guests drive in from Monroe to Buford</span></div>
         </div>
       </section>
 
@@ -134,6 +154,30 @@ const Home = () => {
                 <span className="hx-night-feel">{n.feel}</span>
                 <span className="hx-night-facts">{n.facts}</span>
               </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 3b. COMING JANUARY 2027 */}
+      <section className="hx-coming" aria-labelledby="hx-coming-title">
+        <div className="hx-wrap">
+          <p className="hx-eyebrow hx-eyebrow-light">New in January 2027</p>
+          <h2 id="hx-coming-title" className="playfair hx-h2 hx-light">Two new rooms. Get on the list first.</h2>
+          <div className="hx-coming-grid">
+            {COMING.map((c) => (
+              <article key={c.name} className="hx-coming-card">
+                <span className="hx-biz-kicker">{c.kicker}</span>
+                <span className="hx-coming-need">{c.need}</span>
+                <h3 className="playfair hx-coming-name">{c.name}</h3>
+                <p className="hx-biz-body">{c.body}</p>
+                <span className="hx-coming-facts">{c.facts}</span>
+                <div className="hx-coming-links">
+                  {c.links.map((l) => (
+                    <Link key={l.to} to={l.to} className={l.primary ? "hx-coming-btn" : "hx-coming-link"}>{l.label}</Link>
+                  ))}
+                </div>
+              </article>
             ))}
           </div>
         </div>
