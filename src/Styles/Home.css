@@ -978,3 +978,20 @@
 .hx-first-panel-tag { font-family: 'Playfair Display', serif; font-style: italic; color: rgba(253,251,250,0.85); font-size: 1.05rem; }
 @media (max-width: 760px) { .hx-first-panel { aspect-ratio: auto; padding: 44px 30px; box-shadow: 10px 10px 0 var(--gold, #C5A059); } }
 @media (min-width: 761px) { .hx-first-panel { aspect-ratio: 1 / 1; } }
+
+/* However you come: solo, pair, crew */
+.hx-ways { margin: 4px 0 28px; padding: 22px 24px; background: #fff; border: 1px solid #ece4d3; border-left: 3px solid var(--gold, #C5A059); }
+.hx-ways-title { margin: 0 0 14px; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.15rem; color: var(--navy, #002147); }
+.hx-way { padding: 10px 0; border-top: 1px solid #f0e9da; line-height: 1.55; color: #3d4757; font-size: 0.97rem; }
+.hx-way strong { display: block; color: var(--navy, #002147); }
+
+/* Compact "Why it matters" gold band */
+.isolation-stats-gold { padding: 64px 20px; }
+.isolation-stats-gold .navy-text { margin: 12px 0 0; font-size: clamp(1.9rem, 4vw, 2.6rem); }
+.isolation-stats-gold .stats-grid.hx-stats-two { margin-top: 32px !important; gap: 20px; }
+.isolation-stats-gold .stat-card-navy { padding: 30px 26px; }
+.isolation-stats-gold .stat-number-navy { font-size: clamp(2.4rem, 4vw, 3.3rem); margin-bottom: 8px; }
+.isolation-stats-gold .stat-label-navy { margin-bottom: 14px; }
+.isolation-stats-gold .stat-card-navy p { margin: 0; }
+.isolation-stats-gold .hx-mission { margin-top: 26px; font-size: 1.1rem; }
+@media (max-width: 760px) { .isolation-stats-gold { padding: 48px 16px; } }

@@ -207,7 +207,21 @@ const Home = () => {
               <li><strong>There's something to do right away.</strong> A game, a song, a stage. Conversation comes easy when your hands are busy.</li>
               <li><strong>You leave knowing names.</strong> Nobody leads with what they do for a living. We just want to know you.</li>
             </ol>
-            <p className="hx-fine">Bringing people? Plus One saves $8 on two seats, groups of 5 save 20% and groups of 10 save 25%.</p>
+            <div className="hx-ways" aria-label="However you come">
+              <p className="hx-ways-title">However you come, there's room for you.</p>
+              <div className="hx-way">
+                <strong>Coming solo?</strong>
+                <span>You won't be the only one. We'll pull you into the first game, and you'll have a team by the second round.</span>
+              </div>
+              <div className="hx-way">
+                <strong>Bringing your person?</strong>
+                <span>A date night with something to do besides stare at a menu. Plus One saves $8 on two seats.</span>
+              </div>
+              <div className="hx-way">
+                <strong>Rolling with your crew?</strong>
+                <span>Your group stays together and still meets the room. Groups of 5 save 20%, groups of 10 save 25%.</span>
+              </div>
+            </div>
             <Link to="/events" className="story-cta-btn">Find your night</Link>
           </div>
         </div>
@@ -219,7 +233,6 @@ const Home = () => {
           <div className="stats-header">
             <span className="navy-label">Why it matters</span>
             <h2 id="stats-heading" className="playfair navy-text">Connection is good for you.</h2>
-            <div className="navy-spacer-small" aria-hidden="true"></div>
           </div>
           <div className="stats-grid hx-stats-two">
             <article className="stat-card-navy">
