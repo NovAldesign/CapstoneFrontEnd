@@ -1000,3 +1000,9 @@
 .home-hero-visual h1.hx-hero-h1 { font-family: 'Montserrat', sans-serif; font-size: 0.8rem; line-height: 1.5; margin: 0 0 20px; font-weight: 600; }
 .hx-night-name { margin: 0; font-weight: 700; }
 .home-hero-visual p.hx-hero-title { font-family: 'Playfair Display', serif; font-weight: 900; }
+
+/* Three 2027 launches side by side */
+.hx-coming-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.hx-coming-name { font-size: 1.9rem; }
+@media (max-width: 1100px) { .hx-coming-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 760px) { .hx-coming-grid { grid-template-columns: 1fr; } }

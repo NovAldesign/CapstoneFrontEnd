@@ -56,6 +56,17 @@ const COMING = [
       { to: "/recess#list", label: "Join the list →", primary: true },
     ],
   },
+  {
+    kicker: "For the dance floor",
+    need: "Miss a real night of dancing?",
+    name: "Scratched & Stirred™",
+    body: "Your favorites, remixed & refreshed. A Grown Folks DJ night with three DJs, three eras and one dance floor, from 90s R&B to 2000s hip hop and beyond. Mocktails stirred, records scratched, and you on your feet all night.",
+    facts: "Three DJs · Three eras · Coming 2027",
+    links: [
+      { to: "/contact", label: "DJs, get on our radar" },
+      { to: "/play", label: "Hear first →", primary: true },
+    ],
+  },
 ];
 
 
@@ -217,11 +228,11 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 3b. COMING JANUARY 2027 */}
+      {/* 3b. COMING IN 2027 */}
       <section className="hx-coming" aria-labelledby="hx-coming-title">
         <div className="hx-wrap">
-          <p className="hx-eyebrow hx-eyebrow-light">New in January 2027</p>
-          <h2 id="hx-coming-title" className="playfair hx-h2 hx-light">Two new rooms. Get on the list first.</h2>
+          <p className="hx-eyebrow hx-eyebrow-light">New in 2027</p>
+          <h2 id="hx-coming-title" className="playfair hx-h2 hx-light">Three new rooms. Get on the list first.</h2>
           <div className="hx-coming-grid">
             {COMING.map((c) => (
               <article key={c.name} className="hx-coming-card">
