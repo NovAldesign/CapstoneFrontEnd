@@ -389,7 +389,7 @@ const EventDetail = () => {
                         {parseCleanPrice(tier) === 0 ? "Free" : formatMoney(parseCleanPrice(tier))}
                       </span>
                       {isPlusOne(tier.name) && (
-                        <span className="gfc-tier-note">Admits 2 · Buy 2, save $8 · Other discounts don't combine</span>
+                        <span className="gfc-tier-note">Admits 2 · Buy 2, save $8 · Discount codes don't combine, but artist codes still count</span>
                       )}
                       {isGroupTicket(tier.name) && (
                         <span className="gfc-tier-note">Admits {groupSize(tier.name)} · Group price · Member pricing doesn't apply</span>

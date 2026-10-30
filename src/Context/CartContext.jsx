@@ -612,7 +612,7 @@ const CartDrawer = () => {
                 {discountLabel && <div className="gfc-discount-note">{discountLabel}</div>}
                 {hasPlusOne && (
                   <div className="gfc-discount-note">
-                    Plus One deal: buy 2, save $8. Other discounts don't combine with it.
+                    Plus One deal: buy 2, save $8. Discount codes don't combine with it, but an artist's code still counts for them.
                   </div>
                 )}
 
