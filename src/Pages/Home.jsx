@@ -63,7 +63,7 @@ const COMING = [
     body: "Your favorites, remixed & refreshed. A Grown Folks DJ night with three DJs, three eras and one dance floor, from 90s R&B to 2000s hip hop and beyond. Mocktails stirred, records scratched, and you on your feet all night.",
     facts: "Three DJs · Three eras · Coming 2027",
     links: [
-      { to: "/contact", label: "DJs, get on our radar" },
+      { to: "/perform/dj", label: "DJs, join the list" },
       { to: "/play", label: "Hear first →", primary: true },
     ],
   },

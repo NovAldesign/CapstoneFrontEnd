@@ -496,3 +496,80 @@ export const AdminScouts = () => {
     </>
   );
 };
+
+// DJs from /perform/dj, for Scratched & Stirred™ (launching 2027)
+export const AdminDjs = () => {
+  const [items, setItems] = useState(null);
+  const [error, setError] = useState('');
+  const [search, setSearch] = useState('');
+  const [era, setEra] = useState('');
+  useEffect(() => { adminApi('/djs').then((d) => setItems(d.items)).catch((e) => setError(e.message)); }, []);
+
+  const allEras = useMemo(() => [...new Set((items || []).flatMap((d) => d.eras || []))].sort(), [items]);
+  const shown = useMemo(() => (items || []).filter((d) =>
+    (!era || (d.eras || []).includes(era)) &&
+    (!search.trim() || `${name(d)} ${d.djName} ${d.email} ${(d.eras || []).join(' ')} ${d.otherStyles}`.toLowerCase().includes(search.trim().toLowerCase()))), [items, search, era]);
+
+  const exportCsv = () => downloadCSV(shown.map((d) => ({
+    DJ_NAME: d.djName, FIRSTNAME: d.firstName, LASTNAME: d.lastName, EMAIL: d.email, PHONE: d.phone || '',
+    ERAS: (d.eras || []).join('; '), OTHER: d.otherStyles || '', YEARS: d.yearsSpinning || '', EQUIPMENT: d.equipment || '',
+    NIGHTS: (d.nights || []).join('; '), PRIVATE_GIGS: d.alsoBooks ? 'Yes' : 'No', INSTAGRAM: d.instagram || '',
+    MIXES: (d.mixLinks || []).join(' '), OK_TO_EMAIL: d.notify ? 'Yes' : 'No', JOINED: fmtDate(d.createdAt),
+  })), `gfc-djs-${new Date().toISOString().slice(0, 10)}.csv`);
+
+  if (!items) return error ? <p className="ga-note err">{error}</p> : <div className="ga-loading">Loading DJs…</div>;
+
+  return (
+    <>
+      <div className="ga-stats">
+        <div className="ga-stat"><div className="ga-stat-num">{items.length}</div><div className="ga-stat-label">DJs on the list</div></div>
+        <div className="ga-stat"><div className="ga-stat-num">{items.filter((d) => d.alsoBooks).length}</div><div className="ga-stat-label">Open to private gigs</div></div>
+        <div className="ga-stat"><div className="ga-stat-num">{items.filter((d) => /full setup/i.test(d.equipment || '')).length}</div><div className="ga-stat-label">Bring full setup</div></div>
+      </div>
+      <div className="ga-card">
+        <div className="ga-card-head">
+          <input className="ga-input" style={{ maxWidth: 240 }} placeholder="Search" aria-label="Search DJs" value={search} onChange={(e) => setSearch(e.target.value)} />
+          <select className="ga-input" style={{ maxWidth: 240 }} aria-label="Filter by era" value={era} onChange={(e) => setEra(e.target.value)}>
+            <option value="">All eras</option>
+            {allEras.map((x) => <option key={x} value={x}>{x}</option>)}
+          </select>
+          <button type="button" className="ga-btn ga-btn-gold" onClick={exportCsv}>↓ Download list ({shown.length})</button>
+        </div>
+        <p className="ga-small ga-muted" style={{ marginTop: -4 }}>
+          Share grownfolkscollective.com/perform/dj. DJs get a confirmation email, and you get an alert at events@ for each new one.
+        </p>
+        {shown.length === 0 ? (
+          <p className="ga-small ga-muted">No DJs yet.</p>
+        ) : (
+          <div className="ga-table-wrap">
+            <table className="ga-table">
+              <thead><tr><th>DJ</th><th>Eras</th><th>Mixes</th><th>Logistics</th><th>Joined</th></tr></thead>
+              <tbody>
+                {shown.map((d) => (
+                  <tr key={d._id}>
+                    <td>
+                      <strong>{d.djName}</strong><div className="ga-small">{name(d)}</div>
+                      <a className="ga-small" href={`mailto:${d.email}`}>{d.email}</a>
+                      {d.phone && <div className="ga-small">{d.phone}</div>}
+                      {d.instagram && <div className="ga-small"><a href={`https://instagram.com/${d.instagram}`} target="_blank" rel="noopener noreferrer">@{d.instagram}</a></div>}
+                    </td>
+                    <td className="ga-small">{(d.eras || []).join(', ') || '—'}{d.otherStyles ? <div className="ga-muted">{d.otherStyles}</div> : null}</td>
+                    <td className="ga-small">{(d.mixLinks || []).map((l, i) => <div key={l}><a href={l} target="_blank" rel="noopener noreferrer">Mix {i + 1}</a></div>)}</td>
+                    <td className="ga-small">
+                      {d.yearsSpinning ? `${d.yearsSpinning} yrs` : '—'}
+                      {d.equipment && <div>{d.equipment}</div>}
+                      {(d.nights || []).length > 0 && <div className="ga-muted">{d.nights.join(', ')}</div>}
+                      {d.alsoBooks && <div>Open to private gigs</div>}
+                      {d.about && <details><summary>About</summary>{d.about}</details>}
+                    </td>
+                    <td className="ga-small">{fmtDate(d.createdAt)}{d.notify ? '' : <div className="ga-muted">No emails</div>}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </>
+  );
+};

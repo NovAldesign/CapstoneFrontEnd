@@ -12,7 +12,7 @@ import AdminLives from "../Components/admin/AdminLives.jsx";
 import EventbriteSync from "../Components/admin/EventbriteSync.jsx";
 import EbTicketFixer from "../Components/admin/EbTicketFixer.jsx";
 import AdminCodes from "../Components/admin/AdminCodes.jsx";
-import { AdminInboxList, AdminPerks, AdminSubscribers, AdminScouts } from "../Components/admin/AdminLists.jsx";
+import { AdminInboxList, AdminPerks, AdminSubscribers, AdminScouts, AdminDjs } from "../Components/admin/AdminLists.jsx";
 import AdminPeople from "../Components/admin/AdminPeople.jsx";
 import AdminPartners from "../Components/admin/AdminPartners.jsx";
 import AdminGuests from "../Components/admin/AdminGuests.jsx";
@@ -398,6 +398,7 @@ const AdminDashboard = () => {
       { id: 'members', icon: '👥', label: 'Members' },
       { id: 'subscribers', icon: '📬', label: 'Subscribers' },
       { id: 'scouts', icon: '🔎', label: 'Industry Scouts' },
+      { id: 'djs', icon: '🎧', label: 'DJs' },
       { id: 'recess', icon: '🖍️', label: 'Recess Talks™' },
       { id: 'blog', icon: '📝', label: 'Blog' },
       { id: 'select', icon: '🎭', label: 'GFC Select™', count: counts.select },
@@ -426,6 +427,7 @@ const AdminDashboard = () => {
     subscribers: ['Subscribers', 'Your newsletter list.'],
     recess: ['Recess Talks™', 'Speaker applications and the interest list for /recess.'],
     scouts: ['Industry Scouts', 'Labels, managers and A&R coming to showcases for free.'],
+    djs: ['DJs', 'The DJ list for Scratched & Stirred™, launching 2027.'],
     blog: ['Blog', 'Write, edit and remove posts on The Gathering Table.'],
     select: ['GFC Select™', 'Applications, doors and matching.'],
     reviews: ['Reviews', 'Platform ratings and guest reviews for the home page.'],
@@ -484,6 +486,7 @@ const AdminDashboard = () => {
       {['private', 'groups', 'messages'].includes(activeTab) && <AdminInboxList kind={activeTab} />}
       {activeTab === 'subscribers' && <AdminSubscribers />}
       {activeTab === 'scouts' && <AdminScouts />}
+      {activeTab === 'djs' && <AdminDjs />}
       {activeTab === 'recess' && <AdminRecess />}
       {activeTab === 'people' && <AdminPeople />}
       {activeTab === 'blog' && <AdminBlog />}

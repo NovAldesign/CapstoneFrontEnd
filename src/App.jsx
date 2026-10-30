@@ -36,6 +36,7 @@ import MembershipSuccess from "./Pages/MembershipSuccess.jsx";
 import GroupBooking from "./Pages/GroupBooking.jsx";
 import Perform from "./Pages/Perform.jsx";
 import Scouts from "./Pages/Scouts.jsx";
+import DJs from "./Pages/DJs.jsx";
 import Recess from "./Pages/Recess.jsx";
 import OnOurStagePage from "./Pages/OnOurStagePage.jsx";
 import Legal from "./Pages/Legal.jsx";
@@ -104,6 +105,7 @@ function App() {
             <Route path="/perform" element={<Perform key="artist" />} />
             <Route path="/perform/host" element={<Perform key="host" role="host" />} />
             <Route path="/perform/art" element={<Perform key="visual" role="visual" />} />
+            <Route path="/perform/dj" element={<DJs />} />
             <Route path="/scouts" element={<Scouts />} />
             <Route path="/recess" element={<Recess />} />
             <Route path="/on-our-stage" element={<OnOurStagePage />} />
