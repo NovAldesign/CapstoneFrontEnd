@@ -14,7 +14,23 @@ const AdminGuests = ({ startEventId = '', onOpen }) => {
 
   useEffect(() => {
     setEvents(null);
-    adminApi(`/events?when=${when}`).then((d) => setEvents(d.events)).catch((e) => setError(e.message));
+    let alive = true;
+    adminApi(`/events?when=${when}`)
+      .then((d) => {
+        if (!alive) return;
+        setEvents(d.events);
+        // Real ticket counts (website + Eventbrite + door), filled in once they load
+        const ids = d.events.map((e) => e.id);
+        if (!ids.length) return;
+        adminApi(`/events/totals?ids=${ids.slice(0, 80).join(',')}`)
+          .then(({ totals }) => {
+            if (!alive || !totals) return;
+            setEvents((list) => (list || []).map((e) => (totals[e.id] ? { ...e, sold: totals[e.id].tickets } : e)));
+          })
+          .catch(() => {});
+      })
+      .catch((e) => setError(e.message));
+    return () => { alive = false; };
   }, [when]);
 
   const api = useMemo(() => (openId ? {
