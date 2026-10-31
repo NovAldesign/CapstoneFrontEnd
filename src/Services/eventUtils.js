@@ -238,6 +238,40 @@ export const matchesWhen = (event, when, now = new Date()) => {
 const isPublished = (e) => e?.status?.toLowerCase() === "published";
 export const isUpcoming = (e, now = new Date()) => new Date(e.endDate || e.date) >= now;
 
+// ── LATE SALES ──
+// Eventbrite stops ticket sales when the doors open. On our website, tickets that
+// would end at start time keep selling until 90 minutes after the start (or the
+// end time, if that's sooner). Early Bird and other tickets that end earlier don't change.
+// Same rule in the backend checkout (routes/eventRoutes.js, lateSalesEnd).
+export const LATE_SALES_MINUTES = 90;
+const MIN = 60 * 1000;
+export const lateSalesEnd = (event = {}) => {
+  if (!event?.date) return null;
+  const start = new Date(event.date).getTime();
+  const late = start + LATE_SALES_MINUTES * MIN;
+  const end = event.endDate ? new Date(event.endDate).getTime() : late;
+  return new Date(Math.min(late, end));
+};
+export const withLateSales = (event = {}, tiers = []) => {
+  const until = lateSalesEnd(event);
+  if (!until) return tiers;
+  const start = new Date(event.date).getTime();
+  return tiers.map((t) => {
+    const end = t.salesEnd || t.sales_end;
+    if (!end) return t;
+    const endMs = new Date(end).getTime();
+    // Only tickets set to stop within an hour of the start (Eventbrite's "at start time")
+    if (endMs < start - 60 * MIN || endMs >= until.getTime()) return t;
+    const status = String(t.onSaleStatus || t.on_sale_status || "").toUpperCase();
+    return {
+      ...t,
+      salesEnd: until.toISOString(),
+      sales_end: undefined,
+      ...(status === "UNAVAILABLE" ? { onSaleStatus: "AVAILABLE", on_sale_status: undefined } : {}),
+    };
+  });
+};
+
 // Merges the Eventbrite asset package (image, title, description, tickets) into the event
 export const enrichEvent = async (event) => {
   let ext = null;
@@ -256,7 +290,7 @@ export const enrichEvent = async (event) => {
     description,
     plainDescription: stripHtml(description),
     image: ext?.image || event.coverImage || FALLBACK_IMAGE,
-    tiers: event.ticketTypes?.length ? event.ticketTypes : ext?.ticketTiers || [],
+    tiers: withLateSales(event, event.ticketTypes?.length ? event.ticketTypes : ext?.ticketTiers || []),
   };
 };
 
