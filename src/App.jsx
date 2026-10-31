@@ -125,6 +125,7 @@ function App() {
             <Route path="/join" element={<Join />} />
             <Route path="/play" element={<Join />} />
             <Route path="/go/:code" element={<Go />} />
+            <Route path="/showcase" element={<Go fixed="showcase" />} />
 
             {/* Policies */}
             <Route path="/privacy" element={<Legal page="privacy" />} />

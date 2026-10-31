@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useLocation, useParams } from "react-router-dom";
-import { BACKEND_URL } from "../Services/eventUtils";
+import { BACKEND_URL, NIGHTS, eventPath, matchesNight } from "../Services/eventUtils";
+import { fetchGfcEvents } from "../Services/eventService";
 
 // ── Short links: grownfolkscollective.com/go/oct10 ──
 // Easy to say, type and share. Anything after ? is kept, so
@@ -24,7 +25,6 @@ const LINKS = {
 
   // Always-on links
   events: "/events",
-  showcase: "/events/acoustic-and-infused-gfc-live-music-showcase-30-6aa634669e0da510aa0c0ea5", // update to the next showcase
   perform: "/perform",
   art: "/perform/art",
   artist: "/perform/art",
@@ -65,6 +65,31 @@ const LINKS = {
   "events-pitch": "https://claude.ai/artifact/6gpXu2bHSZ5o2GHeobsLGq", // White-Label Event Platform
 };
 
+// Links that always go to the NEXT night of a series. Each flips to the following
+// date on its own once the current one is over (end time, or 4 hours after it starts).
+// If nothing is on the calendar, it opens the Events page filtered to that night.
+const NEXT = {
+  showcase: "acoustic-infused",
+  acoustic: "acoustic-infused",
+  gamenight: "game-night",
+  karaoke: "karaoke-bingo",
+};
+
+const isOver = (e, now = new Date()) =>
+  (e.endDate ? new Date(e.endDate) : new Date(new Date(e.date).getTime() + 4 * 3600000)) < now;
+
+const findNext = async (nightId) => {
+  try {
+    const data = await fetchGfcEvents();
+    const next = (Array.isArray(data) ? data : [])
+      .filter((e) => e && String(e.status || "").toLowerCase() === "published" && !isOver(e) && matchesNight(e, nightId))
+      .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+    return next ? eventPath(next) : `/events?night=${nightId}`;
+  } catch {
+    return `/events?night=${nightId}`;
+  }
+};
+
 // Count the click (once per visit), then go. Never blocks the redirect for long.
 const countClick = (code, search) => {
   const key = `go:${code}${search}`;
@@ -78,16 +103,35 @@ const countClick = (code, search) => {
   }).catch(() => {});
 };
 
-const Go = () => {
-  const { code = "" } = useParams();
+// grownfolkscollective.com/showcase (and /go/showcase): the next Acoustic & Infused
+const NextNight = ({ code, search }) => {
+  const [target, setTarget] = useState("");
+  useEffect(() => {
+    let alive = true;
+    countClick(code, search);
+    findNext(NEXT[code]).then((t) => alive && setTarget(t));
+    return () => { alive = false; };
+  }, [code, search]);
+  if (!target) return <div className="ga-loading" style={{ padding: "80px 20px", textAlign: "center" }}>Finding the next {NIGHTS.find((n) => n.id === NEXT[code])?.label || "night"}…</div>;
+  return <Navigate to={target + (target.includes("?") ? search.replace(/^\?/, "&") : search)} replace />;
+};
+
+const Go = ({ fixed = "" }) => {
+  const params = useParams();
+  const code = (fixed || params.code || "").toLowerCase();
   const { search } = useLocation();
-  const known = LINKS[code.toLowerCase()];
+  if (NEXT[code]) return <NextNight code={code} search={search} />;
+  return <GoLink code={code} search={search} />;
+};
+
+const GoLink = ({ code, search }) => {
+  const known = LINKS[code];
   const target = known || "/events";
   // Outside links and files (like the pitch PDF) need a full page load, not an in-app route
   const external = /^https?:\/\//.test(target) || /\.pdf($|\?)/i.test(target);
 
   useEffect(() => {
-    const counted = known ? countClick(code.toLowerCase(), search) : Promise.resolve();
+    const counted = known ? countClick(code, search) : Promise.resolve();
     if (external) {
       // Give the count a moment to send before leaving the site
       Promise.race([counted, new Promise((r) => setTimeout(r, 700))]).then(() => window.location.replace(target));
