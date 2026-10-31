@@ -150,7 +150,9 @@ const Details = ({ p }) => (
 );
 
 const ApproveDrawer = ({ person, showcases, onClose, onDone }) => {
-  const options = showcases.filter((s) => !s.past);
+  // Already booked for a show: this adds another show and keeps that booking
+  const current = person.status === 'approved' ? showcases.find((s) => s.id === person.eventId && !s.past) : null;
+  const options = showcases.filter((s) => !s.past && s.id !== current?.id);
   const [eventId, setEventId] = useState(
     options.some((s) => s.id === person.eventId) ? person.eventId : options[0]?.id || ''
   );
@@ -199,6 +201,11 @@ const ApproveDrawer = ({ person, showcases, onClose, onDone }) => {
             <input type="checkbox" checked={sendEmail} onChange={(e) => setSendEmail(e.target.checked)} />
             <span>Email {person.name.split(' ')[0]} their booking details and ticket link</span>
           </label>
+          {current && (
+            <p className="ga-note info">
+              They stay booked for <strong>{current.name}</strong> ({fmtDay(current.date)}). This adds a second booking, and their code works for both shows. Tickets count separately for each show.
+            </p>
+          )}
           <p className="ga-note info">
             Booking creates their code{person.featureConsent ? ', adds them to the event page' : ''} and
             {sendEmail ? ' sends their booking email.' : " doesn't send an email."}
@@ -403,6 +410,12 @@ const PersonRow = ({ p, show, onApprove, onDecline, onPaid, onRoster, busy }) =>
             <button type="button" className="ga-btn ga-btn-sm ga-btn-navy" onClick={() => onApprove(p)} disabled={busy}>Book</button>
             <button type="button" className="ga-btn ga-btn-sm ga-btn-danger" onClick={() => onDecline(p)} disabled={busy}>Decline</button>
           </>
+        )}
+        {booked && show && !show.past && (
+          <button type="button" className="ga-btn ga-btn-sm ga-btn-navy" onClick={() => onApprove(p)} disabled={busy}
+            title="Keep this booking and add them to another showcase">
+            Book another show
+          </button>
         )}
         {onRoster && !show?.past && (
           <button type="button" className="ga-btn ga-btn-sm" onClick={() => onRoster(p, show)} disabled={busy}
