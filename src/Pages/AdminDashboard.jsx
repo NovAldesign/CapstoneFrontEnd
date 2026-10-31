@@ -144,7 +144,9 @@ const AdminDashboard = () => {
   const [eventView, setEventView] = useState('upcoming');
   const eventGroup = (e) => {
     if (e.status === 'draft' || e.status === 'cancelled') return 'hidden';
-    return new Date(e.date) >= new Date(Date.now() - 86400000) ? 'upcoming' : 'past';
+    // Past as soon as the show is over (end time, or 4 hours after it starts)
+    const over = e.endDate ? new Date(e.endDate) : new Date(new Date(e.date).getTime() + 4 * 3600000);
+    return over > new Date() ? 'upcoming' : 'past';
   };
   const eventViewCounts = useMemo(() => events.reduce((c, e) => { const g = eventGroup(e); c[g] = (c[g] || 0) + 1; return c; }, {}), [events]);
   const filteredEvents = useMemo(() => {

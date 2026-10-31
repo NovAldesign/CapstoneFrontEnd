@@ -15,7 +15,17 @@ const AdminGuests = ({ startEventId = '', onOpen }) => {
   useEffect(() => {
     setEvents(null);
     let alive = true;
-    adminApi(`/events?when=${when}`)
+    // Past also picks up shows from the last day that are already over (like last night's)
+    const over = (e) => new Date(new Date(e.date).getTime() + 4 * 3600000) < new Date();
+    const load = when === 'past'
+      ? Promise.all([adminApi('/events?when=past'), adminApi('/events?when=upcoming').catch(() => ({ events: [] }))])
+          .then(([p, u]) => {
+            const seen = new Set(p.events.map((e) => e.id));
+            const ended = u.events.filter((e) => over(e) && !seen.has(e.id));
+            return { events: [...ended, ...p.events].sort((a, b) => new Date(b.date) - new Date(a.date)) };
+          })
+      : adminApi('/events?when=upcoming');
+    load
       .then((d) => {
         if (!alive) return;
         setEvents(d.events);
