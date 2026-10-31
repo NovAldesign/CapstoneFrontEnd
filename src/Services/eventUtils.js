@@ -239,9 +239,9 @@ const isPublished = (e) => e?.status?.toLowerCase() === "published";
 export const isUpcoming = (e, now = new Date()) => new Date(e.endDate || e.date) >= now;
 
 // ── LATE SALES ──
-// Eventbrite stops ticket sales when the doors open. On our website, tickets that
-// would end at start time keep selling until 90 minutes after the start (or the
-// end time, if that's sooner). Early Bird and other tickets that end earlier don't change.
+// Eventbrite stops ticket sales when the doors open. On our website, the "Day Of"
+// ticket keeps selling until 90 minutes after the start (or the end time, if that's
+// sooner). Every other ticket (Early Bird, General Admission, Plus One...) ends on schedule.
 // Same rule in the backend checkout (routes/eventRoutes.js, lateSalesEnd).
 export const LATE_SALES_MINUTES = 90;
 const MIN = 60 * 1000;
@@ -257,6 +257,7 @@ export const withLateSales = (event = {}, tiers = []) => {
   if (!until) return tiers;
   const start = new Date(event.date).getTime();
   return tiers.map((t) => {
+    if (!/day[\s-]*of/i.test(t.name || "")) return t;
     const end = t.salesEnd || t.sales_end;
     if (!end) return t;
     const endMs = new Date(end).getTime();
